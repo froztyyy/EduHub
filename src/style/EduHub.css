@@ -1,0 +1,23 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Nov 6, 2023, 11:25:03 PM
+    Author     : jcarl
+*/
+
+.main-bg {
+    -fx-background-color: #090909;
+}
+
+.secondary-bg {
+    -fx-background-color: #000000;
+    -fx-background-radius: 10px;
+}
+
+.theme-color {
+    -fx-background-color: #054041;
+    -fx-background-radius: 10px;
+}
+

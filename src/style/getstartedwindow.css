@@ -1,0 +1,46 @@
+.minimizeButton{
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-background-radius: 10px;
+    -fx-border-width: 0.3px;
+    -fx-border-color: white;
+    -fx-border-radius: 10px
+}
+.minimizeButton:hover{
+    -fx-background-color: #FCB847;
+}
+.minimizeButton:pressed{
+    -fx-background-color: #FCBA53;
+}
+
+.closeButton{
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-background-radius: 10px;
+    -fx-border-width: 0.3px;
+    -fx-border-color: white;
+    -fx-border-radius: 10px
+}
+.closeButton:hover{
+    -fx-background-color: red;
+}
+.closeButton:pressed{
+    -fx-background-color: #FB595F;
+}
+
+.buttonGetStarted {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10px;
+    -fx-border-width: 0.3px;
+    -fx-border-color: white;
+    -fx-border-radius: 10px
+}
+
+.buttonGetStarted:hover{
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-background-color: #B90764;
+}
+.buttonGetStarted:pressed{
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+    -fx-background-color: #E46272;
+}
