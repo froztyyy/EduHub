@@ -12,18 +12,20 @@ import java.sql.SQLException;
  *
  * @author jcarl
  */
+
+
 public class database {
-      public static Connection getConnection() throws ClassNotFoundException{
+    
+public static Connection getConnection(){
         Connection conn;
         try {
            Class.forName("com.mysql.cj.jdbc.Driver");
            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/eduhub_final", "root", "");
            return conn;
-        } catch (SQLException e) {
-        
-            e.printStackTrace();
+        } catch (Exception e) {
+            
+            return null;
         }
-        return null;
     }
 }
 

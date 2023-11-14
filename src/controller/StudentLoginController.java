@@ -85,31 +85,31 @@ public class StudentLoginController implements Initializable {
 //            e.printStackTrace();
 //        }
 //    }
-    private void showAlert(ActionEvent event, String title, String content, String Button) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("CustomAlert.fxml"));
-            Parent root = loader.load();
-
-            Stage customAlertStage = new Stage();
-            customAlertStage.initStyle(StageStyle.UNDECORATED);
-            customAlertStage.initModality(Modality.APPLICATION_MODAL);
-            customAlertStage.initOwner(((Node) event.getSource()).getScene().getWindow());
-            customAlertStage.setResizable(false);
-
-            Scene scene = new Scene(root);
-            customAlertStage.setScene(scene);
-
-            CustomAlertController controller = loader.getController();
-            controller.setTitle(title);
-            controller.setContent(content);
-            controller.setButton(Button);
-            controller.setStage(customAlertStage);
-
-            customAlertStage.showAndWait();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    private void showAlert(ActionEvent event, String title, String content, String Button) {
+//        try {
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("CustomAlert.fxml"));
+//            Parent root = loader.load();
+//
+//            Stage customAlertStage = new Stage();
+//            customAlertStage.initStyle(StageStyle.UNDECORATED);
+//            customAlertStage.initModality(Modality.APPLICATION_MODAL);
+//            customAlertStage.initOwner(((Node) event.getSource()).getScene().getWindow());
+//            customAlertStage.setResizable(false);
+//
+//            Scene scene = new Scene(root);
+//            customAlertStage.setScene(scene);
+//
+//            CustomAlertController controller = loader.getController();
+//            controller.setTitle(title);
+//            controller.setContent(content);
+//            controller.setButton(Button);
+//            controller.setStage(customAlertStage);
+//
+//            customAlertStage.showAndWait();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 //
 //
 //    private void handleBtnCancel(ActionEvent event) {
@@ -129,15 +129,16 @@ public class StudentLoginController implements Initializable {
 //        }
 //    }
 
+    
+    
+    
+    
     @FXML
     private void signInButton(ActionEvent event) {
-        String sql = "SELECT * FROM account WHERE Username = ? and Password = ?";
+                String sql = "SELECT * FROM account WHERE username = ? and password = ?";
 
-        try {
-            connect = database.getConnection();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(StudentLoginController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        connect = database.getConnection();
+        
 
         try {
             prepare = connect.prepareStatement(sql);
@@ -152,6 +153,7 @@ public class StudentLoginController implements Initializable {
                 alert.setTitle("Error Message");
                 alert.setContentText("Please fill all blank fields");
                 alert.showAndWait();
+
             } else {
                 if (result.next()) {
                     alert = new Alert(Alert.AlertType.INFORMATION);
@@ -160,47 +162,39 @@ public class StudentLoginController implements Initializable {
                     alert.setContentText("Successfully Login!");
                     alert.showAndWait();
 
-                    // Debug print
-                    URL resourceUrl = getClass().getResource("userDashboard.fxml");
-                    System.out.println("Resource URL: " + resourceUrl);
+                    Parent root = FXMLLoader.load(getClass().getResource("/view/userDashboard.fxml"));
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-                    if (resourceUrl != null) {
-                        Parent root = FXMLLoader.load(resourceUrl);
-                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    ((Node) (event.getSource())).getScene().getWindow().hide();
+                    stage.setWidth(1126);
+                    stage.setHeight(654);
 
-                        ((Node) (event.getSource())).getScene().getWindow().hide();
-                        stage.setWidth(1126);
-                        stage.setHeight(654);
+                    Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+                    double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
+                    double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
+                    stage.setX(centerX - 558.5);
+                    stage.setY(centerY - 327);
 
-                        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-                        double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
-                        double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
-                        stage.setX(centerX - 558.5);
-                        stage.setY(centerY - 327);
+                    Scene scene = new Scene(root, 1126, 654);
 
-                        Scene scene = new Scene(root, 1126, 654);
+                    stage.setScene(scene);
+                    stage.show();
 
-                        stage.setScene(scene);
-                        stage.show();
+                    root.setOnMousePressed((mouseEvent) -> {
+                        x = mouseEvent.getSceneX();
+                        y = mouseEvent.getSceneY();
+                    });
 
-                        root.setOnMousePressed((mouseEvent) -> {
-                            x = mouseEvent.getSceneX();
-                            y = mouseEvent.getSceneY();
-                        });
+                    root.setOnMouseDragged((mouseEvent) -> {
+                        stage.setX(mouseEvent.getScreenX() - x);
+                        stage.setY(mouseEvent.getScreenY() - y);
 
-                        root.setOnMouseDragged((mouseEvent) -> {
-                            stage.setX(mouseEvent.getScreenX() - x);
-                            stage.setY(mouseEvent.getScreenY() - y);
+                        stage.setOpacity(.8);
+                    });
 
-                            stage.setOpacity(.8);
-                        });
-
-                        root.setOnMouseReleased((mouseEvent) -> {
-                            stage.setOpacity(1);
-                        });
-                    } else {
-                        System.out.println("Resource not found!");
-                    }
+                    root.setOnMouseReleased((mouseEvent) -> {
+                        stage.setOpacity(1);
+                    });
 
                 } else {
                     alert = new Alert(Alert.AlertType.INFORMATION);
@@ -209,9 +203,11 @@ public class StudentLoginController implements Initializable {
                     alert.setContentText("Wrong Username/Password");
                     alert.showAndWait();
                 }
+
             }
+
         } catch (Exception e) {
-            e.printStackTrace(); // Print the exception stack trace for debugging
+
         }
     }
 
