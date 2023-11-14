@@ -17,7 +17,7 @@ public class database {
         Connection conn;
         try {
            Class.forName("com.mysql.cj.jdbc.Driver");
-           conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/eduhub", "root", "");
+           conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/eduhub_final", "root", "");
            return conn;
         } catch (SQLException e) {
         
@@ -26,3 +26,4 @@ public class database {
         return null;
     }
 }
+

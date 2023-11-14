@@ -121,17 +121,17 @@
             <MotionBlur />
          </effect>
       </ImageView>
-      <Button layoutX="70.0" layoutY="285.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="90.0" styleClass="buttonSelectRole" stylesheets="@../style/selectrolewindow.css" text="Student" textFill="WHITE">
+      <Button layoutX="70.0" layoutY="285.0" mnemonicParsing="false" onAction="#studentRole" prefHeight="35.0" prefWidth="90.0" styleClass="buttonSelectRole" stylesheets="@../style/selectrolewindow.css" text="Student" textFill="WHITE">
          <font>
             <Font name="Arial" size="14.0" />
          </font>
       </Button>
-      <Button layoutX="264.0" layoutY="285.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="90.0" styleClass="buttonSelectRole" stylesheets="@../style/selectrolewindow.css" text="Admin" textFill="WHITE">
+      <Button layoutX="264.0" layoutY="285.0" mnemonicParsing="false" onAction="#adminRole" prefHeight="35.0" prefWidth="90.0" styleClass="buttonSelectRole" stylesheets="@../style/selectrolewindow.css" text="Admin" textFill="WHITE">
          <font>
             <Font name="Arial" size="14.0" />
          </font>
       </Button>
-      <Button layoutX="167.0" layoutY="285.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="90.0" styleClass="buttonSelectRole" stylesheets="@../style/selectrolewindow.css" text="Officer" textFill="WHITE">
+      <Button layoutX="167.0" layoutY="285.0" mnemonicParsing="false" onAction="#officerRole" prefHeight="35.0" prefWidth="90.0" styleClass="buttonSelectRole" stylesheets="@../style/selectrolewindow.css" text="Officer" textFill="WHITE">
          <font>
             <Font name="Arial" size="14.0" />
          </font>

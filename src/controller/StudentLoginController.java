@@ -10,17 +10,24 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -33,18 +40,18 @@ import javafx.stage.StageStyle;
  */
 public class StudentLoginController implements Initializable {
 
-    @FXML
-    private TextField txtUsername;
-    @FXML
-    private PasswordField txtPassword;
-    @FXML
-    private Button btnLogin;
-    @FXML
-    private Button btnCancel;
-
     private Connection connect;
     private PreparedStatement prepare;
     private ResultSet result;
+
+    private double x = 0;
+    private double y = 0;
+    @FXML
+    private Pane studentLoginWindow;
+    @FXML
+    private TextField si_username;
+    @FXML
+    private PasswordField si_password;
 
     /**
      * Initializes the controller class.
@@ -54,31 +61,30 @@ public class StudentLoginController implements Initializable {
         // TODO
     }
 
-    @FXML
-    private void handleBtnLogin(ActionEvent event) throws ClassNotFoundException {
-        String sql = "SELECT * FROM account WHERE Username = ? and Password = ?";
-        connect = database.getConnection();
-
-        try {
-            prepare = connect.prepareStatement(sql);
-            prepare.setString(1, txtUsername.getText());
-            prepare.setString(2, txtPassword.getText());
-            result = prepare.executeQuery();
-
-            if (txtUsername.getText().isEmpty() || txtPassword.getText().isEmpty()) {
-                showAlert(event, "Error Message!", "Please fill all blank fields", "Back");
-            } else {
-                if (result.next()) {
-                    openStudentDashboard(event);
-                } else {
-                    showAlert(event, "Error Message!", "Wrong Username/Password", "Back");
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
+    // WITH ALERT DESIGN
+//    private void handleBtnLogin(ActionEvent event) throws ClassNotFoundException {
+//        String sql = "SELECT * FROM account WHERE Username = ? and Password = ?";
+//        connect = database.getConnection();
+//
+//        try {
+//            prepare = connect.prepareStatement(sql);
+//            prepare.setString(1, si_username.getText());
+//            prepare.setString(2, si_password.getText());
+//            result = prepare.executeQuery();
+//
+//            if (si_username.getText().isEmpty() || si_password.getText().isEmpty()) {
+//                showAlert(event, "Error Message!", "Please fill all blank fields", "Back");
+//            } else {
+//                if (result.next()) {
+//                    openStudentDashboard(event);
+//                } else {
+//                    showAlert(event, "Error Message!", "Wrong Username/Password", "Back");
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
     private void showAlert(ActionEvent event, String title, String content, String Button) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("CustomAlert.fxml"));
@@ -104,39 +110,171 @@ public class StudentLoginController implements Initializable {
             e.printStackTrace();
         }
     }
+//
+//
+//    private void handleBtnCancel(ActionEvent event) {
+//        try {
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("SelectRole.fxml"));
+//            Parent root = loader.load();
+//            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//            Scene scene = new Scene(root);
+//
+//            stage.setScene(scene);
+//            stage.setResizable(true);
+//            javafx.geometry.Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+//            stage.setX((screenBounds.getWidth() - stage.getWidth()) / 2);
+//            stage.setY((screenBounds.getHeight() - stage.getHeight()) / 2);
+//            stage.show();
+//        } catch (IOException e) {
+//        }
+//    }
 
-    private void openStudentDashboard(ActionEvent event) {
+    @FXML
+    private void signInButton(ActionEvent event) {
+        String sql = "SELECT * FROM account WHERE Username = ? and Password = ?";
+
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("SelectRole.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
+            connect = database.getConnection();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(StudentLoginController.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
-            stage.setScene(scene);
-            stage.setResizable(true);
-            javafx.geometry.Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-            stage.setX((screenBounds.getWidth() - stage.getWidth()) / 2);
-            stage.setY((screenBounds.getHeight() - stage.getHeight()) / 2);
-            stage.show();
-        } catch (IOException e) {
+        try {
+            prepare = connect.prepareStatement(sql);
+            prepare.setString(1, si_username.getText());
+            prepare.setString(2, si_password.getText());
+            result = prepare.executeQuery();
+
+            Alert alert;
+
+            if (si_username.getText().isEmpty() || si_password.getText().isEmpty()) {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Message");
+                alert.setContentText("Please fill all blank fields");
+                alert.showAndWait();
+            } else {
+                if (result.next()) {
+                    alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Successfully Login!");
+                    alert.showAndWait();
+
+                    // Debug print
+                    URL resourceUrl = getClass().getResource("userDashboard.fxml");
+                    System.out.println("Resource URL: " + resourceUrl);
+
+                    if (resourceUrl != null) {
+                        Parent root = FXMLLoader.load(resourceUrl);
+                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+                        ((Node) (event.getSource())).getScene().getWindow().hide();
+                        stage.setWidth(1126);
+                        stage.setHeight(654);
+
+                        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+                        double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
+                        double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
+                        stage.setX(centerX - 558.5);
+                        stage.setY(centerY - 327);
+
+                        Scene scene = new Scene(root, 1126, 654);
+
+                        stage.setScene(scene);
+                        stage.show();
+
+                        root.setOnMousePressed((mouseEvent) -> {
+                            x = mouseEvent.getSceneX();
+                            y = mouseEvent.getSceneY();
+                        });
+
+                        root.setOnMouseDragged((mouseEvent) -> {
+                            stage.setX(mouseEvent.getScreenX() - x);
+                            stage.setY(mouseEvent.getScreenY() - y);
+
+                            stage.setOpacity(.8);
+                        });
+
+                        root.setOnMouseReleased((mouseEvent) -> {
+                            stage.setOpacity(1);
+                        });
+                    } else {
+                        System.out.println("Resource not found!");
+                    }
+
+                } else {
+                    alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Error Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Wrong Username/Password");
+                    alert.showAndWait();
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // Print the exception stack trace for debugging
         }
     }
 
     @FXML
-    private void handleBtnCancel(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("SelectRole.fxml"));
-            Parent root = loader.load();
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root);
+    private void closeButton(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Logout");
+        alert.setHeaderText("You are about to logout");
+        alert.setContentText("Do you want to save before exiting?");
 
-            stage.setScene(scene);
-            stage.setResizable(true);
-            javafx.geometry.Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-            stage.setX((screenBounds.getWidth() - stage.getWidth()) / 2);
-            stage.setY((screenBounds.getHeight() - stage.getHeight()) / 2);
-            stage.show();
-        } catch (IOException e) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        if (alert.showAndWait().get() == ButtonType.OK) {
+            System.out.println("You successfully logged out");
+            stage.close();
         }
     }
+
+    @FXML
+    private void minimizeButton(ActionEvent event) {
+        Stage stage = (Stage) studentLoginWindow.getScene().getWindow();
+        stage.setIconified(true);
+    }
+
+    @FXML
+    private void getBack(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/selectRoleWindow.fxml"));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            ((Node) (event.getSource())).getScene().getWindow().hide();
+            stage.setWidth(843);
+            stage.setHeight(511);
+
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
+            double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
+            stage.setX(centerX - 421.5);
+            stage.setY(centerY - 255.5);
+
+            Scene scene = new Scene(root, 843, 511);
+
+            stage.setScene(scene);
+            stage.show();
+
+            root.setOnMousePressed((mouseEvent) -> {
+                x = mouseEvent.getSceneX();
+                y = mouseEvent.getSceneY();
+            });
+
+            root.setOnMouseDragged((mouseEvent) -> {
+                stage.setX(mouseEvent.getScreenX() - x);
+                stage.setY(mouseEvent.getScreenY() - y);
+
+                stage.setOpacity(.8);
+            });
+
+            root.setOnMouseReleased((mouseEvent) -> {
+                stage.setOpacity(1);
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

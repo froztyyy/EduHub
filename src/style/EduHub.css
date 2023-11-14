@@ -20,4 +20,10 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     -fx-background-color: #054041;
     -fx-background-radius: 10px;
 }
-
+.rounded-stage {
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-background-color: transparent; /* Set your desired background color */
+    -fx-border-color: black; /* Set your desired border color */
+    -fx-border-width: 2; /* Set your desired border width */
+}

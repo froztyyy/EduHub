@@ -27,7 +27,7 @@ public class EduHub extends Application {
     private double x = 0;
     private double y = 0;
 
-    @Override
+        @Override
     public void start(Stage stage) throws Exception {
 
         // Create a splash screen stage
@@ -36,6 +36,11 @@ public class EduHub extends Application {
         try {
             splashRoot = FXMLLoader.load(getClass().getResource("/view/splashScreen.fxml"));
             Scene splashScene = new Scene(splashRoot, 741, 432); // Set the splash screen size
+            splashScene.getStylesheets().add(getClass().getResource("/style/Eduhub.css").toExternalForm()); // Load the CSS
+
+            // Apply the CSS class to the stage
+            splashScene.getRoot().getStyleClass().add("rounded-stage");
+
             splashStage.setScene(splashScene);
 
             // Calculate X and Y coordinates to center the splash screen
@@ -57,7 +62,7 @@ public class EduHub extends Application {
         // Simulate initialization work (replace with your actual initialization code)
         Thread initThread = new Thread(() -> {
             try {
-                Thread.sleep(10000); // Simulate 5 seconds of initialization time
+                Thread.sleep(10000); // Simulate 10 seconds of initialization time
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
