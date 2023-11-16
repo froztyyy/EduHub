@@ -71,7 +71,7 @@
                            <children>
                               <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../Pictures/Screenshots/Screenshot%202023-11-16%20194445.png" />
+                                    <Image url="@../media/Screenshot%202023-11-16%20194445.png" />
                                  </image>
                               </ImageView>
                            </children>
@@ -86,7 +86,7 @@
                               <Pane prefHeight="81.0" prefWidth="77.0" />
                               <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../Pictures/Screenshots/Screenshot%202023-11-16%20194805.png" />
+                                    <Image url="@../media/Screenshot%202023-11-16%20194805.png" />
                                  </image>
                               </ImageView>
                            </children>
@@ -184,6 +184,9 @@
                                        </children>
                                     </AnchorPane>
                                  </children>
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" />
+                                 </VBox.margin>
                               </HBox>
                            </children>
                         </VBox>
