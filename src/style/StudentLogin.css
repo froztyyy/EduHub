@@ -6,125 +6,29 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to ed
     Created on : Nov 7, 2023, 12:42:48 AM
     Author     : jcarl
 */
-
-.txtFieldUP {
-    -fx-background-color:  transparent; 
-    -fx-background-insets: 0.5; 
-    -fx-padding: 10px 15px; 
-    -fx-font-family: Corbel;
-    -fx-font-size: 13px;
-    -fx-prompt-text-fill: #706F6D; 
-    -fx-border-width: 1px; 
-    -fx-border-color:  #054041; 
-    -fx-border-radius: 10px; 
-    -fx-background-radius: 10px; 
-    -fx-text-fill: gray;
-}
-
-.txtFieldUP:hover {
-    -fx-border-color:  #FFD700; 
-    -fx-text-fill: #C0C0C0;
-    -fx-prompt-text-fill: #C0C0C0; 
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
-    -fx-cursor: hand;
-}
-
-.txtFieldUP:pressed{
-    -fx-border-color: #FFD700; 
-    -fx-text-fill: #C0C0C0;
-    -fx-prompt-text-fill: #C0C0C0; 
-    -fx-scale-x: 1.0;
-    -fx-scale-y: 1.0;
-    -fx-cursor: hand;
-}
-
-.btnLogin{
-    -fx-background-color:  #054041; 
-    -fx-border-radius: 10px; 
-    -fx-background-radius: 10px;  
-    -fx-cursor: hand;
-    -fx-font-family: Corbel;
-    -fx-text-fill: #C0C0C0;
-}
-
-.btnLogin:hover {
-    -fx-background-color: #FFD700;
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
-    -fx-cursor: hand;
-    -fx-text-fill:  #36454F; 
-}
-
-.btnLogin:pressed {
-    -fx-background-color: #FFD700;
-    -fx-text-fill:  #36454F; 
-    -fx-scale-x: 1.0;
-    -fx-scale-y: 1.0;
-    -fx-cursor: hand;
-}
-
-
-.btnBack{
-    -fx-background-color:  transparent;
-    -fx-cursor: hand;
-    -fx-text-fill: gray;
+.txtFieldTranparent {
+    -fx-text-fill: white;
+    -fx-background-color: transparent;
+    -fx-background-radius: 10px;
+    -fx-border-width: 0.3px;
+    -fx-border-color: white;
     -fx-border-radius: 10px;
-    -fx-background-radius: 10px;
+   
 }
 
-.btnBack:hover {
-    -fx-border-color: #FFD700;
-    -fx-text-fill: #C0C0C0;
+.logInButton{
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px
+}
+.logInButton:hover{
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
-    -fx-cursor: hand;
-}
+    -fx-background-color: #AC9BC4;
 
-.btnBack:pressed {
-    -fx-border-color: #FFD700;
-    -fx-text-fill: #C0C0C0;
+}
+.logInButton:pressed{
     -fx-scale-x: 1.0;
     -fx-scale-y: 1.0;
-    -fx-cursor: hand;
-} 
-
-
-
-
-
-
-.getBack{
-    -fx-background-color: rgba(255, 255, 255, 0.6);
-    -fx-background-radius: 10px;
-    -fx-border-radius: 10px
+    -fx-background-color: #A89ABF;
 }
-.getBack:hover{
-    -fx-scale-x: 1.1;
-    -fx-scale-y: 1.1;
-    -fx-background-color: #1DA1F2;
-
-}
-.getBack:pressed{
-    -fx-scale-x: 1.0;
-    -fx-scale-y: 1.0;
-    -fx-background-color: #33A6F7;
-}
-
-.Signin{
-    -fx-background-color:  #9363D1;
-    -fx-background-radius: 40px;
-    -fx-border-radius: 10px
-}
-.Signin:hover{
-    -fx-scale-x: 1.1;
-    -fx-scale-y: 1.1;
-    -fx-background-color: #6B51C1;
-
-}
-.Signin:pressed{
-    -fx-scale-x: 1.0;
-    -fx-scale-y: 1.0;
-    -fx-background-color: #8268D0;
-}
-

@@ -144,6 +144,11 @@
             <Reflection />
          </effect>
       </ImageView>
+      <ImageView blendMode="OVERLAY" fitHeight="200.0" fitWidth="296.0" layoutX="612.0" layoutY="-33.0" opacity="0.42" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../media/dot-pattern-png-10.png" />
+         </image>
+      </ImageView>
       <Button layoutX="777.0" layoutY="27.0" mnemonicParsing="false" onAction="#closeButton" prefHeight="24.0" prefWidth="21.0" styleClass="closeButton" stylesheets="@../style/getstartedwindow.css">
          <graphic>
             <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">

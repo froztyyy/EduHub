@@ -36,10 +36,10 @@ public class EduHub extends Application {
         try {
             splashRoot = FXMLLoader.load(getClass().getResource("/view/splashScreen.fxml"));
             Scene splashScene = new Scene(splashRoot, 741, 432); // Set the splash screen size
-            splashScene.getStylesheets().add(getClass().getResource("/style/Eduhub.css").toExternalForm()); // Load the CSS
+//            splashScene.getStylesheets().add(getClass().getResource("/style/Eduhub.css").toExternalForm()); // Load the CSS
 
             // Apply the CSS class to the stage
-            splashScene.getRoot().getStyleClass().add("rounded-stage");
+//            splashScene.getRoot().getStyleClass().add("rounded-stage");
 
             splashStage.setScene(splashScene);
 

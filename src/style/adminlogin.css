@@ -2,10 +2,6 @@
  * Empty Stylesheet file.
  */
 
-.bgColorFade{
-    -fx-background-radius: 100px;
-}
-
 .txtFieldTranparent {
     -fx-text-fill: white;
     -fx-background-color: transparent;
@@ -14,31 +10,6 @@
     -fx-border-color: white;
     -fx-border-radius: 10px
 }
-
-/*.btnLogin{
-    -fx-background-color:  #054041; 
-    -fx-border-radius: 10px; 
-    -fx-background-radius: 10px;  
-    -fx-cursor: hand;
-    -fx-font-family: Corbel;
-    -fx-text-fill: #C0C0C0;
-}
-
-.btnLogin:hover {
-    -fx-background-color: #AC9BC4;
-    -fx-scale-x: 1.01;
-    -fx-scale-y: 1.01;
-    -fx-cursor: hand;
-    -fx-text-fill:  #36454F; 
-}
-
-.btnLogin:pressed {
-    -fx-background-color: #A89ABF;
-    -fx-text-fill:  #36454F; 
-    -fx-scale-x: 1.0;
-    -fx-scale-y: 1.0;
-    -fx-cursor: hand;
-}*/
 
 .logInButton{
     -fx-background-color: rgba(255, 255, 255, 0.2);

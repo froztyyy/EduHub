@@ -4,16 +4,14 @@
  */
 package controller;
 
-import controller.CustomAlertController;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javafx.animation.Interpolator;
+import javafx.animation.PathTransition;
 import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,24 +22,21 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.stage.Modality;
+import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 /**
  * FXML Controller class
  *
- * @author jcarl
+ * @author lugtu
  */
-public class StudentLoginController implements Initializable {
+public class AdminLoginController implements Initializable {
 
     private Connection connect;
     private PreparedStatement prepare;
@@ -53,15 +48,16 @@ public class StudentLoginController implements Initializable {
     private double x = 0;
     private double y = 0;
     @FXML
-    private Pane studentLogin;
-    @FXML
     private ImageView bgGradient;
+    @FXML
+    private Pane adminLogin;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        // Create a PathTransition for the ImageView along the circular path
         ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(2.5), bgGradient);
         scaleTransition.setByX(0.2); // Scale factor in the x-direction
         scaleTransition.setByY(0.2); // Scale factor in the y-direction
@@ -72,6 +68,93 @@ public class StudentLoginController implements Initializable {
 
         // Play the animation
         scaleTransition.play();
+
+        
+    }
+    
+    //        @Override
+//    public void initialize(URL url, ResourceBundle rb) {
+//        // Set up initial position
+//        updateImagePosition(0, 0);
+//
+//        // Add mouse move event handler
+//        adminLogin.setOnMouseMoved(this::handleMouseMove);
+//
+//    }
+//
+//    private void handleMouseMove(MouseEvent event) {
+//        // Update image position based on mouse cursor
+//        double x = event.getX();
+//        double y = event.getY();
+//        updateImagePosition(x, y);
+//    }
+//
+//    private void updateImagePosition(double x, double y) {
+//        // Set the new position for the ImageView
+//        bgGradient.setLayoutX(x);
+//        bgGradient.setLayoutY(y);
+//    }
+
+    @FXML
+    private void closeButton(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Logout");
+        alert.setHeaderText("You are about to logout");
+        alert.setContentText("Do you want to save before exiting?");
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        if (alert.showAndWait().get() == ButtonType.OK) {
+            System.out.println("You successfully logged out");
+            stage.close();
+        }
+    }
+
+    @FXML
+    private void minimizeButton(ActionEvent event) {
+        Stage stage = (Stage) adminLogin.getScene().getWindow();
+        stage.setIconified(true);
+    }
+
+    @FXML
+    private void getBack(ActionEvent event) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/selectRoleWindow.fxml"));
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+            ((Node) (event.getSource())).getScene().getWindow().hide();
+            stage.setWidth(843);
+            stage.setHeight(511);
+
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
+            double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
+            stage.setX(centerX - 421.5);
+            stage.setY(centerY - 255.5);
+
+            Scene scene = new Scene(root, 843, 511);
+
+            stage.setScene(scene);
+            stage.show();
+
+            root.setOnMousePressed((mouseEvent) -> {
+                x = mouseEvent.getSceneX();
+                y = mouseEvent.getSceneY();
+            });
+
+            root.setOnMouseDragged((mouseEvent) -> {
+                stage.setX(mouseEvent.getScreenX() - x);
+                stage.setY(mouseEvent.getScreenY() - y);
+
+                stage.setOpacity(.8);
+            });
+
+            root.setOnMouseReleased((mouseEvent) -> {
+                stage.setOpacity(1);
+            });
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -102,7 +185,7 @@ public class StudentLoginController implements Initializable {
                     alert.setContentText("Successfully Login!");
                     alert.showAndWait();
 
-                    Parent root = FXMLLoader.load(getClass().getResource("/view/userDashboard.fxml"));
+                    Parent root = FXMLLoader.load(getClass().getResource("/view/adminDashboard.fxml"));
                     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
                     ((Node) (event.getSource())).getScene().getWindow().hide();
@@ -148,68 +231,6 @@ public class StudentLoginController implements Initializable {
 
         } catch (Exception e) {
 
-        }
-    }
-
-    @FXML
-    private void closeButton(ActionEvent event) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Logout");
-        alert.setHeaderText("You are about to logout");
-        alert.setContentText("Do you want to save before exiting?");
-
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-        if (alert.showAndWait().get() == ButtonType.OK) {
-            System.out.println("You successfully logged out");
-            stage.close();
-        }
-    }
-
-    @FXML
-    private void minimizeButton(ActionEvent event) {
-        Stage stage = (Stage) studentLogin.getScene().getWindow();
-        stage.setIconified(true);
-    }
-
-    @FXML
-    private void getBack(ActionEvent event) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/view/selectRoleWindow.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
-            ((Node) (event.getSource())).getScene().getWindow().hide();
-            stage.setWidth(843);
-            stage.setHeight(511);
-
-            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-            double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
-            double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
-            stage.setX(centerX - 421.5);
-            stage.setY(centerY - 255.5);
-
-            Scene scene = new Scene(root, 843, 511);
-
-            stage.setScene(scene);
-            stage.show();
-
-            root.setOnMousePressed((mouseEvent) -> {
-                x = mouseEvent.getSceneX();
-                y = mouseEvent.getSceneY();
-            });
-
-            root.setOnMouseDragged((mouseEvent) -> {
-                stage.setX(mouseEvent.getScreenX() - x);
-                stage.setY(mouseEvent.getScreenY() - y);
-
-                stage.setOpacity(.8);
-            });
-
-            root.setOnMouseReleased((mouseEvent) -> {
-                stage.setOpacity(1);
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 

@@ -13,9 +13,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="studentLogin" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="514.0" prefWidth="785.0" style="-fx-background-color: #0B0709;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.StudentLoginController">
+<Pane fx:id="adminLogin" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="514.0" prefWidth="785.0" style="-fx-background-color: #0B0709;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminLoginController">
    <children>
-      <ImageView fx:id="bgGradient" fitHeight="288.0" fitWidth="347.0" layoutX="-119.0" layoutY="113.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="bgGradient" fitHeight="288.0" fitWidth="347.0" layoutX="428.0" layoutY="113.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../media/Firefly%20Glowing%20river%20in%20a%20cave%2020754.jpg" />
          </image>
@@ -23,7 +23,7 @@
             <BoxBlur height="162.0" iterations="3" width="113.0" />
          </effect>
       </ImageView>
-      <ImageView fitHeight="200.0" fitWidth="296.0" layoutX="250.0" layoutY="474.0" opacity="0.07" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="200.0" fitWidth="296.0" layoutX="-130.0" layoutY="78.0" opacity="0.05" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../media/dot-pattern-png-10.png" />
          </image>
@@ -39,18 +39,18 @@
             <MotionBlur angle="114.35" radius="5.55" />
          </effect>
       </ImageView>
-      <Label layoutX="271.0" layoutY="131.0" text="Welcome to EduHub" textFill="WHITE">
+      <Label layoutX="90.0" layoutY="141.0" text="Welcome to EduHub" textFill="WHITE">
          <font>
             <Font name="Arial Bold" size="25.0" />
          </font>
       </Label>
-      <Label layoutX="297.0" layoutY="161.0" text="Please Enter your Details" textFill="WHITE">
+      <Label layoutX="90.0" layoutY="171.0" text="Admin Login: Your Control Center." textFill="WHITE">
          <font>
             <Font name="Arial" size="17.0" />
          </font>
       </Label>
-      <TextField fx:id="si_username" layoutX="271.0" layoutY="204.0" prefHeight="29.0" prefWidth="241.0" promptText="Enter your username" style="-fx-background-radius: 10PX;" styleClass="txtFieldTranparent" stylesheets="@../style/StudentLogin.css" />
-      <TextField fx:id="si_password" layoutX="272.0" layoutY="242.0" prefHeight="29.0" prefWidth="241.0" promptText="Enter your password" style="-fx-background-radius: 10PX;" styleClass="txtFieldTranparent" stylesheets="@../style/StudentLogin.css" />
+      <TextField fx:id="si_username" layoutX="90.0" layoutY="214.0" prefHeight="29.0" prefWidth="241.0" promptText="Enter your username" style="-fx-background-radius: 10PX;" styleClass="txtFieldTranparent" stylesheets="@../style/adminlogin.css" />
+      <TextField fx:id="si_password" layoutX="91.0" layoutY="252.0" prefHeight="29.0" prefWidth="241.0" promptText="Enter your password" style="-fx-background-radius: 10PX;" styleClass="txtFieldTranparent" stylesheets="@../style/adminlogin.css" />
       <Label layoutX="25.0" layoutY="474.0" prefHeight="14.0" prefWidth="89.0" text="© BSCS2022" textFill="#8f8f8f85">
          <font>
             <Font name="Arial Black" size="11.0" />
@@ -61,7 +61,7 @@
             <Font name="Arial Black" size="13.0" />
          </font>
       </Label>
-      <ImageView fitHeight="200.0" fitWidth="296.0" layoutX="350.0" layoutY="-111.0" opacity="0.07" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="200.0" fitWidth="296.0" layoutX="410.0" layoutY="-115.0" opacity="0.05" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../media/dot-pattern-png-10.png" />
          </image>
@@ -69,20 +69,12 @@
             <MotionBlur angle="114.35" radius="5.55" />
          </effect>
       </ImageView>
-      <Text fill="WHITE" layoutX="281.0" layoutY="352.0" strokeType="OUTSIDE" strokeWidth="0.0" text="By signing in, users from the BSCS 2A class agree to both the                             and" textAlignment="CENTER" wrappingWidth="224.0">
+      <Text fill="WHITE" layoutX="90.0" layoutY="357.0" strokeType="OUTSIDE" strokeWidth="0.0" text="By signing in, administrators agree to adhere to both the                        and" wrappingWidth="224.0">
          <font>
             <Font name="Arial" size="11.0" />
          </font>
       </Text>
-      <Text fill="WHITE" layoutX="384.0" layoutY="365.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Terms of Service" underline="true">
-         <font>
-            <Font name="Arial" size="11.0" />
-         </font>
-         <cursor>
-            <Cursor fx:constant="HAND" />
-         </cursor>
-      </Text>
-      <Text fill="WHITE" layoutX="350.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Privacy Policy" underline="true">
+      <Text fill="WHITE" layoutX="236.0" layoutY="370.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Terms of Service." underline="true">
          <font>
             <Font name="Arial" size="11.0" />
          </font>
@@ -90,27 +82,14 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Text>
-      <ImageView fx:id="bgGradient1" fitHeight="288.0" fitWidth="347.0" layoutX="641.0" layoutY="112.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../media/Firefly%20Glowing%20river%20in%20a%20cave%2020754.jpg" />
-         </image>
-         <effect>
-            <BoxBlur height="162.0" iterations="3" width="113.0" />
-         </effect>
-      </ImageView>
-      <Button layoutX="271.0" layoutY="290.0" mnemonicParsing="false" onAction="#signInButton" prefHeight="29.0" prefWidth="241.0" styleClass="logInButton" stylesheets="@../style/StudentLogin.css" text="Sign in" textFill="WHITE">
+      <Text fill="WHITE" layoutX="144.0" layoutY="370.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Privacy Policy" underline="true">
          <font>
-            <Font name="Arial Bold" size="12.0" />
+            <Font name="Arial" size="11.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
-      </Button>
-      <ImageView fitHeight="25.0" fitWidth="21.0" layoutX="486.0" layoutY="294.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
-         <image>
-            <Image url="@../media/icons/icons8-back-50.png" />
-         </image>
-      </ImageView>
+      </Text>
       <Button layoutX="694.0" layoutY="24.0" mnemonicParsing="false" onAction="#minimizeButton" styleClass="minimizeButton" stylesheets="@../style/getstartedwindow.css">
          <graphic>
             <ImageView fitHeight="11.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
@@ -138,7 +117,20 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="717.0" layoutY="462.0" mnemonicParsing="false" onAction="#getBack" prefHeight="31.0" prefWidth="47.0" style="-fx-background-radius: 50px;" styleClass="logInButton" stylesheets="@../style/StudentLogin.css" textFill="WHITE">
+      <Button layoutX="90.0" layoutY="300.0" mnemonicParsing="false" onAction="#signInButton" prefHeight="29.0" prefWidth="241.0" styleClass="logInButton" stylesheets="@../style/adminlogin.css" text="Sign in" textFill="WHITE">
+         <font>
+            <Font name="Arial Bold" size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+      <ImageView fitHeight="25.0" fitWidth="21.0" layoutX="305.0" layoutY="304.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+         <image>
+            <Image url="@../media/icons/icons8-back-50.png" />
+         </image>
+      </ImageView>
+      <Button layoutX="717.0" layoutY="462.0" mnemonicParsing="false" onAction="#getBack" prefHeight="31.0" prefWidth="47.0" style="-fx-background-radius: 50px;" styleClass="logInButton" stylesheets="@../style/adminlogin.css" textFill="WHITE">
          <font>
             <Font name="Arial Bold" size="12.0" />
          </font>
