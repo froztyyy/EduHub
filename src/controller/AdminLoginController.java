@@ -10,8 +10,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ResourceBundle;
-import javafx.animation.Interpolator;
-import javafx.animation.PathTransition;
 import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,7 +24,6 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -72,28 +69,7 @@ public class AdminLoginController implements Initializable {
         
     }
     
-    //        @Override
-//    public void initialize(URL url, ResourceBundle rb) {
-//        // Set up initial position
-//        updateImagePosition(0, 0);
-//
-//        // Add mouse move event handler
-//        adminLogin.setOnMouseMoved(this::handleMouseMove);
-//
-//    }
-//
-//    private void handleMouseMove(MouseEvent event) {
-//        // Update image position based on mouse cursor
-//        double x = event.getX();
-//        double y = event.getY();
-//        updateImagePosition(x, y);
-//    }
-//
-//    private void updateImagePosition(double x, double y) {
-//        // Set the new position for the ImageView
-//        bgGradient.setLayoutX(x);
-//        bgGradient.setLayoutY(y);
-//    }
+  
 
     @FXML
     private void closeButton(ActionEvent event) {
