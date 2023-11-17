@@ -1,7 +1,19 @@
-/*
- * Empty Stylesheet file.
- */
+.minimizeMaximizeButton{
+    -fx-background-color: transparent;
+}
+.minimizeMaximizeButton:hover{
+    -fx-background-color: #3F3F3F;
+}
+.minimizeMaximizeButton:pressed{
+    -fx-background-color: #3C3F41;
+}
 
-.mainFxmlClass {
-
+.exitButton{
+    -fx-background-color: transparent;
+}
+.exitButton:hover{
+    -fx-background-color: #C90E31;
+}
+.exitButton:pressed{
+    -fx-background-color: #C90E31;
 }

@@ -112,10 +112,10 @@ public class StudentLoginController implements Initializable {
                     Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
                     double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
                     double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
-                    stage.setX(centerX - 558.5);
-                    stage.setY(centerY - 327);
+                    stage.setX(centerX - 635.5);
+                    stage.setY(centerY - 389);
 
-                    Scene scene = new Scene(root, 1126, 654);
+                    Scene scene = new Scene(root, 1271, 778);
 
                     stage.setScene(scene);
                     stage.show();
