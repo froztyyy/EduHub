@@ -90,9 +90,9 @@
       </VBox>
    </top>
    <center>
-      <VBox prefHeight="616.0" prefWidth="1126.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="616.0" prefWidth="1126.0">
          <children>
-            <VBox prefHeight="82.0" prefWidth="1271.0" style="-fx-border-color: transparent transparent white transparent; -fx-border-width: 0.3px;" styleClass="topFrame" stylesheets="@../style/userdashboard.css">
+            <VBox prefHeight="82.0" prefWidth="1271.0" style="-fx-border-color: transparent transparent white transparent; -fx-border-width: 0.3px;" styleClass="topFrame" stylesheets="@../style/userdashboard.css" VBox.vgrow="ALWAYS">
                <children>
                   <HBox prefHeight="81.0" prefWidth="1241.0" styleClass="topFrame" stylesheets="@../style/userdashboard.css">
                      <children>
@@ -159,11 +159,11 @@
                   </HBox>
                </children>
             </VBox>
-            <AnchorPane VBox.vgrow="ALWAYS">
+            <Pane VBox.vgrow="ALWAYS">
                <children>
-                  <AnchorPane fx:id="homePane">
+                  <AnchorPane fx:id="homePane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
                      <children>
-                        <HBox prefHeight="656.0" prefWidth="1271.0">
+                        <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="656.0" prefWidth="1271.0">
                            <children>
                               <VBox prefHeight="656.0" prefWidth="337.0" style="-fx-background-color: #000000;" HBox.hgrow="ALWAYS">
                                  <children>
@@ -336,12 +336,12 @@
                         </HBox>
                      </children>
                   </AnchorPane>
-                  <AnchorPane fx:id="announcementPane" prefHeight="655.0" prefWidth="1271.0" style="-fx-background-color: red;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                  <AnchorPane fx:id="toDoListPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: blue;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                  <AnchorPane fx:id="calendarPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: pink;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-                  <AnchorPane fx:id="clockPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: violet;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <AnchorPane fx:id="announcementPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="655.0" prefWidth="1271.0" style="-fx-background-color: red;" visible="false" />
+                  <AnchorPane fx:id="toDoListPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="656.0" prefWidth="1271.0" style="-fx-background-color: blue;" visible="false" />
+                  <AnchorPane fx:id="calendarPane" maxWidth="1.7976931348623157E308" prefHeight="659.0" prefWidth="1271.0" style="-fx-background-color: pink;" visible="false" />
+                  <AnchorPane fx:id="clockPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="657.0" prefWidth="1271.0" style="-fx-background-color: violet;" visible="false" />
                </children>
-            </AnchorPane>
+            </Pane>
          </children>
       </VBox>
    </center>
