@@ -72,7 +72,15 @@ public class UserDashboardController implements Initializable {
     Button calendarButton = createSidePanelButton("Calendar");
     Button clockButton = createSidePanelButton("Clock");
     @FXML
-    private HBox homePane;
+    private AnchorPane homePane;
+    @FXML
+    private AnchorPane announcementPane;
+    @FXML
+    private AnchorPane toDoListPane;
+    @FXML
+    private AnchorPane calendarPane;
+    @FXML
+    private AnchorPane clockPane;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -134,6 +142,7 @@ public class UserDashboardController implements Initializable {
         lastActivePane = homePane;
         lastClickedButton = homeButton;
 
+        
         // Set styles for the initial active button
         setButtonStyles(homeButton, true);
     }
@@ -141,7 +150,7 @@ public class UserDashboardController implements Initializable {
     private Button createSidePanelButton(String buttonText) {
         Button button = new Button(buttonText);
         button.setPrefSize(150, 50);
-        button.setOnAction(event -> handleButtonAction(buttonText));
+        button.setOnAction(event -> handleSidePanelButtonClick(event, button));
 
         button.setStyle(
                 "-fx-background-color: transparent; "
@@ -328,7 +337,7 @@ public class UserDashboardController implements Initializable {
         }
     }
 
-    private void handleSidePanelButtonClick(ActionEvent event) {
+    private void handleSidePanelButtonClick(ActionEvent event, Button button) {
         Button clickedButton = (Button) event.getSource();
 
         if (clickedButton == lastClickedButton) {

@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane fx:id="borderPaneMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="778.0" prefWidth="1271.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserDashboardController">
+<BorderPane fx:id="borderPaneMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="778.0" prefWidth="1271.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserDashboardController">
    <top>
       <VBox prefHeight="41.0" prefWidth="1126.0" BorderPane.alignment="CENTER">
          <children>
@@ -157,58 +157,17 @@
                         <Insets />
                      </VBox.margin>
                   </HBox>
-               </children></VBox>
-            <HBox fx:id="homePane" prefHeight="656.0" prefWidth="1271.0" VBox.vgrow="ALWAYS">
+               </children>
+            </VBox>
+            <AnchorPane VBox.vgrow="ALWAYS">
                <children>
-                  <VBox prefHeight="656.0" prefWidth="337.0" style="-fx-background-color: #000000;" HBox.hgrow="ALWAYS">
+                  <AnchorPane fx:id="homePane">
                      <children>
-                        <AnchorPane prefHeight="596.0" prefWidth="310.0" style="-fx-background-color: transparent;" styleClass="containerglass" stylesheets="@../../../../../../Downloads/Seenema/CInemaManagementSystem/src/cinemamanagementsystem/CInemaManagementSystem/designdashboard.css">
+                        <HBox prefHeight="656.0" prefWidth="1271.0">
                            <children>
-                              <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
-                           </children>
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                        </AnchorPane>
-                     </children>
-                     <effect>
-                        <Blend />
-                     </effect>
-                  </VBox>
-                  <Pane prefHeight="656.0" prefWidth="47.0" HBox.hgrow="NEVER" />
-                  <VBox prefHeight="656.0" prefWidth="522.0" HBox.hgrow="ALWAYS">
-                     <children>
-                        <VBox prefHeight="656.0" prefWidth="582.0">
-                           <children>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello, Welcome to EduHub!!">
-                                 <font>
-                                    <Font name="Arial Black" size="22.0" />
-                                 </font>
-                                 <VBox.margin>
-                                    <Insets bottom="-10.0" top="30.0" />
-                                 </VBox.margin>
-                              </Text>
-                              <AnchorPane prefHeight="227.0" prefWidth="493.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-radius: 20px;" styleClass="containerglass" stylesheets="@../../../../../../Downloads/Seenema/CInemaManagementSystem/src/cinemamanagementsystem/CInemaManagementSystem/designdashboard.css" VBox.vgrow="ALWAYS">
+                              <VBox prefHeight="656.0" prefWidth="337.0" style="-fx-background-color: #000000;" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
-                                       <font>
-                                          <Font name="System Bold" size="18.0" />
-                                       </font>
-                                    </Label>
-                                    <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
-                                 </children>
-                                 <VBox.margin>
-                                    <Insets bottom="30.0" top="30.0" />
-                                 </VBox.margin>
-                              </AnchorPane>
-                              <HBox prefHeight="292.0" prefWidth="512.0">
-                                 <children>
-                                    <AnchorPane prefHeight="292.0" prefWidth="288.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-radius: 20px;" styleClass="containerglass" stylesheets="@../../../../../../Downloads/Seenema/CInemaManagementSystem/src/cinemamanagementsystem/CInemaManagementSystem/designdashboard.css">
+                                    <AnchorPane prefHeight="596.0" prefWidth="310.0" style="-fx-background-color: transparent;" styleClass="containerglass" stylesheets="@../../../../../../Downloads/Seenema/CInemaManagementSystem/src/cinemamanagementsystem/CInemaManagementSystem/designdashboard.css">
                                        <children>
                                           <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
                                              <font>
@@ -217,11 +176,135 @@
                                           </Label>
                                           <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
                                        </children>
-                                       <HBox.margin>
-                                          <Insets right="20.0" />
-                                       </HBox.margin>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
                                     </AnchorPane>
-                                    <AnchorPane prefHeight="292.0" prefWidth="288.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-radius: 20px;" styleClass="containerglass" stylesheets="@../../../../../../Downloads/Seenema/CInemaManagementSystem/src/cinemamanagementsystem/CInemaManagementSystem/designdashboard.css">
+                                 </children>
+                                 <effect>
+                                    <Blend />
+                                 </effect>
+                              </VBox>
+                              <Pane prefHeight="656.0" prefWidth="47.0" HBox.hgrow="NEVER" />
+                              <VBox prefHeight="656.0" prefWidth="522.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <VBox prefHeight="656.0" prefWidth="582.0">
+                                       <children>
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello, Welcome to EduHub!!">
+                                             <font>
+                                                <Font name="Arial Black" size="22.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets bottom="-10.0" top="30.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <AnchorPane prefHeight="227.0" prefWidth="493.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-radius: 20px;" styleClass="containerglass" stylesheets="@../../../../../../Downloads/Seenema/CInemaManagementSystem/src/cinemamanagementsystem/CInemaManagementSystem/designdashboard.css" VBox.vgrow="ALWAYS">
+                                             <children>
+                                                <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
+                                                   <font>
+                                                      <Font name="System Bold" size="18.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets bottom="30.0" top="30.0" />
+                                             </VBox.margin>
+                                          </AnchorPane>
+                                          <HBox prefHeight="292.0" prefWidth="512.0">
+                                             <children>
+                                                <AnchorPane prefHeight="292.0" prefWidth="288.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-radius: 20px;" styleClass="containerglass" stylesheets="@../../../../../../Downloads/Seenema/CInemaManagementSystem/src/cinemamanagementsystem/CInemaManagementSystem/designdashboard.css">
+                                                   <children>
+                                                      <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
+                                                         <font>
+                                                            <Font name="System Bold" size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
+                                                   </children>
+                                                   <HBox.margin>
+                                                      <Insets right="20.0" />
+                                                   </HBox.margin>
+                                                </AnchorPane>
+                                                <AnchorPane prefHeight="292.0" prefWidth="288.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-radius: 20px;" styleClass="containerglass" stylesheets="@../../../../../../Downloads/Seenema/CInemaManagementSystem/src/cinemamanagementsystem/CInemaManagementSystem/designdashboard.css">
+                                                   <children>
+                                                      <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
+                                                         <font>
+                                                            <Font name="System Bold" size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
+                                                   </children>
+                                                </AnchorPane>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets bottom="30.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </VBox>
+                              <Pane prefHeight="656.0" prefWidth="39.0" HBox.hgrow="NEVER" />
+                              <VBox prefHeight="656.0" prefWidth="440.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <AnchorPane fx:id="imageGradientWelcome" prefHeight="349.0" prefWidth="389.0" VBox.vgrow="ALWAYS">
+                                       <children>
+                                          <VBox prefHeight="227.0" prefWidth="389.0" spacing="5.0">
+                                             <children>
+                                                <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="389.0">
+                                                   <children>
+                                                      <ImageView fitHeight="49.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../media/3d/Atom_Bucky_1_0002.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                      <Label fx:id="fontsizeGrow" prefHeight="27.0" prefWidth="133.0" styleClass="myText" stylesheets="@../style/userdashboard.css" text="EDHUB.COM" textFill="WHITE">
+                                                         <font>
+                                                            <Font name="Arial Black" size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                   <VBox.margin>
+                                                      <Insets left="10.0" right="10.0" top="10.0" />
+                                                   </VBox.margin>
+                                                </HBox>
+                                                <Label prefHeight="17.0" prefWidth="156.0" text="Discover, Learn, Grow" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Arial Bold" size="14.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets left="20.0" top="10.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Redefining learning with cool features, launching soon on our website. Get ready for a seamless blend of style and substance!&quot;" wrappingWidth="338.11328125">
+                                                   <font>
+                                                      <Font name="Arial" size="12.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets left="20.0" top="10.0" />
+                                                   </VBox.margin>
+                                                </Text>
+                                                <Pane prefHeight="37.0" prefWidth="353.0" style="-fx-background-color: #30363D; -fx-border-radius: 10px; -fx-border-color: #8B949D; -fx-border-width: 0.5; -fx-background-radius: 10px;">
+                                                   <children>
+                                                      <Label layoutX="118.0" layoutY="7.0" prefHeight="23.0" prefWidth="106.0" text="COMING SOON" textFill="#c9d1d4">
+                                                         <font>
+                                                            <Font name="Arial Bold" size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                   <VBox.margin>
+                                                      <Insets left="20.0" right="20.0" top="12.0" />
+                                                   </VBox.margin>
+                                                </Pane>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets right="30.0" top="30.0" />
+                                       </VBox.margin>
+                                    </AnchorPane>
+                                    <AnchorPane prefHeight="186.0" prefWidth="226.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-radius: 20px;" VBox.vgrow="ALWAYS">
                                        <children>
                                           <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
                                              <font>
@@ -230,105 +313,35 @@
                                           </Label>
                                           <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
                                        </children>
+                                       <VBox.margin>
+                                          <Insets right="30.0" top="30.0" />
+                                       </VBox.margin>
                                     </AnchorPane>
-                                 </children>
-                                 <VBox.margin>
-                                    <Insets bottom="30.0" />
-                                 </VBox.margin>
-                              </HBox>
-                           </children>
-                        </VBox>
-                     </children>
-                  </VBox>
-                  <Pane prefHeight="656.0" prefWidth="39.0" HBox.hgrow="NEVER" />
-                  <VBox prefHeight="656.0" prefWidth="440.0" HBox.hgrow="ALWAYS">
-                     <children>
-                        <AnchorPane fx:id="imageGradientWelcome" prefHeight="349.0" prefWidth="389.0" VBox.vgrow="ALWAYS">
-                           <children>
-                              <VBox prefHeight="227.0" prefWidth="389.0" spacing="5.0">
-                                 <children>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="389.0">
+                                    <AnchorPane prefHeight="376.0" prefWidth="305.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-radius: 20px;" styleClass="containerglass" stylesheets="@../../../../../../Downloads/Seenema/CInemaManagementSystem/src/cinemamanagementsystem/CInemaManagementSystem/designdashboard.css">
                                        <children>
-                                          <ImageView fitHeight="49.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../media/3d/Atom_Bucky_1_0002.png" />
-                                             </image>
-                                          </ImageView>
-                                          <Label fx:id="fontsizeGrow" prefHeight="27.0" prefWidth="133.0" styleClass="myText" stylesheets="@../style/userdashboard.css" text="EDHUB.COM" textFill="WHITE">
+                                          <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
                                              <font>
-                                                <Font name="Arial Black" size="18.0" />
+                                                <Font name="System Bold" size="18.0" />
                                              </font>
                                           </Label>
+                                          <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
                                        </children>
                                        <VBox.margin>
-                                          <Insets left="10.0" right="10.0" top="10.0" />
+                                          <Insets bottom="30.0" right="30.0" top="20.0" />
                                        </VBox.margin>
-                                    </HBox>
-                                    <Label prefHeight="17.0" prefWidth="156.0" text="Discover, Learn, Grow" textFill="WHITE">
-                                       <font>
-                                          <Font name="Arial Bold" size="14.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets left="20.0" top="10.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Redefining learning with cool features, launching soon on our website. Get ready for a seamless blend of style and substance!&quot;" wrappingWidth="338.11328125">
-                                       <font>
-                                          <Font name="Arial" size="12.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets left="20.0" top="10.0" />
-                                       </VBox.margin>
-                                    </Text>
-                                    <Pane prefHeight="37.0" prefWidth="353.0" style="-fx-background-color: #30363D; -fx-border-radius: 10px; -fx-border-color: #8B949D; -fx-border-width: 0.5; -fx-background-radius: 10px;">
-                                       <children>
-                                          <Label layoutX="118.0" layoutY="7.0" prefHeight="23.0" prefWidth="106.0" text="COMING SOON" textFill="#c9d1d4">
-                                             <font>
-                                                <Font name="Arial Bold" size="14.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                       <VBox.margin>
-                                          <Insets left="20.0" right="20.0" top="12.0" />
-                                       </VBox.margin>
-                                    </Pane>
+                                    </AnchorPane>
                                  </children>
                               </VBox>
                            </children>
-                           <VBox.margin>
-                              <Insets right="30.0" top="30.0" />
-                           </VBox.margin>
-                        </AnchorPane>
-                        <AnchorPane prefHeight="186.0" prefWidth="226.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-radius: 20px;" VBox.vgrow="ALWAYS">
-                           <children>
-                              <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
-                           </children>
-                           <VBox.margin>
-                              <Insets right="30.0" top="30.0" />
-                           </VBox.margin>
-                        </AnchorPane>
-                        <AnchorPane prefHeight="376.0" prefWidth="305.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-radius: 20px;" styleClass="containerglass" stylesheets="@../../../../../../Downloads/Seenema/CInemaManagementSystem/src/cinemamanagementsystem/CInemaManagementSystem/designdashboard.css">
-                           <children>
-                              <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                              </Label>
-                              <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
-                           </children>
-                           <VBox.margin>
-                              <Insets bottom="30.0" right="30.0" top="20.0" />
-                           </VBox.margin>
-                        </AnchorPane>
+                        </HBox>
                      </children>
-                  </VBox>
+                  </AnchorPane>
+                  <AnchorPane fx:id="announcementPane" prefHeight="655.0" prefWidth="1271.0" style="-fx-background-color: red;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <AnchorPane fx:id="toDoListPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: blue;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <AnchorPane fx:id="calendarPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: pink;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                  <AnchorPane fx:id="clockPane" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: violet;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                </children>
-            </HBox>
+            </AnchorPane>
          </children>
       </VBox>
    </center>
