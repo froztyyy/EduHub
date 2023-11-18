@@ -7,18 +7,31 @@ package controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.animation.TranslateTransition;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -40,8 +53,26 @@ public class UserDashboardController implements Initializable {
     private Pane sidePanel;
     private boolean isPanelVisible = false;
     private boolean slideButtonClicked = false;
-    @FXML
     private HBox homeWindow;
+    @FXML
+    private HBox sidePanelTitleColor;
+    @FXML
+    private AnchorPane imageGradientWelcome;
+    @FXML
+    private Label fontsizeGrow;
+    private double x = 0;
+    private double y = 0;
+    private Button lastClickedButton;
+    private Pane lastActivePane;
+
+    // Create buttons
+    Button homeButton = createSidePanelButton("Home");
+    Button announcementButton = createSidePanelButton("Announcement");
+    Button toDoListButton = createSidePanelButton("To Do List");
+    Button calendarButton = createSidePanelButton("Calendar");
+    Button clockButton = createSidePanelButton("Clock");
+    @FXML
+    private HBox homePane;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -61,44 +92,84 @@ public class UserDashboardController implements Initializable {
         borderPaneMain.setOnMouseMoved(this::handleMouseMove);
 
         sidePanel = new Pane();
-        sidePanel.setStyle("-fx-background-color: transparent;");
+        sidePanel.setStyle("-fx-background-color: #0D1117;");
         sidePanel.setPrefWidth(200);
-        // Create a button
-        Button Calendar = new Button("Calendar");
+        sidePanel.setPrefHeight(800); // Set the preferred height
+        sidePanel.setTranslateY(-30); // Adjust top padding
 
-        // Set the preferred size of the button
-        Calendar.setPrefSize(150, 50);
+        // Add buttons to the side panel
+        sidePanel.getChildren().addAll(homeButton, announcementButton, toDoListButton, calendarButton, clockButton);
 
-        // Add an event handler to the button
-        Calendar.setOnAction(event -> calendarNavigation());
-
-        // Add the button to the side panel
-        sidePanel.getChildren().add(Calendar);
-
-        // Center the button in the side panel
-        double panelWidth = sidePanel.getPrefWidth();
-        double buttonWidth = Calendar.getPrefWidth();
-        double buttonX = (panelWidth - buttonWidth) / 2;
-        Calendar.setLayoutX(buttonX);
-        
-        Calendar.setStyle("-fx-background-color: transparent;");
-        Calendar.setOnMouseEntered(e -> Calendar.setStyle("-fx-background-color: #3F3F3F;"));
-        Calendar.setOnMouseExited(e -> Calendar.setStyle("-fx-background-color: transparent;"));
-        Calendar.setOnMousePressed(e -> Calendar.setStyle("-fx-background-color: #3C3F41;"));
-
+        // Set the layout for each button
+        layoutSidePanelButton(homeButton, 0);
+        layoutSidePanelButton(announcementButton, 1);
+        layoutSidePanelButton(toDoListButton, 2);
+        layoutSidePanelButton(calendarButton, 3);
+        layoutSidePanelButton(clockButton, 4);
 
         hideSidePanel();
 
+        // Load the image from your computer
+        Image backgroundImage = new Image("/media/gradient-design-pane.png");
+
+        // Set the background image of the AnchorPane
+        BackgroundImage background = new BackgroundImage(
+                backgroundImage,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.DEFAULT,
+                new BackgroundSize(
+                        BackgroundSize.AUTO,
+                        BackgroundSize.AUTO,
+                        false,
+                        false,
+                        true,
+                        true
+                )
+        );
+        Background backgroundObject = new Background(background);
+        imageGradientWelcome.setBackground(backgroundObject);
+
+        // Initialize the first active pane and button
+        lastActivePane = homePane;
+        lastClickedButton = homeButton;
+
+        // Set styles for the initial active button
+        setButtonStyles(homeButton, true);
     }
 
-//    private void applyBlurEffect() {
-//        BoxBlur boxBlur = new BoxBlur(10, 10, 3); // You can adjust the values as needed
-//        borderPaneMain.setEffect(boxBlur);
-//    }
-//
-//    private void removeBlurEffect() {
-//        borderPaneMain.setEffect(null);
-//    }
+    private Button createSidePanelButton(String buttonText) {
+        Button button = new Button(buttonText);
+        button.setPrefSize(150, 50);
+        button.setOnAction(event -> handleButtonAction(buttonText));
+
+        button.setStyle(
+                "-fx-background-color: transparent; "
+                + "-fx-text-fill: white; "
+                + "-fx-font-family: 'Arial'; "
+                + "-fx-font-size: 15px;"
+                + "-fx-border-color: transparent;"
+        );
+
+        return button;
+    }
+
+    private void handleButtonAction(String buttonText) {
+        // Implement the action for each button
+        System.out.println("Button Clicked: " + buttonText);
+    }
+
+    private void layoutSidePanelButton(Button button, int index) {
+        double panelWidth = sidePanel.getPrefWidth();
+        double panelHeight = sidePanel.getPrefHeight();
+        double buttonWidth = button.getPrefWidth();
+        double buttonHeight = button.getPrefHeight();
+        double buttonX = (panelWidth - buttonWidth) / 2;
+        double buttonY = (panelHeight - buttonHeight) / 2 - 40 * index; // Adjust vertical position
+        button.setLayoutX(buttonX);
+        button.setLayoutY(buttonY);
+    }
+
     private void calendarNavigation() {
         hideSidePanel();
         homeWindow.setVisible(false);
@@ -200,6 +271,119 @@ public class UserDashboardController implements Initializable {
             hideSidePanel();
         } else {
             showSidePanel();
+        }
+    }
+
+    @FXML
+    private void logout(ActionEvent event) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Logout");
+        alert.setHeaderText("You are about to logout");
+        alert.setContentText("Do you want to save before loging out?");
+
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        if (alert.showAndWait().get() == ButtonType.OK) {
+            System.out.println("You successfully logged out");
+
+            borderPaneMain.getScene().getWindow().hide();
+
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("/view/selectRoleWindow.fxml"));
+                Stage newStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+                stage.setWidth(843);
+                stage.setHeight(511);
+
+                Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+                double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
+                double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
+                stage.setX(centerX - 421.5);
+                stage.setY(centerY - 255.5);
+
+                Scene scene = new Scene(root, 843, 511);
+
+                stage.setScene(scene);
+                stage.show();
+
+                root.setOnMousePressed((mouseEvent) -> {
+                    x = mouseEvent.getSceneX();
+                    y = mouseEvent.getSceneY();
+                });
+
+                root.setOnMouseDragged((mouseEvent) -> {
+                    stage.setX(mouseEvent.getScreenX() - x);
+                    stage.setY(mouseEvent.getScreenY() - y);
+
+                    stage.setOpacity(.8);
+                });
+
+                root.setOnMouseReleased((mouseEvent) -> {
+                    stage.setOpacity(1);
+                });
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void handleSidePanelButtonClick(ActionEvent event) {
+        Button clickedButton = (Button) event.getSource();
+
+        if (clickedButton == lastClickedButton) {
+            // Ignore the click if the same button was clicked twice in a row
+            return;
+        }
+
+        // Reset styles for all buttons
+        resetButtonStyles();
+
+        // Close the active pane
+        if (lastActivePane != null) {
+            lastActivePane.setVisible(false);
+        }
+
+        // Apply styles based on the clicked button
+        if (clickedButton == homeButton) {
+            setButtonStyles(homeButton, true);
+            homePane.setVisible(true);
+            lastActivePane = homePane;
+        } else if (clickedButton == announcementButton) {
+            setButtonStyles(announcementButton, true);
+            announcementPane.setVisible(true);
+            lastActivePane = announcementPane;
+        } else if (clickedButton == toDoListButton) {
+            setButtonStyles(toDoListButton, true);
+            toDoListPane.setVisible(true);
+            lastActivePane = toDoListPane;
+        } else if (clickedButton == calendarButton) {
+            setButtonStyles(calendarButton, true);
+            calendarPane.setVisible(true);
+            lastActivePane = calendarPane;
+        } else if (clickedButton == clockButton) {
+            setButtonStyles(clockButton, true);
+            clockPane.setVisible(true);
+            lastActivePane = clockPane;
+        }
+
+        // Update the last clicked button
+        lastClickedButton = clickedButton;
+    }
+
+    private void resetButtonStyles() {
+        setButtonStyles(homeButton, false);
+        setButtonStyles(announcementButton, false);
+        setButtonStyles(toDoListButton, false);
+        setButtonStyles(calendarButton, false);
+        setButtonStyles(clockButton, false);
+    }
+
+    private void setButtonStyles(Button button, boolean isSelected) {
+        if (isSelected) {
+            button.getStyleClass().add("selected-button");
+        } else {
+            button.getStyleClass().remove("selected-button");
         }
     }
 

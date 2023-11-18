@@ -17,3 +17,79 @@
 .exitButton:pressed{
     -fx-background-color: #C90E31;
 }
+
+.sidePanelButton{
+    -fx-background-color: transparent;
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+}
+.sidePanelButton:hover{
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+.sidePanelButton:pressed{
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+}
+
+.logOutButton{
+    -fx-background-color: transparent;
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+}
+.logOutButton:hover{
+    -fx-background-color: #171B20;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+.logOutButton:pressed{
+    -fx-background-color: transparent;
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+
+/*.logOutButton{
+    -fx-background-color: transparent;
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+    -fx-background-radius: 10px;
+    -fx-border-width: 0.3px;
+    -fx-border-color: white;
+    -fx-border-radius: 10px
+}
+.logOutButton:hover{
+    -fx-background-color: transparent;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-background-radius: 10px;
+    -fx-border-width: 1px;
+    -fx-border-color: white;
+    -fx-border-radius: 10px
+}
+.logOutButton:pressed{
+    -fx-background-color: transparent;
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
+    -fx-background-radius: 10px;
+    -fx-border-width: 0.3px;
+    -fx-border-color: white;
+    -fx-border-radius: 10px
+}*/
+
+.imageDesign{
+    -fx-border-radius: 20px;
+}
+
+.myText {
+    -fx-font-family: "Arial Black";
+    -fx-font-size: 150%; /* Adjust the percentage as needed */
+    -fx-font-weight: bold;
+}
+.selected-button {
+    -fx-background-color: rgb(49, 36, 77);
+}
