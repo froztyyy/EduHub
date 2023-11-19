@@ -90,8 +90,8 @@ public class EduHub extends Application {
             Parent root = FXMLLoader.load(getClass().getResource("/view/userDashboard.fxml"));
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
-            primaryStage.setWidth(1271);
-            primaryStage.setHeight(778);
+            primaryStage.setWidth(1332);
+            primaryStage.setHeight(836);
 
             root.setOnMousePressed((event) -> {
                 x = event.getSceneX();
@@ -110,8 +110,8 @@ public class EduHub extends Application {
             });
 
             Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-            double centerX = screenBounds.getMinX() + (screenBounds.getWidth() - 1271) / 2;
-            double centerY = screenBounds.getMinY() + (screenBounds.getHeight() - 778) / 2;
+            double centerX = screenBounds.getMinX() + (screenBounds.getWidth() - 1332) / 2;
+            double centerY = screenBounds.getMinY() + (screenBounds.getHeight() - 835) / 2;
             primaryStage.setX(centerX);
             primaryStage.setY(centerY);
 

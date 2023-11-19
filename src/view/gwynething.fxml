@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane fx:id="borderPaneMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="778.0" prefWidth="1271.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserDashboardController">
+   <top>
+      <VBox prefHeight="41.0" prefWidth="1126.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="43.0" prefWidth="1126.0" style="-fx-background-color: black;">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="43.0" prefWidth="100.0">
+                     <children>
+                        <Label text="EduHub." textFill="#8f8f8f85">
+                           <font>
+                              <Font name="Arial Black" size="13.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </HBox>
+                  <Pane prefHeight="41.0" prefWidth="1031.0" HBox.hgrow="ALWAYS" />
+                  <HBox alignment="CENTER_RIGHT" prefHeight="41.0" prefWidth="136.0">
+                     <padding>
+                        <Insets right="10.0" />
+                     </padding>
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#minimizeButton" prefHeight="41.0" prefWidth="59.0" styleClass="minimizeMaximizeButton" stylesheets="@../style/userdashboard.css">
+                           <graphic>
+                              <ImageView fitHeight="17.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" style="-fx-background-color: transparent;">
+                                 <image>
+                                    <Image url="@../media/icons/icons8-minimize-24.png" />
+                                 </image>
+                                 <effect>
+                                    <ColorAdjust hue="0.05" />
+                                 </effect>
+                              </ImageView>
+                           </graphic>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#maximizeButton" prefHeight="42.0" prefWidth="59.0" styleClass="minimizeMaximizeButton" stylesheets="@../style/userdashboard.css">
+                           <graphic>
+                              <ImageView fitHeight="17.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/icons/icons8-square-30%20(1).png" />
+                                 </image>
+                                 <effect>
+                                    <ColorAdjust hue="0.05" />
+                                 </effect>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button mnemonicParsing="false" onAction="#closeButton" prefHeight="42.0" prefWidth="59.0" styleClass="exitButton" stylesheets="@../style/userdashboard.css">
+                           <graphic>
+                              <ImageView fitHeight="17.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/icons/icons8-close-30.png" />
+                                 </image>
+                                 <effect>
+                                    <ColorAdjust hue="0.05" />
+                                 </effect>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </HBox>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+   <center>
+      <VBox prefHeight="616.0" prefWidth="1126.0">
+         <children>
+            <VBox prefHeight="82.0" prefWidth="1271.0" style="-fx-border-color: transparent transparent white transparent; -fx-border-width: 0.3px;" styleClass="topFrame" stylesheets="@../style/userdashboard.css" VBox.vgrow="ALWAYS">
+               <children>
+                  <HBox prefHeight="81.0" prefWidth="1241.0" styleClass="topFrame" stylesheets="@../style/userdashboard.css">
+                     <children>
+                        <HBox fx:id="sidePanelTitleColor" alignment="CENTER" prefHeight="58.0" prefWidth="206.0" spacing="8.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#slidePanelButton" styleClass="sidePanelButton" stylesheets="@../style/userdashboard.css">
+                                 <graphic>
+                                    <ImageView fitHeight="47.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../media/icons/icons8-menu-squared-50%20(2).png" />
+                                       </image>
+                                       <effect>
+                                          <ColorAdjust brightness="-0.43" contrast="0.05" hue="-0.02" saturation="-0.38" />
+                                       </effect>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                              <ImageView fitHeight="58.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/icons/Screenshot%202023-11-17%20205052.png" />
+                                 </image>
+                              </ImageView>
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
+                                 <font>
+                                    <Font name="Arial Bold" size="17.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <padding>
+                              <Insets left="20.0" right="20.0" />
+                           </padding>
+                        </HBox>
+                        <Pane prefHeight="81.0" prefWidth="597.0" HBox.hgrow="ALWAYS" />
+                        <HBox alignment="CENTER" prefHeight="81.0" prefWidth="610.0">
+                           <children>
+                              <TextField prefHeight="32.0" prefWidth="255.0" styleClass="txtFieldTranparent" stylesheets="@../style/adminlogin.css" />
+                              <Pane prefHeight="81.0" prefWidth="77.0" />
+                              <ImageView fitHeight="37.0" fitWidth="174.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/Screenshot%202023-11-16%20194805.png" />
+                                 </image>
+                              </ImageView>
+                              <Button mnemonicParsing="false" onAction="#logout" prefHeight="43.0" prefWidth="71.0" styleClass="logOutButton" stylesheets="@../style/userdashboard.css">
+                                 <graphic>
+                                    <ImageView fitHeight="25.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../media/icons/icons8-log-out-32.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                           <padding>
+                              <Insets left="20.0" right="20.0" />
+                           </padding>
+                           <HBox.margin>
+                              <Insets right="10.0" />
+                           </HBox.margin>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </HBox>
+               </children>
+            </VBox>
+            <Pane VBox.vgrow="ALWAYS">
+               <children>
+                  <AnchorPane fx:id="homePane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+                     <children>
+                        <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="656.0" prefWidth="1271.0">
+                           <children>
+                              <VBox prefHeight="656.0" prefWidth="337.0" style="-fx-background-color: #000000;" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <AnchorPane prefHeight="596.0" prefWidth="310.0" style="-fx-background-color: transparent;" styleClass="containerglass" stylesheets="@../../../../../../Downloads/Seenema/CInemaManagementSystem/src/cinemamanagementsystem/CInemaManagementSystem/designdashboard.css">
+                                       <children>
+                                          <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
+                                             <font>
+                                                <Font name="System Bold" size="18.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </AnchorPane>
+                                 </children>
+                                 <effect>
+                                    <Blend />
+                                 </effect>
+                              </VBox>
+                              <Pane prefHeight="656.0" prefWidth="47.0" HBox.hgrow="NEVER" />
+                              <VBox prefHeight="656.0" prefWidth="522.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <VBox prefHeight="656.0" prefWidth="582.0">
+                                       <children>
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello, Welcome to EduHub!!">
+                                             <font>
+                                                <Font name="Arial Black" size="22.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets bottom="-10.0" top="30.0" />
+                                             </VBox.margin>
+                                          </Text>
+                                          <AnchorPane prefHeight="227.0" prefWidth="493.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-radius: 20px;" styleClass="containerglass" stylesheets="@../../../../../../Downloads/Seenema/CInemaManagementSystem/src/cinemamanagementsystem/CInemaManagementSystem/designdashboard.css" VBox.vgrow="ALWAYS">
+                                             <children>
+                                                <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
+                                                   <font>
+                                                      <Font name="System Bold" size="18.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets bottom="30.0" top="30.0" />
+                                             </VBox.margin>
+                                          </AnchorPane>
+                                          <HBox prefHeight="292.0" prefWidth="512.0">
+                                             <children>
+                                                <AnchorPane prefHeight="292.0" prefWidth="288.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-radius: 20px;" styleClass="containerglass" stylesheets="@../../../../../../Downloads/Seenema/CInemaManagementSystem/src/cinemamanagementsystem/CInemaManagementSystem/designdashboard.css">
+                                                   <children>
+                                                      <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
+                                                         <font>
+                                                            <Font name="System Bold" size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
+                                                   </children>
+                                                   <HBox.margin>
+                                                      <Insets right="20.0" />
+                                                   </HBox.margin>
+                                                </AnchorPane>
+                                                <AnchorPane prefHeight="292.0" prefWidth="288.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-radius: 20px;" styleClass="containerglass" stylesheets="@../../../../../../Downloads/Seenema/CInemaManagementSystem/src/cinemamanagementsystem/CInemaManagementSystem/designdashboard.css">
+                                                   <children>
+                                                      <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
+                                                         <font>
+                                                            <Font name="System Bold" size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
+                                                   </children>
+                                                </AnchorPane>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets bottom="30.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </VBox>
+                              <Pane prefHeight="656.0" prefWidth="39.0" HBox.hgrow="NEVER" />
+                              <Pane prefHeight="656.0" prefWidth="440.0">
+                                 <children>
+                                    <Pane fx:id="imageGradientWelcome" layoutX="14.0" layoutY="47.0" prefHeight="226.0" prefWidth="389.0" style="-fx-background-color: red;">
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" layoutX="11.0" layoutY="17.0" prefHeight="40.0" prefWidth="389.0">
+                                             <children>
+                                                <ImageView fitHeight="49.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../media/3d/Atom_Bucky_1_0002.png" />
+                                                   </image>
+                                                </ImageView>
+                                                <Label fx:id="fontsizeGrow" prefHeight="27.0" prefWidth="133.0" styleClass="myText" stylesheets="@../style/userdashboard.css" text="EDHUB.COM" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Arial Black" size="18.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                          <Label layoutX="21.0" layoutY="74.0" prefHeight="17.0" prefWidth="156.0" text="Discover, Learn, Grow" textFill="WHITE">
+                                             <font>
+                                                <Font name="Arial Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Text fill="WHITE" layoutX="21.0" layoutY="121.86328125" strokeType="OUTSIDE" strokeWidth="0.0" text="Redefining learning with cool features, launching soon on our website. Get ready for a seamless blend of style and substance!&quot;" wrappingWidth="338.11328125">
+                                             <font>
+                                                <Font name="Arial" size="12.0" />
+                                             </font>
+                                          </Text>
+                                          <Pane layoutX="18.0" layoutY="174.0" prefHeight="37.0" prefWidth="353.0" style="-fx-background-color: #30363D; -fx-border-radius: 10px; -fx-border-color: #8B949D; -fx-border-width: 0.5; -fx-background-radius: 10px;">
+                                             <children>
+                                                <Label layoutX="118.0" layoutY="7.0" prefHeight="23.0" prefWidth="106.0" text="COMING SOON" textFill="#c9d1d4">
+                                                   <font>
+                                                      <Font name="Arial Bold" size="14.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </Pane>
+                                       </children>
+                                       <padding>
+                                          <Insets right="10.0" />
+                                       </padding>
+                                    </Pane>
+                                 </children>
+                              </Pane>
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+                  <AnchorPane fx:id="announcementPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="655.0" prefWidth="1271.0" style="-fx-background-color: red;" visible="false" />
+                  <AnchorPane fx:id="toDoListPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="656.0" prefWidth="1271.0" style="-fx-background-color: blue;" visible="false" />
+                  <AnchorPane fx:id="calendarPane" maxWidth="1.7976931348623157E308" prefHeight="659.0" prefWidth="1271.0" style="-fx-background-color: pink;" visible="false" />
+                  <AnchorPane fx:id="clockPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="657.0" prefWidth="1271.0" style="-fx-background-color: violet;" visible="false" />
+               </children>
+            </Pane>
+         </children>
+      </VBox>
+   </center>
+</BorderPane>

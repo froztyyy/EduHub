@@ -93,3 +93,34 @@
 .selected-button {
     -fx-background-color: rgb(49, 36, 77);
 }
+.closeSidePanel{
+    -fx-background-color: transparent;
+}
+.closeSidePanel:hover{
+    -fx-background-color: #30363D;
+}
+.navigationButton{
+    -fx-background-color: transparent;
+}
+.navigationButton:hover{
+    -fx-background-color: #30363D;
+    -fx-background-radius: 10px;
+}
+.sendFeedback {
+    -fx-text-fill: #217eff;
+    -fx-cursor: hand;
+}
+
+.sendFeedback:hover {
+    -fx-text-fill: #2d53ef; /* Text color on hover */
+    -fx-underline: true;
+}
+
+.sendFeedback:pressed {
+    -fx-text-fill: #217eff; /* Text color when pressed */
+}
+.selected-button {
+    -fx-background-color: #30363D;
+    -fx-background-radius: 10px;
+    -fx-font-weight: bold;
+}
