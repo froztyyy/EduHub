@@ -47,8 +47,7 @@ public class UserDashboardController implements Initializable {
 
     @FXML
     private HBox sidePanelTitleColor;
-    @FXML
-    private Pane sidePanel;
+
     @FXML
     private Pane userDashboradWindow;
     private ImageView gradientCursor;
@@ -73,33 +72,25 @@ public class UserDashboardController implements Initializable {
     @FXML
     private Pane timeClockWindow;
     @FXML
-    private Button homeButton;
+    private Pane homeButton;
     @FXML
-    private Button announcementButton;
+    private Pane announcementButton;
     @FXML
-    private Button calendarButton;
+    private Pane calendarButton;
     @FXML
-    private Button toDolistButton;
+    private Pane toDolistButton;
     @FXML
-    private Button timeClockButton;
+    private Pane timeClockButton;
     @FXML
-    private AnchorPane homePane;
-    @FXML
-    private AnchorPane announcementPane;
-    @FXML
-    private AnchorPane toDoListPane;
-    @FXML
-    private AnchorPane calendarPane;
-    @FXML
-    private AnchorPane clockPane;
-
+    private Pane sidePanel;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        sidePanel.setPrefWidth(375);
+
+        closeDefaultNavi();
         gradientCursor = new ImageView(new Image("media/f4a64b5df91d325a4c7a3b673827c312.jpg"));
         gradientCursor.setFitWidth(100); // Set the width of the image
         gradientCursor.setPreserveRatio(true); // Maintain the image's aspect ratio
@@ -179,39 +170,6 @@ public class UserDashboardController implements Initializable {
     }
 
     @FXML
-    private void slidePanelButton(ActionEvent event) {
-        double startWidth = sidePanel.getPrefWidth();
-        double endWidth = isSidePanelOpen ? 0 : 357;
-
-        Timeline timeline = new Timeline();
-
-        // Update the width of the side panel
-        KeyValue keyValueWidth = new KeyValue(sidePanel.prefWidthProperty(), endWidth);
-        KeyFrame keyFrameWidth = new KeyFrame(Duration.millis(500), keyValueWidth);
-
-        // Update the blur effect on the blurringEffect pane
-        BoxBlur boxBlur = new BoxBlur();
-        if (!isSidePanelOpen) {
-            // Adjust these parameters for a milder blur effect
-            boxBlur.setWidth(5.0);
-            boxBlur.setHeight(5.0);
-            boxBlur.setIterations(2);
-        } else {
-            boxBlur.setWidth(0);
-            boxBlur.setHeight(0);
-            boxBlur.setIterations(0);
-        }
-
-        KeyValue keyValueBlur = new KeyValue(blurringEffect.effectProperty(), boxBlur);
-        KeyFrame keyFrameBlur = new KeyFrame(Duration.millis(500), keyValueBlur);
-
-        timeline.getKeyFrames().addAll(keyFrameWidth, keyFrameBlur);
-        timeline.play();
-
-        isSidePanelOpen = !isSidePanelOpen;
-    }
-
-    @FXML
     private void logout(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Logout");
@@ -266,34 +224,56 @@ public class UserDashboardController implements Initializable {
     }
 
     @FXML
-    private void closeSideNavigation(ActionEvent event) {
-        // Close the side panel
-        double endWidth = 0;
+    private void slidePanelButton(ActionEvent event) {
+        // Apply blur effect during sliding animation
+        applyBlurEffect(true);
 
-        Timeline timeline = new Timeline();
-
-        // Update the width of the side panel
-        KeyValue keyValueWidth = new KeyValue(sidePanel.prefWidthProperty(), endWidth);
-        KeyFrame keyFrameWidth = new KeyFrame(Duration.millis(500), keyValueWidth);
-
-        // Reset the blur effect on the blurringEffect pane
-        BoxBlur boxBlur = new BoxBlur(0, 0, 0);
-
-        KeyValue keyValueBlur = new KeyValue(blurringEffect.effectProperty(), boxBlur);
-        KeyFrame keyFrameBlur = new KeyFrame(Duration.millis(500), keyValueBlur);
-
-        timeline.getKeyFrames().addAll(keyFrameWidth, keyFrameBlur);
-        timeline.play();
-
-        isSidePanelOpen = false;
+        TranslateTransition slider1 = new TranslateTransition();
+        slider1.setNode(sidePanel);
+        slider1.setToX(0);
+        slider1.setDuration(Duration.seconds(.5));
+        slider1.play();
     }
 
-    private Button lastClickedButton = null;
+    @FXML
+    private void closeSideNavigation(ActionEvent event) {
+        // Apply blur effect during closing animation
+        applyBlurEffect(false);
+
+        TranslateTransition slider1 = new TranslateTransition();
+        slider1.setNode(sidePanel);
+        slider1.setToX(-370);
+        slider1.setDuration(Duration.seconds(.5));
+        slider1.play();
+    }
+
+// ...
+    private void applyBlurEffect(boolean apply) {
+        BoxBlur boxBlur = new BoxBlur(5, 5, 3); // You can adjust these values based on your preference
+
+        if (apply) {
+            // Apply blur effect
+            blurringEffect.setEffect(boxBlur);
+        } else {
+            // Remove blur effect
+            blurringEffect.setEffect(null);
+        }
+    }
+
+    private void closeDefaultNavi() {
+        TranslateTransition slider1 = new TranslateTransition();
+        slider1.setNode(sidePanel);
+        slider1.setToX(-370);
+        slider1.setDuration(Duration.seconds(.5));
+        slider1.play();
+    }
+
+    private Pane lastClickedButton = null;
 
     @FXML
-    public void SwitchForm(ActionEvent event) {
+    public void SwitchForm(MouseEvent event) {
 
-        Button clickedButton = (Button) event.getSource();
+        Pane clickedButton = (Pane) event.getSource();
 
         if (clickedButton == lastClickedButton) {
             // Ignore the click if the same button was clicked twice in a row
@@ -373,19 +353,17 @@ public class UserDashboardController implements Initializable {
                 timeClockWindow.setVisible(true);
             }
         } catch (Exception e) {
-                    e.printStackTrace();
+            e.printStackTrace();
         }
 
     }
 
-    private void setButtonColor(Button pane, boolean isSelected) {
+    private void setButtonColor(Pane pane, boolean isSelected) {
         if (isSelected) {
             pane.getStyleClass().add("selected-button");
         } else {
             pane.getStyleClass().remove("selected-button");
         }
     }
-
-
 
 }

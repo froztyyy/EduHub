@@ -90,9 +90,6 @@
     -fx-font-size: 150%; /* Adjust the percentage as needed */
     -fx-font-weight: bold;
 }
-.selected-button {
-    -fx-background-color: rgb(49, 36, 77);
-}
 .closeSidePanel{
     -fx-background-color: transparent;
 }
