@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -11,6 +12,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
@@ -324,9 +326,244 @@
                </children>
             </Pane>
             <Pane fx:id="announcementWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" visible="false" />
-            <Pane fx:id="calendarWindow" layoutY="96.0" prefHeight="697.0" prefWidth="1332.0" visible="false" />
+            <Pane fx:id="calendarWindow" layoutY="96.0" prefHeight="697.0" prefWidth="1332.0" visible="false">
+               <children>
+                  <Pane layoutX="52.0" layoutY="38.0" prefHeight="575.0" prefWidth="732.0" style="-fx-border-color: white; -fx-border-radius: 20px; -fx-border-width: 0.3;">
+                     <children>
+                        <FlowPane fx:id="calendar" hgap="10.0" layoutX="24.0" layoutY="125.0" prefHeight="433.0" prefWidth="685.0" vgap="5.0" />
+                        <HBox alignment="CENTER" layoutX="24.0" layoutY="81.0" prefHeight="44.0" prefWidth="685.0" spacing="88.75">
+                           <children>
+                              <Text fill="#fffefe" strokeType="OUTSIDE" strokeWidth="0.0" text="Sun" textAlignment="CENTER" />
+                              <Text fill="WHITE" layoutX="213.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mon" textAlignment="CENTER" />
+                              <Text fill="WHITE" layoutX="222.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tue" textAlignment="CENTER" />
+                              <Text fill="WHITE" layoutX="232.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wed" textAlignment="CENTER" />
+                              <Text fill="WHITE" layoutX="241.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thu" textAlignment="CENTER" />
+                              <Text fill="#e4e4e4" layoutX="251.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fri" textAlignment="CENTER" />
+                              <Text fill="WHITE" layoutX="266.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sat" textAlignment="CENTER" />
+                           </children>
+                           <padding>
+                              <Insets right="9.0" />
+                           </padding>
+                        </HBox>
+                        <Button layoutX="182.0" layoutY="39.0" mnemonicParsing="false" onAction="#backOneMonth" style="-fx-background-color: transparent;" text="&lt;" textFill="WHITE">
+                           <font>
+                              <Font name="Arial Bold" size="15.0" />
+                           </font>
+                        </Button>
+                        <Label fx:id="year" layoutX="51.0" layoutY="25.0" prefHeight="56.0" prefWidth="131.0" text="February" textFill="WHITE">
+                           <font>
+                              <Font name="Arial Bold" size="28.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="month" layoutX="51.0" layoutY="17.0" prefHeight="17.0" prefWidth="94.0" text="2022" textFill="WHITE">
+                           <font>
+                              <Font name="Arial" size="14.0" />
+                           </font>
+                        </Label>
+                        <Button layoutX="230.0" layoutY="39.0" mnemonicParsing="false" onAction="#forwardOneMonth" style="-fx-background-color: transparent;" text="&gt;" textFill="WHITE">
+                           <font>
+                              <Font name="Arial Bold" size="15.0" />
+                           </font>
+                        </Button>
+                        <Line endX="-100.0" endY="27.0" layoutX="321.0" layoutY="39.0" startX="-100.0" stroke="WHITE" strokeWidth="0.5" />
+                     </children>
+                  </Pane>
+               </children></Pane>
             <Pane fx:id="todoWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" visible="false" />
-            <Pane fx:id="timeClockWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" visible="false" />
+            <Pane fx:id="timeClockWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" visible="false">
+               <children>
+                  <AnchorPane id="AnchorPane" layoutX="101.0" layoutY="49.0" prefHeight="600.0" prefWidth="600.0" styleClass="main-bg">
+                     <stylesheets>
+                        <URL value="@../../../../../../Downloads/Exclusion/Clock/Clock/src/clock/clockUi.css" />
+                     </stylesheets>
+                     <children>
+                        <AnchorPane fx:id="clockPane" layoutX="10.0" layoutY="14.0" prefHeight="418.0" prefWidth="580.0" styleClass="secondary-bg" visible="false" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+                           <children>
+                              <VBox prefHeight="200.0" prefWidth="100.0" spacing="80.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <HBox prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label text="Clock" textFill="SILVER">
+                                             <font>
+                                                <Font name="Arial Bold" size="30.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="CENTER">
+                                       <children>
+                                          <Label fx:id="lblTime" textFill="SILVER">
+                                             <font>
+                                                <Font name="Arial" size="50.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="35.0" left="35.0" right="35.0" top="35.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="timerPane" layoutX="20.0" layoutY="20.0" prefHeight="418.0" prefWidth="580.0" styleClass="secondary-bg" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+                           <children>
+                              <VBox prefHeight="200.0" prefWidth="100.0" spacing="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <Label text="Timer" textFill="GREY">
+                                       <font>
+                                          <Font name="Arial Bold" size="30.0" />
+                                       </font>
+                                    </Label>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label fx:id="lblTimerTime" textFill="SILVER">
+                                             <font>
+                                                <Font name="Arial" size="50.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                       <padding>
+                                          <Insets top="100.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+                                       <children>
+                                          <TextField fx:id="txtFieldDesiredTime" alignment="CENTER" promptText="Enter desired time">
+                                             <font>
+                                                <Font name="Arial" size="13.0" />
+                                             </font>
+                                             <opaqueInsets>
+                                                <Insets />
+                                             </opaqueInsets>
+                                             <padding>
+                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                             </padding>
+                                          </TextField>
+                                          <Button fx:id="btnTimerStart" mnemonicParsing="false" onAction="#handleTimerStart" styleClass="buttns" stylesheets="@../style/userdashboard.css">
+                                             <graphic>
+                                                <ImageView fitHeight="150.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../media/icons/timerPlay.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button fx:id="btnTimerStop" layoutX="326.0" layoutY="39.0" mnemonicParsing="false" onAction="#handleTimerStop" styleClass="buttns" stylesheets="@../style/userdashboard.css">
+                                             <graphic>
+                                                <ImageView fitHeight="150.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../media/icons/timerStop.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="35.0" left="35.0" right="35.0" top="35.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="stopwatchPane" layoutX="20.0" layoutY="20.0" prefHeight="418.0" prefWidth="580.0" styleClass="secondary-bg" visible="false" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+                           <children>
+                              <VBox spacing="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <children>
+                                    <Label text="Stopwatch" textFill="SILVER">
+                                       <font>
+                                          <Font name="Arial Bold" size="30.0" />
+                                       </font>
+                                    </Label>
+                                    <HBox alignment="CENTER">
+                                       <children>
+                                          <Label fx:id="lblTimer" alignment="CENTER" text="00 : 00 : 00" textAlignment="CENTER" textFill="#c9c9c9">
+                                             <font>
+                                                <Font name="Arial" size="50.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                       <padding>
+                                          <Insets top="50.0" />
+                                       </padding>
+                                    </HBox>
+                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="25.0">
+                                       <children>
+                                          <Button fx:id="btnPlay" mnemonicParsing="false" onAction="#handlePlay" styleClass="buttns" stylesheets="@../style/userdashboard.css">
+                                             <graphic>
+                                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../media/icons/play.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button fx:id="btnPause" mnemonicParsing="false" onAction="#handlePause" styleClass="buttns" stylesheets="@../style/userdashboard.css">
+                                             <graphic>
+                                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../media/icons/pause.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                          <Button fx:id="btnStop" mnemonicParsing="false" onAction="#handleStop" styleClass="buttns" stylesheets="@../style/userdashboard.css">
+                                             <graphic>
+                                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                                   <image>
+                                                      <Image url="@../media/icons/stop.png" />
+                                                   </image>
+                                                </ImageView>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets left="35.0" right="35.0" top="35.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
+                        </AnchorPane>
+                        <Pane fx:id="bottomNavigation" layoutY="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="500.0">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="600.0" spacing="50.0">
+                                 <children>
+                                    <Button fx:id="btnClock" mnemonicParsing="false" onAction="#SwitchFormForTime" styleClass="buttns" stylesheets="@../style/userdashboard.css">
+                                       <graphic>
+                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../media/icons/clock.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button fx:id="btnTimer" mnemonicParsing="false" onAction="#SwitchFormForTime" styleClass="buttns" stylesheets="@../style/userdashboard.css">
+                                       <graphic>
+                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../media/icons/timer.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button fx:id="btnStopwatch" mnemonicParsing="false" onAction="#SwitchFormForTime" styleClass="buttns" stylesheets="@../style/userdashboard.css">
+                                       <graphic>
+                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../media/icons/pressedStopwatch.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </Pane>
+                     </children>
+                  </AnchorPane>
+               </children></Pane>
          </children>
       </Pane>
       <Pane fx:id="sidePanel" layoutY="49.0" prefHeight="793.0" prefWidth="357.0" style="-fx-background-color: #161B22;">
@@ -368,7 +605,7 @@
                   <Insets top="10.0" />
                </opaqueInsets>
             </Pane>
-            <Pane fx:id="announcementButton" layoutX="21.0" layoutY="161.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
+            <Pane fx:id="announcementButton" layoutX="21.0" layoutY="164.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
                <children>
                   <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -385,7 +622,7 @@
                   <Insets top="10.0" />
                </opaqueInsets>
             </Pane>
-            <Pane fx:id="calendarButton" layoutX="21.0" layoutY="206.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
+            <Pane fx:id="calendarButton" layoutX="21.0" layoutY="209.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
                <children>
                   <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -402,7 +639,7 @@
                   <Insets top="10.0" />
                </opaqueInsets>
             </Pane>
-            <Pane fx:id="toDolistButton" layoutX="20.0" layoutY="253.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
+            <Pane fx:id="toDolistButton" layoutX="20.0" layoutY="256.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
                <children>
                   <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -419,7 +656,7 @@
                   <Insets top="10.0" />
                </opaqueInsets>
             </Pane>
-            <Pane fx:id="timeClockButton" layoutX="20.0" layoutY="299.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
+            <Pane fx:id="timeClockButton" layoutX="20.0" layoutY="302.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
                <children>
                   <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                      <image>

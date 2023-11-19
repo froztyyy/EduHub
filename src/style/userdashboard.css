@@ -121,3 +121,35 @@
     -fx-background-radius: 10px;
     -fx-font-weight: bold;
 }
+.main-bg {
+    -fx-background-color: #000000 ;
+}
+
+.secondary-bg {
+    -fx-background-color: #090909;
+    -fx-background-radius: 10px;
+}
+
+.theme-color {
+    -fx-background-color: #054041;
+    -fx-background-radius: 10px;
+}
+
+.buttns {
+    -fx-background-color: transparent;
+}
+
+.buttns:hover {
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+}
+
+.buttns:pressed {
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+}
+
+.selected-button {
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+}

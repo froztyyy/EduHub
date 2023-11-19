@@ -4,12 +4,22 @@
  */
 package controller;
 
+import java.io.IOException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.ResourceBundle;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +32,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -32,10 +43,18 @@ import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 /**
@@ -83,6 +102,55 @@ public class UserDashboardController implements Initializable {
     private Pane timeClockButton;
     @FXML
     private Pane sidePanel;
+    ZonedDateTime dateFocus;
+    ZonedDateTime today;
+
+    @FXML
+    private Label year;
+
+    @FXML
+    private Label month;
+
+    @FXML
+    private FlowPane calendar;
+    @FXML
+    private AnchorPane clockPane;
+    @FXML
+    private Label lblTime;
+    @FXML
+    private AnchorPane timerPane;
+    @FXML
+    private Label lblTimerTime;
+    @FXML
+    private TextField txtFieldDesiredTime;
+    @FXML
+    private Button btnTimerStart;
+    @FXML
+    private Button btnTimerStop;
+    @FXML
+    private AnchorPane stopwatchPane;
+    @FXML
+    private Label lblTimer;
+    @FXML
+    private Button btnPlay;
+    @FXML
+    private Button btnPause;
+    @FXML
+    private Button btnStop;
+    @FXML
+    private Pane bottomNavigation;
+    @FXML
+    private Button btnClock;
+    @FXML
+    private Button btnTimer;
+    @FXML
+    private Button btnStopwatch;
+    private final boolean stop = false;
+    private Timeline timeline;
+    private boolean running = false;
+    private int seconds = 0;
+    private Timeline countdownTimeline;
+    private int countdownSeconds;
 
     /**
      * Initializes the controller class.
@@ -124,6 +192,21 @@ public class UserDashboardController implements Initializable {
         );
         Background backgroundObject = new Background(background);
         imageGradientWelcome.setBackground(backgroundObject);
+
+        dateFocus = ZonedDateTime.now();
+        today = ZonedDateTime.now();
+        drawCalendar();
+        
+        bottomNavigation.setVisible(true);
+        clockPane.setVisible(true);
+        timerPane.setVisible(false);
+        stopwatchPane.setVisible(false);
+
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), this::updateTimer));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+
+        timeNow();
+
     }
 
     private void handleMouseMove(MouseEvent event) {
@@ -268,7 +351,7 @@ public class UserDashboardController implements Initializable {
         slider1.play();
     }
 
-    private Pane lastClickedButton = null;
+    private Pane lastClickedButton = homeButton;
 
     @FXML
     public void SwitchForm(MouseEvent event) {
@@ -364,6 +447,365 @@ public class UserDashboardController implements Initializable {
         } else {
             pane.getStyleClass().remove("selected-button");
         }
+    }
+
+    @FXML
+    void backOneMonth(ActionEvent event) {
+        dateFocus = dateFocus.minusMonths(1);
+        calendar.getChildren().clear();
+        drawCalendar();
+    }
+
+    @FXML
+    void forwardOneMonth(ActionEvent event) {
+        dateFocus = dateFocus.plusMonths(1);
+        calendar.getChildren().clear();
+        drawCalendar();
+    }
+
+    private void drawCalendar() {
+        year.setText(String.valueOf(dateFocus.getYear()));
+        month.setText(String.valueOf(dateFocus.getMonth()));
+
+        double calendarWidth = calendar.getPrefWidth();
+        double calendarHeight = calendar.getPrefHeight();
+        double strokeWidth = 1;
+        double spacingH = calendar.getHgap();
+        double spacingV = calendar.getVgap();
+
+        // List of activities for a given month
+        Map<Integer, List<CalendarActivity>> calendarActivityMap = getCalendarActivitiesMonth(dateFocus);
+
+        int monthMaxDate = dateFocus.getMonth().maxLength();
+        // Check for leap year
+        if (dateFocus.getYear() % 4 != 0 && monthMaxDate == 29) {
+            monthMaxDate = 28;
+        }
+        int dateOffset = ZonedDateTime.of(dateFocus.getYear(), dateFocus.getMonthValue(), 1, 0, 0, 0, 0, dateFocus.getZone())
+                .getDayOfWeek().getValue();
+
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 7; j++) {
+                StackPane stackPane = new StackPane();
+
+                Rectangle rectangle = new Rectangle();
+                rectangle.setFill(Color.TRANSPARENT);
+                double rectangleWidth = (calendarWidth / 7) - strokeWidth - spacingH;
+                rectangle.setWidth(rectangleWidth);
+                double rectangleHeight = (calendarHeight / 6) - strokeWidth - spacingV;
+                rectangle.setHeight(rectangleHeight);
+                stackPane.getChildren().add(rectangle);
+
+                int calculatedDate = (j + 1) + (7 * i);
+                if (calculatedDate > dateOffset) {
+                    int currentDate = calculatedDate - dateOffset;
+                    if (currentDate <= monthMaxDate) {
+                        Text date = new Text(String.valueOf(currentDate));
+                        double textTranslationY = -(rectangleHeight / 2) * 0.75;
+                        date.setTranslateY(textTranslationY);
+                        date.setFill(Color.WHITE); // Set the font color to white
+                        stackPane.getChildren().add(date);
+
+                        List<CalendarActivity> calendarActivities = calendarActivityMap.get(currentDate);
+                        if (calendarActivities != null) {
+                            createCalendarActivity(calendarActivities, rectangleHeight, rectangleWidth, stackPane);
+                        }
+
+                        stackPane.setOnMouseClicked(mouseEvent -> {
+                            try {
+
+                                Parent root = FXMLLoader.load(getClass().getResource("/view/calendarInfo.fxml"));
+
+                                // You can get the controller and pass any data if needed
+                                // YourControllerClass controller = loader.getController();
+                                // controller.setData(...); // Pass data if needed
+                                // Create a new stage
+                                Stage newStage = new Stage();
+                                newStage.setWidth(349);
+                                newStage.setHeight(348);
+
+                                Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+                                double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
+                                double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
+                                newStage.setX(centerX - 174.5);
+                                newStage.setY(centerY - 174);
+                                Scene scene = new Scene(root, 349, 348);
+                                newStage.initStyle(StageStyle.TRANSPARENT);
+                                newStage.initOwner(((Node) mouseEvent.getSource()).getScene().getWindow());
+                                newStage.setScene(scene);
+
+                                root.setOnMousePressed((mousePressEvent) -> {
+                                    x = mousePressEvent.getSceneX();
+                                    y = mousePressEvent.getSceneY();
+                                });
+
+                                root.setOnMouseDragged((mouseDragEvent) -> {
+                                    newStage.setX(mouseDragEvent.getScreenX() - x);
+                                    newStage.setY(mouseDragEvent.getScreenY() - y);
+
+                                    newStage.setOpacity(.8);
+                                });
+
+                                root.setOnMouseReleased((mouseReleaseEvent) -> {
+                                    newStage.setOpacity(1);
+                                });
+
+                                // Set the new scene and title
+                                newStage.setTitle("New Window");
+
+                                // Show the new stage
+                                newStage.show();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    }
+                    if (today.getYear() == dateFocus.getYear() && today.getMonth() == dateFocus.getMonth()
+                            && today.getDayOfMonth() == currentDate) {
+                        rectangle.setStroke(Color.BLUE);
+                    }
+                }
+                calendar.getChildren().add(stackPane);
+            }
+        }
+    }
+
+    private void createCalendarActivity(List<CalendarActivity> calendarActivities, double rectangleHeight,
+            double rectangleWidth, StackPane stackPane) {
+        VBox calendarActivityBox = new VBox();
+        for (int k = 0; k < calendarActivities.size(); k++) {
+            if (k >= 2) {
+                Text moreActivities = new Text("...");
+                calendarActivityBox.getChildren().add(moreActivities);
+                moreActivities.setOnMouseClicked(mouseEvent -> {
+                    // On ... click print all activities for given date
+                    System.out.println(calendarActivities);
+                });
+                break;
+            }
+            Text text = new Text(
+                    calendarActivities.get(k).getClientName() + ", " + calendarActivities.get(k).getDate().toLocalTime());
+            calendarActivityBox.getChildren().add(text);
+            text.setOnMouseClicked(mouseEvent -> {
+                // On Text clicked
+                System.out.println(text.getText());
+            });
+        }
+        calendarActivityBox.setTranslateY((rectangleHeight / 2) * 0.20);
+        calendarActivityBox.setMaxWidth(rectangleWidth * 0.8);
+        calendarActivityBox.setMaxHeight(rectangleHeight * 0.65);
+        calendarActivityBox.setStyle("-fx-background-color:pink");
+        stackPane.getChildren().add(calendarActivityBox);
+    }
+
+    private Map<Integer, List<CalendarActivity>> createCalendarMap(List<CalendarActivity> calendarActivities) {
+        Map<Integer, List<CalendarActivity>> calendarActivityMap = new HashMap<>();
+
+        for (CalendarActivity activity : calendarActivities) {
+            int activityDate = activity.getDate().getDayOfMonth();
+            if (!calendarActivityMap.containsKey(activityDate)) {
+                calendarActivityMap.put(activityDate, List.of(activity));
+            } else {
+                List<CalendarActivity> OldListByDate = calendarActivityMap.get(activityDate);
+
+                List<CalendarActivity> newList = new ArrayList<>(OldListByDate);
+                newList.add(activity);
+                calendarActivityMap.put(activityDate, newList);
+            }
+        }
+        return calendarActivityMap;
+    }
+
+    private Map<Integer, List<CalendarActivity>> getCalendarActivitiesMonth(ZonedDateTime dateFocus) {
+        List<CalendarActivity> calendarActivities = new ArrayList<>();
+        int year = dateFocus.getYear();
+        int month = dateFocus.getMonth().getValue();
+
+        Random random = new Random();
+        for (int i = 0; i < 50; i++) {
+            ZonedDateTime time = ZonedDateTime.of(year, month, random.nextInt(27) + 1, 16, 0, 0, 0,
+                    dateFocus.getZone());
+            calendarActivities.add(new CalendarActivity(time, "Hans", 111111));
+        }
+
+        return createCalendarMap(calendarActivities);
+    }
+
+    private void setButtonColorforTime(Button button, boolean isSelected) {
+        if (isSelected) {
+            button.getStyleClass().add("selected-button");
+        } else {
+            button.getStyleClass().remove("selected-button");
+        }
+    }
+
+    private Button lastClickedButtonTime = null;
+
+    @FXML
+    public void SwitchFormForTime(ActionEvent event) {
+        Button clickedButton = (Button) event.getSource();
+
+        if (clickedButton == lastClickedButtonTime) {
+            // Ignore the click if the same button was clicked twice in a row
+            return;
+        }
+
+        // Reset the color of the last clicked button
+        if (lastClickedButton != null) {
+            setButtonColor(lastClickedButton, false);
+        }
+
+        // Update the last clicked button
+        lastClickedButtonTime = clickedButton;
+
+        if (clickedButton == btnClock) {
+            setButtonColorforTime(btnClock, true);
+            setButtonColorforTime(btnTimer, false);
+            setButtonColorforTime(btnStopwatch, false);
+
+            bottomNavigation.setVisible(true);
+            clockPane.setVisible(true);
+            timerPane.setVisible(false);
+            stopwatchPane.setVisible(false);
+
+        } else if (clickedButton == btnTimer) {
+            setButtonColorforTime(btnClock, false);
+            setButtonColorforTime(btnTimer, true);
+            setButtonColorforTime(btnStopwatch, false);
+
+            bottomNavigation.setVisible(true);
+            clockPane.setVisible(false);
+            timerPane.setVisible(true);
+            stopwatchPane.setVisible(false);
+
+        } else if (clickedButton == btnStopwatch) {
+            setButtonColorforTime(btnClock, false);
+            setButtonColorforTime(btnTimer, false);
+            setButtonColorforTime(btnStopwatch, true);
+
+            bottomNavigation.setVisible(true);
+            clockPane.setVisible(false);
+            timerPane.setVisible(false);
+            stopwatchPane.setVisible(true);
+        }
+    }
+
+    private void timeNow() {
+        Thread thread = new Thread(() -> {
+            SimpleDateFormat sdf = new SimpleDateFormat("hh : mm : ss");
+            while (!stop) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    System.out.println(e);
+                }
+                final String timeNow = sdf.format(new Date());
+                Platform.runLater(() -> {
+                    lblTime.setText(timeNow);
+                });
+            }
+        });
+
+        thread.start();
+    }
+
+    @FXML
+    private void handleTimerStart(ActionEvent event) {
+        String userInput = txtFieldDesiredTime.getText();
+        startCountdownTimer(userInput);
+    }
+
+    // Method to stop the countdown timer
+    @FXML
+    private void handleTimerStop(ActionEvent event) {
+        stopCountdownTimer();
+    }
+
+    private void startCountdownTimer(String desiredTime) {
+        // Parse the desired time in "mm:ss" format
+        String[] timeParts = desiredTime.split(":");
+        int minutes = Integer.parseInt(timeParts[0]);
+        int seconds = Integer.parseInt(timeParts[1]);
+
+        // Convert the time to seconds
+        countdownSeconds = minutes * 60 + seconds;
+
+        // Update the display
+        updateCountdownLabel();
+
+        // Create a timeline for the countdown
+        countdownTimeline = new Timeline(new KeyFrame(Duration.seconds(1), this::updateCountdown));
+        countdownTimeline.setCycleCount(countdownSeconds);
+
+        // Start the countdown
+        countdownTimeline.play();
+    }
+
+    private void stopCountdownTimer() {
+        if (countdownTimeline != null) {
+            countdownTimeline.stop();
+            countdownSeconds = 0; // Reset countdown time
+            updateCountdownLabel(); // Update the display
+        }
+    }
+
+    private void updateCountdownLabel() {
+        int minutes = countdownSeconds / 60;
+        int remainingSeconds = countdownSeconds % 60;
+
+        Platform.runLater(() -> {
+            lblTimerTime.setText(String.format("%02d:%02d", minutes, remainingSeconds));
+        });
+    }
+
+    private void updateCountdown(ActionEvent event) {
+        countdownSeconds--;
+
+        // Update the display
+        updateCountdownLabel();
+
+        if (countdownSeconds <= 0) {
+            // Countdown has reached zero, perform any actions you need
+            stopCountdownTimer();
+            // Additional actions can be added here
+        }
+    }
+
+    @FXML
+    private void handlePlay(ActionEvent event) {
+        if (!running) {
+            timeline.play();
+            running = true;
+        }
+    }
+
+    @FXML
+    private void handlePause(ActionEvent event) {
+        if (running) {
+            timeline.pause();
+            running = false;
+        }
+    }
+
+    @FXML
+    private void handleStop(ActionEvent event) {
+        timeline.stop();
+        running = false;
+        seconds = 0;
+        updateTimer(null);
+    }
+
+    private void updateTimer(ActionEvent event) {
+        seconds++;
+        lblTimer.setText(formatTime(seconds));
+    }
+
+    private String formatTime(int totalSeconds) {
+        int hours = totalSeconds / 3600;
+        int minutes = (totalSeconds % 3600) / 60;
+        int remainingSeconds = totalSeconds % 60;
+
+        return String.format("%02d:%02d:%02d", hours, minutes, remainingSeconds);
     }
 
 }
