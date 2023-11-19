@@ -96,58 +96,66 @@ public class StudentLoginController implements Initializable {
 
             } else {
                 if (result.next()) {
-                    alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Information Message");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Successfully Login!");
-                    alert.showAndWait();
+                    int roleID = result.getInt("RoleID");
 
-                    Parent root = FXMLLoader.load(getClass().getResource("/view/userDashboard.fxml"));
-                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    if (roleID == 3) { // Student
+                        alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Information Message");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Successfully Login!");
+                        alert.showAndWait();
 
-                    ((Node) (event.getSource())).getScene().getWindow().hide();
-                    stage.setWidth(1271);
-                    stage.setHeight(778);
+                        Parent root = FXMLLoader.load(getClass().getResource("/view/userDashboard.fxml"));
+                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-                    Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-                    double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
-                    double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
-                    stage.setX(centerX - 635.5);
-                    stage.setY(centerY - 389);
+                        ((Node) (event.getSource())).getScene().getWindow().hide();
+                        stage.setWidth(1271);
+                        stage.setHeight(778);
 
-                    Scene scene = new Scene(root, 1271, 778);
+                        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+                        double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
+                        double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
+                        stage.setX(centerX - 635.5);
+                        stage.setY(centerY - 389);
 
-                    stage.setScene(scene);
-                    stage.show();
+                        Scene scene = new Scene(root, 1271, 778);
 
-                    root.setOnMousePressed((mouseEvent) -> {
-                        x = mouseEvent.getSceneX();
-                        y = mouseEvent.getSceneY();
-                    });
+                        stage.setScene(scene);
+                        stage.show();
 
-                    root.setOnMouseDragged((mouseEvent) -> {
-                        stage.setX(mouseEvent.getScreenX() - x);
-                        stage.setY(mouseEvent.getScreenY() - y);
+                        root.setOnMousePressed((mouseEvent) -> {
+                            x = mouseEvent.getSceneX();
+                            y = mouseEvent.getSceneY();
+                        });
 
-                        stage.setOpacity(.8);
-                    });
+                        root.setOnMouseDragged((mouseEvent) -> {
+                            stage.setX(mouseEvent.getScreenX() - x);
+                            stage.setY(mouseEvent.getScreenY() - y);
 
-                    root.setOnMouseReleased((mouseEvent) -> {
-                        stage.setOpacity(1);
-                    });
+                            stage.setOpacity(.8);
+                        });
 
+                        root.setOnMouseReleased((mouseEvent) -> {
+                            stage.setOpacity(1);
+                        });
+
+                    } else {
+                        alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error Message");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Wrong Username/Password");
+                        alert.showAndWait();
+                    }
                 } else {
-                    alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error Message");
                     alert.setHeaderText(null);
                     alert.setContentText("Wrong Username/Password");
                     alert.showAndWait();
                 }
-
             }
-
         } catch (Exception e) {
-
+            e.printStackTrace(); // Print exception details for debugging
         }
     }
 

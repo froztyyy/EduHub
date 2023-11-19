@@ -155,6 +155,16 @@ public class AdminLoginController implements Initializable {
 
             } else {
                 if (result.next()) {
+                    
+                int roleID = result.getInt("RoleID");
+
+                if (roleID == 1) { // Admin
+                    alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Successfully Login!");
+                    alert.showAndWait();
+
                     alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Information Message");
                     alert.setHeaderText(null);
@@ -194,7 +204,16 @@ public class AdminLoginController implements Initializable {
                     root.setOnMouseReleased((mouseEvent) -> {
                         stage.setOpacity(1);
                     });
-
+                }
+                    
+                    else {
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Wrong Username/Password");
+                    alert.showAndWait();
+                }
+                    
                 } else {
                     alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Error Message");
@@ -206,7 +225,7 @@ public class AdminLoginController implements Initializable {
             }
 
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
