@@ -203,14 +203,14 @@ public class UserDashboardController implements Initializable {
         dateFocus = ZonedDateTime.now();
         today = ZonedDateTime.now();
         drawCalendar();
-        
+
         sidePanel.setVisible(true);
         homeWindow.setVisible(true);
         announcementWindow.setVisible(false);
         calendarWindow.setVisible(false);
         todoWindow.setVisible(false);
         timeClockWindow.setVisible(false);
-        
+
         bottomNavigation.setVisible(true);
         clockPane.setVisible(true);
         timerPane.setVisible(false);
@@ -809,11 +809,11 @@ public class UserDashboardController implements Initializable {
         // Update the UI
         Platform.runLater(() -> {
             lblTimerTime.setText(String.format("%02d : %02d : %02d", hour, minute, second));
-       
+
             txtHour.setText("");
             txtMinute.setText("");
             txtSecond.setText("");
-            
+
         });
     }
 
@@ -853,10 +853,10 @@ public class UserDashboardController implements Initializable {
 
         return String.format("%02d : %02d : %02d", hours, minutes, remainingSeconds);
     }
-    
+
     private void timeNowForDashboard() {
         Thread thread = new Thread(() -> {
-            SimpleDateFormat sdf = new SimpleDateFormat("hh : mm ");
+            SimpleDateFormat sdf = new SimpleDateFormat("h:mm a");
             while (!stop) {
                 try {
                     Thread.sleep(1000);
@@ -872,10 +872,10 @@ public class UserDashboardController implements Initializable {
 
         thread.start();
     }
-    
+
     private void dateLabelForDashboard() {
         LocalDate currentDate = LocalDate.now();
-        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MMM dd yyyy", Locale.ENGLISH);
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         String formattedDate = currentDate.format(dateFormat);
         lblDateDashboard.setText(formattedDate);
     }
