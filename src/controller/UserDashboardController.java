@@ -7,11 +7,14 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.ResourceBundle;
@@ -122,21 +125,9 @@ public class UserDashboardController implements Initializable {
     @FXML
     private Label lblTimerTime;
     @FXML
-    private TextField txtFieldDesiredTime;
-    @FXML
-    private Button btnTimerStart;
-    @FXML
-    private Button btnTimerStop;
-    @FXML
     private AnchorPane stopwatchPane;
     @FXML
     private Label lblTimer;
-    @FXML
-    private Button btnPlay;
-    @FXML
-    private Button btnPause;
-    @FXML
-    private Button btnStop;
     @FXML
     private Pane bottomNavigation;
     @FXML
@@ -145,12 +136,28 @@ public class UserDashboardController implements Initializable {
     private Button btnTimer;
     @FXML
     private Button btnStopwatch;
-    private final boolean stop = false;
-    private Timeline timeline;
-    private boolean running = false;
-    private int seconds = 0;
-    private Timeline countdownTimeline;
-    private int countdownSeconds;
+    @FXML
+    private TextField txtHour;
+    @FXML
+    private TextField txtMinute;
+    @FXML
+    private TextField txtSecond;
+    @FXML
+    private Button btnPlay;
+    @FXML
+    private Button btnPause;
+    @FXML
+    private Button btnStop;
+    @FXML
+    private Button btnTimerPause;
+    @FXML
+    private Button btnTimerStart;
+    @FXML
+    private Button btnTimerStop;
+    @FXML
+    private Label lblTimeDashboard;
+    @FXML
+    private Label lblDateDashboard;
 
     /**
      * Initializes the controller class.
@@ -197,6 +204,13 @@ public class UserDashboardController implements Initializable {
         today = ZonedDateTime.now();
         drawCalendar();
         
+        sidePanel.setVisible(true);
+        homeWindow.setVisible(true);
+        announcementWindow.setVisible(false);
+        calendarWindow.setVisible(false);
+        todoWindow.setVisible(false);
+        timeClockWindow.setVisible(false);
+        
         bottomNavigation.setVisible(true);
         clockPane.setVisible(true);
         timerPane.setVisible(false);
@@ -206,8 +220,21 @@ public class UserDashboardController implements Initializable {
         timeline.setCycleCount(Timeline.INDEFINITE);
 
         timeNow();
+        timeNowForDashboard();
+        dateLabelForDashboard();
 
     }
+
+    private final boolean stop = false;
+    private Timeline timeline;
+    private boolean running = false;
+    private int seconds = 0;
+    private Timeline countdownTimeline;
+    private int countdownSeconds;
+    private int hour;
+    private int minute;
+    private int second;
+    private Thread timerThread;
 
     private void handleMouseMove(MouseEvent event) {
         // Update image position based on mouse cursor
@@ -710,65 +737,84 @@ public class UserDashboardController implements Initializable {
     }
 
     @FXML
-    private void handleTimerStart(ActionEvent event) {
-        String userInput = txtFieldDesiredTime.getText();
-        startCountdownTimer(userInput);
+    public void handleStartTimer(ActionEvent event) {
+        // Check if the timer thread is already running
+        if (timerThread == null || !timerThread.isAlive()) {
+            try {
+                hour = txtHour.getText().isEmpty() ? 0 : Integer.parseInt(txtHour.getText());
+                minute = txtMinute.getText().isEmpty() ? 0 : Integer.parseInt(txtMinute.getText());
+                second = txtSecond.getText().isEmpty() ? 0 : Integer.parseInt(txtSecond.getText());
+
+                // Create a new thread for the timer
+                timerThread = new Thread(() -> {
+                    while (!Thread.interrupted()) {
+                        try {
+                            Thread.sleep(1000);
+                            second--;
+                            if (second < 0) {
+                                second = 59;
+                                minute--;
+                                if (minute < 0) {
+                                    minute = 59;
+                                    hour--;
+                                    if (hour < 0) {
+                                        // Timer has expired
+                                        break;
+                                    }
+                                }
+                            }
+
+                            Platform.runLater(() -> {
+                                lblTimerTime.setText(String.format("%02d : %02d : %02d", hour, minute, second));
+                            });
+                        } catch (InterruptedException e) {
+                            // Thread interrupted, stop the timer
+                            break;
+                        }
+                    }
+
+                    // Timer has expired, play an alarm sound
+                    System.out.println("Beep!");
+                });
+
+                // Start the timer thread
+                timerThread.start();
+            } catch (NumberFormatException e) {
+                // Handle the case where the input is not a valid integer
+                e.printStackTrace(); // You might want to log the error or display a message to the user
+            }
+        }
     }
 
-    // Method to stop the countdown timer
     @FXML
-    private void handleTimerStop(ActionEvent event) {
-        stopCountdownTimer();
-    }
-
-    private void startCountdownTimer(String desiredTime) {
-        // Parse the desired time in "mm:ss" format
-        String[] timeParts = desiredTime.split(":");
-        int minutes = Integer.parseInt(timeParts[0]);
-        int seconds = Integer.parseInt(timeParts[1]);
-
-        // Convert the time to seconds
-        countdownSeconds = minutes * 60 + seconds;
-
-        // Update the display
-        updateCountdownLabel();
-
-        // Create a timeline for the countdown
-        countdownTimeline = new Timeline(new KeyFrame(Duration.seconds(1), this::updateCountdown));
-        countdownTimeline.setCycleCount(countdownSeconds);
-
-        // Start the countdown
-        countdownTimeline.play();
-    }
-
-    private void stopCountdownTimer() {
-        if (countdownTimeline != null) {
-            countdownTimeline.stop();
-            countdownSeconds = 0; // Reset countdown time
-            updateCountdownLabel(); // Update the display
+    public void handlePauseTimer(ActionEvent event) {
+        // Interrupt the timer thread to pause it
+        if (timerThread != null) {
+            timerThread.interrupt();
         }
     }
 
-    private void updateCountdownLabel() {
-        int minutes = countdownSeconds / 60;
-        int remainingSeconds = countdownSeconds % 60;
+    @FXML
+    public void handleStopTimer(ActionEvent event) {
+        // Interrupt the timer thread to stop it
+        if (timerThread != null) {
+            timerThread.interrupt();
+        }
 
+        // Reset the time to 0
+        hour = 0;
+        minute = 0;
+        second = 0;
+
+        // Update the UI
         Platform.runLater(() -> {
-            lblTimerTime.setText(String.format("%02d:%02d", minutes, remainingSeconds));
+            lblTimerTime.setText(String.format("%02d : %02d : %02d", hour, minute, second));
+       
+            txtHour.setText("");
+            txtMinute.setText("");
+            txtSecond.setText("");
+            
         });
-    }
-
-    private void updateCountdown(ActionEvent event) {
-        countdownSeconds--;
-
-        // Update the display
-        updateCountdownLabel();
-
-        if (countdownSeconds <= 0) {
-            // Countdown has reached zero, perform any actions you need
-            stopCountdownTimer();
-            // Additional actions can be added here
-        }
     }
 
     @FXML
@@ -805,7 +851,33 @@ public class UserDashboardController implements Initializable {
         int minutes = (totalSeconds % 3600) / 60;
         int remainingSeconds = totalSeconds % 60;
 
-        return String.format("%02d:%02d:%02d", hours, minutes, remainingSeconds);
+        return String.format("%02d : %02d : %02d", hours, minutes, remainingSeconds);
+    }
+    
+    private void timeNowForDashboard() {
+        Thread thread = new Thread(() -> {
+            SimpleDateFormat sdf = new SimpleDateFormat("hh : mm ");
+            while (!stop) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    System.out.println(e);
+                }
+                final String timeNow = sdf.format(new Date());
+                Platform.runLater(() -> {
+                    lblTimeDashboard.setText(timeNow);
+                });
+            }
+        });
+
+        thread.start();
+    }
+    
+    private void dateLabelForDashboard() {
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MMM dd yyyy", Locale.ENGLISH);
+        String formattedDate = currentDate.format(dateFormat);
+        lblDateDashboard.setText(formattedDate);
     }
 
 }
