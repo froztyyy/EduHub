@@ -4,9 +4,6 @@
  */
 package controller;
 
-
-
-
 import java.io.IOException;
 import javafx.util.Duration;
 import javafx.animation.ScaleTransition;
@@ -31,8 +28,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
-
-
 
 /**
  * FXML Controller class
@@ -71,10 +66,7 @@ public class OfficerLoginController implements Initializable {
         // Play the animation
         scaleTransition.play();
     }
-    
-    
 
-    
     @FXML
     private void closeButton(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -159,45 +151,56 @@ public class OfficerLoginController implements Initializable {
 
             } else {
                 if (result.next()) {
-                    alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Information Message");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Successfully Login!");
-                    alert.showAndWait();
 
-                    Parent root = FXMLLoader.load(getClass().getResource("/view/officerDashboard.fxml"));
-                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    int roleID = result.getInt("RoleID");
 
-                    ((Node) (event.getSource())).getScene().getWindow().hide();
-                    stage.setWidth(1126);
-                    stage.setHeight(654);
+                    if (roleID == 2) { // Officer
+                        alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Information Message");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Successfully Login, Welcome Officer!");
+                        alert.showAndWait();
 
-                    Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-                    double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
-                    double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
-                    stage.setX(centerX - 558.5);
-                    stage.setY(centerY - 327);
+                        Parent root = FXMLLoader.load(getClass().getResource("/view/officerDashboard.fxml"));
+                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-                    Scene scene = new Scene(root, 1126, 654);
+                        ((Node) (event.getSource())).getScene().getWindow().hide();
+                        stage.setWidth(1332);
+                        stage.setHeight(836);
 
-                    stage.setScene(scene);
-                    stage.show();
+                        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+                        double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
+                        double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
+                        stage.setX(centerX - 666);
+                        stage.setY(centerY - 418);
 
-                    root.setOnMousePressed((mouseEvent) -> {
-                        x = mouseEvent.getSceneX();
-                        y = mouseEvent.getSceneY();
-                    });
+                        Scene scene = new Scene(root, 1332, 836);
 
-                    root.setOnMouseDragged((mouseEvent) -> {
-                        stage.setX(mouseEvent.getScreenX() - x);
-                        stage.setY(mouseEvent.getScreenY() - y);
+                        stage.setScene(scene);
+                        stage.show();
 
-                        stage.setOpacity(.8);
-                    });
+                        root.setOnMousePressed((mouseEvent) -> {
+                            x = mouseEvent.getSceneX();
+                            y = mouseEvent.getSceneY();
+                        });
 
-                    root.setOnMouseReleased((mouseEvent) -> {
-                        stage.setOpacity(1);
-                    });
+                        root.setOnMouseDragged((mouseEvent) -> {
+                            stage.setX(mouseEvent.getScreenX() - x);
+                            stage.setY(mouseEvent.getScreenY() - y);
+
+                            stage.setOpacity(.8);
+                        });
+
+                        root.setOnMouseReleased((mouseEvent) -> {
+                            stage.setOpacity(1);
+                        });
+                    } else {
+                        alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error Message");
+                        alert.setHeaderText(null);
+                        alert.setContentText("Wrong Username/Password");
+                        alert.showAndWait();
+                    }
 
                 } else {
                     alert = new Alert(Alert.AlertType.INFORMATION);
@@ -210,8 +213,7 @@ public class OfficerLoginController implements Initializable {
             }
 
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
-
 }

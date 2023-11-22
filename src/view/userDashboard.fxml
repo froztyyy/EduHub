@@ -7,6 +7,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.effect.MotionBlur?>
 <?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -19,7 +20,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserDashboardController">
+<Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserDashboardController">
    <children>
       <Pane prefHeight="43.0" prefWidth="1332.0" style="-fx-background-color: black;">
          <children>
@@ -134,7 +135,7 @@
                               </Line>
                               <Pane>
                                  <children>
-                                    <Label fx:id="lblTimeDashboard" layoutX="10.0" layoutY="33.0" textFill="WHITE">
+                                    <Label fx:id="lblTimeDashboard" layoutX="10.0" layoutY="33.0" text="5: 30 PM" textFill="WHITE">
                                        <font>
                                           <Font name="Arial" size="13.0" />
                                        </font>
@@ -143,7 +144,7 @@
                               </Pane>
                               <Pane layoutX="329.0" layoutY="10.0">
                                  <children>
-                                    <Label fx:id="lblDateDashboard" layoutX="10.0" layoutY="33.0" textFill="WHITE">
+                                    <Label fx:id="lblDateDashboard" layoutX="10.0" layoutY="33.0" text="11/20/2023" textFill="WHITE">
                                        <font>
                                           <Font name="Arial" size="13.0" />
                                        </font>
@@ -327,19 +328,44 @@
                         </HBox>
                      </children>
                   </AnchorPane>
-                  <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="698.0" prefWidth="1332.0" style="-fx-background-color: red;" visible="false" />
-                  <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="698.0" prefWidth="1332.0" style="-fx-background-color: blue;" visible="false" />
-                  <AnchorPane maxWidth="1.7976931348623157E308" prefHeight="698.0" prefWidth="1332.0" style="-fx-background-color: pink;" visible="false" />
-                  <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="698.0" prefWidth="1332.0" style="-fx-background-color: violet;" visible="false" />
                </children>
             </Pane>
             <Pane fx:id="announcementWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" visible="false" />
-            <Pane fx:id="calendarWindow" layoutY="96.0" prefHeight="697.0" prefWidth="1332.0" visible="false">
+            <Pane fx:id="calendarWindow" layoutY="96.0" prefHeight="697.0" prefWidth="1332.0">
                <children>
-                  <Pane layoutX="52.0" layoutY="38.0" prefHeight="575.0" prefWidth="732.0" style="-fx-border-color: white; -fx-border-radius: 20px; -fx-border-width: 0.3;">
+                  <Pane layoutX="401.0" layoutY="41.0" prefHeight="601.0" prefWidth="861.0" style="-fx-border-color: white; -fx-background-color: black; -fx-border-radius: 20px; -fx-border-width: 0.3;">
                      <children>
-                        <FlowPane fx:id="calendar" hgap="10.0" layoutX="24.0" layoutY="125.0" prefHeight="433.0" prefWidth="685.0" vgap="5.0" />
-                        <HBox alignment="CENTER" layoutX="24.0" layoutY="81.0" prefHeight="44.0" prefWidth="685.0" spacing="88.75">
+                        <FlowPane fx:id="calendarBig" hgap="10.0" layoutX="20.0" layoutY="151.0" prefHeight="430.0" prefWidth="831.0" vgap="5.0" />
+                        <HBox alignment="CENTER_LEFT" layoutX="15.0" layoutY="99.0" prefHeight="44.0" prefWidth="831.0" spacing="110.0">
+                           <children>
+                              <Text fill="#fffefe" strokeType="OUTSIDE" strokeWidth="0.0" text="Sun" textAlignment="CENTER" />
+                              <Text fill="WHITE" layoutX="213.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mon" textAlignment="CENTER" />
+                              <Text fill="WHITE" layoutX="222.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tue" textAlignment="CENTER" />
+                              <Text fill="WHITE" layoutX="232.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wed" textAlignment="CENTER" />
+                              <Text fill="WHITE" layoutX="241.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thu" textAlignment="CENTER" />
+                              <Text fill="#e4e4e4" layoutX="251.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fri" textAlignment="CENTER" />
+                              <Text fill="WHITE" layoutX="266.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sat" textAlignment="CENTER" />
+                           </children>
+                           <padding>
+                              <Insets left="10.0" right="9.0" />
+                           </padding>
+                        </HBox>
+                        <Label fx:id="monthBig" alignment="CENTER" layoutX="5.0" layoutY="32.0" prefHeight="56.0" prefWidth="861.0" text="February" textFill="WHITE">
+                           <font>
+                              <Font name="Arial Bold" size="28.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="yearBig" layoutX="419.0" layoutY="23.0" prefHeight="17.0" prefWidth="35.0" text="2022" textFill="WHITE">
+                           <font>
+                              <Font name="Arial" size="14.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </Pane>
+                  <Pane layoutX="33.0" layoutY="41.0" prefHeight="308.0" prefWidth="338.0" style="-fx-background-color: black; -fx-border-radius: 20px; -fx-border-color: white; -fx-border-width: 0.3; -fx-background-radius: 20px;">
+                     <children>
+                        <FlowPane fx:id="calendarSmall" hgap="10.0" layoutX="31.0" layoutY="120.0" prefHeight="166.0" prefWidth="276.0" vgap="5.0" />
+                        <HBox alignment="CENTER_LEFT" layoutX="31.0" layoutY="66.0" prefHeight="54.0" prefWidth="276.0" spacing="20.0">
                            <children>
                               <Text fill="#fffefe" strokeType="OUTSIDE" strokeWidth="0.0" text="Sun" textAlignment="CENTER" />
                               <Text fill="WHITE" layoutX="213.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mon" textAlignment="CENTER" />
@@ -353,268 +379,408 @@
                               <Insets right="9.0" />
                            </padding>
                         </HBox>
-                        <Button layoutX="182.0" layoutY="39.0" mnemonicParsing="false" onAction="#backOneMonth" style="-fx-background-color: transparent;" text="&lt;" textFill="WHITE">
+                        <Button layoutX="236.0" layoutY="39.0" mnemonicParsing="false" onAction="#backOneMonth" style="-fx-background-color: transparent;" text="&lt;" textFill="WHITE">
                            <font>
                               <Font name="Arial Bold" size="15.0" />
                            </font>
                         </Button>
-                        <Label fx:id="year" layoutX="51.0" layoutY="25.0" prefHeight="56.0" prefWidth="131.0" text="February" textFill="WHITE">
+                        <Label fx:id="monthSmall" layoutX="31.0" layoutY="25.0" prefHeight="56.0" prefWidth="131.0" text="February" textFill="WHITE">
                            <font>
-                              <Font name="Arial Bold" size="28.0" />
+                              <Font name="Arial Bold" size="21.0" />
                            </font>
                         </Label>
-                        <Label fx:id="month" layoutX="51.0" layoutY="17.0" prefHeight="17.0" prefWidth="94.0" text="2022" textFill="WHITE">
+                        <Label fx:id="yearSmall" layoutX="31.0" layoutY="17.0" prefHeight="17.0" prefWidth="94.0" text="2022" textFill="WHITE">
                            <font>
-                              <Font name="Arial" size="14.0" />
+                              <Font name="Arial" size="12.0" />
                            </font>
                         </Label>
-                        <Button layoutX="230.0" layoutY="39.0" mnemonicParsing="false" onAction="#forwardOneMonth" style="-fx-background-color: transparent;" text="&gt;" textFill="WHITE">
+                        <Button layoutX="284.0" layoutY="39.0" mnemonicParsing="false" onAction="#forwardOneMonth" style="-fx-background-color: transparent;" text="&gt;" textFill="WHITE">
                            <font>
                               <Font name="Arial Bold" size="15.0" />
                            </font>
                         </Button>
-                        <Line endX="-100.0" endY="27.0" layoutX="321.0" layoutY="39.0" startX="-100.0" stroke="WHITE" strokeWidth="0.5" />
+                        <Line endX="-100.0" endY="27.0" layoutX="375.0" layoutY="39.0" startX="-100.0" stroke="WHITE" strokeWidth="0.5" />
                      </children>
                   </Pane>
+                  <Pane layoutX="33.0" layoutY="366.0" prefHeight="281.0" prefWidth="338.0" style="-fx-background-color: white; -fx-border-radius: 20px; -fx-border-color: black; -fx-background-radius: 20px;">
+                     <children>
+                        <ImageView fitHeight="114.0" fitWidth="132.0" layoutX="192.0" layoutY="146.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../media/icons/%5Bremoval.ai%5D_ae618e66-3ff5-427f-a25c-9281c54588d5-screenshot-2023-11-21-140519.png" />
+                           </image>
+                        </ImageView>
+                        <Label fx:id="monthNote" layoutX="27.0" layoutY="30.0" text="February">
+                           <font>
+                              <Font name="Arial Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="yearNote" layoutX="27.0" layoutY="47.0" text="2023">
+                           <font>
+                              <Font name="Arial" size="15.0" />
+                           </font>
+                        </Label>
+                        <Text fx:id="infoNote" layoutX="26.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus ante vel tincidunt efficitur. Nulla facilisi. Fusce at mauris eu tellus fermentum bibendum vel eu risus. Curabitur a justo a elit accumsan varius vel et arcu. " wrappingWidth="286.0">
+                           <font>
+                              <Font name="Arial" size="17.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </Pane>
+                  <ImageView fitHeight="269.0" fitWidth="224.0" layoutX="1130.0" layoutY="380.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../media/icons/%5Bremoval.ai%5D_14cd69a8-ed59-499b-b70c-0df3b34d9e0d-screenshot-2023-11-21-141144.png" />
+                     </image>
+                     <effect>
+                        <Reflection />
+                     </effect>
+                  </ImageView>
+                  <ImageView fitHeight="95.0" fitWidth="77.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../media/3d/Block_8x1x1_0000.png" />
+                     </image>
+                  </ImageView>
+                  <Button layoutX="669.0" layoutY="618.0" mnemonicParsing="false" onAction="#editCalendarNote" prefHeight="33.0" prefWidth="106.0" style="-fx-background-color: #2D53EF; -fx-background-radius: 15px;" text="Edit" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Bold" size="14.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="794.0" layoutY="618.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="106.0" style="-fx-background-color: #2D53EF; -fx-background-radius: 15px;" text="Remove" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Bold" size="14.0" />
+                     </font>
+                  </Button>
+                  <Button layoutX="914.0" layoutY="618.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="106.0" style="-fx-background-color: #2D53EF; -fx-background-radius: 15px;" text="Add" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Bold" size="14.0" />
+                     </font>
+                  </Button>
                </children></Pane>
             <Pane fx:id="todoWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" visible="false" />
             <Pane fx:id="timeClockWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" visible="false">
                <children>
-                  <AnchorPane id="AnchorPane" layoutX="66.0" layoutY="49.0" prefHeight="600.0" prefWidth="600.0" styleClass="main-bg" stylesheets="@../style/userdashboard.css">
+                  <AnchorPane fx:id="clockPane" prefHeight="704.0" prefWidth="1332.0" styleClass="secondary-bg">
                      <children>
-                        <AnchorPane fx:id="clockPane" layoutX="10.0" layoutY="14.0" prefHeight="418.0" prefWidth="580.0" styleClass="secondary-bg" visible="false" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+                        <HBox alignment="CENTER" layoutX="179.0" layoutY="40.0" />
+                        <AnchorPane layoutX="154.0" layoutY="96.0" prefHeight="173.0" prefWidth="550.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 30px;">
                            <children>
-                              <VBox prefHeight="200.0" prefWidth="100.0" spacing="80.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <children>
-                                    <HBox prefHeight="100.0" prefWidth="200.0">
-                                       <children>
-                                          <Label text="Clock" textFill="SILVER">
-                                             <font>
-                                                <Font name="Arial Bold" size="30.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="CENTER">
-                                       <children>
-                                          <Label fx:id="lblTime" text="00 : 00 : 00" textFill="SILVER">
-                                             <font>
-                                                <Font name="Arial" size="50.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="35.0" left="35.0" right="35.0" top="35.0" />
-                                 </padding>
-                              </VBox>
+                              <Label layoutX="33.0" layoutY="48.0" text="GOOD MORNING, USERNAME" textFill="WHITE">
+                                 <font>
+                                    <Font name="Franklin Gothic Heavy" size="23.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="33.0" layoutY="24.0" text="MANAGE YOUR TIME!" textFill="WHITE">
+                                 <font>
+                                    <Font name="Franklin Gothic Heavy" size="23.0" />
+                                 </font>
+                              </Label>
+                              <Line endX="56.0" layoutX="134.0" layoutY="86.0" startX="-100.0" stroke="WHITE" />
+                              <Label fx:id="dayAndYear" layoutX="34.0" layoutY="112.0" text="21/23" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="monthToday" layoutX="34.0" layoutY="139.0" text="April" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial" size="13.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="time" layoutX="140.0" layoutY="114.0" text="9:00 PM" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="location" layoutX="140.0" layoutY="139.0" text="Manila Philippines" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial" size="13.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="414.0" layoutY="12.0" opacity="0.13" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/icons/Screenshot_2023-11-21_004237-removebg-preview.png" />
+                                 </image>
+                                 <effect>
+                                    <MotionBlur angle="135.53" radius="6.3" />
+                                 </effect>
+                              </ImageView>
+                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="390.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/icons/Screenshot_2023-11-21_004237-removebg-preview.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="70.0" fitWidth="54.0" layoutX="351.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/3d/Block_8x8x8_Super_Rounded0003.png" />
+                                 </image>
+                                 <effect>
+                                    <MotionBlur radius="1.85" />
+                                 </effect>
+                              </ImageView>
+                              <ImageView fitHeight="70.0" fitWidth="54.0" layoutX="351.0" layoutY="99.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/3d/Block_8x2x2_0001.png" />
+                                 </image>
+                                 <effect>
+                                    <MotionBlur radius="1.85" />
+                                 </effect>
+                              </ImageView>
+                              <ImageView fitHeight="70.0" fitWidth="54.0" layoutX="496.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/3d/Cylinder_Medium_Laying_3_0000.png" />
+                                 </image>
+                                 <effect>
+                                    <MotionBlur radius="1.85" />
+                                 </effect>
+                              </ImageView>
                            </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="timerPane" layoutX="20.0" layoutY="20.0" prefHeight="418.0" prefWidth="580.0" styleClass="secondary-bg" visible="false" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+                        <Pane layoutX="154.0" layoutY="303.0" prefHeight="281.0" prefWidth="392.0" style="-fx-background-color: #5186C3; -fx-background-radius: 20px; -fx-border-radius: 20px; -fx-border-color: white; -fx-border-width: 0.2px;">
                            <children>
-                              <VBox prefHeight="200.0" prefWidth="100.0" spacing="50.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <Pane layoutX="-4.0" layoutY="-6.0" opacity="0.29" prefHeight="292.0" prefWidth="400.0" style="-fx-background-color: #353535; -fx-background-radius: 50px;" />
+                              <ImageView fitHeight="388.0" fitWidth="276.0" layoutX="149.0" layoutY="33.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/icons/Screenshot_2023-11-21_002551-removebg-preview.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="26.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/icons/Screenshot_2023-11-21_001834-removebg-preview.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="54.0" fitWidth="65.0" layoutX="331.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/icons/Screenshot_2023-11-21_001834-removebg-preview.png" />
+                                 </image>
+                                 <effect>
+                                    <MotionBlur angle="55.06" radius="10.74" />
+                                 </effect>
+                              </ImageView>
+                              <ImageView fitHeight="54.0" fitWidth="65.0" layoutX="26.0" layoutY="202.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/icons/Screenshot_2023-11-21_001834-removebg-preview.png" />
+                                 </image>
+                                 <effect>
+                                    <MotionBlur angle="55.06" radius="10.74" />
+                                 </effect>
+                              </ImageView>
+                              <ImageView fitHeight="43.0" fitWidth="44.0" layoutX="149.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/icons/Screenshot_2023-11-21_001834-removebg-preview.png" />
+                                 </image>
+                                 <effect>
+                                    <MotionBlur angle="55.06" radius="10.74" />
+                                 </effect>
+                              </ImageView>
+                              <ImageView fitHeight="43.0" fitWidth="44.0" layoutX="348.0" layoutY="183.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/icons/Screenshot_2023-11-21_001834-removebg-preview.png" />
+                                 </image>
+                                 <effect>
+                                    <MotionBlur angle="55.06" radius="10.74" />
+                                 </effect>
+                              </ImageView>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="576.0" layoutY="303.0" prefHeight="130.0" prefWidth="338.0" style="-fx-background-radius: 20px; -fx-background-color: #2B4FE4; -fx-background-color: #1C1C1C;">
+                           <children>
+                              <Label fx:id="lblTimerTime" layoutX="25.0" layoutY="22.0" text="00 : 00 : 00" textFill="SILVER">
+                                 <font>
+                                    <Font name="Arial" size="50.0" />
+                                 </font>
+                              </Label>
+                              <HBox alignment="CENTER" layoutX="50.0" layoutY="80.0" prefHeight="50.0" prefWidth="200.0" spacing="5.0">
                                  <children>
-                                    <Label text="Timer" textFill="GREY">
+                                    <TextField fx:id="txtHour" alignment="CENTER" prefHeight="36.0" prefWidth="50.0" promptText="00" style="-fx-background-color: #0A0A0A;">
                                        <font>
-                                          <Font name="Arial Bold" size="30.0" />
+                                          <Font name="Arial" size="13.0" />
+                                       </font>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </TextField>
+                                    <Label text=":" textFill="SILVER">
+                                       <font>
+                                          <Font name="Arial Bold" size="15.0" />
                                        </font>
                                     </Label>
-                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                                       <children>
-                                          <Label fx:id="lblTimerTime" text="00 : 00 : 00" textFill="SILVER">
-                                             <font>
-                                                <Font name="Arial" size="50.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="50.0" top="50.0" />
-                                       </padding>
-                                    </HBox>
-                                    <VBox>
-                                       <children>
-                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
-                                             <children>
-                                                <TextField fx:id="txtHour" alignment="CENTER" prefHeight="36.0" prefWidth="50.0" promptText="00">
-                                                   <font>
-                                                      <Font name="Arial" size="13.0" />
-                                                   </font>
-                                                   <opaqueInsets>
-                                                      <Insets />
-                                                   </opaqueInsets>
-                                                   <padding>
-                                                      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                                   </padding>
-                                                </TextField>
-                                                <Label text=":" textFill="SILVER">
-                                                   <font>
-                                                      <Font name="Arial Bold" size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <TextField fx:id="txtMinute" alignment="CENTER" layoutX="169.0" layoutY="42.0" prefHeight="36.0" prefWidth="50.0" promptText="00">
-                                                   <font>
-                                                      <Font name="Arial" size="13.0" />
-                                                   </font>
-                                                   <opaqueInsets>
-                                                      <Insets />
-                                                   </opaqueInsets>
-                                                   <padding>
-                                                      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                                   </padding>
-                                                </TextField>
-                                                <Label layoutX="138.0" layoutY="52.0" text=":" textFill="SILVER">
-                                                   <font>
-                                                      <Font name="Arial Bold" size="15.0" />
-                                                   </font>
-                                                </Label>
-                                                <TextField fx:id="txtSecond" alignment="CENTER" layoutX="137.0" layoutY="42.0" prefHeight="36.0" prefWidth="50.0" promptText="00">
-                                                   <font>
-                                                      <Font name="Arial" size="13.0" />
-                                                   </font>
-                                                   <opaqueInsets>
-                                                      <Insets />
-                                                   </opaqueInsets>
-                                                   <padding>
-                                                      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                                   </padding>
-                                                </TextField>
-                                             </children>
-                                          </HBox>
-                                          <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="15.0">
-                                             <children>
-                                                <Button fx:id="btnTimerStart" mnemonicParsing="false" onAction="#handleStartTimer" styleClass="buttns">
-                                                   <graphic>
-                                                      <ImageView fitHeight="150.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../media/icons/timerPlay.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
-                                                <Button fx:id="btnTimerPause" mnemonicParsing="false" onAction="#handlePauseTimer" styleClass="buttns">
-                                                   <graphic>
-                                                      <ImageView fitHeight="150.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../media/icons/timerPause.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
-                                                <Button fx:id="btnTimerStop" layoutX="61.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleStopTimer" styleClass="buttns">
-                                                   <graphic>
-                                                      <ImageView fitHeight="150.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../media/icons/timerStop.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
-                                                </Button>
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                    </VBox>
-                                 </children>
-                                 <padding>
-                                    <Insets bottom="35.0" left="35.0" right="35.0" top="35.0" />
-                                 </padding>
-                              </VBox>
-                           </children>
-                        </AnchorPane>
-                        <AnchorPane fx:id="stopwatchPane" layoutX="20.0" layoutY="20.0" prefHeight="418.0" prefWidth="580.0" styleClass="secondary-bg" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
-                           <children>
-                              <VBox spacing="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <children>
-                                    <Label text="Stopwatch" textFill="SILVER">
+                                    <TextField fx:id="txtMinute" alignment="CENTER" layoutX="169.0" layoutY="42.0" prefHeight="36.0" prefWidth="50.0" promptText="00" style="-fx-background-color: #0A0A0A;">
                                        <font>
-                                          <Font name="Arial Bold" size="30.0" />
+                                          <Font name="Arial" size="13.0" />
+                                       </font>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </TextField>
+                                    <Label layoutX="138.0" layoutY="52.0" text=":" textFill="SILVER">
+                                       <font>
+                                          <Font name="Arial Bold" size="15.0" />
                                        </font>
                                     </Label>
-                                    <HBox alignment="CENTER">
-                                       <children>
-                                          <Label fx:id="lblTimer" alignment="CENTER" text="00 : 00 : 00" textAlignment="CENTER" textFill="#c9c9c9">
-                                             <font>
-                                                <Font name="Arial" size="50.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
+                                    <TextField fx:id="txtSecond" alignment="CENTER" layoutX="137.0" layoutY="42.0" prefHeight="36.0" prefWidth="50.0" promptText="00" style="-fx-background-color: #0A0A0A;">
+                                       <font>
+                                          <Font name="Arial" size="13.0" />
+                                       </font>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
                                        <padding>
-                                          <Insets top="50.0" />
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                        </padding>
-                                    </HBox>
-                                    <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="25.0">
-                                       <children>
-                                          <Button fx:id="btnPlay" mnemonicParsing="false" onAction="#handlePlay" styleClass="buttns">
-                                             <graphic>
-                                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../media/icons/play.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </Button>
-                                          <Button fx:id="btnPause" mnemonicParsing="false" onAction="#handlePause" styleClass="buttns">
-                                             <graphic>
-                                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../media/icons/pause.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </Button>
-                                          <Button fx:id="btnStop" mnemonicParsing="false" onAction="#handleStop" styleClass="buttns">
-                                             <graphic>
-                                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../media/icons/stop.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </graphic>
-                                          </Button>
-                                       </children>
-                                    </HBox>
+                                    </TextField>
                                  </children>
-                                 <padding>
-                                    <Insets left="35.0" right="35.0" top="35.0" />
-                                 </padding>
-                              </VBox>
-                           </children>
-                        </AnchorPane>
-                        <Pane fx:id="bottomNavigation" layoutY="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="500.0">
-                           <children>
-                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="600.0" spacing="50.0">
+                              </HBox>
+                              <VBox layoutX="278.0" layoutY="8.0">
                                  <children>
-                                    <Button fx:id="btnClock" mnemonicParsing="false" onAction="#SwitchFormForTime" styleClass="buttns">
+                                    <Button fx:id="btnTimerStart" mnemonicParsing="false" onAction="#handleStartTimer" style="-fx-background-color: transparent;" styleClass="buttns">
                                        <graphic>
-                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
-                                                <Image url="@../media/icons/clock.png" />
+                                                <Image url="@../media/icons/timerPlay.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>
                                     </Button>
-                                    <Button fx:id="btnTimer" mnemonicParsing="false" onAction="#SwitchFormForTime" styleClass="buttns">
+                                    <Button fx:id="btnTimerPause" mnemonicParsing="false" onAction="#handlePauseTimer" style="-fx-background-color: transparent;" styleClass="buttns">
                                        <graphic>
-                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
-                                                <Image url="@../media/icons/timer.png" />
+                                                <Image url="@../media/icons/timerPause.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>
                                     </Button>
-                                    <Button fx:id="btnStopwatch" mnemonicParsing="false" onAction="#SwitchFormForTime" styleClass="buttns">
+                                    <Button fx:id="btnTimerStop" mnemonicParsing="false" onAction="#handleStopTimer" style="-fx-background-color: transparent;" styleClass="buttns">
                                        <graphic>
-                                          <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
-                                                <Image url="@../media/icons/stopwatch.png" />
+                                                <Image url="@../media/icons/timerStop.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="576.0" layoutY="454.0" prefHeight="130.0" prefWidth="338.0" style="-fx-background-radius: 20px; -fx-background-color: #2B4FE4; -fx-background-color: #1C1C1C;">
+                           <children>
+                              <HBox alignment="CENTER" layoutX="78.0" layoutY="80.0" prefHeight="33.0" prefWidth="182.0" spacing="25.0">
+                                 <children>
+                                    <Button fx:id="btnPlay" mnemonicParsing="false" onAction="#handlePlay" style="-fx-background-color: transparent;" styleClass="buttns">
+                                       <graphic>
+                                          <ImageView fitHeight="29.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../media/icons/play.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button fx:id="btnPause" mnemonicParsing="false" onAction="#handlePause" style="-fx-background-color: transparent;" styleClass="buttns">
+                                       <graphic>
+                                          <ImageView fitHeight="29.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../media/icons/pause.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                    <Button fx:id="btnStop" mnemonicParsing="false" onAction="#handleStop" style="-fx-background-color: transparent;" styleClass="buttns">
+                                       <graphic>
+                                          <ImageView fitHeight="29.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../media/icons/stop.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>
                                     </Button>
                                  </children>
                               </HBox>
+                              <Label fx:id="lblTimer" alignment="CENTER" layoutX="44.0" layoutY="25.0" text="00 : 00 : 00" textAlignment="CENTER" textFill="#c9c9c9">
+                                 <font>
+                                    <Font name="Arial" size="50.0" />
+                                 </font>
+                              </Label>
+                           </children></Pane>
+                        <AnchorPane layoutX="941.0" layoutY="94.0">
+                           <children>
+                              <Pane prefHeight="484.0" prefWidth="237.0" style="-fx-background-radius: 30px; -fx-background-color: #2B4FE4; -fx-background-radius: 20px;" />
                            </children>
-                        </Pane>
+                        </AnchorPane>
+                        <Pane layoutX="722.0" layoutY="96.0" prefHeight="173.0" prefWidth="192.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 20px;">
+                           <children>
+                              <Label layoutX="14.0" layoutY="14.0" text="10:25 PM" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial Black" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="14.0" layoutY="44.0" text="Upcoming Alarm" textFill="#bacfef">
+                                 <font>
+                                    <Font name="Arial Bold" size="12.0" />
+                                 </font>
+                              </Label>
+                              <HBox alignment="CENTER" layoutX="12.0" layoutY="67.0" prefHeight="58.0" prefWidth="169.0" spacing="5.0">
+                                 <children>
+                                    <TextField fx:id="txtHourForAlarm" alignment="CENTER" prefHeight="36.0" prefWidth="50.0" promptText="00" style="-fx-background-color: #0A0A0A;">
+                                       <font>
+                                          <Font name="Arial" size="12.0" />
+                                       </font>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </TextField>
+                                    <Label text=":" textFill="SILVER">
+                                       <font>
+                                          <Font name="Arial Bold" size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="txtMinuteForAlarm" alignment="CENTER" layoutX="169.0" layoutY="42.0" prefHeight="36.0" prefWidth="50.0" promptText="00" style="-fx-background-color: #0A0A0A;">
+                                       <font>
+                                          <Font name="Arial" size="12.0" />
+                                       </font>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </TextField>
+                                    <Label layoutX="138.0" layoutY="52.0" text=":" textFill="SILVER">
+                                       <font>
+                                          <Font name="Arial Bold" size="15.0" />
+                                       </font>
+                                    </Label>
+                                    <TextField fx:id="txtSecondAlarm" alignment="CENTER" layoutX="137.0" layoutY="42.0" prefHeight="36.0" prefWidth="50.0" promptText="00" style="-fx-background-color: #0A0A0A;">
+                                       <font>
+                                          <Font name="Arial" size="12.0" />
+                                       </font>
+                                       <opaqueInsets>
+                                          <Insets />
+                                       </opaqueInsets>
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                    </TextField>
+                                 </children>
+                              </HBox>
+                              <Button fx:id="setAlarm" layoutX="11.0" layoutY="131.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="76.0" style="-fx-background-color: #0A0A0A;" text="Set" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial Bold" size="11.0" />
+                                 </font>
+                              </Button>
+                              <Button fx:id="removeAlarm" layoutX="103.0" layoutY="131.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="77.0" style="-fx-background-color: #0A0A0A;" text="Remove" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial Bold" size="11.0" />
+                                 </font>
+                              </Button>
+                           </children></Pane>
                      </children>
                   </AnchorPane>
                </children></Pane>

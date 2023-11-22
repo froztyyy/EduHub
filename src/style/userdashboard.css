@@ -135,21 +135,36 @@
     -fx-background-radius: 10px;
 }
 
-.buttns {
+.buttns{
     -fx-background-color: transparent;
+    -fx-border-width: 0.4px;
+    -fx-border-color: #45484B;
+    -fx-border-radius: 10px 0px 0px 10px;
 }
 
 .buttns:hover {
-    -fx-scale-x: 1.2;
-    -fx-scale-y: 1.2;
+    -fx-background-color: #161B22;
+}
+.buttnsTimer{
+    -fx-background-color: transparent;
+    -fx-border-width: 0.4px;
+    -fx-border-color: #45484B;
 }
 
-.buttns:pressed {
-    -fx-scale-x: 1;
-    -fx-scale-y: 1;
+.buttnsTimer:hover {
+    -fx-background-color: #161B22;
+}
+.buttnsStopw{
+    -fx-background-color: transparent;
+    -fx-border-width: 0.4px;
+    -fx-border-color: #45484B;
+    -fx-border-radius:  0px 10px 10px 0px ;
 }
 
-.selected-button {
-    -fx-scale-x: 1.2;
-    -fx-scale-y: 1.2;
+.buttnsStopw:hover {
+    -fx-background-color: #161B22;
+}
+
+.selected-buttonForTime {
+    -fx-background-color: #2A71E6;
 }
