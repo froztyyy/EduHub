@@ -221,6 +221,7 @@ public class UserDashboardController implements Initializable {
         dateFocus = ZonedDateTime.now();
         today = ZonedDateTime.now();
         drawCalendar();
+        drawCalendarForBigCalendar();
 
         sidePanel.setVisible(true);
         homeWindow.setVisible(true);
@@ -228,14 +229,6 @@ public class UserDashboardController implements Initializable {
         calendarWindow.setVisible(false);
         todoWindow.setVisible(false);
         timeClockWindow.setVisible(false);
-
-
-
-
-        bottomNavigation.setVisible(true);
-        clockPane.setVisible(true);
-
-
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), this::updateTimer));
         timeline.setCycleCount(Timeline.INDEFINITE);
