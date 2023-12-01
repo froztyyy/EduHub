@@ -96,30 +96,29 @@ public class StudentLoginController implements Initializable {
 
             } else {
                 if (result.next()) {
-
                     int roleID = result.getInt("RoleID");
 
-                    if (roleID == 3) { // User
+                    if (roleID == 3) { // Student
                         alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Information Message");
                         alert.setHeaderText(null);
-                        alert.setContentText("Successfully Login, Welcome Student!");
+                        alert.setContentText("Successfully Login!");
                         alert.showAndWait();
 
                         Parent root = FXMLLoader.load(getClass().getResource("/view/userDashboard.fxml"));
                         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
                         ((Node) (event.getSource())).getScene().getWindow().hide();
-                        stage.setWidth(1332);
-                        stage.setHeight(836);
+                        stage.setWidth(1271);
+                        stage.setHeight(778);
 
                         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
                         double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
                         double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
-                        stage.setX(centerX - 666);
-                        stage.setY(centerY - 418);
+                        stage.setX(centerX - 635.5);
+                        stage.setY(centerY - 389);
 
-                        Scene scene = new Scene(root, 1332, 836);
+                        Scene scene = new Scene(root, 1271, 778);
 
                         stage.setScene(scene);
                         stage.show();
@@ -139,6 +138,7 @@ public class StudentLoginController implements Initializable {
                         root.setOnMouseReleased((mouseEvent) -> {
                             stage.setOpacity(1);
                         });
+
                     } else {
                         alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error Message");
@@ -146,19 +146,16 @@ public class StudentLoginController implements Initializable {
                         alert.setContentText("Wrong Username/Password");
                         alert.showAndWait();
                     }
-
                 } else {
-                    alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error Message");
                     alert.setHeaderText(null);
                     alert.setContentText("Wrong Username/Password");
                     alert.showAndWait();
                 }
-
             }
-
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Print exception details for debugging
         }
     }
 

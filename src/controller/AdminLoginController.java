@@ -66,7 +66,10 @@ public class AdminLoginController implements Initializable {
         // Play the animation
         scaleTransition.play();
 
+        
     }
+    
+  
 
     @FXML
     private void closeButton(ActionEvent event) {
@@ -152,57 +155,65 @@ public class AdminLoginController implements Initializable {
 
             } else {
                 if (result.next()) {
+                    
+                int roleID = result.getInt("RoleID");
 
-                    int roleID = result.getInt("RoleID");
+                if (roleID == 1) { // Admin
+                    alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Successfully Login!");
+                    alert.showAndWait();
 
-                    if (roleID == 1) { // Admin
-                        alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Information Message");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Successfully Login, Welcome Admin!");
-                        alert.showAndWait();
+                    alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Information Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Successfully Login!");
+                    alert.showAndWait();
 
-                        Parent root = FXMLLoader.load(getClass().getResource("/view/adminDashboard.fxml"));
-                        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                    Parent root = FXMLLoader.load(getClass().getResource("/view/adminDashboard.fxml"));
+                    Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-                        ((Node) (event.getSource())).getScene().getWindow().hide();
-                        stage.setWidth(1332);
-                        stage.setHeight(836);
+                    ((Node) (event.getSource())).getScene().getWindow().hide();
+                    stage.setWidth(1126);
+                    stage.setHeight(654);
 
-                        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-                        double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
-                        double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
-                        stage.setX(centerX - 666);
-                        stage.setY(centerY - 418);
+                    Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+                    double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
+                    double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
+                    stage.setX(centerX - 558.5);
+                    stage.setY(centerY - 327);
 
-                        Scene scene = new Scene(root, 1332, 836);
+                    Scene scene = new Scene(root, 1126, 654);
 
-                        stage.setScene(scene);
-                        stage.show();
+                    stage.setScene(scene);
+                    stage.show();
 
-                        root.setOnMousePressed((mouseEvent) -> {
-                            x = mouseEvent.getSceneX();
-                            y = mouseEvent.getSceneY();
-                        });
+                    root.setOnMousePressed((mouseEvent) -> {
+                        x = mouseEvent.getSceneX();
+                        y = mouseEvent.getSceneY();
+                    });
 
-                        root.setOnMouseDragged((mouseEvent) -> {
-                            stage.setX(mouseEvent.getScreenX() - x);
-                            stage.setY(mouseEvent.getScreenY() - y);
+                    root.setOnMouseDragged((mouseEvent) -> {
+                        stage.setX(mouseEvent.getScreenX() - x);
+                        stage.setY(mouseEvent.getScreenY() - y);
 
-                            stage.setOpacity(.8);
-                        });
+                        stage.setOpacity(.8);
+                    });
 
-                        root.setOnMouseReleased((mouseEvent) -> {
-                            stage.setOpacity(1);
-                        });
-                    } else {
-                        alert = new Alert(Alert.AlertType.ERROR);
-                        alert.setTitle("Error Message");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Wrong Username/Password");
-                        alert.showAndWait();
-                    }
-
+                    root.setOnMouseReleased((mouseEvent) -> {
+                        stage.setOpacity(1);
+                    });
+                }
+                    
+                    else {
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error Message");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Wrong Username/Password");
+                    alert.showAndWait();
+                }
+                    
                 } else {
                     alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Error Message");
