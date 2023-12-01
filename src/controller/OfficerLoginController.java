@@ -4,6 +4,9 @@
  */
 package controller;
 
+
+
+
 import java.io.IOException;
 import javafx.util.Duration;
 import javafx.animation.ScaleTransition;
@@ -28,6 +31,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
+
+
 
 /**
  * FXML Controller class
@@ -66,7 +71,10 @@ public class OfficerLoginController implements Initializable {
         // Play the animation
         scaleTransition.play();
     }
+    
+    
 
+    
     @FXML
     private void closeButton(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -151,30 +159,29 @@ public class OfficerLoginController implements Initializable {
 
             } else {
                 if (result.next()) {
-
                     int roleID = result.getInt("RoleID");
 
                     if (roleID == 2) { // Officer
                         alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setTitle("Information Message");
                         alert.setHeaderText(null);
-                        alert.setContentText("Successfully Login, Welcome Officer!");
+                        alert.setContentText("Successfully Login as Officer!");
                         alert.showAndWait();
 
                         Parent root = FXMLLoader.load(getClass().getResource("/view/officerDashboard.fxml"));
                         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
                         ((Node) (event.getSource())).getScene().getWindow().hide();
-                        stage.setWidth(1332);
-                        stage.setHeight(836);
+                        stage.setWidth(1126);
+                        stage.setHeight(654);
 
                         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
                         double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
                         double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
-                        stage.setX(centerX - 666);
-                        stage.setY(centerY - 418);
+                        stage.setX(centerX - 558.5);
+                        stage.setY(centerY - 327);
 
-                        Scene scene = new Scene(root, 1332, 836);
+                        Scene scene = new Scene(root, 1126, 654);
 
                         stage.setScene(scene);
                         stage.show();
@@ -194,6 +201,7 @@ public class OfficerLoginController implements Initializable {
                         root.setOnMouseReleased((mouseEvent) -> {
                             stage.setOpacity(1);
                         });
+
                     } else {
                         alert = new Alert(Alert.AlertType.ERROR);
                         alert.setTitle("Error Message");
@@ -201,19 +209,17 @@ public class OfficerLoginController implements Initializable {
                         alert.setContentText("Wrong Username/Password");
                         alert.showAndWait();
                     }
-
                 } else {
-                    alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error Message");
                     alert.setHeaderText(null);
                     alert.setContentText("Wrong Username/Password");
                     alert.showAndWait();
                 }
-
             }
-
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Print exception details for debugging
         }
     }
+
 }
