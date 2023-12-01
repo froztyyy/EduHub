@@ -60,8 +60,9 @@ import javafx.stage.Modality;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
-
 
 /**
  * FXML Controller class
@@ -176,7 +177,9 @@ public class UserDashboardController implements Initializable {
     private Label yearNote;
     @FXML
     private Text infoNote;
-
+    
+    
+    
     /**
      * Initializes the controller class.
      */
@@ -371,7 +374,6 @@ public class UserDashboardController implements Initializable {
         slider1.play();
     }
 
-// ...
     private void applyBlurEffect(boolean apply) {
         BoxBlur boxBlur = new BoxBlur(5, 5, 3); // You can adjust these values based on your preference
 
@@ -381,6 +383,18 @@ public class UserDashboardController implements Initializable {
         } else {
             // Remove blur effect
             blurringEffect.setEffect(null);
+        }
+    }
+
+    public void applyBlurEffectMainWindow(boolean apply) {
+        BoxBlur boxBlur = new BoxBlur(5, 5, 3); // You can adjust these values based on your preference
+
+        if (apply) {
+            // Apply blur effect
+            userDashboradWindow.setEffect(boxBlur);
+        } else {
+            // Remove blur effect
+            userDashboradWindow.setEffect(null);
         }
     }
 
@@ -996,4 +1010,63 @@ public class UserDashboardController implements Initializable {
         infoNote.setText(noteMessage);
     }
 
+    @FXML
+    private void sendfeedback(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/feedBackWindow.fxml"));
+            Parent root = loader.load();
+
+            Stage feedbackStage = new Stage();
+            feedbackStage.setWidth(506);
+            feedbackStage.setHeight(390);
+
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
+            double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
+            feedbackStage.setX(centerX - 253);
+            feedbackStage.setY(centerY - 195);
+
+            Scene scene = new Scene(root, 506, 390);
+            feedbackStage.initStyle(StageStyle.TRANSPARENT);
+
+            // Set the modality to APPLICATION_MODAL to make it modal
+            feedbackStage.initModality(Modality.APPLICATION_MODAL);
+
+            // Get the Window from the Scene associated with the Pane
+            Window ownerWindow = userDashboradWindow.getScene().getWindow();
+            feedbackStage.initOwner(ownerWindow);
+
+            applyBlurEffectMainWindow(true);
+            feedbackStage.setScene(scene);
+
+            // Add a listener to handle the close event of the feedbackStage
+            feedbackStage.setOnHidden((WindowEvent e) -> {
+                applyBlurEffectMainWindow(false);
+            });
+
+            feedbackStage.show();
+
+            // Drag and move logic (if needed)
+            root.setOnMousePressed((mouseEvent) -> {
+                x = mouseEvent.getSceneX();
+                y = mouseEvent.getSceneY();
+            });
+
+            root.setOnMouseDragged((mouseEvent) -> {
+                feedbackStage.setX(mouseEvent.getScreenX() - x);
+                feedbackStage.setY(mouseEvent.getScreenY() - y);
+
+                feedbackStage.setOpacity(.8);
+            });
+
+            root.setOnMouseReleased((mouseEvent) -> {
+                feedbackStage.setOpacity(1);
+            });
+
+            // Controller for the new window (if needed)
+            // YourControllerClass controller = loader.getController();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

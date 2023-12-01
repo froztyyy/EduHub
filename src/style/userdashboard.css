@@ -168,3 +168,10 @@
 .selected-buttonForTime {
     -fx-background-color: #2A71E6;
 }
+
+.sendFeedback:hover{
+    -fx-fill: #2D53EF;
+}
+.sendFeedback:pressed{
+    -fx-fill: #2d53ef;
+}

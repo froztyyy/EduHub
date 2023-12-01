@@ -1,0 +1,108 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : Nov 19, 2023, 10:07:19 PM
+    Author     : jcarl
+*/
+.main-bg {
+    -fx-background-color: #000000;
+}
+
+.secondary-bg {
+    -fx-background-color: #121212;
+    -fx-background-radius: 10px;
+}
+
+.textArea {
+    -fx-background-color: transparent;
+    -fx-border-color: #121212;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 10px;
+    -fx-text-fill: silver;
+    -fx-prompt-text-fill: gray;
+}
+
+.textArea .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.textArea .scroll-pane .viewport{
+    -fx-background-color: transparent;
+}
+
+.textArea .scroll-pane .content{
+    -fx-background-color: transparent;
+}
+
+.textArea:pressed {
+    -fx-prompt-text-fill: transparent;
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+}
+
+.textArea:focused {
+    -fx-prompt-text-fill: transparent;
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+}
+
+
+
+.btns:hover {
+    -fx-background-color: #2D53EF;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.btns:pressed {
+    -fx-background-color: #2d53ef;
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+}
+
+.btnsv2 {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: transparent;
+    -fx-border-width: 1px;
+    -fx-text-fill: gray;
+}
+
+.btnsv2:hover {
+    -fx-border-color: #575957;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.btnsv2:pressed {
+    -fx-border-color: #575957;
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+}
+
+.btnStar {
+    -fx-background-color: transparent;
+    -fx-text-fill: transparent;
+}
+
+.btnStar:hover {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+.btnStar:pressed {
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+}
+
+.closeFeed:hover {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+.closeFeed:pressed {
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+}
+

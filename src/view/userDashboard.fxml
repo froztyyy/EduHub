@@ -172,7 +172,7 @@
                   </HBox>
                </children>
             </VBox>
-            <Pane fx:id="homeWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" visible="false">
+            <Pane fx:id="homeWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0">
                <children>
                   <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="698.0" prefWidth="1332.0">
                      <children>
@@ -265,11 +265,15 @@
                                           <Image url="@../media/icons/Screenshot%202023-11-19%20161348.png" />
                                        </image>
                                     </ImageView>
-                                    <Label layoutX="403.0" layoutY="49.0" styleClass="sendFeedback" stylesheets="@../style/userdashboard.css" text="Send Us FeedBack" textFill="#2d53ef">
-                                       <font>
-                                          <Font name="Arial" size="12.0" />
-                                       </font>
-                                    </Label>
+                                    <Button layoutX="384.0" layoutY="44.0" mnemonicParsing="false" onAction="#sendfeedback" prefHeight="25.0" prefWidth="128.0" style="-fx-background-color: transparent;">
+                                       <graphic>
+                                          <Label styleClass="sendFeedback" stylesheets="@../style/userdashboard.css" text="Send Us FeedBack" textFill="#2d53ef" underline="true">
+                                             <font>
+                                                <Font name="Arial" size="12.0" />
+                                             </font>
+                                          </Label>
+                                       </graphic>
+                                    </Button>
                                  </children>
                               </Pane>
                               <Pane prefHeight="698.0" prefWidth="16.0" HBox.hgrow="NEVER" />
@@ -331,7 +335,7 @@
                </children>
             </Pane>
             <Pane fx:id="announcementWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" visible="false" />
-            <Pane fx:id="calendarWindow" layoutY="96.0" prefHeight="697.0" prefWidth="1332.0">
+            <Pane fx:id="calendarWindow" layoutY="96.0" prefHeight="697.0" prefWidth="1332.0" visible="false">
                <children>
                   <Pane layoutX="401.0" layoutY="41.0" prefHeight="601.0" prefWidth="861.0" style="-fx-border-color: white; -fx-background-color: black; -fx-border-radius: 20px; -fx-border-width: 0.3;">
                      <children>
@@ -786,7 +790,7 @@
                </children></Pane>
          </children>
       </Pane>
-      <Pane fx:id="sidePanel" layoutY="49.0" prefHeight="793.0" prefWidth="357.0" style="-fx-background-color: #161B22;" visible="false">
+      <Pane fx:id="sidePanel" layoutY="49.0" prefHeight="793.0" prefWidth="357.0" style="-fx-background-color: #161B22;">
          <children>
             <ImageView fitHeight="58.0" fitWidth="44.0" layoutX="22.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -908,11 +912,15 @@
                   <Font size="13.0" />
                </font>
             </Text>
-            <Text fill="#217eff" layoutX="202.0" layoutY="767.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FeedBack">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Text>
+            <Button layoutX="190.0" layoutY="749.0" mnemonicParsing="false" onAction="#sendfeedback" style="-fx-background-color: transparent;">
+               <graphic>
+                  <Text fill="#217eff" strokeType="OUTSIDE" strokeWidth="0.0" text="FeedBack">
+                     <font>
+                        <Font size="13.0" />
+                     </font>
+                  </Text>
+               </graphic>
+            </Button>
          </children>
       </Pane>
    </children>

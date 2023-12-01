@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane id="AnchorPane" fx:id="sendRateWindow" prefHeight="635.0" prefWidth="1017.0" style="-fx-background-color: #0A0A0A;" stylesheets="@../style/feedback.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SendRateCommentWindowController">
+   <children>
+      <AnchorPane layoutX="-12.0" layoutY="25.0" prefHeight="561.0" prefWidth="1025.0">
+         <children>
+            <Pane layoutX="50.0" layoutY="101.0" prefHeight="200.0" prefWidth="285.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 15px;">
+               <children>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="285.0" spacing="15.0">
+                     <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                     </padding>
+                     <children>
+                        <Pane layoutX="25.0" layoutY="25.0" VBox.vgrow="ALWAYS" />
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="How would you rate the overall user interface and design of the app?" textAlignment="CENTER" wrappingWidth="214.0">
+                           <font>
+                              <Font name="Arial Bold" size="17.0" />
+                           </font>
+                        </Text>
+                        <HBox alignment="CENTER" spacing="15.0">
+                           <children>
+                              <Button fx:id="btn1stStar1" mnemonicParsing="false" styleClass="btnStar" text="1" />
+                              <Button fx:id="btn1stStar2" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" styleClass="btnStar" text="2" />
+                              <Button fx:id="btn1stStar3" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" styleClass="btnStar" text="3" />
+                              <Button fx:id="btn1stStar4" layoutX="114.0" layoutY="10.0" mnemonicParsing="false" styleClass="btnStar" text="4" />
+                              <Button fx:id="btn1stStar5" layoutX="166.0" layoutY="10.0" mnemonicParsing="false" styleClass="btnStar" text="5" />
+                           </children>
+                        </HBox>
+                        <Pane layoutX="25.0" layoutY="25.0" VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
+               </children>
+            </Pane>
+            <Pane layoutX="705.0" layoutY="95.0" prefHeight="200.0" prefWidth="285.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 15px;">
+               <children>
+                  <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="285.0" spacing="15.0">
+                     <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                     </padding>
+                     <children>
+                        <Pane layoutX="25.0" layoutY="25.0" VBox.vgrow="ALWAYS" />
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="How satisfied are you with the app's features and functionality?" textAlignment="CENTER" wrappingWidth="250.0">
+                           <font>
+                              <Font name="Arial Bold" size="17.0" />
+                           </font>
+                        </Text>
+                        <HBox alignment="CENTER" prefHeight="25.0" prefWidth="274.0" spacing="15.0">
+                           <children>
+                              <Button fx:id="btn2ndStar1" mnemonicParsing="false" styleClass="btnStar" text="1" />
+                              <Button fx:id="btn2ndStar2" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" styleClass="btnStar" text="2" />
+                              <Button fx:id="btn2ndStar3" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" styleClass="btnStar" text="3" />
+                              <Button fx:id="btn2ndStar4" layoutX="114.0" layoutY="10.0" mnemonicParsing="false" styleClass="btnStar" text="4" />
+                              <Button fx:id="btn2ndStar5" layoutX="166.0" layoutY="10.0" mnemonicParsing="false" styleClass="btnStar" text="5" />
+                           </children>
+                        </HBox>
+                        <Pane layoutX="25.0" layoutY="25.0" VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
+               </children>
+            </Pane>
+            <Pane layoutY="309.0" />
+            <TextArea fx:id="txtFeedback" layoutX="262.0" layoutY="337.0" prefHeight="200.0" prefWidth="500.0" promptText="Write any of your suggestions, encountered bug, experience and feedback" styleClass="textArea" wrapText="true">
+               <font>
+                  <Font name="Arial" size="14.0" />
+               </font>
+               <padding>
+                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+               </padding>
+            </TextArea>
+            <Pane layoutX="500.0" layoutY="309.0" />
+            <Button fx:id="btnSubmit" layoutX="480.0" layoutY="524.0" mnemonicParsing="false" style="-fx-background-color: #2B4FE4; -fx-background-radius: 10px;" stylesheets="@../style/feedback.css" text="Submit" textFill="WHITE">
+               <font>
+                  <Font name="Arial Bold" size="14.0" />
+               </font>
+               <padding>
+                  <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+               </padding>
+            </Button>
+            <Pane layoutX="361.0" layoutY="91.0" prefHeight="219.0" prefWidth="318.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 15px;">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="326.0" spacing="25.0">
+                     <children>
+                        <Pane VBox.vgrow="ALWAYS" />
+                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="How's your experience with the app?" textAlignment="CENTER" wrappingWidth="250.0">
+                           <font>
+                              <Font name="Arial Bold" size="17.0" />
+                           </font>
+                        </Text>
+                        <HBox alignment="CENTER" prefHeight="25.0" prefWidth="302.0" spacing="15.0">
+                           <children>
+                              <Button fx:id="btn3rdStar1" mnemonicParsing="false" styleClass="btnStar" text="1" />
+                              <Button fx:id="btn3rdStar2" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" styleClass="btnStar" text="2" />
+                              <Button fx:id="btn3rdStar3" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" styleClass="btnStar" text="3" />
+                              <Button fx:id="btn3rdStar4" layoutX="114.0" layoutY="10.0" mnemonicParsing="false" styleClass="btnStar" text="4" />
+                              <Button fx:id="btn3rdStar5" layoutX="166.0" layoutY="10.0" mnemonicParsing="false" styleClass="btnStar" text="5" />
+                           </children>
+                        </HBox>
+                        <Pane layoutX="10.0" layoutY="10.0" VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
+               </children>
+            </Pane>
+            <Button layoutX="973.0" layoutY="1.0" mnemonicParsing="false" onAction="#closeButton" style="-fx-background-color: transparent;" stylesheets="@../style/feedback.css">
+               <graphic>
+                  <ImageView fitHeight="19.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../media/icons/icons8-close-30.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <ImageView fitHeight="113.0" fitWidth="111.0" layoutX="457.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../media/icons/Screenshot_2023-12-01_224019-removebg-preview.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="113.0" fitWidth="111.0" layoutX="141.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../media/icons/Screenshot_2023-12-01_224140-removebg-preview.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="113.0" fitWidth="111.0" layoutX="792.0" layoutY="36.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../media/icons/Screenshot_2023-12-01_224459-removebg-preview.png" />
+               </image>
+            </ImageView>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

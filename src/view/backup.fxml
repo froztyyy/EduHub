@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.Blend?>
+<?import javafx.scene.effect.MotionBlur?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="580.0" style="-fx-background-color: black; -fx-padding: 5; -fx-background-radius: 5; -fx-border-width: 2; -fx-border-color: #00000000;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ImageView fitHeight="458.0" fitWidth="611.0" layoutX="-10.0" layoutY="-49.0" opacity="0.65" pickOnBounds="true" preserveRatio="true" rotate="-25.5">
+         <image>
+            <Image url="@../OneDrive/Documents/NetBeansProjects/EduHub/src/media/a94aee835e16cff4f14c83dac8ffbe10.gif" />
+         </image>
+         <effect>
+            <Blend />
+         </effect>
+      </ImageView>
+      <ImageView blendMode="MULTIPLY" fitHeight="444.0" fitWidth="692.0" layoutX="-1.0" layoutY="-45.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../OneDrive/Documents/NetBeansProjects/EduHub/src/media/1dd17300e083950d26a583bd63a8ace4.jpg" />
+         </image>
+         <effect>
+            <MotionBlur angle="105.88" radius="11.48" />
+         </effect>
+      </ImageView>
+      <ImageView fitHeight="40.0" fitWidth="23.0" layoutX="14.0" layoutY="322.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../OneDrive/Documents/NetBeansProjects/EduHub/src/media/Eclipse-1.1s-200px.gif" />
+         </image></ImageView>
+      <Text fill="#5b398fc1" layoutX="628.0" layoutY="338.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DID YOU KNOW" visible="false">
+         <font>
+            <Font name="Arial" size="12.0" />
+         </font></Text>
+      <Text fill="WHITE" layoutX="710.0" layoutY="320.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." visible="false">
+         <font>
+            <Font name="Century Gothic" size="33.0" />
+         </font>
+      </Text>
+      <Line endX="100.0" layoutX="618.0" layoutY="349.0" startX="-100.0" stroke="WHITE" strokeWidth="0.3" visible="false" />
+      <Text fill="#6b6b6b" layoutX="370.0" layoutY="373.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Every click on our platform connects minds to create knowledge and opportunities. You're part of something big" textAlignment="RIGHT" visible="false" wrappingWidth="346.970703125">
+         <font>
+            <Font name="Arial" size="11.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="458.0" fitWidth="734.0" layoutX="-19.0" layoutY="-56.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../OneDrive/Documents/NetBeansProjects/EduHub/src/media/1dd17300e083950d26a583bd63a8ace4.jpg" />
+         </image>
+         <effect>
+            <MotionBlur radius="9.64" />
+         </effect>
+      </ImageView>
+      <Text layoutX="186.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="EduHub" wrappingWidth="177.087890625">
+         <font>
+            <Font name="Arial Black" size="41.0" />
+         </font>
+         <fill>
+            <LinearGradient endX="0.4312796208530806" endY="0.6824644549763033" startY="0.5876777251184835">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.32894736528396606" green="0.32894736528396606" blue="0.32894736528396606" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.9700000286102295" green="0.9700000286102295" blue="0.9700000286102295" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </fill>
+      </Text>
+      <Text fill="#005eff" layoutX="364.0" layoutY="169.0" strokeType="OUTSIDE" strokeWidth="0.0" text="." wrappingWidth="23.0">
+         <font>
+            <Font name="Arial Black" size="41.0" />
+         </font>
+      </Text>
+      <Text fill="WHITE" layoutX="103.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="This message conveys that the application is loading and sets the expectation that the user is about to experience something great in terms of education. Feel free to modify it to suit your specific branding and style." textAlignment="CENTER" wrappingWidth="365.970703125">
+         <font>
+            <Font name="Franklin Gothic Book" size="12.0" />
+         </font>
+      </Text>
+   </children>
+</Pane>

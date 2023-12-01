@@ -1,0 +1,5 @@
+.selected-button {
+    -fx-background-color: #30363D;
+    -fx-background-radius: 10px;
+    -fx-font-weight: bold;
+}

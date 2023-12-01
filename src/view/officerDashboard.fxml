@@ -332,7 +332,7 @@
                </children>
             </Pane>
             <Pane fx:id="announcementWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" visible="false" />
-            <Pane fx:id="calendarWindow" layoutY="96.0" prefHeight="697.0" prefWidth="1332.0">
+            <Pane fx:id="calendarWindow" layoutY="96.0" prefHeight="697.0" prefWidth="1332.0" visible="false">
                <children>
                   <Pane layoutX="401.0" layoutY="41.0" prefHeight="601.0" prefWidth="861.0" style="-fx-border-color: white; -fx-background-color: black; -fx-border-radius: 20px; -fx-border-width: 0.3;">
                      <children>
@@ -458,7 +458,7 @@
                </children>
             </Pane>
             <Pane fx:id="todoWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" visible="false" />
-            <Pane fx:id="timeClockWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" visible="false">
+            <Pane fx:id="timeClockWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0">
                <children>
                   <AnchorPane fx:id="clockPane" prefHeight="704.0" prefWidth="1332.0" styleClass="secondary-bg">
                      <children>
