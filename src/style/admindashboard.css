@@ -56,6 +56,8 @@
     -fx-border-width: 1px;
     -fx-border-radius: 10px;
     -fx-padding: 5px; /* Adjust padding as needed */
+    -fx-text-fill: silver;
+    -fx-font-size: 16px;
 }
 
 .combobox .arrow-button {
@@ -86,4 +88,25 @@
     -fx-border-width: 1px; 
     -fx-border-radius: 10px;
     -fx-text-fill: white;
+}
+
+.btnsv2 {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: transparent;
+    -fx-border-width: 1px;
+    -fx-text-fill: gray;
+}
+
+.btnsv2:hover {
+    -fx-border-color: #575957;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.btnsv2:pressed {
+    -fx-border-color: #575957;
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
 }

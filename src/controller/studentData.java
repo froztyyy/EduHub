@@ -4,62 +4,95 @@
  */
 package controller;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 /**
  *
  * @author jcarl
  */
 public class studentData {
-    private int studentID;
-    private String password;
-    private String surname;
-    private String firstname;
-    private String middlename;
-    private String suffix;
-    private int courseID;
-    private int sectionID;
 
-    // Constructor
-    public studentData(int studentID, String password, String surname, String firstname, String middlename, String suffix, int courseID, int sectionID) {
-        this.studentID = studentID;
-        this.password = password;
-        this.surname = surname;
-        this.firstname = firstname;
-        this.middlename = middlename;
-        this.suffix = suffix;
-        this.courseID = courseID;
-        this.sectionID = sectionID;
+    public String getStudentID() {
+        return studentID;
     }
 
-    // Getters (and optionally setters)
-    public int getStudentID() {
-        return studentID;
+    public void setStudentID(String studentID) {
+        this.studentID = studentID;
     }
 
     public String getPassword() {
         return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getRoleID() {
+        return roleID;
+    }
+
+    public void setRoleID(String roleID) {
+        this.roleID = roleID;
+    }
+
     public String getSurname() {
         return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public String getFirstname() {
         return firstname;
     }
 
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
     public String getMiddlename() {
         return middlename;
+    }
+
+    public void setMiddlename(String middlename) {
+        this.middlename = middlename;
     }
 
     public String getSuffix() {
         return suffix;
     }
 
-    public int getCourseID() {
+    public void setSuffix(String suffix) {
+        this.suffix = suffix;
+    }
+
+    public String getCourseID() {
         return courseID;
     }
 
-    public int getSectionID() {
+    public void setCourseID(String courseID) {
+        this.courseID = courseID;
+    }
+
+    public String getSectionID() {
         return sectionID;
     }
+
+    public void setSectionID(String sectionID) {
+        this.sectionID = sectionID;
+    }
+
+    private String studentID;
+    private String password;
+    private String roleID;
+    private String surname;
+    private String firstname;
+    private String middlename;
+    private String suffix;
+    private String courseID;
+    private String sectionID;
+    
 }

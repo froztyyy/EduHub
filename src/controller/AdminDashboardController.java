@@ -46,9 +46,12 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -114,18 +117,6 @@ public class AdminDashboardController implements Initializable {
     private TextField txtCourseID;
     private TextField txtSectionID;
     @FXML
-    private TextField txtCourseName;
-    @FXML
-    private TextField txtCourseAbb;
-    @FXML
-    private ComboBox<?> cbSection;
-    @FXML
-    private Button btnCrtCourseSec;
-    @FXML
-    private TextField txtStudentID1;
-    @FXML
-    private Button btnRateFeedback;
-    @FXML
     private TableView<Feedback> tableFeedBack;
     @FXML
     private TableColumn<Feedback, String> designRate;
@@ -135,6 +126,48 @@ public class AdminDashboardController implements Initializable {
     private TableColumn<Feedback, String> ExperienceRate;
     @FXML
     private TableColumn<Feedback, String> FeedBackComment;
+    @FXML
+    private TextField txtRoleID;
+    @FXML
+    private TextField txtSurname;
+    @FXML
+    private TextField txtFirstname;
+    @FXML
+    private TextField txtMiddlename;
+    @FXML
+    private TextField txtSuffix;
+    @FXML
+    private ComboBox<String> cbCourse;
+    @FXML
+    private ComboBox<String> cbSectionYear;
+    @FXML
+    private Button btnCreateAccount;
+    @FXML
+    private Button btnUpdate;
+    @FXML
+    private Button btnDelete;
+    @FXML
+    private TableView<?> tblOfficerData;
+    @FXML
+    private TableColumn<?, ?> tblStudentID;
+    @FXML
+    private TableColumn<?, ?> tblPassword;
+    @FXML
+    private TableColumn<?, ?> tblRoleID;
+    @FXML
+    private TableColumn<?, ?> tblSurname;
+    @FXML
+    private TableColumn<?, ?> tblFirstName;
+    @FXML
+    private TableColumn<?, ?> tblMiddlename;
+    @FXML
+    private TableColumn<?, ?> tblSuffix;
+    @FXML
+    private TableColumn<?, ?> tblCourse;
+    @FXML
+    private TableColumn<?, ?> tblYearSection;
+    @FXML
+    private Button btnRateFeedback;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -193,6 +226,9 @@ public class AdminDashboardController implements Initializable {
 
         // Load feedback data
         loadFeedbackData();
+        
+        fetchCourseToComboBox(cbCourse);
+        fetchSectionToComboBox(cbSectionYear);
     }
 
     private final boolean stop = false;
@@ -603,5 +639,100 @@ public class AdminDashboardController implements Initializable {
             }
         }
     }
+    
+    private void fetchCourseToComboBox(ComboBox<String> comboBox) {
+        String sql = "SELECT CourseAbb FROM course";
 
+        try {
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            List<String> items = new ArrayList<>();
+            while (result.next()) {
+                String itemName = result.getString("CourseAbb");
+                items.add(itemName);
+            }
+
+            comboBox.getItems().addAll(items);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error fetching course data: " + e.getMessage());
+        }
+    }
+    
+    private void fetchSectionToComboBox(ComboBox<String> comboBox) {
+        String sql = "SELECT SectionName FROM section";
+
+        try {
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            List<String> items = new ArrayList<>();
+            while (result.next()) {
+                String itemName = result.getString("SectionName");
+                items.add(itemName);
+            }
+
+            comboBox.getItems().addAll(items);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error fetching course data: " + e.getMessage());
+        }
+    }
+
+    private void populateComboBox(ComboBox<String> comboBox, String query) {
+        try {
+            prepare = connect.prepareStatement(query);
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                String item = result.getString(1); // Assuming the data is in the first column
+                comboBox.getItems().add(item);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error populating ComboBox: " + e.getMessage());
+        }
+    }
+    
+     @FXML
+    private void handleCreateAccount(ActionEvent event) {
+        String sql = "INSERT INTO account_student (StudentID, Password, RoleID, Surname, Firstname, Middlename, Suffix, CourseID, SectionID) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try {
+            connect = database.getConnection();
+            prepare = connect.prepareStatement(sql);
+
+            // Set parameters for the prepared statement
+            prepare.setString(1, txtStudentID.getText());
+            prepare.setString(2, txtPassword.getText());
+            prepare.setInt(3, 2); // Assuming RoleID has a default value of 2
+            prepare.setString(4, txtSurname.getText());
+            prepare.setString(5, txtFirstname.getText());
+            prepare.setString(6, txtMiddlename.getText());
+            prepare.setString(7, txtSuffix.getText());
+            prepare.setString(8, cbCourse.getValue()); // Assuming you're using the value from the ComboBox
+            prepare.setString(9, cbSectionYear.getValue()); // Assuming you're using the value from the ComboBox
+
+            // Execute the SQL query
+            prepare.executeUpdate();
+
+            showSuccessAlert("Account created successfully!");
+
+            // Optionally, you can show a success message or perform other actions here
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exceptions appropriately (show error message, log, etc.)
+        }
+    }
+
+    private void showSuccessAlert(String message) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 }
