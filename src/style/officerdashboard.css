@@ -1,7 +1,154 @@
-/*
- * Empty Stylesheet file.
- */
+.txtField {
+    -fx-background-color: transparent;
+    -fx-border-color: gray;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-prompt-text-fill: gray;
+    -fx-text-fill: silver;
+}
 
-.mainFxmlClass {
+.txtField:hover {
+    -fx-background-color: transparent;
+    -fx-prompt-text-fill: transparent;
+    -fx-text-fill: silver;
+}
+.txtField:pressed {
+    -fx-background-color: transparent;
+    -fx-prompt-text-fill: transparent;
+    -fx-text-fill: silver;
+}
+.txtField:focused {
+    -fx-background-color: transparent;
+    -fx-prompt-text-fill: transparent;
+    -fx-text-fill: silver;
+}
 
+.btns {
+    -fx-background-color: #848884;
+    -fx-background-radius: 10px;
+    -fx-text-fill: #404040;
+}
+
+.btns:hover {
+    -fx-background-color: #575957;
+    -fx-text-fill: #a3a2a2;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.btns:pressed {
+    -fx-background-color: #575957;
+    -fx-text-fill: #a3a2a2;
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+}
+
+.combobox {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10px;
+    -fx-border-color: gray;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-padding: 5px; /* Adjust padding as needed */
+    -fx-text-fill: silver;
+    -fx-font-size: 16px;
+}
+
+.combobox .arrow-button {
+    -fx-background-color: transparent;
+}
+
+.combobox .arrow-button .arrow {
+    -fx-background-color: gray;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10px;
+    -fx-border-color: gray; 
+    -fx-border-width: 1px; 
+    -fx-border-radius: 10px;
+    -fx-padding: 5px; 
+}
+
+.combo-box-popup .list-view .list-cell {
+    -fx-margin: 5px;
+}
+
+.combo-box-popup .list-view .list-cell:selected {
+    -fx-background-radius: 10px;
+    -fx-background-color: gray;
+    -fx-border-color: transparent; 
+    -fx-border-width: 1px; 
+    -fx-border-radius: 10px;
+    -fx-text-fill: white;
+}
+
+.btnsv2 {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: transparent;
+    -fx-border-width: 1px;
+    -fx-text-fill: gray;
+}
+
+.btnsv2:hover {
+    -fx-border-color: #575957;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.btnsv2:pressed {
+    -fx-border-color: #575957;
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+}
+
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: gray;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
+}
+
+.table-row-cell {
+    -fx-background-color: transparent;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: transparent;
+}
+
+.table-row-cell:filled:hover {
+    -fx-background-color: #1f1f1f; /* Change this to your desired hover background color */
+}
+
+.table-row-cell:selected {
+    -fx-background-color: #333; /* Change this to your desired selection background color */
+}
+
+.table-row-cell:filled:selected {
+    -fx-background-color: #555; /* Change this to your desired filled selection background color */
+}
+
+.table-cell {
+    -fx-text-fill: silver;
+    -fx-background-color: transparent;
+    -fx-alignment: center;
+}
+
+.table-column {
+    -fx-alignment: center;
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header {
+    -fx-background-color: #848884; /* Change this to your desired column header background color */
+    -fx-text-fill: silver;
+    -fx-border-color: gray;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-background-radius: 10px;
 }

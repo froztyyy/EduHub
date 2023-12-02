@@ -185,6 +185,16 @@ public class AdminDashboardController implements Initializable {
     private TableColumn<getCourseData, String> tblCourseAbb;
     @FXML
     private TableColumn<getCourseData, String> tblCourseName;
+    @FXML
+    private TextField txtYearSection;
+    @FXML
+    private TableColumn<getYearSectionData , String> tblYearCourse;
+    @FXML
+    private Button btnCreateYearSection;
+    @FXML
+    private Button btnDeleteYearSection;
+    @FXML
+    private TableView<getYearSectionData> tblYearSectionData;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -272,6 +282,9 @@ public class AdminDashboardController implements Initializable {
         tblCourseAbb.setCellValueFactory(new PropertyValueFactory<>("CourseAbb"));
         tblCourseName.setCellValueFactory(new PropertyValueFactory<>("CourseName"));
         loadCourseData();
+        
+        tblYearCourse.setCellValueFactory(new PropertyValueFactory<>("SectionName"));
+        loadYearSectionData();
 
     }
 
@@ -685,10 +698,9 @@ public class AdminDashboardController implements Initializable {
     }
 
     private void fetchCourseToComboBox(ComboBox<String> comboBox) {
-        String sql = "SELECT CourseAbb FROM course";
 
         try {
-            prepare = connect.prepareStatement(sql);
+            prepare = connect.prepareStatement("SELECT CourseAbb FROM course");
             result = prepare.executeQuery();
 
             List<String> items = new ArrayList<>();
@@ -705,10 +717,9 @@ public class AdminDashboardController implements Initializable {
     }
 
     private void fetchSectionToComboBox(ComboBox<String> comboBox) {
-        String sql = "SELECT SectionName FROM section";
 
         try {
-            prepare = connect.prepareStatement(sql);
+            prepare = connect.prepareStatement("SELECT SectionName FROM section");
             result = prepare.executeQuery();
 
             List<String> items = new ArrayList<>();
@@ -1135,5 +1146,104 @@ public class AdminDashboardController implements Initializable {
 
         // Reload the data
         loadCourseData();
+    }
+    
+    @FXML
+    private void handleCreateYearSection(ActionEvent event) {
+        String sql = "Insert into section (SectionName)" + "Values (?)";
+
+        try {
+            connect = database.getConnection();
+            prepare = connect.prepareStatement(sql);
+
+            // Set parameters for the prepared statement
+            prepare.setString(1, txtYearSection.getText());
+
+            // Execute the SQL query
+            prepare.executeUpdate();
+
+            showSuccessAlert("Course created successfully!");
+
+            txtCourseAbb.clear();
+            txtCourseName.clear();
+            clearAndLoadSectionNameData();
+            // Optionally, you can show a success message or perform other actions here
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exceptions appropriately (show error message, log, etc.)
+        }
+    }
+    
+    @FXML
+    private void handleDeleteYearSection(ActionEvent event) {
+        // Get the selected item from the table
+        getYearSectionData selectedCourse = tblYearSectionData.getSelectionModel().getSelectedItem();
+
+        if (selectedCourse != null) {
+            try {
+                connect = database.getConnection();
+                prepare = connect.prepareStatement("DELETE FROM section WHERE SectionName = ?");
+                prepare.setString(1, selectedCourse.getSectionName());
+
+                // Execute the SQL query for deletion
+                prepare.executeUpdate();
+
+                showSuccessAlert("Year & Section deleted successfully!");
+
+                // Refresh the table after deletion
+                clearAndLoadSectionNameData();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle exceptions appropriately (show error message, log, etc.)
+            }
+        } else {
+            // If no item is selected, show a warning or error message
+            showWarningAlert("Please select a Year & Section to delete.");
+        }
+    }
+    
+    private ObservableList<getYearSectionData> YearSectionData;
+
+    private void loadYearSectionData() {
+        YearSectionData = FXCollections.observableArrayList();
+        connect = database.getConnection();
+
+        // Add logic to retrieve feedback data from the database
+        // Replace the placeholders with your actual column names
+        try {
+            prepare = connect.prepareStatement("SELECT SectionName FROM section");
+            result = prepare.executeQuery(); // Execute the query and obtain the result set
+
+            while (result.next()) {
+                getYearSectionData yearSectionData = new getYearSectionData();
+                yearSectionData.setSectionName(result.getString("SectionName"));
+                YearSectionData.add(yearSectionData);
+            }
+
+            tblYearSectionData.setItems(YearSectionData);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close the result set, statement, and connection in a finally block
+            try {
+                if (result != null) {
+                    result.close();
+                }
+                if (prepare != null) {
+                    prepare.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+    
+    
+    private void clearAndLoadSectionNameData() {
+        // Clear the existing data
+        tblYearSectionData.getItems().clear();
+
+        // Reload the data
+        loadYearSectionData();
     }
 }
