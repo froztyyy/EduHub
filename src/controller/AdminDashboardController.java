@@ -43,6 +43,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.sql.SQLException;
+import javafx.scene.control.ComboBox;
 
 /**
  * FXML Controller class
@@ -101,24 +102,18 @@ public class AdminDashboardController implements Initializable {
     private TextField txtStudentID;
     @FXML
     private TextField txtPassword;
-    @FXML
-    private TextField txtRoleID;
-    @FXML
-    private TextField txtSurname;
-    @FXML
-    private TextField txtFirstname;
-    @FXML
-    private TextField txtMiddlename;
-    @FXML
-    private TextField txtSuffix;
     private TextField txtCourseID;
     private TextField txtSectionID;
     @FXML
-    private Button btnCreateAccount;
+    private TextField txtCourseName;
     @FXML
-    private TextField txtCourse;
+    private TextField txtCourseAbb;
     @FXML
-    private TextField txtSection;
+    private ComboBox<?> cbSection;
+    @FXML
+    private Button btnCrtCourseSec;
+    @FXML
+    private TextField txtStudentID1;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
