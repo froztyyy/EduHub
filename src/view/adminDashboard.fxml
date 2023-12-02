@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.AreaChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Blend?>
@@ -20,7 +22,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminDashboardController">
+<Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminDashboardController">
    <children>
       <Pane prefHeight="43.0" prefWidth="1332.0" style="-fx-background-color: black;">
          <children>
@@ -173,7 +175,7 @@
                   </HBox>
                </children>
             </VBox>
-            <Pane fx:id="dashBoardWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0">
+            <Pane fx:id="dashBoardWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" visible="false">
                <children>
                   <AnchorPane layoutX="14.0" layoutY="6.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="698.0" prefWidth="1332.0">
                      <children>
@@ -406,7 +408,198 @@
             </Pane>
             <Pane fx:id="courseYearWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" visible="false" />
             <Pane fx:id="sectionStudWindow" layoutY="96.0" prefHeight="697.0" prefWidth="1332.0" visible="false" />
-            <Pane fx:id="officerWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" visible="false" />
+            <Pane fx:id="officerWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" stylesheets="@../style/admindashboard.css">
+               <children>
+                  <HBox alignment="CENTER" layoutX="-3.0" layoutY="-1.0" prefHeight="697.0" prefWidth="1332.0">
+                     <children>
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <VBox prefHeight="697.0" prefWidth="400.0" spacing="25.0">
+                           <children>
+                              <Label text="Course and Section Management" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Pane>
+                                 <children>
+                                    <VBox prefHeight="70.0" prefWidth="200.0" spacing="10.0">
+                                       <children>
+                                          <Label text="Course Name" textFill="#d7d7d7">
+                                             <font>
+                                                <Font name="Arial" size="16.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="txtCourseName" prefHeight="40.0" styleClass="txtField" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </Pane>
+                              <Pane>
+                                 <children>
+                                    <VBox prefHeight="70.0" prefWidth="200.0" spacing="10.0">
+                                       <children>
+                                          <Label text="Course Abbreviation" textFill="#d7d7d7">
+                                             <font>
+                                                <Font name="Arial" size="16.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="txtCourseAbb" prefHeight="40.0" styleClass="txtField" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </Pane>
+                              <Pane>
+                                 <children>
+                                    <VBox prefHeight="67.0" prefWidth="200.0" spacing="10.0">
+                                       <children>
+                                          <Label text="Section" textFill="#d7d7d7">
+                                             <font>
+                                                <Font name="Arial" size="16.0" />
+                                             </font>
+                                          </Label>
+                                          <ComboBox fx:id="cbSection" prefHeight="40.0" prefWidth="207.0" styleClass="combobox" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </Pane>
+                              <Button fx:id="btnCrtCourseSec" mnemonicParsing="false" prefHeight="40.0" prefWidth="200.0" text="Create Course and Section">
+                                 <font>
+                                    <Font name="Arial" size="14.0" />
+                                 </font>
+                                 <styleClass>
+                                    <String fx:value="txtField" />
+                                    <String fx:value="btns" />
+                                 </styleClass>
+                              </Button>
+                           </children>
+                           <padding>
+                              <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+                           </padding>
+                        </VBox>
+                        <Line endX="-96.70710754394531" endY="697.0" startX="-100.0" stroke="#545454" />
+                        <VBox layoutX="210.0" layoutY="10.0" prefHeight="697.0" prefWidth="700.0" spacing="25.0">
+                           <children>
+                              <Label text="Officer Account Management" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Pane>
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" spacing="25.0">
+                                       <children>
+                                          <VBox prefWidth="190.0" spacing="10.0">
+                                             <children>
+                                                <HBox alignment="CENTER_LEFT" spacing="5.0">
+                                                   <children>
+                                                      <Label text="Student ID" textFill="#d7d7d7">
+                                                         <font>
+                                                            <Font name="Arial" size="16.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label text="(Username)" textFill="#909090">
+                                                         <font>
+                                                            <Font name="Arial" size="15.0" />
+                                                         </font>
+                                                      </Label>
+                                                   </children>
+                                                </HBox>
+                                                <TextField fx:id="txtStudentID" prefHeight="40.0" styleClass="txtField" />
+                                             </children>
+                                          </VBox>
+                                          <VBox layoutX="10.0" layoutY="10.0" prefWidth="190.0" spacing="10.0">
+                                             <children>
+                                                <Label text="Password" textFill="#d7d7d7">
+                                                   <font>
+                                                      <Font name="Arial" size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <TextField fx:id="txtPassword" prefHeight="40.0" styleClass="txtField" />
+                                             </children>
+                                          </VBox>
+                                          <VBox layoutX="235.0" layoutY="10.0" prefHeight="70.0" prefWidth="55.0" spacing="10.0">
+                                             <children>
+                                                <Label text="Role ID" textFill="#d7d7d7">
+                                                   <font>
+                                                      <Font name="Arial" size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <TextField alignment="CENTER" editable="false" prefHeight="40.0" styleClass="txtField" text="2">
+                                                   <font>
+                                                      <Font name="Arial" size="15.0" />
+                                                   </font>
+                                                </TextField>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </Pane>
+                              <Pane layoutX="60.0" layoutY="108.0">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" spacing="25.0">
+                                       <children>
+                                          <VBox spacing="10.0">
+                                             <children>
+                                                <Label text="Surname" textFill="#d7d7d7">
+                                                   <font>
+                                                      <Font name="Arial" size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <TextField fx:id="txtStudentID1" prefHeight="40.0" styleClass="txtField" />
+                                             </children>
+                                          </VBox>
+                                          <VBox layoutX="10.0" layoutY="10.0" spacing="10.0">
+                                             <children>
+                                                <Label text="First Name" textFill="#d7d7d7">
+                                                   <font>
+                                                      <Font name="Arial" size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <TextField prefHeight="40.0" styleClass="txtField" />
+                                             </children>
+                                          </VBox>
+                                          <VBox layoutX="235.0" layoutY="10.0" prefHeight="70.0" prefWidth="150.0" spacing="10.0">
+                                             <children>
+                                                <Label text="Middle Name" textFill="#d7d7d7">
+                                                   <font>
+                                                      <Font name="Arial" size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <TextField alignment="CENTER" prefHeight="40.0" styleClass="txtField">
+                                                   <font>
+                                                      <Font name="Arial" size="15.0" />
+                                                   </font>
+                                                </TextField>
+                                             </children>
+                                          </VBox>
+                                          <VBox layoutX="440.0" layoutY="10.0" prefHeight="70.0" prefWidth="150.0" spacing="10.0">
+                                             <children>
+                                                <Label text="Suffix" textFill="#d7d7d7">
+                                                   <font>
+                                                      <Font name="Arial" size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <TextField alignment="CENTER" prefHeight="40.0" styleClass="txtField">
+                                                   <font>
+                                                      <Font name="Arial" size="15.0" />
+                                                   </font>
+                                                </TextField>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </Pane>
+                           </children>
+                           <padding>
+                              <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+                           </padding>
+                        </VBox>
+                        <Pane layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+               </children></Pane>
             <Pane fx:id="feedbackWindow" layoutX="10.0" layoutY="105.0" prefHeight="697.0" prefWidth="1332.0" visible="false" />
             <Pane fx:id="trashWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" visible="false">
                <children>
@@ -495,7 +688,7 @@
                         <Image url="@../media/icons/icons8-customs-officer-25.png" />
                      </image>
                   </ImageView>
-                  <Text fill="#d7d7d7" layoutX="60.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Faculty Officers">
+                  <Text fill="#d7d7d7" layoutX="60.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Officer Management">
                      <font>
                         <Font name="Arial" size="19.0" />
                      </font>

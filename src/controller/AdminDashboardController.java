@@ -4,23 +4,14 @@
  */
 package controller;
 
-import java.io.IOException;
+import com.sun.jdi.connect.spi.Connection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.TextStyle;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
 import java.util.ResourceBundle;
-import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
@@ -42,23 +33,16 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import java.sql.SQLException;
 
 /**
  * FXML Controller class
@@ -113,6 +97,28 @@ public class AdminDashboardController implements Initializable {
 
     private double x = 0;
     private double y = 0;
+    @FXML
+    private TextField txtStudentID;
+    @FXML
+    private TextField txtPassword;
+    @FXML
+    private TextField txtRoleID;
+    @FXML
+    private TextField txtSurname;
+    @FXML
+    private TextField txtFirstname;
+    @FXML
+    private TextField txtMiddlename;
+    @FXML
+    private TextField txtSuffix;
+    private TextField txtCourseID;
+    private TextField txtSectionID;
+    @FXML
+    private Button btnCreateAccount;
+    @FXML
+    private TextField txtCourse;
+    @FXML
+    private TextField txtSection;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
