@@ -463,7 +463,7 @@
                      </font>
                   </Button>
                </children></Pane>
-            <Pane fx:id="todoWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0">
+            <Pane fx:id="todoWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" visible="false">
                <children>
                   <Pane fx:id="listPane" layoutX="227.0" layoutY="68.0" visible="false">
                      <children>

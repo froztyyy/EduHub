@@ -135,7 +135,7 @@ public class AdminLoginController implements Initializable {
 
     @FXML
     private void signInButton(ActionEvent event) {
-        String sql = "SELECT * FROM account WHERE username = ? and password = ?";
+        String sql = "SELECT * FROM account_student WHERE StudentID = ? and Password = ?";
 
         connect = database.getConnection();
 
@@ -175,8 +175,8 @@ public class AdminLoginController implements Initializable {
                     Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
                     ((Node) (event.getSource())).getScene().getWindow().hide();
-                    stage.setWidth(1126);
-                    stage.setHeight(654);
+                    stage.setWidth(1332);
+                    stage.setHeight(835);
 
                     Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
                     double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;

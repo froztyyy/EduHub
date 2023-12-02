@@ -171,6 +171,20 @@ public class AdminDashboardController implements Initializable {
     private Button btnRateFeedback;
     @FXML
     private Button btnClear;
+    @FXML
+    private TextField txtCourseAbb;
+    @FXML
+    private TextField txtCourseName;
+    @FXML
+    private Button btnCreateCourse;
+    @FXML
+    private Button btnDeleteCourse;
+    @FXML
+    private TableView<getCourseData> tblCourseData;
+    @FXML
+    private TableColumn<getCourseData, String> tblCourseAbb;
+    @FXML
+    private TableColumn<getCourseData, String> tblCourseName;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -254,6 +268,10 @@ public class AdminDashboardController implements Initializable {
                 handleTableClick();
             }
         });
+
+        tblCourseAbb.setCellValueFactory(new PropertyValueFactory<>("CourseAbb"));
+        tblCourseName.setCellValueFactory(new PropertyValueFactory<>("CourseName"));
+        loadCourseData();
 
     }
 
@@ -1009,5 +1027,113 @@ public class AdminDashboardController implements Initializable {
 
         // Reload the data
         loadOfficerAccountData();
+    }
+
+    @FXML
+    private void handleCreateCourse(ActionEvent event) {
+        String sql = "Insert into course (CourseAbb, CourseName)" + "Values (? , ?)";
+
+        try {
+            connect = database.getConnection();
+            prepare = connect.prepareStatement(sql);
+
+            // Set parameters for the prepared statement
+            prepare.setString(1, txtCourseAbb.getText());
+            prepare.setString(2, txtCourseName.getText());
+
+            // Execute the SQL query
+            prepare.executeUpdate();
+
+            showSuccessAlert("Course created successfully!");
+
+            txtCourseAbb.clear();
+            txtCourseName.clear();
+            clearAndLoadCourseData();
+            // Optionally, you can show a success message or perform other actions here
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exceptions appropriately (show error message, log, etc.)
+        }
+    }
+
+    @FXML
+    private void handleDeleteCourse(ActionEvent event) {
+        // Get the selected item from the table
+        getCourseData selectedCourse = tblCourseData.getSelectionModel().getSelectedItem();
+
+        if (selectedCourse != null) {
+            try {
+                connect = database.getConnection();
+                prepare = connect.prepareStatement("DELETE FROM course WHERE CourseAbb = ?");
+                prepare.setString(1, selectedCourse.getCourseAbb());
+
+                // Execute the SQL query for deletion
+                prepare.executeUpdate();
+
+                showSuccessAlert("Course deleted successfully!");
+
+                // Refresh the table after deletion
+                loadCourseData();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle exceptions appropriately (show error message, log, etc.)
+            }
+        } else {
+            // If no item is selected, show a warning or error message
+            showWarningAlert("Please select a course to delete.");
+        }
+    }
+
+    private void showWarningAlert(String message) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private ObservableList<getCourseData> courseData;
+
+    private void loadCourseData() {
+        courseData = FXCollections.observableArrayList();
+        connect = database.getConnection();
+
+        // Add logic to retrieve feedback data from the database
+        // Replace the placeholders with your actual column names
+        try {
+            prepare = connect.prepareStatement("SELECT CourseAbb,CourseName FROM course");
+            result = prepare.executeQuery(); // Execute the query and obtain the result set
+
+            while (result.next()) {
+                getCourseData CourseData = new getCourseData();
+                CourseData.setCourseAbb(result.getString("CourseAbb"));
+                CourseData.setCourseName(result.getString("CourseName"));
+                courseData.add(CourseData);
+            }
+
+            tblCourseData.setItems(courseData);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close the result set, statement, and connection in a finally block
+            try {
+                if (result != null) {
+                    result.close();
+                }
+                if (prepare != null) {
+                    prepare.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    private void clearAndLoadCourseData() {
+        // Clear the existing data
+        tblOfficerData.getItems().clear();
+
+        // Reload the data
+        loadCourseData();
     }
 }

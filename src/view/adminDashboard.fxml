@@ -23,7 +23,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminDashboardController">
+<Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminDashboardController">
    <children>
       <Pane prefHeight="43.0" prefWidth="1332.0" style="-fx-background-color: black;">
          <children>
@@ -407,9 +407,93 @@
                   </AnchorPane>
                </children>
             </Pane>
-            <Pane fx:id="courseYearWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" visible="false" />
+            <Pane fx:id="courseYearWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" stylesheets="@../style/admindashboard.css">
+               <children>
+                  <HBox prefHeight="697.0" prefWidth="1332.0">
+                     <children>
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <VBox alignment="CENTER_LEFT" prefHeight="697.0" spacing="25.0">
+                           <children>
+                              <Label text="Course Management" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial" size="20.0" />
+                                 </font>
+                              </Label>
+                              <Pane>
+                                 <children>
+                                    <VBox prefWidth="365.0" spacing="15.0">
+                                       <children>
+                                          <Label text="Course Abbreviation :" textFill="#d7d7d7">
+                                             <font>
+                                                <Font name="Arial" size="16.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="txtCourseAbb" prefHeight="40.0" prefWidth="148.0" styleClass="txtField" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </Pane>
+                              <Pane prefHeight="75.0" prefWidth="397.0">
+                                 <children>
+                                    <VBox prefWidth="365.0" spacing="15.0">
+                                       <children>
+                                          <Label text="Course Name :" textFill="#d7d7d7">
+                                             <font>
+                                                <Font name="Arial" size="16.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="txtCourseName" prefHeight="40.0" prefWidth="400.0" styleClass="txtField" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </Pane>
+                              <HBox spacing="15.0">
+                                 <children>
+                                    <Button fx:id="btnCreateCourse" alignment="CENTER" mnemonicParsing="false" onAction="#handleCreateCourse" styleClass="btns" text="Create Course">
+                                       <font>
+                                          <Font name="Arial" size="13.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                                       </padding>
+                                    </Button>
+                                    <Button fx:id="btnDeleteCourse" alignment="CENTER" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleDeleteCourse" styleClass="btnsv2" text="Delete Course">
+                                       <font>
+                                          <Font name="Arial" size="13.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                                       </padding>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                           </padding>
+                        </VBox>
+                        <VBox alignment="CENTER" layoutX="342.0" layoutY="10.0" prefHeight="697.0" prefWidth="700.0">
+                           <padding>
+                              <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                           </padding>
+                           <children>
+                              <TableView fx:id="tblCourseData" prefHeight="500.0" prefWidth="650.0">
+                                 <columns>
+                                    <TableColumn fx:id="tblCourseAbb" maxWidth="1.7976931348623157E308" prefWidth="75.0" text="Course Abbreviation" />
+                                    <TableColumn fx:id="tblCourseName" maxWidth="1.7976931348623157E308" prefWidth="75.0" text="Course Name" />
+                                 </columns>
+                                 <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                 </columnResizePolicy>
+                              </TableView>
+                           </children>
+                        </VBox>
+                        <Pane layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+               </children></Pane>
             <Pane fx:id="sectionStudWindow" layoutY="96.0" prefHeight="697.0" prefWidth="1332.0" visible="false" />
-            <Pane fx:id="officerWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" stylesheets="@../style/admindashboard.css">
+            <Pane fx:id="officerWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" stylesheets="@../style/admindashboard.css" visible="false">
                <children>
                   <HBox alignment="CENTER" prefHeight="697.0" prefWidth="1332.0" spacing="50.0">
                      <children>
@@ -675,7 +759,7 @@
             </Pane>
          </children>
       </Pane>
-      <Pane fx:id="sidePanel" layoutY="49.0" prefHeight="793.0" prefWidth="357.0" style="-fx-background-color: #161B22;">
+      <Pane fx:id="sidePanel" layoutY="49.0" prefHeight="793.0" prefWidth="357.0" style="-fx-background-color: #161B22;" visible="false">
          <children>
             <ImageView fitHeight="58.0" fitWidth="44.0" layoutX="22.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
                <image>
