@@ -76,7 +76,7 @@ public class StudentLoginController implements Initializable {
 
     @FXML
     private void signInButton(ActionEvent event) {
-        String sql = "SELECT * FROM account WHERE username = ? and password = ?";
+        String sql = "SELECT * FROM account_student WHERE studentID = ? and password = ?";
 
         connect = database.getConnection();
 

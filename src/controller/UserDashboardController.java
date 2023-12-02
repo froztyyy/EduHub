@@ -101,6 +101,7 @@ public class UserDashboardController implements Initializable {
     private Pane announcementWindow;
     @FXML
     private Pane calendarWindow;
+    @FXML
     private Pane todoWindow;
     @FXML
     private Pane timeClockWindow;
@@ -110,6 +111,7 @@ public class UserDashboardController implements Initializable {
     private Pane announcementButton;
     @FXML
     private Pane calendarButton;
+    @FXML
     private Pane toDolistButton;
     @FXML
     private Pane timeClockButton;
@@ -183,16 +185,18 @@ public class UserDashboardController implements Initializable {
     private Label yearNote;
     @FXML
     private Text infoNote;
+    @FXML
     private Pane listPane;
+    @FXML
     private GridPane listHandler;
+    @FXML
     private Pane archivePane;
+    @FXML
     private Button btnAddList;
+    @FXML
     private Button btnArchive;
+    @FXML
     private GridPane archiveListHandler;
-    @FXML
-    private Pane studentManagementWIndow;
-    @FXML
-    private Pane studentManagementButton;
     
     
     
@@ -1033,6 +1037,7 @@ public class UserDashboardController implements Initializable {
         infoNote.setText(noteMessage);
     }
 
+    @FXML
     private void sendfeedback(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/feedBackWindow.fxml"));
@@ -1102,6 +1107,7 @@ public class UserDashboardController implements Initializable {
 
     private Button lastClickedButtonForToDoList = null;
     
+    @FXML
     public void SwitchFormForTodoList(ActionEvent event) {
         Button clickedButton = (Button) event.getSource();
 
@@ -1135,6 +1141,7 @@ public class UserDashboardController implements Initializable {
         }
     }
     
+    @FXML
     private void handleButtonAddList(ActionEvent event) throws IOException {
         // Load the FXML for the addListWindow
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/addListWindow.fxml"));
@@ -1169,7 +1176,7 @@ public class UserDashboardController implements Initializable {
 
     public ObservableList<ToDoListData> getToDoListData() throws SQLException {
 
-        String sql = "Select description, details, due_date FROM task";
+        String sql = "Select Title, Note, Deadline FROM todo";
         ObservableList<ToDoListData> toDoList = FXCollections.observableArrayList();
         connect = database.getConnection();
 
@@ -1178,9 +1185,9 @@ public class UserDashboardController implements Initializable {
             result = prepare.executeQuery();
 
             while (result.next()) {
-                String description = result.getString("description");
-                String details = result.getString("details");
-                String due_date = result.getString("due_date");
+                String description = result.getString("Title");
+                String details = result.getString("Note");
+                String due_date = result.getString("Deadline");
 
                 ToDoListData todoListData = new ToDoListData(description, details, due_date);
 
@@ -1244,7 +1251,7 @@ public class UserDashboardController implements Initializable {
 
     public ObservableList<ArchiveToDoListData> getArchiveToDoListData() throws SQLException {
 
-        String sql = "Select description, details, due_date FROM archive";
+        String sql = "Select Title, Note, Deadline FROM todo";
         ObservableList<ArchiveToDoListData> archiveToDoList = FXCollections.observableArrayList();
         connect = database.getConnection();
 
@@ -1253,9 +1260,9 @@ public class UserDashboardController implements Initializable {
             result = prepare.executeQuery();
 
             while (result.next()) {
-                String description = result.getString("description");
-                String details = result.getString("details");
-                String due_date = result.getString("due_date");
+                String description = result.getString("Title");
+                String details = result.getString("Note");
+                String due_date = result.getString("Deadline");
 
                 ArchiveToDoListData archiveToDoListData = new ArchiveToDoListData(description, details, due_date);
 
