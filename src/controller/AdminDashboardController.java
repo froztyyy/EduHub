@@ -6,6 +6,8 @@ package controller;
 
 import com.sun.jdi.connect.spi.Connection;
 import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
@@ -43,7 +45,14 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Optional;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 /**
  * FXML Controller class
@@ -114,6 +123,18 @@ public class AdminDashboardController implements Initializable {
     private Button btnCrtCourseSec;
     @FXML
     private TextField txtStudentID1;
+    @FXML
+    private Button btnRateFeedback;
+    @FXML
+    private TableView<Feedback> tableFeedBack;
+    @FXML
+    private TableColumn<Feedback, String> designRate;
+    @FXML
+    private TableColumn<Feedback, String> functionRate;
+    @FXML
+    private TableColumn<Feedback, String> ExperienceRate;
+    @FXML
+    private TableColumn<Feedback, String> FeedBackComment;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -163,6 +184,15 @@ public class AdminDashboardController implements Initializable {
 
         timeNowForDashboard();
         dateLabelForDashboard();
+
+        // Initialize columns
+        designRate.setCellValueFactory(new PropertyValueFactory<>("designRating"));
+        functionRate.setCellValueFactory(new PropertyValueFactory<>("functionRating"));
+        ExperienceRate.setCellValueFactory(new PropertyValueFactory<>("experienceRating"));
+        FeedBackComment.setCellValueFactory(new PropertyValueFactory<>("feedbackReport"));
+
+        // Load feedback data
+        loadFeedbackData();
     }
 
     private final boolean stop = false;
@@ -464,6 +494,114 @@ public class AdminDashboardController implements Initializable {
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
         String formattedDate = currentDate.format(dateFormat);
         lblDateDashboard.setText(formattedDate);
+    }
+
+    @FXML
+    private void RateFeedbackButton(ActionEvent event) {
+        Feedback selectedFeedback = tableFeedBack.getSelectionModel().getSelectedItem();
+
+        if (selectedFeedback != null) {
+            // Show confirmation alert
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation");
+            alert.setHeaderText("Delete Feedback");
+            alert.setContentText("Are you sure you want to delete this feedback entry?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                // User clicked OK, proceed with deletion
+
+                // Remove from UI
+                tableFeedBack.getItems().remove(selectedFeedback);
+
+                // Remove from the database
+                deleteFeedbackFromDatabase(selectedFeedback);
+            }
+        } else {
+            // Inform the user that no item is selected
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("No Selection");
+            alert.setHeaderText("No Feedback Selected");
+            alert.setContentText("Please select a feedback entry in the table.");
+            alert.showAndWait();
+        }
+    }
+
+    private void deleteFeedbackFromDatabase(Feedback feedback) {
+        connect = database.getConnection();
+
+        try {
+            String deleteQuery = "DELETE FROM ratings_feedback WHERE designRating = ? AND functionRating = ? AND experienceRating = ? AND feedbackReport = ?";
+            prepare = connect.prepareStatement(deleteQuery);
+            prepare.setString(1, feedback.getDesignRating());
+            prepare.setString(2, feedback.getFunctionRating());
+            prepare.setString(3, feedback.getExperienceRating());
+            prepare.setString(4, feedback.getFeedbackReport());
+
+            int affectedRows = prepare.executeUpdate();
+
+            if (affectedRows > 0) {
+                System.out.println("Feedback deleted successfully from the database.");
+            } else {
+                System.out.println("Failed to delete feedback from the database.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (prepare != null) {
+                    prepare.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    private java.sql.Connection connect;
+
+    private PreparedStatement prepare;
+    private Statement statement;
+    private ResultSet result;
+
+    private ObservableList<Feedback> feedbackList;
+
+    private void loadFeedbackData() {
+        feedbackList = FXCollections.observableArrayList();
+        connect = database.getConnection();
+
+        // Add logic to retrieve feedback data from the database
+        // Replace the placeholders with your actual column names
+        try {
+            prepare = connect.prepareStatement("SELECT designRating, functionRating, experienceRating, feedbackReport FROM ratings_feedback");
+            result = prepare.executeQuery(); // Execute the query and obtain the result set
+
+            while (result.next()) {
+                Feedback feedback = new Feedback();
+                feedback.setDesignRating(result.getString("designRating"));
+                feedback.setFunctionRating(result.getString("functionRating"));
+                feedback.setExperienceRating(result.getString("experienceRating"));
+                feedback.setFeedbackReport(result.getString("feedbackReport"));
+                feedbackList.add(feedback);
+            }
+
+            tableFeedBack.setItems(feedbackList);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close the result set, statement, and connection in a finally block
+            try {
+                if (result != null) {
+                    result.close();
+                }
+                if (prepare != null) {
+                    prepare.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
 }

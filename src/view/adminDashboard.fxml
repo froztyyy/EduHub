@@ -9,6 +9,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.effect.ColorAdjust?>
@@ -22,7 +24,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminDashboardController">
+<Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminDashboardController">
    <children>
       <Pane prefHeight="43.0" prefWidth="1332.0" style="-fx-background-color: black;">
          <children>
@@ -408,7 +410,7 @@
             </Pane>
             <Pane fx:id="courseYearWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" visible="false" />
             <Pane fx:id="sectionStudWindow" layoutY="96.0" prefHeight="697.0" prefWidth="1332.0" visible="false" />
-            <Pane fx:id="officerWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" stylesheets="@../style/admindashboard.css">
+            <Pane fx:id="officerWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" stylesheets="@../style/admindashboard.css" visible="false">
                <children>
                   <HBox alignment="CENTER" layoutX="-3.0" layoutY="-1.0" prefHeight="697.0" prefWidth="1332.0">
                      <children>
@@ -600,7 +602,40 @@
                      </children>
                   </HBox>
                </children></Pane>
-            <Pane fx:id="feedbackWindow" layoutX="10.0" layoutY="105.0" prefHeight="697.0" prefWidth="1332.0" visible="false" />
+            <Pane fx:id="feedbackWindow" layoutX="-2.0" layoutY="97.0" prefHeight="699.0" prefWidth="1332.0">
+               <children>
+                  <Pane prefHeight="129.0" prefWidth="1332.0" style="-fx-background-color: black;">
+                     <children>
+                        <Text fill="WHITE" layoutX="493.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rate and">
+                           <font>
+                              <Font name="Arial Bold" size="38.0" />
+                           </font>
+                        </Text>
+                        <Text fill="#2b4fe4" layoutX="666.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FeedBack">
+                           <font>
+                              <Font name="Arial Bold" size="38.0" />
+                           </font>
+                        </Text>
+                        <Button fx:id="btnRateFeedback" layoutX="1143.0" layoutY="63.0" mnemonicParsing="false" onAction="#RateFeedbackButton" prefHeight="27.0" prefWidth="139.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;" text="Delete" textAlignment="CENTER" textFill="WHITE">
+                           <padding>
+                              <Insets bottom="8.0" left="20.0" right="20.0" top="8.0" />
+                           </padding>
+                           <font>
+                              <Font name="Arial Bold" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </Pane>
+                  <TableView fx:id="tableFeedBack" layoutX="56.0" layoutY="110.0" prefHeight="500.0" prefWidth="1230.0">
+                    <columns>
+                      <TableColumn fx:id="designRate" prefWidth="140.0" text="Design Rate" />
+                      <TableColumn fx:id="functionRate" prefWidth="204.0" text="Function Rate" />
+                        <TableColumn fx:id="ExperienceRate" prefWidth="280.0" text="Experience Rate" />
+                        <TableColumn fx:id="FeedBackComment" prefWidth="604.0" text="FeedBack Comment" />
+                    </columns>
+                  </TableView>
+                  <Line endX="1128.0" layoutX="157.0" layoutY="644.0" startX="-100.0" stroke="WHITE" />
+               </children></Pane>
             <Pane fx:id="trashWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" visible="false">
                <children>
                   <AnchorPane fx:id="clockPane" prefHeight="704.0" prefWidth="1332.0" styleClass="secondary-bg" />

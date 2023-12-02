@@ -12,20 +12,17 @@ import java.sql.SQLException;
  *
  * @author jcarl
  */
-
-
 public class database {
-    
-public static Connection getConnection(){
+
+    public static Connection getConnection() {
         Connection conn;
         try {
-           Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/eduhub", "root", "");
-           return conn;
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://26.85.20.84:3306/eduhub_final", "zen", "garden");
+            return conn;
         } catch (Exception e) {
-            
+
             return null;
         }
     }
 }
-
