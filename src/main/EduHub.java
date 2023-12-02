@@ -87,7 +87,7 @@ public class EduHub extends Application {
             }
 
             primaryStage.initStyle(StageStyle.TRANSPARENT);
-            Parent root = FXMLLoader.load(getClass().getResource("/view/officerDashboard.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/view/adminDashboard.fxml"));
             Scene scene = new Scene(root);
             primaryStage.setScene(scene);
             primaryStage.setWidth(1332);

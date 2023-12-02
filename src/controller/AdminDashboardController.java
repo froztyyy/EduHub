@@ -188,13 +188,21 @@ public class AdminDashboardController implements Initializable {
     @FXML
     private TextField txtYearSection;
     @FXML
-    private TableColumn<getYearSectionData , String> tblYearCourse;
+    private TableColumn<getYearSectionData, String> tblYearCourse;
     @FXML
     private Button btnCreateYearSection;
     @FXML
     private Button btnDeleteYearSection;
     @FXML
     private TableView<getYearSectionData> tblYearSectionData;
+    @FXML
+    private TextField searchOfficerTField;
+    @FXML
+    private TextField searchCourseTF;
+    @FXML
+    private TextField searchSection;
+    @FXML
+    private AnchorPane clockPane1;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -282,7 +290,7 @@ public class AdminDashboardController implements Initializable {
         tblCourseAbb.setCellValueFactory(new PropertyValueFactory<>("CourseAbb"));
         tblCourseName.setCellValueFactory(new PropertyValueFactory<>("CourseName"));
         loadCourseData();
-        
+
         tblYearCourse.setCellValueFactory(new PropertyValueFactory<>("SectionName"));
         loadYearSectionData();
 
@@ -1147,7 +1155,7 @@ public class AdminDashboardController implements Initializable {
         // Reload the data
         loadCourseData();
     }
-    
+
     @FXML
     private void handleCreateYearSection(ActionEvent event) {
         String sql = "Insert into section (SectionName)" + "Values (?)";
@@ -1173,7 +1181,7 @@ public class AdminDashboardController implements Initializable {
             // Handle exceptions appropriately (show error message, log, etc.)
         }
     }
-    
+
     @FXML
     private void handleDeleteYearSection(ActionEvent event) {
         // Get the selected item from the table
@@ -1201,7 +1209,7 @@ public class AdminDashboardController implements Initializable {
             showWarningAlert("Please select a Year & Section to delete.");
         }
     }
-    
+
     private ObservableList<getYearSectionData> YearSectionData;
 
     private void loadYearSectionData() {
@@ -1237,13 +1245,169 @@ public class AdminDashboardController implements Initializable {
             }
         }
     }
-    
-    
+
     private void clearAndLoadSectionNameData() {
         // Clear the existing data
         tblYearSectionData.getItems().clear();
 
         // Reload the data
         loadYearSectionData();
+    }
+
+    @FXML
+    private void searchOfficerAccount(ActionEvent event) {
+        String searchText = searchOfficerTField.getText();
+
+        if (searchText.isEmpty()) {
+            loadOfficerAccountData(); // Call the loadOfficerAccountData() method to show all data
+            return;
+        }
+
+        ObservableList<OfficerAccountData> officerAccountData = FXCollections.observableArrayList();
+
+        try {
+            prepare = connect.prepareStatement("SELECT StudentID, Password, RoleID, Surname, Firstname, Middlename, Suffix, CourseID, SectionID FROM account_student WHERE RoleID = 2 AND (StudentID LIKE ? OR Password LIKE ? OR RoleID LIKE ? OR Surname LIKE ? OR Firstname LIKE ? OR Middlename LIKE ? OR Suffix LIKE ? OR CourseID LIKE ? OR SectionID LIKE ?)");
+            for (int i = 1; i <= 9; i++) {
+                prepare.setString(i, "%" + searchText + "%");
+            }
+
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                OfficerAccountData officerAccount = new OfficerAccountData();
+                officerAccount.setTblStudentID(result.getString("StudentID"));
+                officerAccount.setTblPassword(result.getString("Password"));
+                officerAccount.setTblRoleID(result.getString("RoleID"));
+                officerAccount.setTblSurname(result.getString("Surname"));
+                officerAccount.setTblFirstName(result.getString("Firstname"));
+                officerAccount.setTblMiddlename(result.getString("Middlename"));
+                officerAccount.setTblSuffix(result.getString("Suffix"));
+                officerAccount.setTblCourse(result.getString("CourseID"));
+                officerAccount.setTblYearSection(result.getString("SectionID"));
+
+                officerAccountData.add(officerAccount);
+            }
+
+            tblOfficerData.setItems(officerAccountData);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close resources in a finally block
+            try {
+                if (result != null) {
+                    result.close();
+                }
+                if (prepare != null) {
+                    prepare.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        // Add listener to detect when search text is cleared
+        searchOfficerTField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.isEmpty()) {
+                loadOfficerAccountData(); // Call the loadOfficerAccountData() method to show all data
+            }
+        });
+    }
+
+    @FXML
+    private void searchCourse(ActionEvent event) {
+        String searchText = searchCourseTF.getText();
+
+        if (searchText.isEmpty()) {
+            loadCourseData(); // Call the loadCourseData() method to show all data
+            return;
+        }
+
+        ObservableList<getCourseData> filteredCourseData = FXCollections.observableArrayList();
+
+        try {
+            prepare = connect.prepareStatement("SELECT CourseAbb, CourseName FROM course WHERE CourseAbb LIKE ? OR CourseName LIKE ?");
+            prepare.setString(1, "%" + searchText + "%");
+            prepare.setString(2, "%" + searchText + "%");
+
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                getCourseData courseData = new getCourseData();
+                courseData.setCourseAbb(result.getString("CourseAbb"));
+                courseData.setCourseName(result.getString("CourseName"));
+                filteredCourseData.add(courseData);
+            }
+
+            tblCourseData.setItems(filteredCourseData);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close resources in a finally block
+            try {
+                if (result != null) {
+                    result.close();
+                }
+                if (prepare != null) {
+                    prepare.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        // Add listener to detect when search text is cleared
+        searchCourseTF.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.isEmpty()) {
+                loadCourseData(); // Call the loadCourseData() method to show all data
+            }
+        });
+    }
+
+    @FXML
+    private void searchSection(ActionEvent event) {
+        String searchText = searchSection.getText();
+
+        if (searchText.isEmpty()) {
+            loadYearSectionData(); // Call the loadYearSectionData() method to show all data
+            return;
+        }
+
+        ObservableList<getYearSectionData> filteredYearSectionData = FXCollections.observableArrayList();
+
+        try {
+            prepare = connect.prepareStatement("SELECT SectionName FROM section WHERE SectionName LIKE ?");
+            prepare.setString(1, "%" + searchText + "%");
+
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                getYearSectionData yearSectionData = new getYearSectionData();
+                yearSectionData.setSectionName(result.getString("SectionName"));
+                filteredYearSectionData.add(yearSectionData);
+            }
+
+            tblYearSectionData.setItems(filteredYearSectionData);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close resources in a finally block
+            try {
+                if (result != null) {
+                    result.close();
+                }
+                if (prepare != null) {
+                    prepare.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        // Add listener to detect when search text is cleared
+        searchSection.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.isEmpty()) {
+                loadYearSectionData(); // Call the loadYearSectionData() method to show all data
+            }
+        });
     }
 }
