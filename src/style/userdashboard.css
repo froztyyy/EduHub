@@ -175,3 +175,8 @@
 .sendFeedback:pressed{
     -fx-fill: #2d53ef;
 }
+
+.selected-buttonForToDoList {
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+}

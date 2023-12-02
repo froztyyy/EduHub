@@ -20,7 +20,7 @@ public static Connection getConnection(){
         Connection conn;
         try {
            Class.forName("com.mysql.cj.jdbc.Driver");
-           conn = DriverManager.getConnection("jdbc:mysql://26.85.20.84:3306/eduhub_final", "zen", "garden");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/eduhub", "root", "");
            return conn;
         } catch (Exception e) {
             

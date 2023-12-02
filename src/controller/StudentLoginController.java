@@ -109,8 +109,8 @@ public class StudentLoginController implements Initializable {
                         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
                         ((Node) (event.getSource())).getScene().getWindow().hide();
-                        stage.setWidth(1271);
-                        stage.setHeight(778);
+                        stage.setWidth(1332);
+                        stage.setHeight(835);
 
                         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
                         double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;

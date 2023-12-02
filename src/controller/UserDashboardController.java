@@ -6,6 +6,10 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -25,10 +29,13 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -49,6 +56,7 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -177,6 +185,20 @@ public class UserDashboardController implements Initializable {
     private Label yearNote;
     @FXML
     private Text infoNote;
+    @FXML
+    private Pane listPane;
+    @FXML
+    private GridPane listHandler;
+    @FXML
+    private Pane archivePane;
+    @FXML
+    private Button btnAddList;
+    @FXML
+    private Button btnArchive;
+    @FXML
+    private GridPane archiveListHandler;
+    
+    
     
     
     
@@ -240,6 +262,11 @@ public class UserDashboardController implements Initializable {
         dateLabelForDashboard();
         TimeAndDateLocation();
 
+        homeDisplayListCard();
+        archiveDisplayListCard();
+        listPane.setVisible(true);
+        archivePane.setVisible(false);
+  
     }
 
     private final boolean stop = false;
@@ -1066,6 +1093,277 @@ public class UserDashboardController implements Initializable {
             // Controller for the new window (if needed)
             // YourControllerClass controller = loader.getController();
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+     private void setButtonColorForToDoList(Button button, boolean isSelected) {
+        if (isSelected) {
+            button.getStyleClass().add("selected-buttonForToDoList");
+        } else {
+            button.getStyleClass().remove("selected-buttonForToDoList");
+        }
+    }
+
+    private Button lastClickedButtonForToDoList = null;
+    
+    @FXML
+    public void SwitchFormForTodoList(ActionEvent event) {
+        Button clickedButton = (Button) event.getSource();
+
+        if (clickedButton == lastClickedButtonForToDoList) {
+            // Ignore the click if the same button was clicked twice in a row
+            return;
+        }
+
+        // Reset the color of the last clicked button
+        if (lastClickedButton != null) {
+            setButtonColor(lastClickedButton, false);
+        }
+
+        // Update the last clicked button
+       lastClickedButtonForToDoList = clickedButton;
+
+        if (clickedButton == btnAddList) {
+            setButtonColorForToDoList(btnAddList, true);
+            setButtonColorForToDoList(btnArchive, false);
+
+            listPane.setVisible(true);
+            archivePane.setVisible(false);
+
+        } else if (clickedButton == btnArchive) {
+            setButtonColorForToDoList(btnAddList, false);
+            setButtonColorForToDoList(btnArchive, true);
+
+            listPane.setVisible(false);
+            archivePane.setVisible(true);
+
+        }
+    }
+    
+    @FXML
+    private void handleButtonAddList(ActionEvent event) throws IOException {
+        // Load the FXML for the addListWindow
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/addListWindow.fxml"));
+        Parent root = loader.load();
+
+        // Create a new stage for the addListWindow
+        Stage addListStage = new Stage();
+        addListStage.initModality(Modality.WINDOW_MODAL);
+        addListStage.initOwner(btnAddList.getScene().getWindow());
+
+        // Set the scene
+        Scene scene = new Scene(root);
+        addListStage.setScene(scene);
+
+        // Set the stage title
+        addListStage.setTitle("Add List");
+        addListStage.setResizable(false);
+
+        AddListWindowController addListWindowController = loader.getController();
+        addListWindowController.setToDoListUiController(this);
+
+        // Show the addListWindow
+        addListStage.show();
+    }
+
+    private Connection connect;
+    private PreparedStatement prepare;
+    private ResultSet result;
+    private int currentDisplayIndex = 0;
+
+    private ObservableList<ToDoListData> toDoList = FXCollections.observableArrayList();
+
+    public ObservableList<ToDoListData> getToDoListData() throws SQLException {
+
+        String sql = "Select description, details, due_date FROM task";
+        ObservableList<ToDoListData> toDoList = FXCollections.observableArrayList();
+        connect = database.getConnection();
+
+        try {
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                String description = result.getString("description");
+                String details = result.getString("details");
+                String due_date = result.getString("due_date");
+
+                ToDoListData todoListData = new ToDoListData(description, details, due_date);
+
+                toDoList.add(todoListData);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close resources (result, prepare, connect) if needed
+        }
+
+        return toDoList;
+    }
+
+    public void homeDisplayListCard() {
+        try {
+            toDoList.clear();
+            toDoList.addAll(getToDoListData());
+
+            int maxColumns = 3;
+            int row = 0;
+            int column = 0;
+
+            listHandler.getChildren().clear();
+            listHandler.getRowConstraints().clear();
+            listHandler.getColumnConstraints().clear();
+
+            for (int q = 0; q < toDoList.size(); q++) {
+                try {
+                    if (column >= maxColumns) {
+                        // Move to the next row when the maximum number of columns is reached
+                        column = 0;
+                        row++;
+                    }
+
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(getClass().getResource("/view/displayList.fxml"));
+                    AnchorPane pane = loader.load();
+                    controller.DisplayListController cardController = loader.getController();
+                    cardController.setData(toDoList.get(q));
+
+                    listHandler.add(pane, column++, row);
+
+                    GridPane.setMargin(pane, new Insets(5));
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            currentDisplayIndex = 0;
+            if (!toDoList.isEmpty()) {
+                ToDoListData firstToDo = toDoList.get(0);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private ObservableList<ArchiveToDoListData> archiveToDoList = FXCollections.observableArrayList();
+
+    public ObservableList<ArchiveToDoListData> getArchiveToDoListData() throws SQLException {
+
+        String sql = "Select description, details, due_date FROM archive";
+        ObservableList<ArchiveToDoListData> archiveToDoList = FXCollections.observableArrayList();
+        connect = database.getConnection();
+
+        try {
+            prepare = connect.prepareStatement(sql);
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                String description = result.getString("description");
+                String details = result.getString("details");
+                String due_date = result.getString("due_date");
+
+                ArchiveToDoListData archiveToDoListData = new ArchiveToDoListData(description, details, due_date);
+
+                archiveToDoList.add(archiveToDoListData);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close resources (result, prepare, connect) if needed
+        }
+
+        return archiveToDoList;
+    }
+
+    public void archiveDisplayListCard() {
+        try {
+            archiveToDoList.clear();
+            archiveToDoList.addAll(getArchiveToDoListData());
+
+            int maxColumns = 3;
+            int row = 0;
+            int column = 0;
+
+            archiveListHandler.getChildren().clear();
+            archiveListHandler.getRowConstraints().clear();
+            archiveListHandler.getColumnConstraints().clear();
+
+            for (int q = 0; q < archiveToDoList.size(); q++) {
+                try {
+                    if (column >= maxColumns) {
+                        // Move to the next row when the maximum number of columns is reached
+                        column = 0;
+                        row++;
+                    }
+
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(getClass().getResource("/view/archiveDisplayCard.fxml"));
+                    AnchorPane pane = loader.load();
+                    controller.ArchiveDisplayCardController archiveCardController = loader.getController();
+                    archiveCardController.setArchiveData(archiveToDoList.get(q));
+
+                    archiveListHandler.add(pane, column++, row);
+
+                    GridPane.setMargin(pane, new Insets(5));
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            currentDisplayIndex = 0;
+            if (!archiveToDoList.isEmpty()) {
+                ArchiveToDoListData firstToDo = archiveToDoList.get(0);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void refreshArchiveDisplay() {
+        // Clear the archive display
+        archiveListHandler.getChildren().clear();
+
+        try {
+            // Reload and display the archive data
+            archiveToDoList.clear();
+            archiveToDoList.addAll(getArchiveToDoListData());
+
+            int maxColumns = 3;
+            int row = 0;
+            int column = 0;
+
+            for (int q = 0; q < archiveToDoList.size(); q++) {
+                try {
+                    if (column >= maxColumns) {
+                        // Move to the next row when the maximum number of columns is reached
+                        column = 0;
+                        row++;
+                    }
+
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(getClass().getResource("archiveDisplayCard.fxml"));
+                    AnchorPane pane = loader.load();
+                    ArchiveDisplayCardController archiveCardController = loader.getController();
+                    archiveCardController.setArchiveData(archiveToDoList.get(q));
+
+                    archiveListHandler.add(pane, column++, row);
+
+                    GridPane.setMargin(pane, new Insets(5));
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            currentDisplayIndex = 0;
+            if (!archiveToDoList.isEmpty()) {
+                ArchiveToDoListData firstToDo = archiveToDoList.get(0);
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
