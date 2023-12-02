@@ -20,7 +20,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserDashboardController">
+<Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.OfficerDashboardController">
    <children>
       <Pane prefHeight="43.0" prefWidth="1332.0" style="-fx-background-color: black;">
          <children>
@@ -457,7 +457,7 @@
                   </Button>
                </children>
             </Pane>
-            <Pane fx:id="todoWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" visible="false" />
+            <Pane fx:id="studentManagementWIndow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" visible="false" />
             <Pane fx:id="timeClockWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0">
                <children>
                   <AnchorPane fx:id="clockPane" prefHeight="704.0" prefWidth="1332.0" styleClass="secondary-bg">
@@ -791,7 +791,7 @@
             </Pane>
          </children>
       </Pane>
-      <Pane fx:id="sidePanel" layoutY="49.0" prefHeight="793.0" prefWidth="357.0" style="-fx-background-color: #161B22;" visible="false">
+      <Pane fx:id="sidePanel" layoutY="49.0" prefHeight="793.0" prefWidth="357.0" style="-fx-background-color: #161B22;">
          <children>
             <ImageView fitHeight="58.0" fitWidth="44.0" layoutX="22.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -864,14 +864,14 @@
                   <Insets top="10.0" />
                </opaqueInsets>
             </Pane>
-            <Pane fx:id="toDolistButton" layoutX="20.0" layoutY="256.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
+            <Pane fx:id="studentManagementButton" layoutX="20.0" layoutY="256.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
                <children>
                   <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../media/icons/icons8-home-48.png" />
                      </image>
                   </ImageView>
-                  <Text fill="#d7d7d7" layoutX="57.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="To Do List">
+                  <Text fill="#d7d7d7" layoutX="57.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Student Management">
                      <font>
                         <Font name="Arial" size="19.0" />
                      </font>

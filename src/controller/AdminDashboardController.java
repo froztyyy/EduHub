@@ -147,27 +147,30 @@ public class AdminDashboardController implements Initializable {
     @FXML
     private Button btnDelete;
     @FXML
-    private TableView<?> tblOfficerData;
+    private TableView<OfficerAccountData> tblOfficerData;
     @FXML
-    private TableColumn<?, ?> tblStudentID;
+    private TableColumn<OfficerAccountData, String> tblStudentID;
     @FXML
-    private TableColumn<?, ?> tblPassword;
+    private TableColumn<OfficerAccountData, String> tblPassword;
     @FXML
-    private TableColumn<?, ?> tblRoleID;
+    private TableColumn<OfficerAccountData, String> tblRoleID;
     @FXML
-    private TableColumn<?, ?> tblSurname;
+    private TableColumn<OfficerAccountData, String> tblSurname;
     @FXML
-    private TableColumn<?, ?> tblFirstName;
+    private TableColumn<OfficerAccountData, String> tblFirstName;
     @FXML
-    private TableColumn<?, ?> tblMiddlename;
+    private TableColumn<OfficerAccountData, String> tblMiddlename;
     @FXML
-    private TableColumn<?, ?> tblSuffix;
+    private TableColumn<OfficerAccountData, String> tblSuffix;
     @FXML
-    private TableColumn<?, ?> tblCourse;
+    private TableColumn<OfficerAccountData, String> tblCourse;
     @FXML
-    private TableColumn<?, ?> tblYearSection;
+    private TableColumn<OfficerAccountData, String> tblYearSection;
+
     @FXML
     private Button btnRateFeedback;
+    @FXML
+    private Button btnClear;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -226,9 +229,32 @@ public class AdminDashboardController implements Initializable {
 
         // Load feedback data
         loadFeedbackData();
-        
+
         fetchCourseToComboBox(cbCourse);
         fetchSectionToComboBox(cbSectionYear);
+
+        // Initialize columns
+        tblStudentID.setCellValueFactory(new PropertyValueFactory<>("tblStudentID"));
+        tblPassword.setCellValueFactory(new PropertyValueFactory<>("tblPassword"));
+        tblRoleID.setCellValueFactory(new PropertyValueFactory<>("tblRoleID"));
+        tblSurname.setCellValueFactory(new PropertyValueFactory<>("tblSurname"));
+        tblFirstName.setCellValueFactory(new PropertyValueFactory<>("tblFirstName"));
+        tblMiddlename.setCellValueFactory(new PropertyValueFactory<>("tblMiddlename"));
+        tblSuffix.setCellValueFactory(new PropertyValueFactory<>("tblSuffix"));
+        tblCourse.setCellValueFactory(new PropertyValueFactory<>("tblCourse"));
+        tblYearSection.setCellValueFactory(new PropertyValueFactory<>("tblYearSection"));
+
+        // Load officer account data
+        loadOfficerAccountData();
+
+        // Add event handler to the table
+        tblOfficerData.setOnMouseClicked(event -> {
+            // Check if a row is clicked
+            if (event.getClickCount() == 1) {
+                handleTableClick();
+            }
+        });
+
     }
 
     private final boolean stop = false;
@@ -639,7 +665,7 @@ public class AdminDashboardController implements Initializable {
             }
         }
     }
-    
+
     private void fetchCourseToComboBox(ComboBox<String> comboBox) {
         String sql = "SELECT CourseAbb FROM course";
 
@@ -659,7 +685,7 @@ public class AdminDashboardController implements Initializable {
             System.out.println("Error fetching course data: " + e.getMessage());
         }
     }
-    
+
     private void fetchSectionToComboBox(ComboBox<String> comboBox) {
         String sql = "SELECT SectionName FROM section";
 
@@ -695,8 +721,8 @@ public class AdminDashboardController implements Initializable {
             System.out.println("Error populating ComboBox: " + e.getMessage());
         }
     }
-    
-     @FXML
+
+    @FXML
     private void handleCreateAccount(ActionEvent event) {
         String sql = "INSERT INTO account_student (StudentID, Password, RoleID, Surname, Firstname, Middlename, Suffix, CourseID, SectionID) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -719,12 +745,15 @@ public class AdminDashboardController implements Initializable {
             // Execute the SQL query
             prepare.executeUpdate();
 
+            // Show success alert
             showSuccessAlert("Account created successfully!");
 
-            // Optionally, you can show a success message or perform other actions here
+            // Load and refresh the TableView
+            loadOfficerAccountData();
+
         } catch (SQLException e) {
             e.printStackTrace();
-            // Handle exceptions appropriately (show error message, log, etc.)
+            System.out.println("controller.AdminDashboardController.handleCreateAccount()");
         }
     }
 
@@ -734,5 +763,251 @@ public class AdminDashboardController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    private ObservableList<OfficerAccountData> officerAccountDataList;
+
+    private void loadOfficerAccountData() {
+        officerAccountDataList = FXCollections.observableArrayList();
+        connect = database.getConnection();
+
+        try {
+            // Assume your database connection is already established
+            prepare = connect.prepareStatement("SELECT StudentID, Password, RoleID, Surname, Firstname, Middlename, Suffix, CourseID, SectionID FROM account_student WHERE RoleID = 2");
+            result = prepare.executeQuery(); // Execute the query and obtain the result set
+
+            while (result.next()) {
+                OfficerAccountData officerAccount = new OfficerAccountData();
+                officerAccount.setTblStudentID(result.getString("StudentID"));
+                officerAccount.setTblPassword(result.getString("Password"));
+                officerAccount.setTblRoleID(result.getString("RoleID"));
+                officerAccount.setTblSurname(result.getString("Surname"));
+                officerAccount.setTblFirstName(result.getString("Firstname"));
+                officerAccount.setTblMiddlename(result.getString("Middlename"));
+                officerAccount.setTblSuffix(result.getString("Suffix"));
+                officerAccount.setTblCourse(result.getString("CourseID"));
+                officerAccount.setTblYearSection(result.getString("SectionID"));
+
+                officerAccountDataList.add(officerAccount);
+            }
+            tblOfficerData.setItems(officerAccountDataList);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close the result set, statement, and connection in a finally block
+            try {
+                if (result != null) {
+                    result.close();
+                }
+                if (prepare != null) {
+                    prepare.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    private void showAlert(String title, String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    private void handleTableClick() {
+        // Get the selected item from the table
+        OfficerAccountData selectedAccount = tblOfficerData.getSelectionModel().getSelectedItem();
+
+        // Check if an item is selected
+        if (selectedAccount != null) {
+            // Populate the text fields and combo boxes with the selected item's data
+            txtStudentID.setText(selectedAccount.getTblStudentID());
+            txtPassword.setText(selectedAccount.getTblPassword());
+            txtSurname.setText(selectedAccount.getTblSurname());
+            txtFirstname.setText(selectedAccount.getTblFirstName());
+            txtMiddlename.setText(selectedAccount.getTblMiddlename());
+            txtSuffix.setText(selectedAccount.getTblSuffix());
+
+            // Assuming cbCourse and cbSectionYear are ComboBox<String>
+            cbCourse.setValue(selectedAccount.getTblCourse());
+            cbSectionYear.setValue(selectedAccount.getTblYearSection());
+        }
+    }
+
+    @FXML
+    private void btnClear(ActionEvent event) {
+        // Clear or set the text fields to be empty
+        txtStudentID.clear();
+        txtPassword.clear();
+        txtSurname.clear();
+        txtFirstname.clear();
+        txtMiddlename.clear();
+        txtSuffix.clear();
+
+        // Clear or set the combo boxes to be empty
+        cbCourse.setValue(null);
+        cbSectionYear.setValue(null);
+    }
+
+    @FXML
+    private void btnDelete(ActionEvent event) {
+        OfficerAccountData selectedOfficer = tblOfficerData.getSelectionModel().getSelectedItem();
+
+        if (selectedOfficer != null) {
+            // Show confirmation alert
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation");
+            alert.setHeaderText("Delete Officer Account");
+            alert.setContentText("Are you sure you want to delete this officer account?");
+
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                // User clicked OK, proceed with deletion
+
+                // Remove from UI
+                tblOfficerData.getItems().remove(selectedOfficer);
+
+                // Remove from the database
+                deleteOfficerFromDatabase(selectedOfficer);
+
+                // Inform the user about successful deletion
+                showAlert("Success", "Officer Account Deleted", "Officer account removed successfully.");
+                txtStudentID.clear();
+                txtPassword.clear();
+                txtSurname.clear();
+                txtFirstname.clear();
+                txtMiddlename.clear();
+                txtSuffix.clear();
+
+                // Clear or set the combo boxes to be empty
+                cbCourse.setValue(null);
+                cbSectionYear.setValue(null);
+            }
+        } else {
+            // Inform the user that no item is selected
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("No Selection");
+            alert.setHeaderText("No Officer Account Selected");
+            alert.setContentText("Please select an officer account in the table.");
+            alert.showAndWait();
+        }
+    }
+
+    private void deleteOfficerFromDatabase(OfficerAccountData officerAccount) {
+        connect = database.getConnection();
+
+        try {
+            String deleteQuery = "DELETE FROM account_student WHERE StudentID = ?";
+            prepare = connect.prepareStatement(deleteQuery);
+            prepare.setString(1, officerAccount.getTblStudentID());
+
+            int affectedRows = prepare.executeUpdate();
+
+            if (affectedRows > 0) {
+                System.out.println("Officer account deleted successfully from the database.");
+            } else {
+                System.out.println("Failed to delete officer account from the database.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (prepare != null) {
+                    prepare.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
+    private void btnUpdate(ActionEvent event) {
+        OfficerAccountData selectedOfficer = tblOfficerData.getSelectionModel().getSelectedItem();
+
+        if (selectedOfficer != null) {
+            // Get the updated values from your text fields or other input components
+            String updatedPassword = txtPassword.getText(); // Replace with your actual text field
+            String updatedSurname = txtSurname.getText(); // Replace with your actual text field
+            String updatedFirstName = txtFirstname.getText(); // Replace with your actual text field
+            String updatedMiddlename = txtMiddlename.getText(); // Replace with your actual text field
+            String updatedSuffix = txtSuffix.getText(); // Replace with your actual text field
+            String updatedCourse = cbCourse.getValue(); // Replace with your actual combo box
+            String updatedYearSection = cbSectionYear.getValue(); // Replace with your actual combo box
+
+            // Update in the database
+            updateOfficerInDatabase(selectedOfficer, updatedPassword, updatedSurname, updatedFirstName,
+                    updatedMiddlename, updatedSuffix, updatedCourse, updatedYearSection);
+
+            // Inform the user about successful update
+            showAlert("Success", "Officer Account Updated", "Officer account updated successfully.");
+
+            // Clear and reload the data in the TableView
+            clearAndLoadOfficerAccountData();
+            txtStudentID.clear();
+            txtPassword.clear();
+            txtSurname.clear();
+            txtFirstname.clear();
+            txtMiddlename.clear();
+            txtSuffix.clear();
+        } else {
+            // Inform the user that no item is selected
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("No Selection");
+            alert.setHeaderText("No Officer Account Selected");
+            alert.setContentText("Please select an officer account in the table.");
+            alert.showAndWait();
+        }
+    }
+
+    private void updateOfficerInDatabase(OfficerAccountData officer, String updatedPassword, String updatedSurname,
+            String updatedFirstName, String updatedMiddlename, String updatedSuffix, String updatedCourse,
+            String updatedYearSection) {
+        connect = database.getConnection();
+
+        try {
+            String updateQuery = "UPDATE account_student SET Password = ?, Surname = ?, Firstname = ?, Middlename = ?, "
+                    + "Suffix = ?, CourseID = ?, SectionID = ? WHERE StudentID = ?";
+            prepare = connect.prepareStatement(updateQuery);
+
+            prepare.setString(1, updatedPassword);
+            prepare.setString(2, updatedSurname);
+            prepare.setString(3, updatedFirstName);
+            prepare.setString(4, updatedMiddlename);
+            prepare.setString(5, updatedSuffix);
+            prepare.setString(6, updatedCourse);
+            prepare.setString(7, updatedYearSection);
+            prepare.setString(8, officer.getTblStudentID());
+
+            int affectedRows = prepare.executeUpdate();
+
+            if (affectedRows > 0) {
+                System.out.println("Officer Account updated successfully in the database.");
+            } else {
+                System.out.println("Failed to update Officer Account in the database.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (prepare != null) {
+                    prepare.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    private void clearAndLoadOfficerAccountData() {
+        // Clear the existing data
+        tblOfficerData.getItems().clear();
+
+        // Reload the data
+        loadOfficerAccountData();
     }
 }

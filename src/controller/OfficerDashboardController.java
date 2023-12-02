@@ -89,7 +89,6 @@ public class OfficerDashboardController implements Initializable {
     private Pane announcementWindow;
     @FXML
     private Pane calendarWindow;
-    @FXML
     private Pane todoWindow;
     @FXML
     private Pane timeClockWindow;
@@ -99,7 +98,6 @@ public class OfficerDashboardController implements Initializable {
     private Pane announcementButton;
     @FXML
     private Pane calendarButton;
-    @FXML
     private Pane toDolistButton;
     @FXML
     private Pane timeClockButton;
@@ -173,6 +171,10 @@ public class OfficerDashboardController implements Initializable {
     private Label yearNote;
     @FXML
     private Text infoNote;
+    @FXML
+    private Pane studentManagementWIndow;
+    @FXML
+    private Pane studentManagementButton;
 
     /**
      * Initializes the controller class.
@@ -224,7 +226,7 @@ public class OfficerDashboardController implements Initializable {
         homeWindow.setVisible(true);
         announcementWindow.setVisible(false);
         calendarWindow.setVisible(false);
-        todoWindow.setVisible(false);
+        studentManagementWIndow.setVisible(false);
         timeClockWindow.setVisible(false);
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), this::updateTimer));
@@ -412,65 +414,65 @@ public class OfficerDashboardController implements Initializable {
                 setButtonColor(homeButton, true);
                 setButtonColor(announcementButton, false);
                 setButtonColor(calendarButton, false);
-                setButtonColor(toDolistButton, false);
+                setButtonColor(studentManagementButton, false);
                 setButtonColor(timeClockButton, false);
 
                 homeWindow.setVisible(true);
                 announcementWindow.setVisible(false);
                 calendarWindow.setVisible(false);
-                todoWindow.setVisible(false);
+                studentManagementWIndow.setVisible(false);
                 timeClockWindow.setVisible(false);
 
             } else if (clickedButton == announcementButton) {
                 setButtonColor(homeButton, false);
                 setButtonColor(announcementButton, true);
                 setButtonColor(calendarButton, false);
-                setButtonColor(toDolistButton, false);
+                setButtonColor(studentManagementButton, false);
                 setButtonColor(timeClockButton, false);
 
                 homeWindow.setVisible(false);
                 announcementWindow.setVisible(true);
                 calendarWindow.setVisible(false);
-                todoWindow.setVisible(false);
+                studentManagementWIndow.setVisible(false);
                 timeClockWindow.setVisible(false);
 
             } else if (clickedButton == calendarButton) {
                 setButtonColor(homeButton, false);
                 setButtonColor(announcementButton, false);
                 setButtonColor(calendarButton, true);
-                setButtonColor(toDolistButton, false);
+                setButtonColor(studentManagementButton, false);
                 setButtonColor(timeClockButton, false);
 
                 homeWindow.setVisible(false);
                 announcementWindow.setVisible(false);
                 calendarWindow.setVisible(true);
-                todoWindow.setVisible(false);
+                studentManagementWIndow.setVisible(false);
                 timeClockWindow.setVisible(false);
 
-            } else if (clickedButton == toDolistButton) {
+            } else if (clickedButton == studentManagementButton) {
                 setButtonColor(homeButton, false);
                 setButtonColor(announcementButton, false);
                 setButtonColor(calendarButton, false);
-                setButtonColor(toDolistButton, true);
+                setButtonColor(studentManagementButton, true);
                 setButtonColor(timeClockButton, false);
 
                 homeWindow.setVisible(false);
                 announcementWindow.setVisible(false);
                 calendarWindow.setVisible(false);
-                todoWindow.setVisible(true);
+                studentManagementWIndow.setVisible(true);
                 timeClockWindow.setVisible(false);
 
             } else if (clickedButton == timeClockButton) {
                 setButtonColor(homeButton, false);
                 setButtonColor(announcementButton, false);
                 setButtonColor(calendarButton, false);
-                setButtonColor(toDolistButton, false);
+                setButtonColor(studentManagementButton, false);
                 setButtonColor(timeClockButton, true);
 
                 homeWindow.setVisible(false);
                 announcementWindow.setVisible(false);
                 calendarWindow.setVisible(false);
-                todoWindow.setVisible(false);
+                studentManagementWIndow.setVisible(false);
                 timeClockWindow.setVisible(true);
             }
         } catch (Exception e) {

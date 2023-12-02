@@ -23,7 +23,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminDashboardController">
+<Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminDashboardController">
    <children>
       <Pane prefHeight="43.0" prefWidth="1332.0" style="-fx-background-color: black;">
          <children>
@@ -577,7 +577,7 @@
                               </HBox>
                               <HBox alignment="CENTER_LEFT" layoutX="45.0" layoutY="558.0" spacing="15.0">
                                  <children>
-                                    <Button fx:id="btnUpdate" layoutX="145.0" layoutY="10.0" mnemonicParsing="false" styleClass="btnsv2" text="Update">
+                                    <Button fx:id="btnUpdate" layoutX="145.0" layoutY="10.0" mnemonicParsing="false" onAction="#btnUpdate" styleClass="btnsv2" text="Update">
                                        <padding>
                                           <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
                                        </padding>
@@ -585,7 +585,15 @@
                                           <Font name="Arial" size="12.0" />
                                        </font>
                                     </Button>
-                                    <Button fx:id="btnDelete" layoutX="108.0" layoutY="10.0" mnemonicParsing="false" styleClass="btnsv2" text="Delete">
+                                    <Button fx:id="btnDelete" layoutX="108.0" layoutY="10.0" mnemonicParsing="false" onAction="#btnDelete" styleClass="btnsv2" text="Delete">
+                                       <padding>
+                                          <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                                       </padding>
+                                       <font>
+                                          <Font name="Arial" size="12.0" />
+                                       </font>
+                                    </Button>
+                                    <Button fx:id="btnClear" mnemonicParsing="false" onAction="#btnClear" styleClass="btnsv2" text="Clear">
                                        <padding>
                                           <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
                                        </padding>
@@ -667,7 +675,7 @@
             </Pane>
          </children>
       </Pane>
-      <Pane fx:id="sidePanel" layoutY="49.0" prefHeight="793.0" prefWidth="357.0" style="-fx-background-color: #161B22;" visible="false">
+      <Pane fx:id="sidePanel" layoutY="49.0" prefHeight="793.0" prefWidth="357.0" style="-fx-background-color: #161B22;">
          <children>
             <ImageView fitHeight="58.0" fitWidth="44.0" layoutX="22.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -730,7 +738,7 @@
                         <Image url="@../media/icons/icons8-student-24.png" />
                      </image>
                   </ImageView>
-                  <Text fill="#d7d7d7" layoutX="60.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sections &amp; Students">
+                  <Text fill="#d7d7d7" layoutX="60.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Student List">
                      <font>
                         <Font name="Arial" size="19.0" />
                      </font>
