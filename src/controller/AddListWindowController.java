@@ -52,27 +52,38 @@ public class AddListWindowController implements Initializable {
     private PreparedStatement prepare;
     private ResultSet result;
 
+    private int studentID;
+
     private UserDashboardController toDoListUiController;
 
     public void setToDoListUiController(UserDashboardController toDoListUiController) {
         this.toDoListUiController = toDoListUiController;
     }
 
+    public void setStudentID(int studentID) {
+        this.studentID = studentID;
+        
+    }
+
     @FXML
     private void handleButtonSubmit(ActionEvent event) throws IOException {
+        connect = database.getConnection();
+
+        String sql = "INSERT INTO todo (StudentID, Title, Note, Deadline) VALUES (?, ?, ?, ?)";
 
         try {
-            // Establish a database connection
-            connect = database.getConnection();
-
-            // Prepare the SQL statement
-            String sql = "INSERT INTO todo (Title, Note, Deadline) VALUES (?, ?, ?)";
-            prepare = connect.prepareStatement(sql);
+            System.out.println("Current studentID: " + studentID);
+            System.out.println("Setting values - StudentID: " + studentID + ", Title: " + txtDescription.getText() + ", Note: " + txtDetails.getText() + ", Deadline: " + dueDatePicker.getValue());
 
             // Set values from the user input
-            prepare.setString(1, txtDescription.getText());
-            prepare.setString(2, txtDetails.getText());
-            prepare.setDate(3, java.sql.Date.valueOf(dueDatePicker.getValue())); // Convert LocalDate to java.sql.Date
+            prepare = connect.prepareStatement(sql);
+            prepare.setInt(1, studentID);
+            prepare.setString(2, txtDescription.getText());
+            prepare.setString(3, txtDetails.getText());
+            prepare.setDate(4, java.sql.Date.valueOf(dueDatePicker.getValue())); // Convert LocalDate to java.sql.Date
+
+            // Debug: Print the prepared statement
+            System.out.println("Prepared Statement: " + prepare);
 
             // Execute the SQL statement
             prepare.executeUpdate();
@@ -128,6 +139,10 @@ public class AddListWindowController implements Initializable {
 
         // Close the Stage
         stage.close();
+    }
+    
+    private void fetchStudentID(){
+    
     }
 
 }

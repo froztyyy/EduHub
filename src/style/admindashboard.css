@@ -77,6 +77,10 @@
     -fx-padding: 5px; 
 }
 
+.combo-box .list-cell:selected {
+    -fx-text-fill: white; /* or any other color */
+}
+
 .combo-box-popup .list-view .list-cell {
     -fx-margin: 5px;
 }

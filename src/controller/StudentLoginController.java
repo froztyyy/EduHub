@@ -79,6 +79,7 @@ public class StudentLoginController implements Initializable {
         String sql = "SELECT * FROM account_student WHERE studentID = ? and password = ?";
 
         connect = database.getConnection();
+        
 
         try {
             prepare = connect.prepareStatement(sql);
@@ -86,6 +87,7 @@ public class StudentLoginController implements Initializable {
             prepare.setString(2, si_password.getText());
             result = prepare.executeQuery();
 
+          
             Alert alert;
 
             if (si_username.getText().isEmpty() || si_password.getText().isEmpty()) {
@@ -105,9 +107,24 @@ public class StudentLoginController implements Initializable {
                         alert.setContentText("Successfully Login!");
                         alert.showAndWait();
 
-                        Parent root = FXMLLoader.load(getClass().getResource("/view/userDashboard.fxml"));
+                        String surname = result.getString("Surname");   
+                        int studentID = result.getInt("studentID");
+                        System.out.println("Retrieved studentID: " + studentID);
+                        
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/userDashboard.fxml"));
                         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        Parent root = loader.load();
 
+                        // Get the controller of the loaded FXML file
+                        UserDashboardController userDashboardController = loader.getController();
+
+                        // Set the username using the method in UserDashboardController
+                        userDashboardController.setUsername(surname);
+                        
+                        // Set the studentID using the method in UserDashboardController
+                        userDashboardController.setStudentID(studentID);
+                        
+                        
                         ((Node) (event.getSource())).getScene().getWindow().hide();
                         stage.setWidth(1332);
                         stage.setHeight(835);
@@ -156,6 +173,20 @@ public class StudentLoginController implements Initializable {
             }
         } catch (Exception e) {
             e.printStackTrace(); // Print exception details for debugging
+        } finally {
+            // Close the resources in a finally block
+            try {
+                if (result != null) {
+                    result.close();
+                }
+                if (prepare != null) {
+                    prepare.close();
+                }
+                // Close other resources if needed
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+
         }
     }
 
@@ -220,5 +251,6 @@ public class StudentLoginController implements Initializable {
             e.printStackTrace();
         }
     }
-
+    
+    
 }

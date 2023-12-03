@@ -24,7 +24,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.OfficerDashboardController">
+<Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.OfficerDashboardController">
    <children>
       <Pane prefHeight="43.0" prefWidth="1332.0" style="-fx-background-color: black;">
          <children>
@@ -84,7 +84,7 @@
             </HBox>
          </children>
       </Pane>
-      <Pane fx:id="blurringEffect" layoutY="43.0" prefHeight="793.0" prefWidth="1332.0">
+      <Pane fx:id="blurringEffect" layoutX="14.0" layoutY="43.0" prefHeight="793.0" prefWidth="1332.0">
          <children>
             <VBox alignment="CENTER" prefHeight="95.0" prefWidth="1332.0" style="-fx-border-color: transparent transparent white transparent; -fx-background-color: #010409; -fx-border-width: 0.3px;">
                <children>
@@ -461,7 +461,7 @@
                   </Button>
                </children>
             </Pane>
-            <Pane fx:id="studentManagementWIndow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0">
+            <Pane fx:id="studentManagementWIndow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" visible="false">
                <children>
                   <Label layoutX="35.0" layoutY="42.0" text="Student Account" textFill="WHITE">
                      <font>
@@ -943,7 +943,7 @@
             </Pane>
          </children>
       </Pane>
-      <Pane fx:id="sidePanel" layoutY="49.0" prefHeight="793.0" prefWidth="357.0" style="-fx-background-color: #161B22;" visible="false">
+      <Pane fx:id="sidePanel" layoutY="49.0" prefHeight="793.0" prefWidth="357.0" style="-fx-background-color: #161B22;">
          <children>
             <ImageView fitHeight="58.0" fitWidth="44.0" layoutX="22.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -982,24 +982,7 @@
                   <Insets top="10.0" />
                </opaqueInsets>
             </Pane>
-            <Pane fx:id="announcementButton" layoutX="21.0" layoutY="164.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
-               <children>
-                  <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../media/icons/icons8-home-48.png" />
-                     </image>
-                  </ImageView>
-                  <Text fill="#d7d7d7" layoutX="57.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Announcement">
-                     <font>
-                        <Font name="Arial" size="19.0" />
-                     </font>
-                  </Text>
-               </children>
-               <opaqueInsets>
-                  <Insets top="10.0" />
-               </opaqueInsets>
-            </Pane>
-            <Pane fx:id="calendarButton" layoutX="21.0" layoutY="209.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
+            <Pane fx:id="calendarButton" layoutX="20.0" layoutY="161.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
                <children>
                   <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -1016,7 +999,7 @@
                   <Insets top="10.0" />
                </opaqueInsets>
             </Pane>
-            <Pane fx:id="studentManagementButton" layoutX="20.0" layoutY="256.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
+            <Pane fx:id="studentManagementButton" layoutX="20.0" layoutY="204.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
                <children>
                   <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -1033,7 +1016,7 @@
                   <Insets top="10.0" />
                </opaqueInsets>
             </Pane>
-            <Pane fx:id="timeClockButton" layoutX="20.0" layoutY="302.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
+            <Pane fx:id="timeClockButton" layoutX="20.0" layoutY="247.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
                <children>
                   <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -1041,6 +1024,23 @@
                      </image>
                   </ImageView>
                   <Text fill="#d7d7d7" layoutX="57.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time and Clock">
+                     <font>
+                        <Font name="Arial" size="19.0" />
+                     </font>
+                  </Text>
+               </children>
+               <opaqueInsets>
+                  <Insets top="10.0" />
+               </opaqueInsets>
+            </Pane>
+            <Pane fx:id="announcementButton" layoutX="21.0" layoutY="164.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css" visible="false">
+               <children>
+                  <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../media/icons/icons8-home-48.png" />
+                     </image>
+                  </ImageView>
+                  <Text fill="#d7d7d7" layoutX="57.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Announcement">
                      <font>
                         <Font name="Arial" size="19.0" />
                      </font>

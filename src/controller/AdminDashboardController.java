@@ -851,23 +851,7 @@ public class AdminDashboardController implements Initializable {
             System.out.println("Error fetching course data: " + e.getMessage());
         }
     }
-
-    private void populateComboBox(ComboBox<String> comboBox, String query) {
-        try {
-            prepare = connect.prepareStatement(query);
-            result = prepare.executeQuery();
-
-            while (result.next()) {
-                String item = result.getString(1); // Assuming the data is in the first column
-                comboBox.getItems().add(item);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Error populating ComboBox: " + e.getMessage());
-        }
-    }
-
+    
     @FXML
     private void handleCreateAccount(ActionEvent event) {
         String sql = "INSERT INTO account_student (StudentID, Password, RoleID, Surname, Firstname, Middlename, Suffix, CourseID, SectionID) "
