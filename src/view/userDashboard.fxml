@@ -24,7 +24,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserDashboardController">
+<Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserDashboardController">
    <children>
       <Pane prefHeight="43.0" prefWidth="1332.0" style="-fx-background-color: black;">
          <children>
@@ -176,7 +176,7 @@
                   </HBox>
                </children>
             </VBox>
-            <Pane fx:id="homeWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" visible="false">
+            <Pane fx:id="homeWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0">
                <children>
                   <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="698.0" prefWidth="1332.0">
                      <children>
@@ -191,7 +191,7 @@
                                                 <ListView layoutX="10.0" layoutY="14.0" prefHeight="469.0" prefWidth="249.0" />
                                              </children>
                                           </Pane>
-                                          <Button layoutX="153.0" layoutY="612.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="128.0" style="-fx-background-color: #2D53EF; -fx-background-radius: 15px;" text="View Now!" textFill="WHITE">
+                                          <Button layoutX="153.0" layoutY="612.0" mnemonicParsing="false" onAction="#viewNowtodo" prefHeight="39.0" prefWidth="128.0" style="-fx-background-color: #2D53EF; -fx-background-radius: 15px;" text="View Now!" textFill="WHITE">
                                              <font>
                                                 <Font name="Arial Bold" size="14.0" />
                                              </font>
@@ -465,19 +465,9 @@
                </children></Pane>
             <Pane fx:id="todoWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" visible="false">
                <children>
-                  <Pane fx:id="listPane" layoutX="227.0" layoutY="68.0" visible="false">
+                  <Pane fx:id="listPane" layoutX="108.0" layoutY="68.0" prefHeight="562.0" prefWidth="1091.0">
                      <children>
-                        <Label text="Task List" textFill="WHITE">
-                           <font>
-                              <Font name="Arial" size="18.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="22.0" layoutY="31.0" text="1 pending" textFill="#8d8d8d">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                        </Label>
-                        <ScrollPane layoutY="60.0" prefHeight="502.0" prefWidth="878.0" styleClass="scrllPane">
+                        <ScrollPane layoutY="60.0" prefHeight="502.0" prefWidth="1091.0" styleClass="scrllPane" stylesheets="@../style/toDoList.css">
                            <content>
                               <GridPane fx:id="listHandler">
                                  <columnConstraints>
@@ -491,19 +481,9 @@
                         </ScrollPane>
                      </children>
                   </Pane>
-                  <Pane fx:id="archivePane" layoutX="227.0" layoutY="68.0">
+                  <Pane fx:id="archivePane" layoutX="121.0" layoutY="68.0" prefHeight="562.0" prefWidth="1091.0" visible="false">
                      <children>
-                        <Label text="Archive" textFill="WHITE">
-                           <font>
-                              <Font name="Arial" size="18.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="22.0" layoutY="31.0" text="1 pending" textFill="#8d8d8d">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                        </Label>
-                        <ScrollPane layoutY="60.0" prefHeight="502.0" prefWidth="878.0" styleClass="scrllPane">
+                        <ScrollPane layoutY="60.0" prefHeight="502.0" prefWidth="1091.0" styleClass="scrllPane" stylesheets="@../style/toDoList.css">
                            <content>
                               <GridPane fx:id="archiveListHandler">
                                  <columnConstraints>
@@ -517,9 +497,28 @@
                         </ScrollPane>
                      </children>
                   </Pane>
-                  <Button fx:id="btnAddList" layoutX="949.0" layoutY="34.0" mnemonicParsing="false" onAction="#handleButtonAddList" text="Add" />
-                  <Button fx:id="btnAddList" layoutX="993.0" layoutY="34.0" mnemonicParsing="false" onAction="#SwitchFormForTodoList" text="List" />
-                  <Button fx:id="btnArchive" layoutX="1033.0" layoutY="34.0" mnemonicParsing="false" onAction="#SwitchFormForTodoList" text="Archive" />
+                  <Button fx:id="btnAddList" layoutX="879.0" layoutY="51.0" mnemonicParsing="false" onAction="#handleButtonAddList" prefHeight="36.0" prefWidth="106.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 10px;" text="Add" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font></Button>
+                  <Button fx:id="btnAddList" layoutX="996.0" layoutY="50.0" mnemonicParsing="false" onAction="#SwitchFormForTodoList" prefHeight="37.0" prefWidth="95.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 10px;" text="List" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font></Button>
+                  <Button fx:id="btnArchive" layoutX="1098.0" layoutY="50.0" mnemonicParsing="false" onAction="#SwitchFormForTodoList" prefHeight="37.0" prefWidth="114.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 10px;" text="Archive" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font></Button>
+                  <Label layoutX="149.0" layoutY="48.0" text="Todo List" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Bold" size="31.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="131.0" layoutY="76.0" text="Management" textFill="#2b4fe4">
+                     <font>
+                        <Font name="Arial Bold" size="31.0" />
+                     </font>
+                  </Label>
                </children></Pane>
             <Pane fx:id="timeClockWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" visible="false">
                <children>

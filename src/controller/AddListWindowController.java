@@ -19,6 +19,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -35,6 +37,8 @@ public class AddListWindowController implements Initializable {
     private DatePicker dueDatePicker;
     @FXML
     private Button btnSubmit;
+    @FXML
+    private AnchorPane addlistwindow;
 
     /**
      * Initializes the controller class.
@@ -42,7 +46,7 @@ public class AddListWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
     private Connection connect;
     private PreparedStatement prepare;
@@ -62,7 +66,7 @@ public class AddListWindowController implements Initializable {
             connect = database.getConnection();
 
             // Prepare the SQL statement
-            String sql = "INSERT INTO task (description, details, due_date) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO todo (Title, Note, Deadline) VALUES (?, ?, ?)";
             prepare = connect.prepareStatement(sql);
 
             // Set values from the user input
@@ -117,5 +121,13 @@ public class AddListWindowController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    
+
+    @FXML
+    private void close(ActionEvent event) {
+        Stage stage = (Stage) addlistwindow.getScene().getWindow();
+
+        // Close the Stage
+        stage.close();
+    }
+
 }

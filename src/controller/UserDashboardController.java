@@ -197,11 +197,7 @@ public class UserDashboardController implements Initializable {
     private Button btnArchive;
     @FXML
     private GridPane archiveListHandler;
-    
-    
-    
-    
-    
+
     /**
      * Initializes the controller class.
      */
@@ -266,7 +262,7 @@ public class UserDashboardController implements Initializable {
         archiveDisplayListCard();
         listPane.setVisible(true);
         archivePane.setVisible(false);
-  
+
     }
 
     private final boolean stop = false;
@@ -1096,8 +1092,8 @@ public class UserDashboardController implements Initializable {
             e.printStackTrace();
         }
     }
-    
-     private void setButtonColorForToDoList(Button button, boolean isSelected) {
+
+    private void setButtonColorForToDoList(Button button, boolean isSelected) {
         if (isSelected) {
             button.getStyleClass().add("selected-buttonForToDoList");
         } else {
@@ -1106,7 +1102,7 @@ public class UserDashboardController implements Initializable {
     }
 
     private Button lastClickedButtonForToDoList = null;
-    
+
     @FXML
     public void SwitchFormForTodoList(ActionEvent event) {
         Button clickedButton = (Button) event.getSource();
@@ -1122,7 +1118,7 @@ public class UserDashboardController implements Initializable {
         }
 
         // Update the last clicked button
-       lastClickedButtonForToDoList = clickedButton;
+        lastClickedButtonForToDoList = clickedButton;
 
         if (clickedButton == btnAddList) {
             setButtonColorForToDoList(btnAddList, true);
@@ -1140,31 +1136,65 @@ public class UserDashboardController implements Initializable {
 
         }
     }
-    
+
     @FXML
     private void handleButtonAddList(ActionEvent event) throws IOException {
-        // Load the FXML for the addListWindow
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/addListWindow.fxml"));
-        Parent root = loader.load();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/addListWindow.fxml"));
+            Parent root = loader.load();
 
-        // Create a new stage for the addListWindow
-        Stage addListStage = new Stage();
-        addListStage.initModality(Modality.WINDOW_MODAL);
-        addListStage.initOwner(btnAddList.getScene().getWindow());
+            Stage feedbackStage = new Stage();
+            feedbackStage.setWidth(431);
+            feedbackStage.setHeight(444);
 
-        // Set the scene
-        Scene scene = new Scene(root);
-        addListStage.setScene(scene);
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
+            double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
+            feedbackStage.setX(centerX - 215.5);
+            feedbackStage.setY(centerY - 222);
 
-        // Set the stage title
-        addListStage.setTitle("Add List");
-        addListStage.setResizable(false);
+            Scene scene = new Scene(root, 431, 444);
+            feedbackStage.initStyle(StageStyle.TRANSPARENT);
 
-        AddListWindowController addListWindowController = loader.getController();
-        addListWindowController.setToDoListUiController(this);
+            // Set the modality to APPLICATION_MODAL to make it modal
+            feedbackStage.initModality(Modality.APPLICATION_MODAL);
 
-        // Show the addListWindow
-        addListStage.show();
+            // Get the Window from the Scene associated with the Pane
+            Window ownerWindow = userDashboradWindow.getScene().getWindow();
+            feedbackStage.initOwner(ownerWindow);
+
+            applyBlurEffectMainWindow(true);
+            feedbackStage.setScene(scene);
+
+            // Add a listener to handle the close event of the feedbackStage
+            feedbackStage.setOnHidden((WindowEvent e) -> {
+                applyBlurEffectMainWindow(false);
+            });
+
+            feedbackStage.show();
+
+            // Drag and move logic (if needed)
+            root.setOnMousePressed((mouseEvent) -> {
+                x = mouseEvent.getSceneX();
+                y = mouseEvent.getSceneY();
+            });
+
+            root.setOnMouseDragged((mouseEvent) -> {
+                feedbackStage.setX(mouseEvent.getScreenX() - x);
+                feedbackStage.setY(mouseEvent.getScreenY() - y);
+
+                feedbackStage.setOpacity(.8);
+            });
+
+            root.setOnMouseReleased((mouseEvent) -> {
+                feedbackStage.setOpacity(1);
+            });
+
+            // Controller for the new window (if needed)
+            // YourControllerClass controller = loader.getController();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private Connection connect;
@@ -1207,7 +1237,7 @@ public class UserDashboardController implements Initializable {
             toDoList.clear();
             toDoList.addAll(getToDoListData());
 
-            int maxColumns = 3;
+            int maxColumns = 4;
             int row = 0;
             int column = 0;
 
@@ -1282,7 +1312,7 @@ public class UserDashboardController implements Initializable {
             archiveToDoList.clear();
             archiveToDoList.addAll(getArchiveToDoListData());
 
-            int maxColumns = 3;
+            int maxColumns = 4;
             int row = 0;
             int column = 0;
 
@@ -1366,5 +1396,20 @@ public class UserDashboardController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void viewNowtodo(ActionEvent event) {
+        setButtonColor(homeButton, false);
+        setButtonColor(announcementButton, false);
+        setButtonColor(calendarButton, false);
+        setButtonColor(toDolistButton, true);
+        setButtonColor(timeClockButton, false);
+
+        homeWindow.setVisible(false);
+        announcementWindow.setVisible(false);
+        calendarWindow.setVisible(false);
+        todoWindow.setVisible(true);
+        timeClockWindow.setVisible(false);
     }
 }

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,31 +13,37 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="archiveDisplayCard" stylesheets="@../style/userdashboard.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ArchiveDisplayCardController">
+<AnchorPane fx:id="archiveDisplayCard" stylesheets="@../style/userdashboard.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ArchiveDisplayCardController">
    <children>
-      <Button mnemonicParsing="false" prefWidth="250.0" styleClass="btnsDisplay" stylesheets="@toDoList.css">
+      <Button mnemonicParsing="false" prefWidth="250.0" style="-fx-background-color: black;">
          <graphic>
             <VBox spacing="5.0">
                <children>
                   <HBox alignment="CENTER_RIGHT" spacing="10.0">
                      <children>
-                        <Button fx:id="btnRetrieve" layoutX="201.0" layoutY="20.0" mnemonicParsing="false" onAction="#handleRetrieveButton" styleClass="btns">
+                        <Button fx:id="btnRetrieve" layoutX="201.0" layoutY="20.0" mnemonicParsing="false" onAction="#handleRetrieveButton" style="-fx-background-color: transparent;">
                            <graphic>
-                              <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="21.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../media/back.png" />
                                  </image>
                               </ImageView>
                            </graphic>
+                           <effect>
+                              <ColorAdjust brightness="1.0" />
+                           </effect>
                         </Button>
-                        <Button fx:id="btnRemove" mnemonicParsing="false" onAction="#handleDeleteButton" styleClass="btns">
+                        <Button fx:id="btnRemove" mnemonicParsing="false" onAction="#handleDeleteButton" prefWidth="40.0" style="-fx-background-color: transparent;">
                            <graphic>
-                              <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="24.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../media/delete.png" />
                                  </image>
                               </ImageView>
                            </graphic>
+                           <effect>
+                              <ColorAdjust brightness="1.0" />
+                           </effect>
                         </Button>
                      </children>
                      <padding>
@@ -66,7 +72,7 @@
                         </HBox>
                         <HBox prefHeight="210.0" prefWidth="230.0" styleClass="secondary-bg">
                            <children>
-                              <TextArea fx:id="txtDetailsDisplay" editable="false" styleClass="textArea" />
+                              <TextArea fx:id="txtDetailsDisplay" editable="false" styleClass="textArea" stylesheets="@../style/toDoList.css" />
                            </children>
                         </HBox>
                      </children>
@@ -75,10 +81,6 @@
                      </padding>
                   </VBox>
                </children>
-               <styleClass>
-                  <String fx:value="main-bg" />
-                  <String fx:value="radius" />
-               </styleClass>
             </VBox>
          </graphic>
       </Button>
