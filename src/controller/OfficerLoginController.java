@@ -139,7 +139,7 @@ public class OfficerLoginController implements Initializable {
 
     @FXML
     private void signInButton(ActionEvent event) {
-        String sql = "SELECT * FROM account WHERE username = ? and password = ?";
+        String sql = "SELECT * FROM account_student WHERE studentID = ? and password = ?";
 
         connect = database.getConnection();
 
@@ -168,18 +168,32 @@ public class OfficerLoginController implements Initializable {
                         alert.setContentText("Successfully Login as Officer!");
                         alert.showAndWait();
 
-                        Parent root = FXMLLoader.load(getClass().getResource("/view/officerDashboard.fxml"));
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/officerDashboard.fxml"));
                         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        Parent root = loader.load();
+                        
+                        String surname = result.getString("Surname");
+                        int studentID = result.getInt("studentID");
+                        System.out.println("Retrieved studentID: " + studentID);
+
+                        // Get the controller of the loaded FXML file
+                        OfficerDashboardController officerDashboardController = loader.getController();
+
+                        // Set the username using the method in UserDashboardController
+                        officerDashboardController.setUsername(surname);
+
+                        // Set the studentID using the method in UserDashboardController
+                        officerDashboardController.setStudentID(studentID);
 
                         ((Node) (event.getSource())).getScene().getWindow().hide();
-                        stage.setWidth(1126);
-                        stage.setHeight(654);
+                        stage.setWidth(1332);
+                        stage.setHeight(835);
 
                         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
                         double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
                         double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
-                        stage.setX(centerX - 558.5);
-                        stage.setY(centerY - 327);
+                        stage.setX(centerX - 666);
+                        stage.setY(centerY - 417.5);
 
                         Scene scene = new Scene(root, 1126, 654);
 

@@ -2,6 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
+
 package controller;
 
 import java.net.URL;
@@ -86,9 +87,7 @@ public class ArchiveDisplayCardController implements Initializable {
             deleteFromArchive();
 
             // Call the refresh method in ToDoListUiController
-            if (toDoListUiController != null) {
-                toDoListUiController.refreshArchiveDisplay();
-            }
+            
         }
     }
 
@@ -141,9 +140,7 @@ public class ArchiveDisplayCardController implements Initializable {
             insertIntoTask();
 
             // Call the refresh method in ToDoListUiController
-            if (toDoListUiController != null) {
-                toDoListUiController.refreshArchiveDisplay();
-            }
+           
         }
     }
 

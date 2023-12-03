@@ -346,3 +346,8 @@
     -fx-background-color: #121212; /* Set the fill color */
 }
 
+.ssecondary-bg {
+    -fx-background-color: #121212;
+    -fx-background-radius: 10px;
+}
+

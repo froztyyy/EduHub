@@ -6,8 +6,10 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.effect.ColorAdjust?>
@@ -16,9 +18,12 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
@@ -84,11 +89,11 @@
             </HBox>
          </children>
       </Pane>
-      <Pane fx:id="blurringEffect" layoutX="14.0" layoutY="43.0" prefHeight="793.0" prefWidth="1332.0">
+      <Pane fx:id="blurringEffect" layoutY="43.0" prefHeight="793.0" prefWidth="1332.0">
          <children>
             <VBox alignment="CENTER" prefHeight="95.0" prefWidth="1332.0" style="-fx-border-color: transparent transparent white transparent; -fx-background-color: #010409; -fx-border-width: 0.3px;">
                <children>
-                  <HBox prefHeight="81.0" prefWidth="1241.0">
+                  <HBox alignment="CENTER" prefHeight="81.0" prefWidth="1241.0">
                      <children>
                         <HBox fx:id="sidePanelTitleColor" alignment="CENTER" prefHeight="58.0" prefWidth="206.0" spacing="8.0">
                            <children>
@@ -119,8 +124,8 @@
                               <Insets left="20.0" right="20.0" />
                            </padding>
                         </HBox>
-                        <Pane prefHeight="81.0" prefWidth="597.0" HBox.hgrow="ALWAYS" />
-                        <HBox alignment="CENTER_RIGHT" prefHeight="81.0" prefWidth="557.0" spacing="10.0">
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <HBox alignment="CENTER" spacing="10.0">
                            <children>
                               <TextField prefHeight="45.0" prefWidth="258.0" promptText="Type to Search" styleClass="txtFieldTranparent" stylesheets="@../style/adminlogin.css">
                                  <font>
@@ -138,6 +143,16 @@
                                     <Insets right="10.0" />
                                  </HBox.margin>
                               </Line>
+                              <Pane layoutX="319.0" layoutY="10.0">
+                                 <children>
+                                    <Label fx:id="lblStudentID" alignment="CENTER" layoutX="10.0" layoutY="33.0" text="Student ID" textAlignment="CENTER" textFill="WHITE">
+                                       <font>
+                                          <Font name="Arial" size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </Pane>
+                              <Line endX="-99.99995422363281" endY="31.172897338867188" layoutX="400.0" layoutY="35.0" startX="-100.0" stroke="WHITE" strokeWidth="0.4" />
                               <Pane>
                                  <children>
                                     <Label fx:id="lblTimeDashboard" layoutX="10.0" layoutY="33.0" text="5: 30 PM" textFill="WHITE">
@@ -230,11 +245,6 @@
                               <Pane prefHeight="698.0" prefWidth="20.0" HBox.hgrow="NEVER" />
                               <Pane prefHeight="698.0" prefWidth="536.0">
                                  <children>
-                                    <Text fill="WHITE" layoutX="14.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to EduHub!">
-                                       <font>
-                                          <Font name="Arial Black" size="22.0" />
-                                       </font>
-                                    </Text>
                                     <AnchorPane layoutX="14.0" layoutY="99.0" prefHeight="227.0" prefWidth="493.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-radius: 20px;" styleClass="containerglass" stylesheets="@../../../../../../Downloads/Seenema/CInemaManagementSystem/src/cinemamanagementsystem/CInemaManagementSystem/designdashboard.css">
                                        <children>
                                           <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
@@ -273,6 +283,11 @@
                                     <Label layoutX="403.0" layoutY="49.0" styleClass="sendFeedback" stylesheets="@../style/userdashboard.css" text="Send Us FeedBack" textFill="#2d53ef">
                                        <font>
                                           <Font name="Arial" size="12.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="greetingLabel" layoutX="17.0" layoutY="48.0" text="Label" textFill="WHITE">
+                                       <font>
+                                          <Font name="Arial" size="22.0" />
                                        </font>
                                     </Label>
                                  </children>
@@ -335,7 +350,91 @@
                   </AnchorPane>
                </children>
             </Pane>
-            <Pane fx:id="announcementWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" visible="false" />
+            <Pane fx:id="announcementWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" stylesheets="@../style/officerdashboard.css" visible="false">
+               <children>
+                  <HBox prefHeight="697.0" prefWidth="1332.0">
+                     <children>
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <VBox spacing="15.0">
+                           <children>
+                              <Label text="Announcement Feed" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial" size="20.0" />
+                                 </font>
+                              </Label>
+                              <ScrollPane styleClass="scrllPane" vbarPolicy="NEVER">
+                                 <content>
+                                    <VBox spacing="15.0">
+                                       <children>
+                                          <VBox spacing="15.0" styleClass="announcementCard">
+                                             <children>
+                                                <Pane prefHeight="205.0">
+                                                   <children>
+                                                      <HBox alignment="TOP_CENTER" spacing="15.0">
+                                                         <children>
+                                                            <Pane>
+                                                               <children>
+                                                                  <VBox layoutY="-1.0" spacing="15.0">
+                                                                     <children>
+                                                                        <HBox alignment="CENTER" spacing="15.0">
+                                                                           <children>
+                                                                              <TextField fx:id="TitleText" prefHeight="40.0" prefWidth="192.0" promptText="Title" styleClass="txtField">
+                                                                                 <padding>
+                                                                                    <Insets left="15.0" />
+                                                                                 </padding>
+                                                                              </TextField>
+                                                                              <ComboBox fx:id="audiencelist" prefWidth="135.0" styleClass="combobox" />
+                                                                              <ComboBox fx:id="prioritylist" prefWidth="135.0" styleClass="combobox" />
+                                                                           </children>
+                                                                        </HBox>
+                                                                        <TextArea fx:id="AnnouncementText" prefHeight="150.0" prefWidth="493.0" promptText="Enter Text" styleClass="textArea" wrapText="true" />
+                                                                     </children>
+                                                                  </VBox>
+                                                               </children>
+                                                            </Pane>
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                </Pane>
+                                                <HBox>
+                                                   <children>
+                                                      <Button fx:id="PostButton" mnemonicParsing="false" onAction="#handlepostsubmit" styleClass="btns" text="POST">
+                                                         <padding>
+                                                            <Insets bottom="8.0" left="30.0" right="30.0" top="8.0" />
+                                                         </padding>
+                                                      </Button>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                             </padding>
+                                          </VBox>
+                                          <Pane>
+                                             <children>
+                                                <GridPane fx:id="AnnouncementHandler">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                </GridPane>
+                                             </children>
+                                          </Pane>
+                                       </children>
+                                    </VBox>
+                                 </content>
+                              </ScrollPane>
+                           </children>
+                           <padding>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </padding>
+                        </VBox>
+                        <Pane layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+               </children></Pane>
             <Pane fx:id="calendarWindow" layoutY="96.0" prefHeight="697.0" prefWidth="1332.0" visible="false">
                <children>
                   <Pane layoutX="401.0" layoutY="41.0" prefHeight="601.0" prefWidth="861.0" style="-fx-border-color: white; -fx-background-color: black; -fx-border-radius: 20px; -fx-border-width: 0.3;">
@@ -610,14 +709,14 @@
                      </padding>
                   </TextField>
                </children></Pane>
-            <Pane fx:id="timeClockWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" visible="false">
+            <Pane fx:id="timeClockWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0">
                <children>
                   <AnchorPane fx:id="clockPane" prefHeight="704.0" prefWidth="1332.0" styleClass="secondary-bg">
                      <children>
                         <HBox alignment="CENTER" layoutX="179.0" layoutY="40.0" />
                         <AnchorPane layoutX="154.0" layoutY="96.0" prefHeight="173.0" prefWidth="550.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 30px;">
                            <children>
-                              <Label layoutX="33.0" layoutY="48.0" text="GOOD MORNING, USERNAME" textFill="WHITE">
+                              <Label fx:id="greetingLabelTime" layoutX="33.0" layoutY="48.0" text="GOOD MORNING, USERNAME" textFill="WHITE">
                                  <font>
                                     <Font name="Franklin Gothic Heavy" size="23.0" />
                                  </font>
@@ -943,7 +1042,7 @@
             </Pane>
          </children>
       </Pane>
-      <Pane fx:id="sidePanel" layoutY="49.0" prefHeight="793.0" prefWidth="357.0" style="-fx-background-color: #161B22;">
+      <Pane fx:id="sidePanel" layoutY="49.0" prefHeight="793.0" prefWidth="357.0" style="-fx-background-color: #161B22;" visible="false">
          <children>
             <ImageView fitHeight="58.0" fitWidth="44.0" layoutX="22.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -982,7 +1081,24 @@
                   <Insets top="10.0" />
                </opaqueInsets>
             </Pane>
-            <Pane fx:id="calendarButton" layoutX="20.0" layoutY="161.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
+            <Pane fx:id="announcementButton" layoutX="21.0" layoutY="164.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
+               <children>
+                  <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../media/icons/icons8-home-48.png" />
+                     </image>
+                  </ImageView>
+                  <Text fill="#d7d7d7" layoutX="57.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Announcement">
+                     <font>
+                        <Font name="Arial" size="19.0" />
+                     </font>
+                  </Text>
+               </children>
+               <opaqueInsets>
+                  <Insets top="10.0" />
+               </opaqueInsets>
+            </Pane>
+            <Pane fx:id="calendarButton" layoutX="22.0" layoutY="207.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
                <children>
                   <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -999,7 +1115,7 @@
                   <Insets top="10.0" />
                </opaqueInsets>
             </Pane>
-            <Pane fx:id="studentManagementButton" layoutX="20.0" layoutY="204.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
+            <Pane fx:id="studentManagementButton" layoutX="21.0" layoutY="250.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
                <children>
                   <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -1016,7 +1132,7 @@
                   <Insets top="10.0" />
                </opaqueInsets>
             </Pane>
-            <Pane fx:id="timeClockButton" layoutX="20.0" layoutY="247.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
+            <Pane fx:id="timeClockButton" layoutX="21.0" layoutY="293.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
                <children>
                   <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -1024,23 +1140,6 @@
                      </image>
                   </ImageView>
                   <Text fill="#d7d7d7" layoutX="57.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Time and Clock">
-                     <font>
-                        <Font name="Arial" size="19.0" />
-                     </font>
-                  </Text>
-               </children>
-               <opaqueInsets>
-                  <Insets top="10.0" />
-               </opaqueInsets>
-            </Pane>
-            <Pane fx:id="announcementButton" layoutX="21.0" layoutY="164.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css" visible="false">
-               <children>
-                  <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../media/icons/icons8-home-48.png" />
-                     </image>
-                  </ImageView>
-                  <Text fill="#d7d7d7" layoutX="57.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Announcement">
                      <font>
                         <Font name="Arial" size="19.0" />
                      </font>
