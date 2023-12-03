@@ -104,9 +104,19 @@ public class StudentLoginController implements Initializable {
                         alert.setHeaderText(null);
                         alert.setContentText("Successfully Login!");
                         alert.showAndWait();
-
-                        Parent root = FXMLLoader.load(getClass().getResource("/view/userDashboard.fxml"));
+                        
+                        // Change the SQL query to retrieve LastName
+                        String surname = result.getString("Surname");
+                        
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/userDashboard.fxml"));
                         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        Parent root = loader.load();
+
+                        // Get the controller of the loaded FXML file
+                        UserDashboardController userDashboardController = loader.getController();
+
+                        // Set the username using the method in UserDashboardController
+                        userDashboardController.setUsername(surname);
 
                         ((Node) (event.getSource())).getScene().getWindow().hide();
                         stage.setWidth(1332);

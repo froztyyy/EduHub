@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
@@ -197,7 +198,9 @@ public class UserDashboardController implements Initializable {
     private Button btnArchive;
     @FXML
     private GridPane archiveListHandler;
-    
+    @FXML
+    private Label greetingLabel;
+    private String username;
     
     
     
@@ -266,7 +269,15 @@ public class UserDashboardController implements Initializable {
         archiveDisplayListCard();
         listPane.setVisible(true);
         archivePane.setVisible(false);
-  
+ 
+        
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            TimeAndDateLocation();
+            updateGreeting();
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+        
     }
 
     private final boolean stop = false;
@@ -377,6 +388,9 @@ public class UserDashboardController implements Initializable {
         }
     }
 
+
+    
+    
     @FXML
     private void slidePanelButton(ActionEvent event) {
         // Apply blur effect during sliding animation
@@ -966,7 +980,31 @@ public class UserDashboardController implements Initializable {
 
         thread.start();
     }
+    
+    public void setUsername(String username) {
+        this.username = username;
+        updateGreeting();
+    }
+    
+    private String getGreeting() {
+        LocalTime currentTime = LocalTime.now();
 
+        if (currentTime.isBefore(LocalTime.NOON)) {
+            return "Good Morning";
+        } else if (currentTime.isBefore(LocalTime.of(17, 0))) {
+            return "Good Afternoon";
+        } else {
+            return "Good Evening";
+        }
+    }
+
+    public void updateGreeting() {
+        String greeting = getGreeting();
+        greetingLabel.setText(greeting + ", " + username + "!");
+    }
+    
+
+    
     private void dateLabelForDashboard() {
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
