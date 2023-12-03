@@ -55,6 +55,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
@@ -248,6 +250,28 @@ public class AdminDashboardController implements Initializable {
     private Text lblCourse;
     @FXML
     private Text lblYearSection;
+    @FXML
+    private Label lblNumberOfStudents;
+    @FXML
+    private Label lblCoursesAvailable;
+    @FXML
+    private Label lblOfficerNumber;
+    @FXML
+    private Label lblHighestCountStudent;
+    @FXML
+    private Label lblHighestCountCourse;
+    @FXML
+    private Label lblLowestCountStudent;
+    @FXML
+    private Label lblLowestCountCourse;
+    @FXML
+    private BarChart<String, Number> bchartStudentNumber;
+    @FXML
+    private Label lblTodoCount;
+    @FXML
+    private BarChart<String, Number> bchartTaskPDeadline;
+    @FXML
+    private Label lblAdminNumber;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -359,6 +383,25 @@ public class AdminDashboardController implements Initializable {
 
         // Load Officer Account data
         loadStudentAccountData();
+
+        int studentCount = fetchNumberOfStudents();
+        lblNumberOfStudents.setText(String.valueOf(studentCount));
+
+        int coursesCount = fetchNumberOfCourses();
+        lblCoursesAvailable.setText(String.valueOf(coursesCount));
+
+        int officerCount = fetchNumberOfOfficer();
+        lblOfficerNumber.setText(String.valueOf(officerCount));
+
+        int adminCount = fetchNumberOfAdmin();
+        lblAdminNumber.setText(String.valueOf(adminCount));
+
+        barChartStudentNumber();
+        fetchHighestStudentCount();
+        fetchLowestStudentCount();
+        barChartTaskPerDeadline();
+
+        fetchToDoPerDeadlineCount();
 
     }
 
@@ -1675,5 +1718,322 @@ public class AdminDashboardController implements Initializable {
             }
         }
     }
-}
 
+    private int fetchNumberOfStudents() {
+
+        int count = 0;
+
+        try {
+
+            if (connect.isClosed()) {
+                // If the connection is closed, open it
+                connect = database.getConnection();
+            }
+
+            prepare = connect.prepareStatement("Select count(UserID) from account_student where roleID = 3");
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+                count = result.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error fetching count of student: " + e.getMessage());
+        } finally {
+            // Close resources
+            closeResources();
+        }
+
+        return count;
+    }
+
+    private int fetchNumberOfCourses() {
+
+        int count = 0;
+
+        try {
+
+            if (connect.isClosed()) {
+                // If the connection is closed, open it
+                connect = database.getConnection();
+            }
+
+            prepare = connect.prepareStatement("Select count(CourseID) from course");
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+                count = result.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error fetching count of student: " + e.getMessage());
+        } finally {
+            // Close resources
+            closeResources();
+        }
+
+        return count;
+    }
+
+    private int fetchNumberOfOfficer() {
+
+        int count = 0;
+
+        try {
+
+            if (connect.isClosed()) {
+                // If the connection is closed, open it
+                connect = database.getConnection();
+            }
+
+            prepare = connect.prepareStatement("Select count(UserID) from account_student where roleID = 2");
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+                count = result.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error fetching count of student: " + e.getMessage());
+        } finally {
+            // Close resources
+            closeResources();
+        }
+
+        return count;
+    }
+
+    private int fetchNumberOfAdmin() {
+
+        int count = 0;
+
+        try {
+
+            if (connect.isClosed()) {
+                // If the connection is closed, open it
+                connect = database.getConnection();
+            }
+
+            prepare = connect.prepareStatement("Select count(UserID) from account_student where roleID = 1");
+            result = prepare.executeQuery();
+
+            if (result.next()) {
+                count = result.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error fetching count of student: " + e.getMessage());
+        } finally {
+            // Close resources
+            closeResources();
+        }
+
+        return count;
+    }
+
+    private XYChart.Series<String, Number> barChartStudentNumber() {
+
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+
+        try {
+
+            if (connect.isClosed()) {
+                // If the connection is closed, open it
+                connect = database.getConnection();
+            }
+
+            prepare = connect.prepareStatement("SELECT CourseID, StudentCount FROM (SELECT CourseID, COUNT(*) AS StudentCount, 'DESC' AS OrderDirection FROM account_student where roleID = 3 GROUP BY CourseID ORDER BY StudentCount DESC LIMIT 1) AS queryHighest UNION SELECT CourseID, StudentCount FROM (SELECT CourseID, COUNT(*) AS StudentCount, 'ASC' AS OrderDirection FROM account_student where roleID = 3 GROUP BY CourseID ORDER BY StudentCount ASC LIMIT 1) AS queryLowest");
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                String courseID = result.getString("CourseID");
+                double count = result.getDouble("StudentCount");
+
+                series.getData().add(new XYChart.Data<>(courseID, count));
+            }
+            bchartStudentNumber.getData().add(series);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Always close resources in a finally block
+            try {
+                if (result != null) {
+                    result.close();
+                }
+                if (prepare != null) {
+                    prepare.close();
+                }
+                // Don't close the connection here; reuse it if needed
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return series;
+    }
+
+    private XYChart.Series<String, Number> barChartTaskPerDeadline() {
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+
+        try {
+            // Assuming 'connect' is your database connection
+            if (connect.isClosed()) {
+                // If the connection is closed, open it
+                connect = database.getConnection();
+            }
+
+            // Assuming 'prepare' is your PreparedStatement
+            prepare = connect.prepareStatement("select count(*) as NumberOfToDo, Deadline from todo group by deadline");
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                String deadline = result.getString("Deadline");
+                double numberOfToDo = result.getDouble("NumberOfToDo");
+
+                series.getData().add(new XYChart.Data<>(deadline, numberOfToDo));
+            }
+
+            bchartTaskPDeadline.getData().add(series);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Always close resources in a finally block
+            try {
+                if (result != null) {
+                    result.close();
+                }
+                if (prepare != null) {
+                    prepare.close();
+                }
+                // Don't close the connection here; reuse it if needed
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return series;
+    }
+
+    private void fetchHighestStudentCount() {
+        try {
+            connect = database.getConnection();
+
+            // Your SQL query
+            String sqlQuery = "SELECT CourseID, COUNT(*) AS StudentCount FROM account_student where roleID = 3 GROUP BY CourseID ORDER BY StudentCount DESC LIMIT 1";
+
+            // Execute the query
+            prepare = connect.prepareStatement(sqlQuery);
+            result = prepare.executeQuery();
+
+            // Check if there are results
+            if (result.next()) {
+                // Get data from the result set
+                String highestCourseID = result.getString("CourseID");
+                int highestStudentCount = result.getInt("StudentCount");
+
+                // Update the labels in JavaFX
+                lblHighestCountCourse.setText(highestCourseID);
+                lblHighestCountStudent.setText(String.valueOf(highestStudentCount));
+            } else {
+                // Handle the case where there are no results
+                lblHighestCountCourse.setText("No results found.");
+                lblHighestCountStudent.setText("");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close resources
+            closeResources();
+        }
+
+    }
+
+    private void fetchLowestStudentCount() {
+        try {
+            connect = database.getConnection();
+
+            // Your SQL query
+            String sqlQuery = "SELECT CourseID, COUNT(*) AS StudentCount FROM account_student where roleID = 3 GROUP BY CourseID ORDER BY StudentCount ASC LIMIT 1";
+
+            // Execute the query
+            prepare = connect.prepareStatement(sqlQuery);
+            result = prepare.executeQuery();
+
+            // Check if there are results
+            if (result.next()) {
+                // Get data from the result set
+                String lowestCourseID = result.getString("CourseID");
+                int lowestStudentCount = result.getInt("StudentCount");
+
+                // Update the labels in JavaFX
+                lblLowestCountCourse.setText(lowestCourseID);
+                lblLowestCountStudent.setText(String.valueOf(lowestStudentCount));
+            } else {
+                // Handle the case where there are no results
+                lblHighestCountCourse.setText("No results found.");
+                lblHighestCountStudent.setText("");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close resources
+            closeResources();
+        }
+
+    }
+
+    private void fetchToDoPerDeadlineCount() {
+        try {
+            connect = database.getConnection();
+
+            // Your SQL query
+            String sqlQuery = "select count(*) as ToDoCount from todo";
+
+            // Execute the query
+            prepare = connect.prepareStatement(sqlQuery);
+            result = prepare.executeQuery();
+
+            // Check if there are results
+            if (result.next()) {
+                // Get data from the result set
+                int toDoCount = result.getInt("ToDoCount");
+
+                // Update the labels in JavaFX
+                lblTodoCount.setText(String.valueOf(toDoCount));
+            } else {
+                // Handle the case where there are no results
+                lblHighestCountCourse.setText("No results found.");
+                lblHighestCountStudent.setText("");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close resources
+            closeResources();
+        }
+
+    }
+
+    private void closeResources() {
+        try {
+            if (result != null) {
+                result.close();
+            }
+            if (prepare != null) {
+                prepare.close();
+            }
+            if (connect != null) {
+                connect.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
