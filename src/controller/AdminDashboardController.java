@@ -5,6 +5,8 @@
 package controller;
 
 import com.sun.jdi.connect.spi.Connection;
+import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -51,11 +53,16 @@ import java.util.List;
 import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.WritableImage;
+import javafx.scene.text.Text;
+import javax.imageio.ImageIO;
 
 /**
  * FXML Controller class
@@ -202,7 +209,45 @@ public class AdminDashboardController implements Initializable {
     @FXML
     private TextField searchSection;
     @FXML
-    private AnchorPane clockPane1;
+    private TableView<OfficerAccountData> tblStudentAcc;
+    @FXML
+    private TableColumn<OfficerAccountData, String> tblStudentID1;
+    @FXML
+    private TableColumn<OfficerAccountData, String> tblPassword1;
+    @FXML
+    private TableColumn<OfficerAccountData, String> tblRoleID1;
+    @FXML
+    private TableColumn<OfficerAccountData, String> tblSurname1;
+    @FXML
+    private TableColumn<OfficerAccountData, String> tblFirstName1;
+    @FXML
+    private TableColumn<OfficerAccountData, String> tblMiddlename1;
+    @FXML
+    private TableColumn<OfficerAccountData, String> tblSuffix1;
+    @FXML
+    private TableColumn<OfficerAccountData, String> tblCourse1;
+    @FXML
+    private TableColumn<OfficerAccountData, String> tblYearSection1;
+    @FXML
+    private Pane eduhubAccount;
+    @FXML
+    private TextField searchStudent;
+    @FXML
+    private Text lblStudentID;
+    @FXML
+    private Text lblSuffix;
+    @FXML
+    private Text lblPassword;
+    @FXML
+    private Text lblSurname;
+    @FXML
+    private Text lblFirstName;
+    @FXML
+    private Text lblMiddleName;
+    @FXML
+    private Text lblCourse;
+    @FXML
+    private Text lblYearSection;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -287,12 +332,33 @@ public class AdminDashboardController implements Initializable {
             }
         });
 
+        tblStudentAcc.setOnMouseClicked(event -> {
+            // Check if a row is clicked
+            if (event.getClickCount() == 1) {
+                handleTableClickStudent();
+            }
+        });
+
         tblCourseAbb.setCellValueFactory(new PropertyValueFactory<>("CourseAbb"));
         tblCourseName.setCellValueFactory(new PropertyValueFactory<>("CourseName"));
         loadCourseData();
 
         tblYearCourse.setCellValueFactory(new PropertyValueFactory<>("SectionName"));
         loadYearSectionData();
+
+        // Initialize columns
+        tblStudentID1.setCellValueFactory(new PropertyValueFactory<>("tblStudentID"));
+        tblPassword1.setCellValueFactory(new PropertyValueFactory<>("tblPassword"));
+        tblRoleID1.setCellValueFactory(new PropertyValueFactory<>("tblRoleID"));
+        tblSurname1.setCellValueFactory(new PropertyValueFactory<>("tblSurname"));
+        tblFirstName1.setCellValueFactory(new PropertyValueFactory<>("tblFirstName"));
+        tblMiddlename1.setCellValueFactory(new PropertyValueFactory<>("tblMiddlename"));
+        tblSuffix1.setCellValueFactory(new PropertyValueFactory<>("tblSuffix"));
+        tblCourse1.setCellValueFactory(new PropertyValueFactory<>("tblCourse"));
+        tblYearSection1.setCellValueFactory(new PropertyValueFactory<>("tblYearSection"));
+
+        // Load Officer Account data
+        loadStudentAccountData();
 
     }
 
@@ -1410,4 +1476,204 @@ public class AdminDashboardController implements Initializable {
             }
         });
     }
+
+    @FXML
+    private void deleteAcc(ActionEvent event) {
+        // Get the selected officer account data from the table
+        OfficerAccountData selectedstudent = tblStudentAcc.getSelectionModel().getSelectedItem();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Delete Officer Account");
+        alert.setContentText("Are you sure you want to delete this officer account?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+
+            // Call the method to delete the officer account data from the database
+            deleteStudentAccountFromDatabase(selectedstudent);
+
+            // Remove the selected officer account from the table view
+            tblStudentAcc.getItems().remove(selectedstudent);
+            showSuccessAlert("Student Account deleted successfully!");
+
+        } else {
+            System.out.println("Please select an officer account to delete.");
+            showWarningAlert("Please select a Student Account to delete.");
+        }
+    }
+
+    private void deleteStudentAccountFromDatabase(OfficerAccountData officerAccount) {
+        connect = database.getConnection();
+
+        try {
+            String deleteQuery = "DELETE FROM account_student WHERE StudentID = ?";
+            PreparedStatement prepare = connect.prepareStatement(deleteQuery);
+            prepare.setString(1, officerAccount.getTblStudentID());
+
+            int affectedRows = prepare.executeUpdate();
+
+            if (affectedRows > 0) {
+                System.out.println("Officer account deleted successfully from the database.");
+            } else {
+                System.out.println("Failed to delete officer account from the database.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void searchStudent(ActionEvent event) {
+        // Assuming you have a TextField named searchStudent for user input
+        String searchKeyword = searchStudent.getText().trim().toLowerCase();
+
+        if (!searchKeyword.isEmpty()) {
+            ObservableList<OfficerAccountData> searchResultList = FXCollections.observableArrayList();
+
+            for (OfficerAccountData officerAccount : studentAccountList) {
+                // Iterate through all columns and check if the search keyword matches any column value
+                if (containsIgnoreCase(officerAccount.getTblStudentID(), searchKeyword)
+                        || containsIgnoreCase(officerAccount.getTblPassword(), searchKeyword)
+                        || containsIgnoreCase(officerAccount.getTblRoleID(), searchKeyword)
+                        || containsIgnoreCase(officerAccount.getTblSurname(), searchKeyword)
+                        || containsIgnoreCase(officerAccount.getTblFirstName(), searchKeyword)
+                        || containsIgnoreCase(officerAccount.getTblMiddlename(), searchKeyword)
+                        || containsIgnoreCase(officerAccount.getTblSuffix(), searchKeyword)
+                        || containsIgnoreCase(officerAccount.getTblCourse(), searchKeyword)
+                        || containsIgnoreCase(officerAccount.getTblYearSection(), searchKeyword)) {
+
+                    searchResultList.add(officerAccount);
+                }
+            }
+
+            // Update the TableView with the search results
+            tblStudentAcc.setItems(searchResultList);
+        } else {
+            // If the search field is empty, display all students
+            tblStudentAcc.setItems(studentAccountList);
+        }
+
+        // Add listener to detect when search text is cleared
+        searchStudent.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.isEmpty()) {
+                loadStudentAccountData(); // Call the loadYearSectionData() method to show all data
+            }
+        });
+    }
+
+    // Helper method to check if a string contains another string (case-insensitive)
+    private boolean containsIgnoreCase(String source, String target) {
+        return source.toLowerCase().contains(target);
+    }
+    private ObservableList<OfficerAccountData> studentAccountList;
+
+    private void loadStudentAccountData() {
+        studentAccountList = FXCollections.observableArrayList();
+        connect = database.getConnection();
+
+        try {
+            PreparedStatement prepare = connect.prepareStatement("SELECT StudentID, Password, RoleID, Surname, Firstname, Middlename, Suffix, CourseID, SectionID FROM account_student WHERE RoleID = 3");
+            ResultSet result = prepare.executeQuery();
+
+            while (result.next()) {
+                OfficerAccountData officerAccount = new OfficerAccountData();
+                officerAccount.setTblStudentID(result.getString("StudentID"));
+                officerAccount.setTblPassword(result.getString("Password"));
+                officerAccount.setTblRoleID(result.getString("RoleID"));
+                officerAccount.setTblSurname(result.getString("Surname"));
+                officerAccount.setTblFirstName(result.getString("Firstname"));
+                officerAccount.setTblMiddlename(result.getString("Middlename"));
+                officerAccount.setTblSuffix(result.getString("Suffix"));
+                officerAccount.setTblCourse(result.getString("CourseID"));
+                officerAccount.setTblYearSection(result.getString("SectionID"));
+
+                studentAccountList.add(officerAccount);
+            }
+            tblStudentAcc.setItems(studentAccountList);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                connect.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    private void handleTableClickStudent() {
+        // Get the selected item from the table
+        OfficerAccountData selectedAccount = tblStudentAcc.getSelectionModel().getSelectedItem();
+
+        // Check if an item is selected
+        if (selectedAccount != null) {
+            // Populate the text fields and combo boxes with the selected item's data
+            lblStudentID.setText(selectedAccount.getTblStudentID());
+            lblPassword.setText(selectedAccount.getTblPassword());
+            lblSurname.setText(selectedAccount.getTblSurname());
+            lblFirstName.setText(selectedAccount.getTblFirstName());
+            lblMiddleName.setText(selectedAccount.getTblMiddlename());
+            lblSuffix.setText(selectedAccount.getTblSuffix());
+            lblCourse.setText(selectedAccount.getTblCourse());
+            lblYearSection.setText(selectedAccount.getTblYearSection());
+
+        }
+    }
+
+    @FXML
+    private void PrintData(ActionEvent event) {
+        // Capture the content of the specified pane
+        WritableImage writableImage = new WritableImage((int) eduhubAccount.getWidth(), (int) eduhubAccount.getHeight());
+        SnapshotParameters snapshotParameters = new SnapshotParameters();
+        eduhubAccount.snapshot(snapshotParameters, writableImage);
+
+        // Ask the user if they want to print the data
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Print Confirmation");
+        alert.setHeaderText("Do you want to print the data?");
+        alert.setContentText("Choose your option.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // User clicked "OK", proceed with saving the image
+            saveImage(writableImage);
+        }
+    }
+
+    private void saveImage(WritableImage writableImage) {
+        // Use a FileChooser to prompt the user for the file location
+        javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+        fileChooser.setTitle("Save Image");
+        fileChooser.getExtensionFilters().add(new javafx.stage.FileChooser.ExtensionFilter("PNG Files", "*.png"));
+
+        File file = fileChooser.showSaveDialog(null);
+
+        if (file != null) {
+            try {
+                // Convert the WritableImage to a BufferedImage
+                java.awt.image.BufferedImage bufferedImage = SwingFXUtils.fromFXImage(writableImage, null);
+
+                // Save the BufferedImage to the selected file location
+                ImageIO.write(bufferedImage, "png", file);
+
+                // Show a success alert
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Success");
+                successAlert.setHeaderText(null);
+                successAlert.setContentText("Data successfully printed and saved to your computer.");
+                successAlert.showAndWait();
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Show an error alert if there's an issue with saving the image
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setTitle("Error");
+                errorAlert.setHeaderText(null);
+                errorAlert.setContentText("Error saving the image. Please try again.");
+                errorAlert.showAndWait();
+            }
+        }
+    }
 }
+

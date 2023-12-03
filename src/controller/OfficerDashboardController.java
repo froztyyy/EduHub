@@ -232,6 +232,8 @@ public class OfficerDashboardController implements Initializable {
     private TableColumn<StudentAccountDataList, String> tblYearSection;
     @FXML
     private TableView<StudentAccountDataList> tblStudentData;
+    @FXML
+    private TextField searchStudent;
 
     /**
      * Initializes the controller class.
@@ -292,7 +294,7 @@ public class OfficerDashboardController implements Initializable {
         timeNowForDashboard();
         dateLabelForDashboard();
         TimeAndDateLocation();
-        
+
         connect = database.getConnection();
         fetchCourseToComboBox(cbCourse);
         fetchSectionToComboBox(cbSectionYear);
@@ -1172,7 +1174,7 @@ public class OfficerDashboardController implements Initializable {
 
         try {
             // Assume your database connection is already established
-            prepare = connect.prepareStatement("SELECT StudentID, Password, RoleID, Surname, Firstname, Middlename, Suffix, CourseID, SectionID FROM account_student WHERE RoleID = 2");
+            prepare = connect.prepareStatement("SELECT StudentID, Password, RoleID, Surname, Firstname, Middlename, Suffix, CourseID, SectionID FROM account_student WHERE RoleID = 3");
             result = prepare.executeQuery(); // Execute the query and obtain the result set
 
             while (result.next()) {
@@ -1272,6 +1274,8 @@ public class OfficerDashboardController implements Initializable {
 
                 // Remove from the database
                 deleteStudentFromDatabase(selectedOfficer);
+
+                tblStudentData.getItems().remove(selectedOfficer);
 
                 // Inform the user about successful deletion
                 showAlert("Success", "Officer Account Deleted", "Officer account removed successfully.");
@@ -1408,6 +1412,50 @@ public class OfficerDashboardController implements Initializable {
 
         // Reload the data
         loadStudentAccountData();
+    }
+
+    @FXML
+    private void searchStudent(ActionEvent event) {
+        // Assuming you have a TextField named searchStudent for user input
+        String searchKeyword = searchStudent.getText().trim().toLowerCase();
+
+        if (!searchKeyword.isEmpty()) {
+            ObservableList<StudentAccountDataList> searchResultList = FXCollections.observableArrayList();
+
+            for (StudentAccountDataList studentAccount : studentAccountDataList) {
+                // Iterate through all columns and check if the search keyword matches any column value
+                if (containsIgnoreCase(studentAccount.getTblStudentID(), searchKeyword)
+                        || containsIgnoreCase(studentAccount.getTblPassword(), searchKeyword)
+                        || containsIgnoreCase(studentAccount.getTblRoleID(), searchKeyword)
+                        || containsIgnoreCase(studentAccount.getTblSurname(), searchKeyword)
+                        || containsIgnoreCase(studentAccount.getTblFirstName(), searchKeyword)
+                        || containsIgnoreCase(studentAccount.getTblMiddlename(), searchKeyword)
+                        || containsIgnoreCase(studentAccount.getTblSuffix(), searchKeyword)
+                        || containsIgnoreCase(studentAccount.getTblCourse(), searchKeyword)
+                        || containsIgnoreCase(studentAccount.getTblYearSection(), searchKeyword)) {
+
+                    searchResultList.add(studentAccount);
+                }
+            }
+
+            // Update the TableView with the search results
+            tblStudentData.setItems(searchResultList);
+        } else {
+            // If the search field is empty, display all students
+            tblStudentData.setItems(studentAccountDataList);
+        }
+
+        // Add listener to detect when search text is cleared
+        searchStudent.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.isEmpty()) {
+                loadStudentAccountData(); // Call the loadStudentAccountData() method to show all data
+            }
+        });
+    }
+
+// Helper method to check if a string contains another string (case-insensitive)
+    private boolean containsIgnoreCase(String source, String target) {
+        return source.toLowerCase().contains(target);
     }
 
 }
