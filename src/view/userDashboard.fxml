@@ -254,7 +254,7 @@
                                           </Label>
                                        </graphic>
                                     </Button>
-                                    <ImageView fitHeight="227.0" fitWidth="383.0" layoutX="112.0" layoutY="395.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="227.0" fitWidth="383.0" layoutX="85.0" layoutY="397.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../media/Screenshot%202023-12-05%20163508.png" />
                                        </image>
@@ -935,7 +935,7 @@
                </children></Pane>
          </children>
       </Pane>
-      <Pane fx:id="sidePanel" layoutY="49.0" prefHeight="793.0" prefWidth="357.0" style="-fx-background-color: #161B22;">
+      <Pane fx:id="sidePanel" layoutY="49.0" prefHeight="793.0" prefWidth="357.0" style="-fx-background-color: #161B22;" visible="false">
          <children>
             <ImageView fitHeight="58.0" fitWidth="44.0" layoutX="22.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
                <image>

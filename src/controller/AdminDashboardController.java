@@ -63,6 +63,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javax.imageio.ImageIO;
 
@@ -272,6 +273,28 @@ public class AdminDashboardController implements Initializable {
     private BarChart<String, Number> bchartTaskPDeadline;
     @FXML
     private Label lblAdminNumber;
+    @FXML
+    private TableView<GetArchiveCourseData> archiveCoursetbl;
+    @FXML
+    private TableColumn<GetArchiveCourseData, String> archiveCourse;
+    @FXML
+    private TableColumn<GetArchiveCourseData, String> archiveCourseName;
+    @FXML
+    private Label courseArchiveCount;
+    @FXML
+    private TableView<GetArchiveYearSectionData> archiveYearSectionTbl;
+    @FXML
+    private TableColumn<GetArchiveYearSectionData, String> archiveYearSection;
+    @FXML
+    private TableView<GetArchiveFeedBack> archiveFeedBacktbl;
+    @FXML
+    private TableColumn<GetArchiveFeedBack, Integer> archiveDesignRate;
+    @FXML
+    private TableColumn<GetArchiveFeedBack, Integer> archiveFunctionRate;
+    @FXML
+    private TableColumn<GetArchiveFeedBack, Integer> archiveExperienceRate;
+    @FXML
+    private TableColumn<GetArchiveFeedBack, Integer> archiveFeedBackComment;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -402,6 +425,20 @@ public class AdminDashboardController implements Initializable {
         barChartTaskPerDeadline();
 
         fetchToDoPerDeadlineCount();
+
+        archiveCourse.setCellValueFactory(new PropertyValueFactory<>("CourseAbb"));
+        archiveCourseName.setCellValueFactory(new PropertyValueFactory<>("CourseName"));
+        loadArchiveCourseData();
+        updateCourseArchiveCount();
+
+        archiveYearSection.setCellValueFactory(new PropertyValueFactory<>("SectionName"));
+        loadArchiveYearSectionData();
+
+        archiveDesignRate.setCellValueFactory(new PropertyValueFactory<>("designRating"));
+        archiveFunctionRate.setCellValueFactory(new PropertyValueFactory<>("functionRating"));
+        archiveExperienceRate.setCellValueFactory(new PropertyValueFactory<>("experienceRating"));
+        archiveFeedBackComment.setCellValueFactory(new PropertyValueFactory<>("feedbackReport"));
+        loadArchiveFeedBackData();
 
     }
 
@@ -710,7 +747,7 @@ public class AdminDashboardController implements Initializable {
     ////////////////////////////////
     // FEEDBACK RATE SECTION
     @FXML
-    private void RateFeedbackButton(ActionEvent event) {
+    private void RateFeedbackButton(ActionEvent event) throws SQLException {
         Feedback selectedFeedback = tableFeedBack.getSelectionModel().getSelectedItem();
 
         if (selectedFeedback != null) {
@@ -721,6 +758,7 @@ public class AdminDashboardController implements Initializable {
             alert.setContentText("Are you sure you want to delete this feedback entry?");
 
             Optional<ButtonType> result = alert.showAndWait();
+            connect = database.getConnection();
 
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 // User clicked OK, proceed with deletion
@@ -730,6 +768,13 @@ public class AdminDashboardController implements Initializable {
 
                 // Remove from the database
                 deleteFeedbackFromDatabase(selectedFeedback);
+                // Now, insert the course into the archive table (trash_course)
+                insertIntoArchiveFeedbackTable(connect, selectedFeedback);
+                loadFeedbackData();
+
+                loadArchiveFeedBackData();
+
+                showSuccessAlert("Course removed successfully!");
             }
         } else {
             // Inform the user that no item is selected
@@ -1235,7 +1280,7 @@ public class AdminDashboardController implements Initializable {
             clearAndLoadCourseData();
             int coursesCount = fetchNumberOfCourses();
             lblCoursesAvailable.setText(String.valueOf(coursesCount));
-            // Optionally, you can show a success message or perform other actions here
+
         } catch (SQLException e) {
             e.printStackTrace();
             // Handle exceptions appropriately (show error message, log, etc.)
@@ -1244,33 +1289,52 @@ public class AdminDashboardController implements Initializable {
 
     @FXML
     private void handleDeleteCourse(ActionEvent event) {
-        // Get the selected item from the table
-        getCourseData selectedCourse = tblCourseData.getSelectionModel().getSelectedItem();
+        // Show a confirmation alert
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Are you sure you want to remove this item?");
+        alert.setContentText("This will move the data to archive.");
 
-        if (selectedCourse != null) {
+        // Wait for user's response
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // User clicked OK, proceed with removal
+
             try {
                 connect = database.getConnection();
-                prepare = connect.prepareStatement("DELETE FROM filter_course WHERE CourseAbb = ?");
-                prepare.setString(1, selectedCourse.getCourseAbb());
 
-                // Execute the SQL query for deletion
-                prepare.executeUpdate();
+                // Get the selected item from the table
+                getCourseData selectedCourse = tblCourseData.getSelectionModel().getSelectedItem();
 
-                showSuccessAlert("Course deleted successfully!");
+                if (selectedCourse != null) {
+                    // First, delete the course from the task table (filter_course)
+                    deleteFromTaskTable(connect, selectedCourse.getCourseAbb());
 
-                // Refresh the table after deletion
-                loadCourseData();
-                cbCourse.getItems().clear();
-                fetchCourseToComboBox(cbCourse);
-                int coursesCount = fetchNumberOfCourses();
-                lblCoursesAvailable.setText(String.valueOf(coursesCount));
+                    // Now, insert the course into the archive table (trash_course)
+                    insertIntoArchiveTable(connect, selectedCourse);
+
+                    showSuccessAlert("Course removed successfully!");
+
+                    // Refresh the table and ComboBox after removal
+                    loadCourseData();
+                    cbCourse.getItems().clear();
+                    fetchCourseToComboBox(cbCourse);
+                    int coursesCount = fetchNumberOfCourses();
+                    lblCoursesAvailable.setText(String.valueOf(coursesCount));
+                    loadArchiveCourseData();
+                    updateCourseArchiveCount();
+                } else {
+                    // If no item is selected, show a warning or error message
+                    showWarningAlert("Please select a course to remove.");
+                }
+
             } catch (SQLException e) {
                 e.printStackTrace();
                 // Handle exceptions appropriately (show error message, log, etc.)
+            } finally {
+                closeResources();
             }
-        } else {
-            // If no item is selected, show a warning or error message
-            showWarningAlert("Please select a course to delete.");
         }
     }
 
@@ -1415,23 +1479,26 @@ public class AdminDashboardController implements Initializable {
 
         if (selectedCourse != null) {
             try {
-                connect = database.getConnection();
-                prepare = connect.prepareStatement("DELETE FROM filter_section WHERE SectionName = ?");
-                prepare.setString(1, selectedCourse.getSectionName());
 
-                // Execute the SQL query for deletion
-                prepare.executeUpdate();
+                connect = database.getConnection();
+                deleteFromYearSectionTable(connect, selectedCourse.getSectionName()); // Corrected variable name
+
+                insertIntoArchiveYearSectionTable(connect, selectedCourse);
 
                 showSuccessAlert("Year & Section deleted successfully!");
+                loadYearSectionData();
 
                 // Refresh the table after deletion
                 clearAndLoadSectionNameData();
                 cbSectionYear.getItems().clear();
                 fetchSectionToComboBox(cbSectionYear);
-
+                loadArchiveYearSectionData();
+                updateCourseArchiveCount();
             } catch (SQLException e) {
                 e.printStackTrace();
                 // Handle exceptions appropriately (show error message, log, etc.)
+            } finally {
+                closeResources();
             }
         } else {
             // If no item is selected, show a warning or error message
@@ -2051,4 +2118,473 @@ public class AdminDashboardController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    //////////////////////////////
+    // ARCHIVES ADMIN SECTIONS / TABLES
+    // COURSE GOES TO ARCHIVE 
+    private void deleteFromTaskTable(java.sql.Connection conn, String courseAbb) throws SQLException {
+        String deleteQuery = "DELETE FROM filter_course WHERE CourseAbb = ?";
+        try (PreparedStatement prepare = conn.prepareStatement(deleteQuery)) {
+            prepare.setString(1, courseAbb);
+            prepare.executeUpdate();
+        }
+    }
+
+    private void insertIntoArchiveTable(java.sql.Connection conn, getCourseData courseData) throws SQLException {
+        String insertQuery = "INSERT INTO trash_course (CourseAbb, CourseName) VALUES (?, ?)";
+        try (PreparedStatement prepare = conn.prepareStatement(insertQuery)) {
+            prepare.setString(1, courseData.getCourseAbb());
+            prepare.setString(2, courseData.getCourseName());
+            prepare.executeUpdate();
+        }
+    }
+
+    private ObservableList<GetArchiveCourseData> archiveCourseData; // Corrected variable name
+
+    private void loadArchiveCourseData() {
+        archiveCourseData = FXCollections.observableArrayList(); // Corrected variable name
+        connect = database.getConnection();
+
+        try {
+            prepare = connect.prepareStatement("SELECT CourseAbb, CourseName FROM trash_course");
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                GetArchiveCourseData courseData = new GetArchiveCourseData(); // Corrected variable name
+                courseData.setCourseAbb(result.getString("CourseAbb"));
+                courseData.setCourseName(result.getString("CourseName"));
+                archiveCourseData.add(courseData); // Corrected variable name
+            }
+
+            archiveCoursetbl.setItems(archiveCourseData); // Assuming archiveCoursetbl is the TableView in your FXML
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close the result set, statement, and connection in a finally block
+            try {
+                if (result != null) {
+                    result.close();
+                }
+                if (prepare != null) {
+                    prepare.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
+    private void restoreCourse(ActionEvent event) {
+        // Show a confirmation alert
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Are you sure you want to retrieve this item?");
+        alert.setContentText("This action will retrieve the selected data to your Course List");
+
+        // Wait for user's response
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                connect = database.getConnection();
+
+                // Get the selected item from the table
+                GetArchiveCourseData selectedCourse = archiveCoursetbl.getSelectionModel().getSelectedItem();
+
+                if (selectedCourse != null) {
+                    // Insert the course into the filter_course table
+                    insertIntoCourseTable(connect, selectedCourse);
+
+                    // Delete the course from the trash_course table
+                    deleteFromArchiveCourseTable(connect, selectedCourse);
+
+                    showSuccessAlert("Course retrieved successfully!");
+
+                    // Refresh the table and ComboBox after retrieval
+                    loadArchiveCourseData();
+                    fetchCourseToComboBox(cbCourse);
+                    int coursesCount = fetchNumberOfCourses();
+                    lblCoursesAvailable.setText(String.valueOf(coursesCount));
+                    loadCourseData();
+                } else {
+                    // If no item is selected, show a warning or error message
+                    showWarningAlert("Please select a course to retrieve.");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle exceptions appropriately (show error message, log, etc.)
+            } finally {
+                closeResources();
+            }
+        }
+    }
+
+    private void insertIntoCourseTable(java.sql.Connection conn, GetArchiveCourseData courseData) throws SQLException {
+        String insertQuery = "INSERT INTO filter_course (CourseAbb, CourseName) VALUES (?, ?)";
+        try (PreparedStatement prepare = conn.prepareStatement(insertQuery)) {
+            prepare.setString(1, courseData.getCourseAbb());
+            prepare.setString(2, courseData.getCourseName());
+            prepare.executeUpdate();
+        }
+    }
+
+    private void deleteFromArchiveCourseTable(java.sql.Connection conn, GetArchiveCourseData courseData) throws SQLException {
+        String deleteQuery = "DELETE FROM trash_course WHERE CourseAbb = ?";
+        try (PreparedStatement prepare = conn.prepareStatement(deleteQuery)) {
+            prepare.setString(1, courseData.getCourseAbb());
+            prepare.executeUpdate();
+        }
+    }
+
+    @FXML
+    private void deleteCourseArchive(ActionEvent event) {
+        // Show a confirmation alert
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Are you sure you want to permanently delete this item?");
+        alert.setContentText("This action cannot be undone.");
+
+        // Wait for user's response
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                connect = database.getConnection();
+
+                // Get the selected item from the table
+                GetArchiveCourseData selectedCourse = archiveCoursetbl.getSelectionModel().getSelectedItem();
+
+                if (selectedCourse != null) {
+                    // Insert the course into the backup_course table
+                    insertIntoBackupCourseDatabase(connect, selectedCourse);
+
+                    // Delete the course from the trash_course table
+                    deleteFromArchiveCourseTable(connect, selectedCourse);
+
+                    showSuccessAlert("Course permanently deleted!");
+
+                    // Refresh the table after permanent deletion
+                    loadArchiveCourseData();
+                } else {
+                    // If no item is selected, show a warning or error message
+                    showWarningAlert("Please select a course to permanently delete.");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle exceptions appropriately (show error message, log, etc.)
+            } finally {
+                closeResources();
+            }
+        }
+    }
+
+    private void insertIntoBackupCourseDatabase(java.sql.Connection conn, GetArchiveCourseData courseData) throws SQLException {
+        String insertQuery = "INSERT INTO backup_course (CourseAbb, CourseName) VALUES (?, ?)";
+        try (PreparedStatement prepare = conn.prepareStatement(insertQuery)) {
+            prepare.setString(1, courseData.getCourseAbb());
+            prepare.setString(2, courseData.getCourseName());
+            prepare.executeUpdate();
+        }
+    }
+
+    private void updateCourseArchiveCount() {
+        try {
+            connect = database.getConnection();
+            prepare = connect.prepareStatement("SELECT COUNT(CourseID) FROM trash_course");
+            result = prepare.executeQuery();
+            int count = result.next() ? result.getInt(1) : 0;
+            courseArchiveCount.setText(count + " items");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeResources();
+        }
+    }
+
+    ////////////////////////////////// 
+    // YEAR GOES TO ARCHIVE 
+    private void deleteFromYearSectionTable(java.sql.Connection conn, String sectionName) throws SQLException {
+        String deleteQuery = "DELETE FROM filter_section WHERE SectionName = ?";
+        try (PreparedStatement prepare = conn.prepareStatement(deleteQuery)) {
+            prepare.setString(1, sectionName);
+            prepare.executeUpdate();
+        }
+
+    }
+
+    private void insertIntoArchiveYearSectionTable(java.sql.Connection conn, getYearSectionData yearSectionData) throws SQLException {
+        String insertQuery = "INSERT INTO trash_section (SectionName) VALUES (?)";
+        try (PreparedStatement prepare = conn.prepareStatement(insertQuery)) {
+            prepare.setString(1, yearSectionData.getSectionName());
+            prepare.executeUpdate();
+        }
+    }
+
+    private ObservableList<GetArchiveYearSectionData> archiveYearSectionData;
+
+    private void loadArchiveYearSectionData() {
+        archiveYearSectionData = FXCollections.observableArrayList();
+        connect = database.getConnection();
+
+        try {
+            prepare = connect.prepareStatement("SELECT SectionName FROM trash_section");
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                GetArchiveYearSectionData yearSectionData = new GetArchiveYearSectionData();
+                yearSectionData.setSectionName(result.getString("SectionName"));
+                archiveYearSectionData.add(yearSectionData);
+            }
+
+            archiveYearSectionTbl.setItems(archiveYearSectionData);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close the result set, statement, and connection in a finally block
+            closeResources();
+        }
+    }
+
+    @FXML
+    private void restoreYearSection(ActionEvent event) {
+        // Show a confirmation alert
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Are you sure you want to retrieve this item?");
+        alert.setContentText("This action will retrieve the selected data to your Course List");
+
+        // Wait for user's response
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                connect = database.getConnection();
+
+                // Get the selected item from the table
+                GetArchiveYearSectionData selectedYearSection = archiveYearSectionTbl.getSelectionModel().getSelectedItem(); // Corrected variable name
+
+                if (selectedYearSection != null) {
+                    // Insert the section into the filter_section table
+                    insertIntoYearSectionTable(connect, selectedYearSection);
+
+                    // Delete the section from the trash_section table
+                    deleteFromArchiveYearSectionTable(connect, selectedYearSection);
+                    updateCourseArchiveCount();
+
+                    showSuccessAlert("Year & Section retrieved successfully!");
+
+                    // Refresh the table and ComboBox after retrieval
+                    loadArchiveYearSectionData();
+                    fetchSectionToComboBox(cbSectionYear);
+                    loadYearSectionData();
+
+                } else {
+                    // If no item is selected, show a warning or error message
+                    showWarningAlert("Please select a Year & Section to retrieve.");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle exceptions appropriately (show error message, log, etc.)
+            } finally {
+                closeResources();
+            }
+        }
+    }
+
+    private void insertIntoYearSectionTable(java.sql.Connection conn, GetArchiveYearSectionData yearSectionData) throws SQLException {
+        String insertQuery = "INSERT INTO filter_section (SectionName) VALUES (?)";
+        try (PreparedStatement prepare = conn.prepareStatement(insertQuery)) {
+            prepare.setString(1, yearSectionData.getSectionName());
+            prepare.executeUpdate();
+        }
+    }
+
+    private void deleteFromArchiveYearSectionTable(java.sql.Connection conn, GetArchiveYearSectionData yearSectionData) throws SQLException {
+        String deleteQuery = "DELETE FROM trash_section WHERE SectionName = ?";
+        try (PreparedStatement prepare = conn.prepareStatement(deleteQuery)) {
+            prepare.setString(1, yearSectionData.getSectionName());
+            prepare.executeUpdate();
+        }
+    }
+
+    @FXML
+    private void deleteYearSectionArchive(ActionEvent event) {
+        // Show a confirmation alert
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmation");
+        alert.setHeaderText("Are you sure you want to permanently delete this item?");
+        alert.setContentText("This action cannot be undone.");
+
+        // Wait for user's response
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                connect = database.getConnection();
+
+                // Get the selected item from the table
+                GetArchiveYearSectionData selectedYearSection = archiveYearSectionTbl.getSelectionModel().getSelectedItem(); // Corrected variable name
+
+                if (selectedYearSection != null) {
+                    // Insert the section into the backup_section table
+                    insertIntoBackupYearSectionDatabase(connect, selectedYearSection);
+
+                    // Delete the section from the trash_section table
+                    deleteFromArchiveYearSectionTable(connect, selectedYearSection);
+                    updateCourseArchiveCount();
+
+                    showSuccessAlert("Year & Section permanently deleted!");
+
+                    // Refresh the table after permanent deletion
+                    loadArchiveYearSectionData();
+                } else {
+                    // If no item is selected, show a warning or error message
+                    showWarningAlert("Please select a Year & Section to permanently delete.");
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle exceptions appropriately (show error message, log, etc.)
+            } finally {
+                closeResources();
+            }
+        }
+    }
+
+    private void insertIntoBackupYearSectionDatabase(java.sql.Connection conn, GetArchiveYearSectionData yearSectionData) throws SQLException {
+        String insertQuery = "INSERT INTO backup_section (SectionName) VALUES (?)";
+        try (PreparedStatement prepare = conn.prepareStatement(insertQuery)) {
+            prepare.setString(1, yearSectionData.getSectionName());
+            prepare.executeUpdate();
+        }
+
+    }
+
+    ////////////////////////////////// 
+    // FEEDBACK GOES TO ARCHIVE 
+    private ObservableList<GetArchiveFeedBack> archiveFeedBackData;
+
+    @FXML
+    private void loadArchiveFeedBackData() {
+        archiveFeedBackData = FXCollections.observableArrayList();
+        connect = database.getConnection();
+
+        try {
+            prepare = connect.prepareStatement("SELECT designRating, functionRating, experienceRating, feedbackReport FROM trash_feedback");
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                GetArchiveFeedBack feedback = new GetArchiveFeedBack();
+                feedback.setDesignRating(result.getInt("designRating"));
+                feedback.setFunctionRating(result.getInt("functionRating"));
+                feedback.setExperienceRating(result.getInt("experienceRating"));
+                feedback.setFeedbackReport(result.getString("feedbackReport"));
+                archiveFeedBackData.add(feedback);
+            }
+
+            archiveFeedBacktbl.setItems(archiveFeedBackData);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeResources();
+        }
+    }
+
+    @FXML
+    private void restoreFeedBack(ActionEvent event) {
+        GetArchiveFeedBack selectedFeedBack = archiveFeedBacktbl.getSelectionModel().getSelectedItem();
+
+        if (selectedFeedBack != null) {
+            try {
+                connect = database.getConnection();
+                insertIntoFeedbackTable(connect, selectedFeedBack);
+                deleteFromArchiveFeedBackTable(connect, selectedFeedBack);
+
+                showSuccessAlert("Feedback retrieved successfully!");
+
+                loadArchiveFeedBackData();
+                loadFeedbackData();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle exceptions appropriately (show error message, log, etc.)
+            } finally {
+                closeResources();
+            }
+        } else {
+            showWarningAlert("Please select a feedback to retrieve.");
+        }
+    }
+
+    @FXML
+    private void deleteFeedBackArchive(ActionEvent event) {
+        GetArchiveFeedBack selectedFeedBack = archiveFeedBacktbl.getSelectionModel().getSelectedItem();
+
+        if (selectedFeedBack != null) {
+            try {
+                connect = database.getConnection();
+                insertIntoBackupFeedBackDatabase(connect, selectedFeedBack);
+                deleteFromArchiveFeedBackTable(connect, selectedFeedBack);
+
+                showSuccessAlert("Feedback permanently deleted!");
+
+                loadArchiveFeedBackData();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle exceptions appropriately (show error message, log, etc.)
+            } finally {
+                closeResources();
+            }
+        } else {
+            showWarningAlert("Please select a feedback to permanently delete.");
+        }
+    }
+
+    private void insertIntoArchiveFeedbackTable(java.sql.Connection conn, Feedback feedback) throws SQLException {
+        String insertQuery = "INSERT INTO trash_feedback (designRating, functionRating, experienceRating, feedbackReport) VALUES (?, ?, ?, ?)";
+        try (PreparedStatement prepare = conn.prepareStatement(insertQuery)) {
+            prepare.setString(1, feedback.getDesignRating());
+            prepare.setString(2, feedback.getFunctionRating());
+            prepare.setString(3, feedback.getExperienceRating());
+            prepare.setString(4, feedback.getFeedbackReport());
+            prepare.executeUpdate();
+        }
+    }
+
+    private void insertIntoFeedbackTable(java.sql.Connection conn, GetArchiveFeedBack feedBack) throws SQLException {
+        String insertQuery = "INSERT INTO ratings_feedback (designRating, functionRating, experienceRating, feedbackReport) VALUES (?, ?, ?, ?)";
+
+        try (PreparedStatement prepare = conn.prepareStatement(insertQuery)) {
+            prepare.setInt(1, feedBack.getDesignRating());
+            prepare.setInt(2, feedBack.getFunctionRating());
+            prepare.setInt(3, feedBack.getExperienceRating());
+            prepare.setString(4, feedBack.getFeedbackReport());
+            prepare.executeUpdate();
+        }
+
+    }
+
+    private void deleteFromArchiveFeedBackTable(java.sql.Connection conn, GetArchiveFeedBack feedBack) throws SQLException {
+        String deleteQuery = "DELETE FROM trash_feedback WHERE designRating = ? AND functionRating = ? AND experienceRating = ? AND feedbackReport = ?";
+
+        try (PreparedStatement prepare = conn.prepareStatement(deleteQuery)) {
+            prepare.setInt(1, feedBack.getDesignRating());
+            prepare.setInt(2, feedBack.getFunctionRating());
+            prepare.setInt(3, feedBack.getExperienceRating());
+            prepare.setString(4, feedBack.getFeedbackReport());
+            prepare.executeUpdate();
+        }
+    }
+
+    private void insertIntoBackupFeedBackDatabase(java.sql.Connection conn, GetArchiveFeedBack feedBack) throws SQLException {
+        String insertQuery = "INSERT INTO backup_feedback (designRating, functionRating, experienceRating, feedbackReport) VALUES (?, ?, ?, ?)";
+
+        try (PreparedStatement prepare = conn.prepareStatement(insertQuery)) {
+            prepare.setInt(1, feedBack.getDesignRating());
+            prepare.setInt(2, feedBack.getFunctionRating());
+            prepare.setInt(3, feedBack.getExperienceRating());
+            prepare.setString(4, feedBack.getFeedbackReport());
+            prepare.executeUpdate();
+        }
+    }
+
 }
