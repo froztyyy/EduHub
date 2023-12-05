@@ -45,20 +45,20 @@ public class GetStartedWIndowController implements Initializable {
     @FXML
     private void getStarted(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/view/selectRoleWindow.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/view/signInWindow.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
             ((Node) (event.getSource())).getScene().getWindow().hide();
-            stage.setWidth(843);
-            stage.setHeight(511);
+            stage.setWidth(785);
+            stage.setHeight(514);
 
             Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
             double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
             double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
-            stage.setX(centerX - 421.5);
-            stage.setY(centerY - 255.5);
+            stage.setX(centerX - 392.5);
+            stage.setY(centerY - 257);
 
-            Scene scene = new Scene(root, 843, 511);
+            Scene scene = new Scene(root, 785, 514);
 
             stage.setScene(scene);
             stage.show();

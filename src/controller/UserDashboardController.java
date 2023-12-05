@@ -46,7 +46,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -190,12 +189,17 @@ public class UserDashboardController implements Initializable {
     private Label yearNote;
     @FXML
     private Text infoNote;
+    @FXML
     private Pane listPane;
     @FXML
     private GridPane listHandler;
+    @FXML
     private Pane archivePane;
+    @FXML
     private Button btnAddList;
+    @FXML
     private Button btnArchive;
+    @FXML
     private GridPane archiveListHandler;
     @FXML
     private Label lblStudentID;
@@ -215,15 +219,6 @@ public class UserDashboardController implements Initializable {
     private GridPane AnnouncementHandler;
     @FXML
     private Label greetingLabelTime;
-    @FXML
-    private TextField txtDescription;
-    @FXML
-    private TextArea txtDetails;
-    @FXML
-    private DatePicker dueDatePicker;
-    @FXML
-    private Button btnSubmit;
-    
 
     /**
      * Initializes the controller class.
@@ -286,9 +281,9 @@ public class UserDashboardController implements Initializable {
         TimeAndDateLocation();
 
         homeDisplayListCard();
-        /*archiveDisplayListCard();
+        archiveDisplayListCard();
         listPane.setVisible(true);
-        archivePane.setVisible(false);*/
+        archivePane.setVisible(false);
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             TimeAndDateLocation();
@@ -373,19 +368,20 @@ public class UserDashboardController implements Initializable {
             userDashboradWindow.getScene().getWindow().hide();
 
             try {
-                Parent root = FXMLLoader.load(getClass().getResource("/view/selectRoleWindow.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("/view/signInWindow.fxml"));
                 Stage newStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-                stage.setWidth(843);
-                stage.setHeight(511);
+                ((Node) (event.getSource())).getScene().getWindow().hide();
+                stage.setWidth(785);
+                stage.setHeight(514);
 
                 Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
                 double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
                 double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
-                stage.setX(centerX - 421.5);
-                stage.setY(centerY - 255.5);
+                stage.setX(centerX - 392.5);
+                stage.setY(centerY - 257);
 
-                Scene scene = new Scene(root, 843, 511);
+                Scene scene = new Scene(root, 785, 514);
 
                 stage.setScene(scene);
                 stage.show();
@@ -1142,6 +1138,7 @@ public class UserDashboardController implements Initializable {
 
     private Button lastClickedButtonForToDoList = null;
 
+    @FXML
     public void SwitchFormForTodoList(ActionEvent event) {
         Button clickedButton = (Button) event.getSource();
 
@@ -1175,6 +1172,7 @@ public class UserDashboardController implements Initializable {
         }
     }
 
+    @FXML
     private void handleButtonAddList(ActionEvent event) throws IOException {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/addListWindow.fxml"));
@@ -1235,62 +1233,6 @@ public class UserDashboardController implements Initializable {
             e.printStackTrace();
         }
     }
-    
-     @FXML
-    private void handleButtonSubmit(ActionEvent event) throws IOException {
-        connect = database.getConnection();
-
-        String sql = "INSERT INTO todo (StudentID, Title, Note, Deadline) VALUES (?, ?, ?, ?)";
-
-        try {
-            System.out.println("Current studentID: " + studentID);
-            System.out.println("Setting values - StudentID: " + studentID + ", Title: " + txtDescription.getText() + ", Note: " + txtDetails.getText() + ", Deadline: " + dueDatePicker.getValue());
-
-            // Set values from the user input
-            prepare = connect.prepareStatement(sql);
-            prepare.setInt(1, studentID);
-            prepare.setString(2, txtDescription.getText());
-            prepare.setString(3, txtDetails.getText());
-            prepare.setDate(4, java.sql.Date.valueOf(dueDatePicker.getValue())); // Convert LocalDate to java.sql.Date
-
-            // Debug: Print the prepared statement
-            System.out.println("Prepared Statement: " + prepare);
-
-            // Execute the SQL statement
-            prepare.executeUpdate();
-            
-            homeDisplayListCard();
-
-            // Show a success alert
-            showSuccessAlert();
-
-            clearFieldsToDo();
-        } catch (SQLException e) {
-            // Handle any SQL errors
-            e.printStackTrace();
-            showErrorAlert("Error", "Failed to insert values into the database.");
-        } finally {
-            // Close resources
-            try {
-                if (prepare != null) {
-                    prepare.close();
-                }
-                if (connect != null) {
-                    connect.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-    
-     private void clearFieldsToDo() {
-        // Reset values of input fields
-        txtDescription.clear();
-        txtDetails.clear();
-        dueDatePicker.setValue(null); // Set default value or null based on your requirements
-        // Reset other fields as needed
-    }
 
     private Connection connect;
     private PreparedStatement prepare;
@@ -1301,13 +1243,12 @@ public class UserDashboardController implements Initializable {
 
     public ObservableList<ToDoListData> getToDoListData() throws SQLException {
 
-        String sql = "Select Title, Note, Deadline FROM todo where StudentID = ?";
+        String sql = "Select Title, Note, Deadline FROM todo";
         ObservableList<ToDoListData> toDoList = FXCollections.observableArrayList();
         connect = database.getConnection();
 
         try {
             prepare = connect.prepareStatement(sql);
-            prepare.setInt(1, studentID);
             result = prepare.executeQuery();
 
             while (result.next()) {
@@ -1333,7 +1274,7 @@ public class UserDashboardController implements Initializable {
             toDoList.clear();
             toDoList.addAll(getToDoListData());
 
-            int maxColumns = 3;
+            int maxColumns = 4;
             int row = 0;
             int column = 0;
 
@@ -1372,7 +1313,7 @@ public class UserDashboardController implements Initializable {
             e.printStackTrace();
         }
     }
-/*
+
     private ObservableList<ArchiveToDoListData> archiveToDoList = FXCollections.observableArrayList();
 
     public ObservableList<ArchiveToDoListData> getArchiveToDoListData() throws SQLException {
@@ -1493,7 +1434,7 @@ public class UserDashboardController implements Initializable {
             e.printStackTrace();
         }
     }
-*/
+
     @FXML
     private void viewNowtodo(ActionEvent event) {
         setButtonColor(homeButton, false);
@@ -1659,7 +1600,6 @@ public class UserDashboardController implements Initializable {
         this.studentID = studentID;
         updateStudentId();
         DisplayAnnouncement();
-        homeDisplayListCard();
     }
 
     private ObservableList<AnnouncementData> Announcement = FXCollections.observableArrayList();
@@ -1738,4 +1678,5 @@ public class UserDashboardController implements Initializable {
             e.printStackTrace();
         }
     }
+
 }

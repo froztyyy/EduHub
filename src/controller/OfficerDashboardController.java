@@ -13,7 +13,6 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
@@ -36,7 +35,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -48,7 +46,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.BoxBlur;
@@ -62,7 +59,6 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -238,24 +234,6 @@ public class OfficerDashboardController implements Initializable {
     private TableView<StudentAccountDataList> tblStudentData;
     @FXML
     private TextField searchStudent;
-    @FXML
-    private TextField TitleText;
-    @FXML
-    private ComboBox<String> audiencelist;
-    @FXML
-    private ComboBox<String> prioritylist;
-    @FXML
-    private TextArea AnnouncementText;
-    @FXML
-    private Button PostButton;
-    @FXML
-    private GridPane AnnouncementHandler;
-    @FXML
-    private Label lblStudentID;
-    @FXML
-    private Label greetingLabel;
-    @FXML
-    private Label greetingLabelTime;
 
     /**
      * Initializes the controller class.
@@ -304,8 +282,8 @@ public class OfficerDashboardController implements Initializable {
         drawCalendarForBigCalendar();
 
         sidePanel.setVisible(true);
-        homeWindow.setVisible(true);
-        announcementWindow.setVisible(false);
+        homeWindow.setVisible(false);
+        announcementWindow.setVisible(true);
         calendarWindow.setVisible(false);
         studentManagementWIndow.setVisible(false);
         timeClockWindow.setVisible(false);
@@ -341,11 +319,6 @@ public class OfficerDashboardController implements Initializable {
                 handleTableClick();
             }
         });
-        
-        fetchAudienceNameToComboBox(audiencelist);
-        fetchPriorityNameToComboBox(prioritylist);
-        
-        DisplayAnnouncement();
     }
 
     private final boolean stop = false;
@@ -417,19 +390,20 @@ public class OfficerDashboardController implements Initializable {
             userDashboradWindow.getScene().getWindow().hide();
 
             try {
-                Parent root = FXMLLoader.load(getClass().getResource("/view/selectRoleWindow.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("/view/signInWindow.fxml"));
                 Stage newStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-                stage.setWidth(843);
-                stage.setHeight(511);
+                ((Node) (event.getSource())).getScene().getWindow().hide();
+                stage.setWidth(785);
+                stage.setHeight(514);
 
                 Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
                 double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
                 double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
-                stage.setX(centerX - 421.5);
-                stage.setY(centerY - 255.5);
+                stage.setX(centerX - 392.5);
+                stage.setY(centerY - 257);
 
-                Scene scene = new Scene(root, 843, 511);
+                Scene scene = new Scene(root, 785, 514);
 
                 stage.setScene(scene);
                 stage.show();
@@ -501,7 +475,7 @@ public class OfficerDashboardController implements Initializable {
         slider1.play();
     }
 
-    private Pane lastClickedButton = homeButton;
+    private Pane lastClickedButton = studentManagementButton;
 
     @FXML
     public void SwitchForm(MouseEvent event) {
@@ -513,27 +487,14 @@ public class OfficerDashboardController implements Initializable {
             return;
         }
 
-        if (clickedButton == homeButton) {
+        if (clickedButton == studentManagementButton) {
             // ... (rest of the code remains the same)
         }
 
         try {
             // Update the last clicked button
             lastClickedButton = clickedButton;
-            if (clickedButton == homeButton) {
-                setButtonColor(homeButton, true);
-                setButtonColor(announcementButton, false);
-                setButtonColor(calendarButton, false);
-                setButtonColor(studentManagementButton, false);
-                setButtonColor(timeClockButton, false);
-
-                homeWindow.setVisible(true);
-                announcementWindow.setVisible(false);
-                calendarWindow.setVisible(false);
-                studentManagementWIndow.setVisible(false);
-                timeClockWindow.setVisible(false);
-
-            } else if (clickedButton == announcementButton) {
+            if (clickedButton == announcementButton) {
                 setButtonColor(homeButton, false);
                 setButtonColor(announcementButton, true);
                 setButtonColor(calendarButton, false);
@@ -1483,235 +1444,6 @@ public class OfficerDashboardController implements Initializable {
 // Helper method to check if a string contains another string (case-insensitive)
     private boolean containsIgnoreCase(String source, String target) {
         return source.toLowerCase().contains(target);
-    }
-    private int currentDisplayIndex = 0;
-    private String username;
-    private int studentID;
-
-    public void setUsername(String username) {
-        this.username = username;
-        updateGreeting();
-        updateGreetingForTime();
-    }
-
-    private String getGreeting() {
-        LocalTime currentTime = LocalTime.now();
-
-        if (currentTime.isBefore(LocalTime.NOON)) {
-            return "Good Morning";
-        } else if (currentTime.isBefore(LocalTime.of(17, 0))) {
-            return "Good Afternoon";
-        } else {
-            return "Good Evening";
-        }
-    }
-
-    public void updateGreeting() {
-        String greeting = getGreeting();
-        greetingLabel.setText(greeting + ", " + username + "!");
-    }
-
-    public void updateGreetingForTime() {
-        String greeting = getGreeting();
-        greetingLabelTime.setText(greeting + ", " + username + "!");
-    }
-
-    
-    private void fetchAudienceNameToComboBox(ComboBox<String> comboBox) {
-
-        try {
-            prepare = connect.prepareStatement("SELECT AudienceName FROM audience");
-            result = prepare.executeQuery();
-
-            List<String> items = new ArrayList<>();
-            while (result.next()) {
-                String itemName = result.getString("AudienceName");
-                items.add(itemName);
-            }
-
-            comboBox.getItems().addAll(items);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Error fetching course data: " + e.getMessage());
-        }
-    }
-
-    private void fetchPriorityNameToComboBox(ComboBox<String> comboBox) {
-
-        try {
-            prepare = connect.prepareStatement("SELECT PriorityName FROM priority_level");
-            result = prepare.executeQuery();
-
-            List<String> items = new ArrayList<>();
-            while (result.next()) {
-                String itemName = result.getString("PriorityName");
-                items.add(itemName);
-            }
-
-            comboBox.getItems().addAll(items);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Error fetching course data: " + e.getMessage());
-        }
-    }
-    @FXML
-    private void handlepostsubmit(ActionEvent event) throws IOException {
-
-        try {
-            // Establish a database connection
-            connect = database.getConnection();
-
-            // Prepare the SQL statement
-            String sql = "INSERT INTO announcement (Title,Body,AudienceID,PriorityID,StudentID) VALUES (?, ?,?,?,?)";
-            prepare = connect.prepareStatement(sql);
-
-            // Set values from the user input
-            prepare.setString(1, TitleText.getText());
-            prepare.setString(2, AnnouncementText.getText());
-            prepare.setString(3, audiencelist.getValue()); // Set a default value for Homeroom if it's null
-            prepare.setString(4, prioritylist.getValue());
-            prepare.setInt(5, studentID);// Set a default value for Medium if it's null
-            // Convert LocalDate to java.sql.Date
-
-            // Execute the SQL statement
-            prepare.executeUpdate();
-
-            DisplayAnnouncement();
-
-            // Show a success alert
-            showSuccessAlert();
-
-            clearFields();
-
-        } catch (SQLException e) {
-            // Handle any SQL errors
-            e.printStackTrace();
-            showErrorAlert("Error", "Failed to insert values into the database.");
-        } finally {
-            // Close resources
-            try {
-                if (prepare != null) {
-                    prepare.close();
-                }
-                if (connect != null) {
-                    connect.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void clearFields() {
-        // Reset values of input fields
-        TitleText.clear();
-        AnnouncementText.clear();
-        audiencelist.setValue(null); // Set default value or null based on your requirements
-        prioritylist.setValue(null);
-        // Reset other fields as needed
-    }
-
-    private void showSuccessAlert() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Success");
-        alert.setHeaderText(null);
-        alert.setContentText("Values successfully inserted into the database.");
-        alert.showAndWait();
-    }
-
-    private void showErrorAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    public void setStudentID(int studentID) throws SQLException {
-        this.studentID = studentID;
-        updateStudentId();
-        DisplayAnnouncement();
-    }
-
-    public void updateStudentId() {
-        lblStudentID.setText(String.valueOf(studentID));
-    }
-
-    private ObservableList<AnnouncementData> Announcement = FXCollections.observableArrayList();
-
-    public ObservableList<AnnouncementData> getAnnouncementData() throws SQLException {
-
-        String sql = "Select Title, Body FROM announcement where StudentID = ? ORDER BY AnnouncementID DESC";
-        ObservableList<AnnouncementData> Announcement = FXCollections.observableArrayList();
-        connect = database.getConnection();
-
-        try {
-            prepare = connect.prepareStatement(sql);
-            prepare.setInt(1, studentID);
-            result = prepare.executeQuery();
-
-            while (result.next()) {
-                String title = result.getString("Title");
-                String body = result.getString("Body");
-
-                AnnouncementData announcementData = new AnnouncementData(title, body);
-
-                Announcement.add(announcementData);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            // Close resources (result, prepare, connect) if needed
-        }
-
-        return Announcement;
-    }
-
-    public void DisplayAnnouncement() {
-        try {
-            Announcement.clear();
-            Announcement.addAll(getAnnouncementData());
-
-            Platform.runLater(() -> {
-                int maxColumns = 1;
-                int row = 0;
-                int column = 0;
-
-                AnnouncementHandler.getChildren().clear();
-                AnnouncementHandler.getRowConstraints().clear();
-                AnnouncementHandler.getColumnConstraints().clear();
-
-                for (int q = 0; q < Announcement.size(); q++) {
-                    try {
-                        if (column >= maxColumns) {
-                            // Move to the next row when the maximum number of columns is reached
-                            column = 0;
-                            row++;
-                        }
-
-                        FXMLLoader loader = new FXMLLoader();
-                        loader.setLocation(getClass().getResource("/view/DisplayAnnouncement.fxml"));
-                        AnchorPane pane = loader.load();
-                        DisplayAnnouncementController cardController = loader.getController();
-                        cardController.setData(Announcement.get(q));
-
-                        AnnouncementHandler.add(pane, column++, row);
-
-                        GridPane.setMargin(pane, new Insets(5));
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                currentDisplayIndex = 0;
-                if (!Announcement.isEmpty()) {
-                    AnnouncementData firstAnnounce = Announcement.get(0);
-                }
-            });
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
 }

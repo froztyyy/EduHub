@@ -165,7 +165,7 @@
                   </HBox>
                </children>
             </VBox>
-            <Pane fx:id="dashBoardWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0">
+            <Pane fx:id="dashBoardWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" visible="false">
                <children>
                   <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="698.0" prefWidth="1332.0">
                      <children>
@@ -540,7 +540,7 @@
                      </padding>
                   </TextField>
                </children></Pane>
-            <Pane fx:id="sectionStudWindow" layoutX="-1.0" layoutY="99.0" prefHeight="704.0" prefWidth="1332.0" visible="false">
+            <Pane fx:id="sectionStudWindow" layoutX="-1.0" layoutY="99.0" prefHeight="704.0" prefWidth="1332.0">
                <children>
                   <Pane layoutX="352.0" layoutY="29.0" prefHeight="627.0" prefWidth="943.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 15px;">
                      <children>
@@ -935,7 +935,7 @@
             </Pane>
          </children>
       </Pane>
-      <Pane fx:id="sidePanel" layoutY="49.0" prefHeight="793.0" prefWidth="357.0" style="-fx-background-color: #161B22;" visible="false">
+      <Pane fx:id="sidePanel" layoutY="49.0" prefHeight="793.0" prefWidth="357.0" style="-fx-background-color: #161B22;">
          <children>
             <ImageView fitHeight="58.0" fitWidth="44.0" layoutX="22.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
                <image>

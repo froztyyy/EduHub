@@ -203,10 +203,10 @@
 .combo-box-popup .list-view {
     -fx-background-color: transparent;
     -fx-background-radius: 10px;
-    -fx-border-color: gray; 
-    -fx-border-width: 1px; 
+    -fx-border-color: gray;
+    -fx-border-width: 1px;
     -fx-border-radius: 10px;
-    -fx-padding: 5px; 
+    -fx-padding: 5px;
 }
 
 .combo-box-popup .list-view .list-cell {
@@ -216,8 +216,8 @@
 .combo-box-popup .list-view .list-cell:selected {
     -fx-background-radius: 10px;
     -fx-background-color: gray;
-    -fx-border-color: transparent; 
-    -fx-border-width: 1px; 
+    -fx-border-color: transparent;
+    -fx-border-width: 1px;
     -fx-border-radius: 10px;
     -fx-text-fill: white;
 }
@@ -245,6 +245,15 @@
     -fx-background-color: transparent;
     -fx-prompt-text-fill: transparent;
     -fx-text-fill: silver;
+}
+
+.announcementSearch{
+    -fx-background-color: #202327;
+    -fx-prompt-text-fill: gray;
+    -fx-text-fill: silver;
+    -fx-background-radius: 20px;
+    -fx-border-color: none;
+    -fx-border-radius: 20px;
 }
 
 .announcementCard {
@@ -344,10 +353,5 @@
 /* Vertical ScrollBar */
 .scrllPane .scroll-bar:vertical .thumb{
     -fx-background-color: #121212; /* Set the fill color */
-}
-
-.ssecondary-bg {
-    -fx-background-color: #121212;
-    -fx-background-radius: 10px;
 }
 

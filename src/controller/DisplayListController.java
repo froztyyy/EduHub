@@ -95,7 +95,12 @@ public class DisplayListController implements Initializable {
             // Adjust the layout of the remaining cards
             adjustLayout(parentGridPane);
             
-           
+            if (toDoListUiController != null) {
+                toDoListUiController.archiveDisplayListCard();
+            } else {
+                // Handle the case where the controller is not set
+                System.out.println("Error: Controller not set.");
+            }
             // Save data to the "archive" table in the database
             saveToArchiveAndDeleteFromTask();
 
