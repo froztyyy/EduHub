@@ -144,7 +144,7 @@ public class DisplayListController implements Initializable {
     }
 
     private void deleteFromTaskTable(Connection conn) throws SQLException {
-        String deleteQuery = "DELETE FROM task WHERE description = ?";
+        String deleteQuery = "DELETE FROM todo WHERE title = ?";
         try (PreparedStatement preparedStatement = conn.prepareStatement(deleteQuery)) {
             preparedStatement.setString(1, todoData.getDescription());
             preparedStatement.executeUpdate();
@@ -152,7 +152,7 @@ public class DisplayListController implements Initializable {
     }
 
     private void insertIntoArchiveTable(Connection conn) throws SQLException {
-        String insertQuery = "INSERT INTO archive (description, due_date, details) VALUES (?, ?, ?)";
+        String insertQuery = "INSERT INTO archive (title, deadline, note) VALUES (?, ?, ?)";
         try (PreparedStatement preparedStatement = conn.prepareStatement(insertQuery)) {
             preparedStatement.setString(1, todoData.getDescription());
             preparedStatement.setString(2, todoData.getDue_date());

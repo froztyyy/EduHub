@@ -19,6 +19,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -35,6 +37,8 @@ public class AddListWindowController implements Initializable {
     private DatePicker dueDatePicker;
     @FXML
     private Button btnSubmit;
+    @FXML
+    private AnchorPane addlistwindow;
 
     /**
      * Initializes the controller class.
@@ -42,11 +46,13 @@ public class AddListWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
     private Connection connect;
     private PreparedStatement prepare;
     private ResultSet result;
+
+    private int studentID;
 
     private UserDashboardController toDoListUiController;
 
@@ -54,21 +60,30 @@ public class AddListWindowController implements Initializable {
         this.toDoListUiController = toDoListUiController;
     }
 
+    public void setStudentID(int studentID) {
+        this.studentID = studentID;
+        
+    }
+
     @FXML
     private void handleButtonSubmit(ActionEvent event) throws IOException {
+        connect = database.getConnection();
+
+        String sql = "INSERT INTO todo (StudentID, Title, Note, Deadline) VALUES (?, ?, ?, ?)";
 
         try {
-            // Establish a database connection
-            connect = database.getConnection();
-
-            // Prepare the SQL statement
-            String sql = "INSERT INTO task (description, details, due_date) VALUES (?, ?, ?)";
-            prepare = connect.prepareStatement(sql);
+            System.out.println("Current studentID: " + studentID);
+            System.out.println("Setting values - StudentID: " + studentID + ", Title: " + txtDescription.getText() + ", Note: " + txtDetails.getText() + ", Deadline: " + dueDatePicker.getValue());
 
             // Set values from the user input
-            prepare.setString(1, txtDescription.getText());
-            prepare.setString(2, txtDetails.getText());
-            prepare.setDate(3, java.sql.Date.valueOf(dueDatePicker.getValue())); // Convert LocalDate to java.sql.Date
+            prepare = connect.prepareStatement(sql);
+            prepare.setInt(1, studentID);
+            prepare.setString(2, txtDescription.getText());
+            prepare.setString(3, txtDetails.getText());
+            prepare.setDate(4, java.sql.Date.valueOf(dueDatePicker.getValue())); // Convert LocalDate to java.sql.Date
+
+            // Debug: Print the prepared statement
+            System.out.println("Prepared Statement: " + prepare);
 
             // Execute the SQL statement
             prepare.executeUpdate();
@@ -117,5 +132,17 @@ public class AddListWindowController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    @FXML
+    private void close(ActionEvent event) {
+        Stage stage = (Stage) addlistwindow.getScene().getWindow();
+
+        // Close the Stage
+        stage.close();
+    }
     
+    private void fetchStudentID(){
+    
+    }
+
 }

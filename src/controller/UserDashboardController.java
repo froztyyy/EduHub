@@ -44,7 +44,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.Image;
@@ -199,12 +202,24 @@ public class UserDashboardController implements Initializable {
     @FXML
     private GridPane archiveListHandler;
     @FXML
+    private Label lblStudentID;
+    @FXML
     private Label greetingLabel;
-    private String username;
-    
-    
-    
-    
+    @FXML
+    private ComboBox<String> audiencelist;
+    @FXML
+    private ComboBox<String> prioritylist;
+    @FXML
+    private TextField TitleText;
+    @FXML
+    private TextArea AnnouncementText;
+    @FXML
+    private Button PostButton;
+    @FXML
+    private GridPane AnnouncementHandler;
+    @FXML
+    private Label greetingLabelTime;
+
     /**
      * Initializes the controller class.
      */
@@ -269,15 +284,19 @@ public class UserDashboardController implements Initializable {
         archiveDisplayListCard();
         listPane.setVisible(true);
         archivePane.setVisible(false);
- 
-        
+
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             TimeAndDateLocation();
             updateGreeting();
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
-        
+
+        homeDisplayListCard();
+        fetchAudienceNameToComboBox(audiencelist);
+        fetchPriorityNameToComboBox(prioritylist);
+
+        DisplayAnnouncement();
     }
 
     private final boolean stop = false;
@@ -349,19 +368,20 @@ public class UserDashboardController implements Initializable {
             userDashboradWindow.getScene().getWindow().hide();
 
             try {
-                Parent root = FXMLLoader.load(getClass().getResource("/view/selectRoleWindow.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("/view/signInWindow.fxml"));
                 Stage newStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-                stage.setWidth(843);
-                stage.setHeight(511);
+                ((Node) (event.getSource())).getScene().getWindow().hide();
+                stage.setWidth(785);
+                stage.setHeight(514);
 
                 Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
                 double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
                 double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
-                stage.setX(centerX - 421.5);
-                stage.setY(centerY - 255.5);
+                stage.setX(centerX - 392.5);
+                stage.setY(centerY - 257);
 
-                Scene scene = new Scene(root, 843, 511);
+                Scene scene = new Scene(root, 785, 514);
 
                 stage.setScene(scene);
                 stage.show();
@@ -388,9 +408,6 @@ public class UserDashboardController implements Initializable {
         }
     }
 
-
-    
-    
     @FXML
     private void slidePanelButton(ActionEvent event) {
         // Apply blur effect during sliding animation
@@ -980,31 +997,7 @@ public class UserDashboardController implements Initializable {
 
         thread.start();
     }
-    
-    public void setUsername(String username) {
-        this.username = username;
-        updateGreeting();
-    }
-    
-    private String getGreeting() {
-        LocalTime currentTime = LocalTime.now();
 
-        if (currentTime.isBefore(LocalTime.NOON)) {
-            return "Good Morning";
-        } else if (currentTime.isBefore(LocalTime.of(17, 0))) {
-            return "Good Afternoon";
-        } else {
-            return "Good Evening";
-        }
-    }
-
-    public void updateGreeting() {
-        String greeting = getGreeting();
-        greetingLabel.setText(greeting + ", " + username + "!");
-    }
-    
-
-    
     private void dateLabelForDashboard() {
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("MM/dd/yyyy");
@@ -1134,8 +1127,8 @@ public class UserDashboardController implements Initializable {
             e.printStackTrace();
         }
     }
-    
-     private void setButtonColorForToDoList(Button button, boolean isSelected) {
+
+    private void setButtonColorForToDoList(Button button, boolean isSelected) {
         if (isSelected) {
             button.getStyleClass().add("selected-buttonForToDoList");
         } else {
@@ -1144,7 +1137,7 @@ public class UserDashboardController implements Initializable {
     }
 
     private Button lastClickedButtonForToDoList = null;
-    
+
     @FXML
     public void SwitchFormForTodoList(ActionEvent event) {
         Button clickedButton = (Button) event.getSource();
@@ -1160,7 +1153,7 @@ public class UserDashboardController implements Initializable {
         }
 
         // Update the last clicked button
-       lastClickedButtonForToDoList = clickedButton;
+        lastClickedButtonForToDoList = clickedButton;
 
         if (clickedButton == btnAddList) {
             setButtonColorForToDoList(btnAddList, true);
@@ -1178,31 +1171,67 @@ public class UserDashboardController implements Initializable {
 
         }
     }
-    
+
     @FXML
     private void handleButtonAddList(ActionEvent event) throws IOException {
-        // Load the FXML for the addListWindow
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/addListWindow.fxml"));
-        Parent root = loader.load();
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/addListWindow.fxml"));
+            Parent root = loader.load();
 
-        // Create a new stage for the addListWindow
-        Stage addListStage = new Stage();
-        addListStage.initModality(Modality.WINDOW_MODAL);
-        addListStage.initOwner(btnAddList.getScene().getWindow());
+            Stage feedbackStage = new Stage();
+            feedbackStage.setWidth(431);
+            feedbackStage.setHeight(444);
 
-        // Set the scene
-        Scene scene = new Scene(root);
-        addListStage.setScene(scene);
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
+            double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
+            feedbackStage.setX(centerX - 215.5);
+            feedbackStage.setY(centerY - 222);
 
-        // Set the stage title
-        addListStage.setTitle("Add List");
-        addListStage.setResizable(false);
+            Scene scene = new Scene(root, 431, 444);
+            feedbackStage.initStyle(StageStyle.TRANSPARENT);
 
-        AddListWindowController addListWindowController = loader.getController();
-        addListWindowController.setToDoListUiController(this);
+            // Set the modality to APPLICATION_MODAL to make it modal
+            feedbackStage.initModality(Modality.APPLICATION_MODAL);
 
-        // Show the addListWindow
-        addListStage.show();
+            // Get the Window from the Scene associated with the Pane
+            Window ownerWindow = userDashboradWindow.getScene().getWindow();
+            feedbackStage.initOwner(ownerWindow);
+
+            applyBlurEffectMainWindow(true);
+            feedbackStage.setScene(scene);
+
+            // Add a listener to handle the close event of the feedbackStage
+            feedbackStage.setOnHidden((WindowEvent e) -> {
+                applyBlurEffectMainWindow(false);
+            });
+
+            feedbackStage.show();
+
+            // Drag and move logic (if needed)
+            root.setOnMousePressed((mouseEvent) -> {
+                x = mouseEvent.getSceneX();
+                y = mouseEvent.getSceneY();
+            });
+
+            root.setOnMouseDragged((mouseEvent) -> {
+                feedbackStage.setX(mouseEvent.getScreenX() - x);
+                feedbackStage.setY(mouseEvent.getScreenY() - y);
+
+                feedbackStage.setOpacity(.8);
+            });
+
+            root.setOnMouseReleased((mouseEvent) -> {
+                feedbackStage.setOpacity(1);
+            });
+
+            homeDisplayListCard();
+
+            // Controller for the new window (if needed)
+            // YourControllerClass controller = loader.getController();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private Connection connect;
@@ -1245,7 +1274,7 @@ public class UserDashboardController implements Initializable {
             toDoList.clear();
             toDoList.addAll(getToDoListData());
 
-            int maxColumns = 3;
+            int maxColumns = 4;
             int row = 0;
             int column = 0;
 
@@ -1320,7 +1349,7 @@ public class UserDashboardController implements Initializable {
             archiveToDoList.clear();
             archiveToDoList.addAll(getArchiveToDoListData());
 
-            int maxColumns = 3;
+            int maxColumns = 4;
             int row = 0;
             int column = 0;
 
@@ -1405,4 +1434,249 @@ public class UserDashboardController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void viewNowtodo(ActionEvent event) {
+        setButtonColor(homeButton, false);
+        setButtonColor(announcementButton, false);
+        setButtonColor(calendarButton, false);
+        setButtonColor(toDolistButton, true);
+        setButtonColor(timeClockButton, false);
+
+        homeWindow.setVisible(false);
+        announcementWindow.setVisible(false);
+        calendarWindow.setVisible(false);
+        todoWindow.setVisible(true);
+        timeClockWindow.setVisible(false);
+    }
+
+    private String username;
+    private int studentID;
+
+    public void setUsername(String username) {
+        this.username = username;
+        updateGreeting();
+        updateGreetingForTime();
+    }
+
+    private String getGreeting() {
+        LocalTime currentTime = LocalTime.now();
+
+        if (currentTime.isBefore(LocalTime.NOON)) {
+            return "Good Morning";
+        } else if (currentTime.isBefore(LocalTime.of(17, 0))) {
+            return "Good Afternoon";
+        } else {
+            return "Good Evening";
+        }
+    }
+
+    public void updateGreeting() {
+        String greeting = getGreeting();
+        greetingLabel.setText(greeting + ", " + username + "!");
+    }
+
+    public void updateGreetingForTime() {
+        String greeting = getGreeting();
+        greetingLabelTime.setText(greeting + ", " + username + "!");
+    }
+
+    public void updateStudentId() {
+        lblStudentID.setText(String.valueOf(studentID));
+    }
+
+    private void fetchAudienceNameToComboBox(ComboBox<String> comboBox) {
+
+        try {
+            prepare = connect.prepareStatement("SELECT AudienceName FROM audience");
+            result = prepare.executeQuery();
+
+            List<String> items = new ArrayList<>();
+            while (result.next()) {
+                String itemName = result.getString("AudienceName");
+                items.add(itemName);
+            }
+
+            comboBox.getItems().addAll(items);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error fetching course data: " + e.getMessage());
+        }
+    }
+
+    private void fetchPriorityNameToComboBox(ComboBox<String> comboBox) {
+
+        try {
+            prepare = connect.prepareStatement("SELECT PriorityName FROM priority_level");
+            result = prepare.executeQuery();
+
+            List<String> items = new ArrayList<>();
+            while (result.next()) {
+                String itemName = result.getString("PriorityName");
+                items.add(itemName);
+            }
+
+            comboBox.getItems().addAll(items);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error fetching course data: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handlepostsubmit(ActionEvent event) throws IOException {
+
+        try {
+            // Establish a database connection
+            connect = database.getConnection();
+
+            // Prepare the SQL statement
+            String sql = "INSERT INTO announcement (Title,Body,AudienceID,PriorityID,StudentID) VALUES (?, ?,?,?,?)";
+            prepare = connect.prepareStatement(sql);
+
+            // Set values from the user input
+            prepare.setString(1, TitleText.getText());
+            prepare.setString(2, AnnouncementText.getText());
+            prepare.setString(3, audiencelist.getValue()); // Set a default value for Homeroom if it's null
+            prepare.setString(4, prioritylist.getValue());
+            prepare.setInt(5, studentID);// Set a default value for Medium if it's null
+            // Convert LocalDate to java.sql.Date
+
+            // Execute the SQL statement
+            prepare.executeUpdate();
+
+            DisplayAnnouncement();
+
+            // Show a success alert
+            showSuccessAlert();
+
+            clearFields();
+
+        } catch (SQLException e) {
+            // Handle any SQL errors
+            e.printStackTrace();
+            showErrorAlert("Error", "Failed to insert values into the database.");
+        } finally {
+            // Close resources
+            try {
+                if (prepare != null) {
+                    prepare.close();
+                }
+                if (connect != null) {
+                    connect.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void clearFields() {
+        // Reset values of input fields
+        TitleText.clear();
+        AnnouncementText.clear();
+        audiencelist.setValue(null); // Set default value or null based on your requirements
+        prioritylist.setValue(null);
+        // Reset other fields as needed
+    }
+
+    private void showSuccessAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText("Values successfully inserted into the database.");
+        alert.showAndWait();
+    }
+
+    private void showErrorAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    public void setStudentID(int studentID) throws SQLException {
+        this.studentID = studentID;
+        updateStudentId();
+        DisplayAnnouncement();
+    }
+
+    private ObservableList<AnnouncementData> Announcement = FXCollections.observableArrayList();
+
+    public ObservableList<AnnouncementData> getAnnouncementData() throws SQLException {
+
+        String sql = "Select Title, Body FROM announcement where StudentID = ? ORDER BY AnnouncementID DESC";
+        ObservableList<AnnouncementData> Announcement = FXCollections.observableArrayList();
+        connect = database.getConnection();
+
+        try {
+            prepare = connect.prepareStatement(sql);
+            prepare.setInt(1, studentID);
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                String title = result.getString("Title");
+                String body = result.getString("Body");
+
+                AnnouncementData announcementData = new AnnouncementData(title, body);
+
+                Announcement.add(announcementData);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close resources (result, prepare, connect) if needed
+        }
+
+        return Announcement;
+    }
+
+    public void DisplayAnnouncement() {
+        try {
+            Announcement.clear();
+            Announcement.addAll(getAnnouncementData());
+
+            Platform.runLater(() -> {
+                int maxColumns = 1;
+                int row = 0;
+                int column = 0;
+
+                AnnouncementHandler.getChildren().clear();
+                AnnouncementHandler.getRowConstraints().clear();
+                AnnouncementHandler.getColumnConstraints().clear();
+
+                for (int q = 0; q < Announcement.size(); q++) {
+                    try {
+                        if (column >= maxColumns) {
+                            // Move to the next row when the maximum number of columns is reached
+                            column = 0;
+                            row++;
+                        }
+
+                        FXMLLoader loader = new FXMLLoader();
+                        loader.setLocation(getClass().getResource("/view/DisplayAnnouncement.fxml"));
+                        AnchorPane pane = loader.load();
+                        DisplayAnnouncementController cardController = loader.getController();
+                        cardController.setData(Announcement.get(q));
+
+                        AnnouncementHandler.add(pane, column++, row);
+
+                        GridPane.setMargin(pane, new Insets(5));
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                currentDisplayIndex = 0;
+                if (!Announcement.isEmpty()) {
+                    AnnouncementData firstAnnounce = Announcement.get(0);
+                }
+            });
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

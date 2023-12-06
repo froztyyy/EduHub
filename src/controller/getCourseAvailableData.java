@@ -8,8 +8,7 @@ package controller;
  *
  * @author jcarl
  */
-public class getCourseData {
-
+public class getCourseAvailableData {
     public String getCourseAbb() {
         return courseAbb;
     }
@@ -26,7 +25,7 @@ public class getCourseData {
         this.courseName = courseName;
     }
 
-    public getCourseData() {
+    public getCourseAvailableData() {
     }
     private String courseAbb;
     private String courseName;

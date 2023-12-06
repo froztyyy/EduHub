@@ -232,6 +232,8 @@ public class OfficerDashboardController implements Initializable {
     private TableColumn<StudentAccountDataList, String> tblYearSection;
     @FXML
     private TableView<StudentAccountDataList> tblStudentData;
+    @FXML
+    private TextField searchStudent;
 
     /**
      * Initializes the controller class.
@@ -280,8 +282,8 @@ public class OfficerDashboardController implements Initializable {
         drawCalendarForBigCalendar();
 
         sidePanel.setVisible(true);
-        homeWindow.setVisible(true);
-        announcementWindow.setVisible(false);
+        homeWindow.setVisible(false);
+        announcementWindow.setVisible(true);
         calendarWindow.setVisible(false);
         studentManagementWIndow.setVisible(false);
         timeClockWindow.setVisible(false);
@@ -292,7 +294,7 @@ public class OfficerDashboardController implements Initializable {
         timeNowForDashboard();
         dateLabelForDashboard();
         TimeAndDateLocation();
-        
+
         connect = database.getConnection();
         fetchCourseToComboBox(cbCourse);
         fetchSectionToComboBox(cbSectionYear);
@@ -388,19 +390,20 @@ public class OfficerDashboardController implements Initializable {
             userDashboradWindow.getScene().getWindow().hide();
 
             try {
-                Parent root = FXMLLoader.load(getClass().getResource("/view/selectRoleWindow.fxml"));
+                Parent root = FXMLLoader.load(getClass().getResource("/view/signInWindow.fxml"));
                 Stage newStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-                stage.setWidth(843);
-                stage.setHeight(511);
+                ((Node) (event.getSource())).getScene().getWindow().hide();
+                stage.setWidth(785);
+                stage.setHeight(514);
 
                 Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
                 double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
                 double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
-                stage.setX(centerX - 421.5);
-                stage.setY(centerY - 255.5);
+                stage.setX(centerX - 392.5);
+                stage.setY(centerY - 257);
 
-                Scene scene = new Scene(root, 843, 511);
+                Scene scene = new Scene(root, 785, 514);
 
                 stage.setScene(scene);
                 stage.show();
@@ -472,7 +475,7 @@ public class OfficerDashboardController implements Initializable {
         slider1.play();
     }
 
-    private Pane lastClickedButton = homeButton;
+    private Pane lastClickedButton = studentManagementButton;
 
     @FXML
     public void SwitchForm(MouseEvent event) {
@@ -484,27 +487,14 @@ public class OfficerDashboardController implements Initializable {
             return;
         }
 
-        if (clickedButton == homeButton) {
+        if (clickedButton == studentManagementButton) {
             // ... (rest of the code remains the same)
         }
 
         try {
             // Update the last clicked button
             lastClickedButton = clickedButton;
-            if (clickedButton == homeButton) {
-                setButtonColor(homeButton, true);
-                setButtonColor(announcementButton, false);
-                setButtonColor(calendarButton, false);
-                setButtonColor(studentManagementButton, false);
-                setButtonColor(timeClockButton, false);
-
-                homeWindow.setVisible(true);
-                announcementWindow.setVisible(false);
-                calendarWindow.setVisible(false);
-                studentManagementWIndow.setVisible(false);
-                timeClockWindow.setVisible(false);
-
-            } else if (clickedButton == announcementButton) {
+            if (clickedButton == announcementButton) {
                 setButtonColor(homeButton, false);
                 setButtonColor(announcementButton, true);
                 setButtonColor(calendarButton, false);
@@ -1172,7 +1162,7 @@ public class OfficerDashboardController implements Initializable {
 
         try {
             // Assume your database connection is already established
-            prepare = connect.prepareStatement("SELECT StudentID, Password, RoleID, Surname, Firstname, Middlename, Suffix, CourseID, SectionID FROM account_student WHERE RoleID = 2");
+            prepare = connect.prepareStatement("SELECT StudentID, Password, RoleID, Surname, Firstname, Middlename, Suffix, CourseID, SectionID FROM account_student WHERE RoleID = 3");
             result = prepare.executeQuery(); // Execute the query and obtain the result set
 
             while (result.next()) {
@@ -1272,6 +1262,8 @@ public class OfficerDashboardController implements Initializable {
 
                 // Remove from the database
                 deleteStudentFromDatabase(selectedOfficer);
+
+                tblStudentData.getItems().remove(selectedOfficer);
 
                 // Inform the user about successful deletion
                 showAlert("Success", "Officer Account Deleted", "Officer account removed successfully.");
@@ -1408,6 +1400,50 @@ public class OfficerDashboardController implements Initializable {
 
         // Reload the data
         loadStudentAccountData();
+    }
+
+    @FXML
+    private void searchStudent(ActionEvent event) {
+        // Assuming you have a TextField named searchStudent for user input
+        String searchKeyword = searchStudent.getText().trim().toLowerCase();
+
+        if (!searchKeyword.isEmpty()) {
+            ObservableList<StudentAccountDataList> searchResultList = FXCollections.observableArrayList();
+
+            for (StudentAccountDataList studentAccount : studentAccountDataList) {
+                // Iterate through all columns and check if the search keyword matches any column value
+                if (containsIgnoreCase(studentAccount.getTblStudentID(), searchKeyword)
+                        || containsIgnoreCase(studentAccount.getTblPassword(), searchKeyword)
+                        || containsIgnoreCase(studentAccount.getTblRoleID(), searchKeyword)
+                        || containsIgnoreCase(studentAccount.getTblSurname(), searchKeyword)
+                        || containsIgnoreCase(studentAccount.getTblFirstName(), searchKeyword)
+                        || containsIgnoreCase(studentAccount.getTblMiddlename(), searchKeyword)
+                        || containsIgnoreCase(studentAccount.getTblSuffix(), searchKeyword)
+                        || containsIgnoreCase(studentAccount.getTblCourse(), searchKeyword)
+                        || containsIgnoreCase(studentAccount.getTblYearSection(), searchKeyword)) {
+
+                    searchResultList.add(studentAccount);
+                }
+            }
+
+            // Update the TableView with the search results
+            tblStudentData.setItems(searchResultList);
+        } else {
+            // If the search field is empty, display all students
+            tblStudentData.setItems(studentAccountDataList);
+        }
+
+        // Add listener to detect when search text is cleared
+        searchStudent.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.isEmpty()) {
+                loadStudentAccountData(); // Call the loadStudentAccountData() method to show all data
+            }
+        });
+    }
+
+// Helper method to check if a string contains another string (case-insensitive)
+    private boolean containsIgnoreCase(String source, String target) {
+        return source.toLowerCase().contains(target);
     }
 
 }

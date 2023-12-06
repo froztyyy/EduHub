@@ -2,9 +2,11 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Blend?>
 <?import javafx.scene.effect.ColorAdjust?>
@@ -24,7 +26,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane xmlns:fx="http://javafx.com/fxml" fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/20.0.1" fx:controller="controller.UserDashboardController">
+<Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserDashboardController">
    <children>
       <Pane prefHeight="43.0" prefWidth="1332.0" style="-fx-background-color: black;">
          <children>
@@ -88,7 +90,7 @@
          <children>
             <VBox alignment="CENTER" prefHeight="95.0" prefWidth="1332.0" style="-fx-border-color: transparent transparent white transparent; -fx-background-color: #010409; -fx-border-width: 0.3px;">
                <children>
-                  <HBox prefHeight="81.0" prefWidth="1241.0">
+                  <HBox alignment="CENTER" prefHeight="81.0" prefWidth="1241.0">
                      <children>
                         <HBox fx:id="sidePanelTitleColor" alignment="CENTER" prefHeight="58.0" prefWidth="206.0" spacing="8.0">
                            <children>
@@ -119,24 +121,24 @@
                               <Insets left="20.0" right="20.0" />
                            </padding>
                         </HBox>
-                        <Pane prefHeight="81.0" prefWidth="597.0" HBox.hgrow="ALWAYS" />
-                        <HBox alignment="CENTER_RIGHT" prefHeight="81.0" prefWidth="557.0" spacing="10.0">
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <HBox alignment="CENTER" spacing="10.0">
                            <children>
-                              <TextField prefHeight="45.0" prefWidth="258.0" promptText="Type to Search" styleClass="txtFieldTranparent" stylesheets="@../style/adminlogin.css">
-                                 <font>
-                                    <Font name="Arial" size="12.0" />
-                                 </font>
-                                 <padding>
-                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                 </padding>
-                                 <HBox.margin>
-                                    <Insets right="20.0" />
-                                 </HBox.margin></TextField>
                               <Line endX="-99.99995422363281" endY="31.172897338867188" startX="-100.0" stroke="WHITE" strokeWidth="0.4">
                                  <HBox.margin>
                                     <Insets right="10.0" />
                                  </HBox.margin>
                               </Line>
+                              <Pane layoutX="319.0" layoutY="10.0">
+                                 <children>
+                                    <Label fx:id="lblStudentID" alignment="CENTER" layoutX="10.0" layoutY="33.0" text="Student ID" textAlignment="CENTER" textFill="WHITE">
+                                       <font>
+                                          <Font name="Arial" size="13.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </Pane>
+                              <Line endX="-99.99995422363281" endY="31.172897338867188" layoutX="400.0" layoutY="35.0" startX="-100.0" stroke="WHITE" strokeWidth="0.4" />
                               <Pane>
                                  <children>
                                     <Label fx:id="lblTimeDashboard" layoutX="10.0" layoutY="33.0" text="5: 30 PM" textFill="WHITE">
@@ -176,7 +178,7 @@
                   </HBox>
                </children>
             </VBox>
-            <Pane fx:id="homeWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" visible="false">
+            <Pane fx:id="homeWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0">
                <children>
                   <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="698.0" prefWidth="1332.0">
                      <children>
@@ -191,7 +193,7 @@
                                                 <ListView layoutX="10.0" layoutY="14.0" prefHeight="469.0" prefWidth="249.0" />
                                              </children>
                                           </Pane>
-                                          <Button layoutX="153.0" layoutY="612.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="128.0" style="-fx-background-color: #2D53EF; -fx-background-radius: 15px;" text="View Now!" textFill="WHITE">
+                                          <Button layoutX="153.0" layoutY="612.0" mnemonicParsing="false" onAction="#viewNowtodo" prefHeight="39.0" prefWidth="128.0" style="-fx-background-color: #2D53EF; -fx-background-radius: 15px;" text="View Now!" textFill="WHITE">
                                              <font>
                                                 <Font name="Arial Bold" size="14.0" />
                                              </font>
@@ -227,48 +229,22 @@
                                  </effect>
                               </VBox>
                               <Pane prefHeight="698.0" prefWidth="20.0" HBox.hgrow="NEVER" />
-                              <Pane prefHeight="698.0" prefWidth="536.0">
+                              <Pane prefHeight="698.0" prefWidth="536.0" style="-fx-border-color: transparent white transparent transparent; -fx-border-width: 0.2;">
                                  <children>
-                                    <Text fill="WHITE" layoutX="14.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to EduHub!">
+                                    <Label fx:id="greetingLabel" layoutX="17.0" layoutY="44.0" text="Label" textFill="WHITE">
                                        <font>
-                                          <Font name="Arial Black" size="22.0" />
+                                          <Font name="Arial" size="22.0" />
                                        </font>
-                                    </Text>
+                                    </Label>
                                     <AnchorPane layoutX="14.0" layoutY="99.0" prefHeight="227.0" prefWidth="493.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-radius: 20px;" styleClass="containerglass" stylesheets="@../../../../../../Downloads/Seenema/CInemaManagementSystem/src/cinemamanagementsystem/CInemaManagementSystem/designdashboard.css">
                                        <children>
-                                          <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
+                                          <Text fill="WHITE" layoutX="62.0" layoutY="125.0" strokeType="OUTSIDE" strokeWidth="0.0" text="announcement lagay detu">
                                              <font>
-                                                <Font name="System Bold" size="18.0" />
+                                                <Font size="32.0" />
                                              </font>
-                                          </Label>
-                                          <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
+                                          </Text>
                                        </children>
                                     </AnchorPane>
-                                    <AnchorPane layoutX="17.0" layoutY="401.0" prefHeight="258.0" prefWidth="237.0" style="-fx-background-color: #161B22; -fx-border-color: white; -fx-border-radius: 12px; -fx-border-width: 0.2;" styleClass="containerglass" stylesheets="@../../../../../../Downloads/Seenema/CInemaManagementSystem/src/cinemamanagementsystem/CInemaManagementSystem/designdashboard.css">
-                                       <children>
-                                          <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
-                                             <font>
-                                                <Font name="System Bold" size="18.0" />
-                                             </font>
-                                          </Label>
-                                          <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
-                                       </children>
-                                    </AnchorPane>
-                                    <AnchorPane layoutX="275.0" layoutY="401.0" prefHeight="258.0" prefWidth="237.0" style="-fx-background-color: #161B22; -fx-border-color: white; -fx-border-radius: 12px; -fx-border-width: 0.2;" styleClass="containerglass" stylesheets="@../../../../../../Downloads/Seenema/CInemaManagementSystem/src/cinemamanagementsystem/CInemaManagementSystem/designdashboard.css">
-                                       <children>
-                                          <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
-                                             <font>
-                                                <Font name="System Bold" size="18.0" />
-                                             </font>
-                                          </Label>
-                                          <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
-                                       </children>
-                                    </AnchorPane>
-                                    <ImageView fitHeight="43.0" fitWidth="53.0" layoutX="275.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../media/icons/Screenshot%202023-11-19%20161348.png" />
-                                       </image>
-                                    </ImageView>
                                     <Button layoutX="384.0" layoutY="44.0" mnemonicParsing="false" onAction="#sendfeedback" prefHeight="25.0" prefWidth="128.0" style="-fx-background-color: transparent;">
                                        <graphic>
                                           <Label styleClass="sendFeedback" stylesheets="@../style/userdashboard.css" text="Send Us FeedBack" textFill="#2d53ef" underline="true">
@@ -278,12 +254,22 @@
                                           </Label>
                                        </graphic>
                                     </Button>
+                                    <ImageView fitHeight="227.0" fitWidth="383.0" layoutX="85.0" layoutY="397.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../media/Screenshot%202023-12-05%20163508.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Text fill="WHITE" layoutX="134.0" layoutY="374.0" strokeType="OUTSIDE" strokeWidth="0.0" text="gantu design gitna">
+                                       <font>
+                                          <Font size="32.0" />
+                                       </font>
+                                    </Text>
                                  </children>
                               </Pane>
                               <Pane prefHeight="698.0" prefWidth="16.0" HBox.hgrow="NEVER" />
                               <Pane prefHeight="698.0" prefWidth="440.0">
                                  <children>
-                                    <AnchorPane fx:id="imageGradientWelcome" layoutX="-5.0" layoutY="49.0" prefHeight="244.0" prefWidth="418.0">
+                                    <AnchorPane fx:id="imageGradientWelcome" layoutX="7.0" layoutY="126.0" prefHeight="244.0" prefWidth="418.0">
                                        <children>
                                           <HBox alignment="CENTER_LEFT" layoutX="21.0" layoutY="14.0" prefHeight="47.0" prefWidth="383.0">
                                              <children>
@@ -320,7 +306,7 @@
                                           </Pane>
                                        </children>
                                     </AnchorPane>
-                                    <AnchorPane layoutX="-6.0" layoutY="320.0" prefHeight="344.0" prefWidth="418.0" style="-fx-background-radius: 12px; -fx-border-color: white; -fx-border-radius: 12px; -fx-border-width: 0.2; -fx-background-color: #0D1117;">
+                                    <AnchorPane layoutX="20.0" layoutY="399.0" prefHeight="227.0" prefWidth="392.0" style="-fx-background-radius: 12px; -fx-border-color: white; -fx-border-radius: 12px; -fx-border-width: 0.2; -fx-background-color: #0D1117;">
                                        <children>
                                           <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
                                              <font>
@@ -330,6 +316,14 @@
                                           <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
                                        </children>
                                     </AnchorPane>
+                                    <TextField layoutX="35.0" layoutY="34.0" prefHeight="45.0" prefWidth="369.0" promptText="Search Announcement" styleClass="announcementSearch" stylesheets="@../style/userdashboard.css">
+                                       <padding>
+                                          <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+                                       </padding>
+                                       <font>
+                                          <Font name="Arial" size="12.0" />
+                                       </font>
+                                    </TextField>
                                  </children>
                               </Pane>
                            </children>
@@ -338,7 +332,98 @@
                   </AnchorPane>
                </children>
             </Pane>
-            <Pane fx:id="announcementWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" visible="false" />
+            <Pane fx:id="announcementWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" stylesheets="@../style/userdashboard.css" visible="false">
+               <children>
+                  <HBox prefHeight="697.0" prefWidth="1332.0">
+                     <children>
+                        <Pane HBox.hgrow="ALWAYS" />
+                        <ScrollPane styleClass="scrllPane" vbarPolicy="NEVER">
+                           <content>
+                              <VBox alignment="TOP_CENTER" spacing="15.0">
+                                 <children>
+                                    <VBox spacing="15.0">
+                                       <children>
+                                          <Label text="Create announcement" textFill="WHITE">
+                                             <font>
+                                                <Font name="Arial" size="20.0" />
+                                             </font>
+                                          </Label>
+                                          <VBox alignment="CENTER" spacing="15.0">
+                                             <children>
+                                                <VBox spacing="15.0" styleClass="announcementCard">
+                                                   <children>
+                                                      <Pane prefHeight="205.0">
+                                                         <children>
+                                                            <HBox alignment="TOP_CENTER" spacing="15.0">
+                                                               <children>
+                                                                  <Pane>
+                                                                     <children>
+                                                                        <VBox layoutY="-1.0" spacing="15.0">
+                                                                           <children>
+                                                                              <HBox alignment="CENTER" spacing="15.0">
+                                                                                 <children>
+                                                                                    <TextField fx:id="TitleText" prefHeight="40.0" prefWidth="192.0" promptText="Title" styleClass="txtField">
+                                                                                       <padding>
+                                                                                          <Insets left="15.0" />
+                                                                                       </padding>
+                                                                                    </TextField>
+                                                                                    <ComboBox fx:id="audiencelist" prefWidth="135.0" styleClass="combobox" />
+                                                                                    <ComboBox fx:id="prioritylist" prefWidth="135.0" styleClass="combobox" />
+                                                                                 </children>
+                                                                              </HBox>
+                                                                              <TextArea fx:id="AnnouncementText" prefHeight="150.0" prefWidth="493.0" promptText="Enter Text" styleClass="textArea" wrapText="true" />
+                                                                           </children>
+                                                                        </VBox>
+                                                                     </children>
+                                                                  </Pane>
+                                                               </children>
+                                                            </HBox>
+                                                         </children>
+                                                      </Pane>
+                                                      <HBox>
+                                                         <children>
+                                                            <Button fx:id="PostButton" mnemonicParsing="false" onAction="#handlepostsubmit" styleClass="btns" text="POST">
+                                                               <padding>
+                                                                  <Insets bottom="8.0" left="30.0" right="30.0" top="8.0" />
+                                                               </padding>
+                                                            </Button>
+                                                         </children>
+                                                      </HBox>
+                                                   </children>
+                                                   <padding>
+                                                      <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                                   </padding>
+                                                </VBox>
+                                                <Pane>
+                                                   <children>
+                                                      <GridPane fx:id="AnnouncementHandler">
+                                                        <columnConstraints>
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                        </columnConstraints>
+                                                        <rowConstraints>
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                        </rowConstraints>
+                                                      </GridPane>
+                                                   </children>
+                                                </Pane>
+                                             </children>
+                                             <padding>
+                                                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                             </padding>
+                                          </VBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                                 </padding>
+                              </VBox>
+                           </content>
+                        </ScrollPane>
+                        <Pane layoutX="10.0" layoutY="10.0" HBox.hgrow="ALWAYS" />
+                     </children>
+                  </HBox>
+               </children></Pane>
             <Pane fx:id="calendarWindow" layoutY="96.0" prefHeight="697.0" prefWidth="1332.0" visible="false">
                <children>
                   <Pane layoutX="401.0" layoutY="41.0" prefHeight="601.0" prefWidth="861.0" style="-fx-border-color: white; -fx-background-color: black; -fx-border-radius: 20px; -fx-border-width: 0.3;">
@@ -465,19 +550,9 @@
                </children></Pane>
             <Pane fx:id="todoWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" visible="false">
                <children>
-                  <Pane fx:id="listPane" layoutX="227.0" layoutY="68.0" visible="false">
+                  <Pane fx:id="listPane" layoutX="108.0" layoutY="68.0" prefHeight="562.0" prefWidth="1091.0">
                      <children>
-                        <Label text="Task List" textFill="WHITE">
-                           <font>
-                              <Font name="Arial" size="18.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="22.0" layoutY="31.0" text="1 pending" textFill="#8d8d8d">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                        </Label>
-                        <ScrollPane layoutY="60.0" prefHeight="502.0" prefWidth="878.0" styleClass="scrllPane">
+                        <ScrollPane layoutY="60.0" prefHeight="502.0" prefWidth="1091.0" styleClass="scrllPane" stylesheets="@../style/toDoList.css">
                            <content>
                               <GridPane fx:id="listHandler">
                                  <columnConstraints>
@@ -491,19 +566,9 @@
                         </ScrollPane>
                      </children>
                   </Pane>
-                  <Pane fx:id="archivePane" layoutX="227.0" layoutY="68.0">
+                  <Pane fx:id="archivePane" layoutX="121.0" layoutY="68.0" prefHeight="562.0" prefWidth="1091.0" visible="false">
                      <children>
-                        <Label text="Archive" textFill="WHITE">
-                           <font>
-                              <Font name="Arial" size="18.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="22.0" layoutY="31.0" text="1 pending" textFill="#8d8d8d">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                        </Label>
-                        <ScrollPane layoutY="60.0" prefHeight="502.0" prefWidth="878.0" styleClass="scrllPane">
+                        <ScrollPane layoutY="60.0" prefHeight="502.0" prefWidth="1091.0" styleClass="scrllPane" stylesheets="@../style/toDoList.css">
                            <content>
                               <GridPane fx:id="archiveListHandler">
                                  <columnConstraints>
@@ -517,9 +582,28 @@
                         </ScrollPane>
                      </children>
                   </Pane>
-                  <Button fx:id="btnAddList" layoutX="949.0" layoutY="34.0" mnemonicParsing="false" onAction="#handleButtonAddList" text="Add" />
-                  <Button fx:id="btnAddList" layoutX="993.0" layoutY="34.0" mnemonicParsing="false" onAction="#SwitchFormForTodoList" text="List" />
-                  <Button fx:id="btnArchive" layoutX="1033.0" layoutY="34.0" mnemonicParsing="false" onAction="#SwitchFormForTodoList" text="Archive" />
+                  <Button fx:id="btnAddList" layoutX="879.0" layoutY="51.0" mnemonicParsing="false" onAction="#handleButtonAddList" prefHeight="36.0" prefWidth="106.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 10px;" text="Add" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font></Button>
+                  <Button fx:id="btnAddList" layoutX="996.0" layoutY="50.0" mnemonicParsing="false" onAction="#SwitchFormForTodoList" prefHeight="37.0" prefWidth="95.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 10px;" text="List" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font></Button>
+                  <Button fx:id="btnArchive" layoutX="1098.0" layoutY="50.0" mnemonicParsing="false" onAction="#SwitchFormForTodoList" prefHeight="37.0" prefWidth="114.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 10px;" text="Archive" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font></Button>
+                  <Label layoutX="149.0" layoutY="48.0" text="Todo List" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Bold" size="31.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="131.0" layoutY="76.0" text="Management" textFill="#2b4fe4">
+                     <font>
+                        <Font name="Arial Bold" size="31.0" />
+                     </font>
+                  </Label>
                </children></Pane>
             <Pane fx:id="timeClockWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" visible="false">
                <children>
@@ -528,11 +612,11 @@
                         <HBox alignment="CENTER" layoutX="179.0" layoutY="40.0" />
                         <AnchorPane layoutX="154.0" layoutY="96.0" prefHeight="173.0" prefWidth="550.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 30px;">
                            <children>
-                            <Label fx:id="greetingLabel" layoutX="33.0" layoutY="48.0" text="" textFill="WHITE">
-                                <font>
+                              <Label fx:id="greetingLabelTime" layoutX="33.0" layoutY="48.0" text="GOOD MORNING, USERNAME" textFill="WHITE">
+                                 <font>
                                     <Font name="Franklin Gothic Heavy" size="23.0" />
-                                </font>
-                            </Label>
+                                 </font>
+                              </Label>
                               <Label layoutX="33.0" layoutY="24.0" text="MANAGE YOUR TIME!" textFill="WHITE">
                                  <font>
                                     <Font name="Franklin Gothic Heavy" size="23.0" />
@@ -890,24 +974,7 @@
                   <Insets top="10.0" />
                </opaqueInsets>
             </Pane>
-            <Pane fx:id="announcementButton" layoutX="21.0" layoutY="164.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
-               <children>
-                  <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../media/icons/icons8-home-48.png" />
-                     </image>
-                  </ImageView>
-                  <Text fill="#d7d7d7" layoutX="57.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Announcement">
-                     <font>
-                        <Font name="Arial" size="19.0" />
-                     </font>
-                  </Text>
-               </children>
-               <opaqueInsets>
-                  <Insets top="10.0" />
-               </opaqueInsets>
-            </Pane>
-            <Pane fx:id="calendarButton" layoutX="21.0" layoutY="209.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
+            <Pane fx:id="calendarButton" layoutX="22.0" layoutY="204.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
                <children>
                   <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -924,7 +991,7 @@
                   <Insets top="10.0" />
                </opaqueInsets>
             </Pane>
-            <Pane fx:id="toDolistButton" layoutX="20.0" layoutY="256.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
+            <Pane fx:id="toDolistButton" layoutX="22.0" layoutY="161.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
                <children>
                   <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -941,7 +1008,7 @@
                   <Insets top="10.0" />
                </opaqueInsets>
             </Pane>
-            <Pane fx:id="timeClockButton" layoutX="20.0" layoutY="302.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
+            <Pane fx:id="timeClockButton" layoutX="26.0" layoutY="515.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css" visible="false">
                <children>
                   <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -982,6 +1049,23 @@
                   </Text>
                </graphic>
             </Button>
+            <Pane fx:id="announcementButton" layoutX="26.0" layoutY="472.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css" visible="false">
+               <children>
+                  <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../media/icons/icons8-home-48.png" />
+                     </image>
+                  </ImageView>
+                  <Text fill="#d7d7d7" layoutX="57.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="announcement">
+                     <font>
+                        <Font name="Arial" size="19.0" />
+                     </font>
+                  </Text>
+               </children>
+               <opaqueInsets>
+                  <Insets top="10.0" />
+               </opaqueInsets>
+            </Pane>
          </children>
       </Pane>
    </children>

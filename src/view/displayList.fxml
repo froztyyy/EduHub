@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.effect.ColorAdjust?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,20 +14,23 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="toDoDisplayCard" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DisplayListController">
+<AnchorPane fx:id="toDoDisplayCard" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DisplayListController">
    <children>
-      <Button fx:id="btnDisplayCard" mnemonicParsing="false" prefWidth="250.0" styleClass="btnsDisplay" stylesheets="@toDoList.css">
+      <Button fx:id="btnDisplayCard" mnemonicParsing="false" prefWidth="250.0" style="-fx-background-color: black;">
          <graphic>
             <VBox spacing="5.0">
                <children>
                   <HBox alignment="CENTER_RIGHT">
                      <children>
-                        <Button fx:id="btnRemove" mnemonicParsing="false" onAction="#handleRemoveButton" styleClass="btns">
+                        <Button fx:id="btnRemove" mnemonicParsing="false" onAction="#handleRemoveButton" style="-fx-background-color: transparent;" styleClass="btns">
                            <graphic>
-                              <ImageView fitHeight="25.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="22.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../media/delete.png" />
                                  </image>
+                                 <effect>
+                                    <ColorAdjust brightness="1.0" />
+                                 </effect>
                               </ImageView>
                            </graphic>
                         </Button>
@@ -57,7 +61,7 @@
                         </HBox>
                         <HBox prefHeight="210.0" prefWidth="230.0" styleClass="secondary-bg">
                            <children>
-                              <TextArea fx:id="txtDetailsDisplay" editable="false" styleClass="textArea" />
+                              <TextArea fx:id="txtDetailsDisplay" editable="false" styleClass="textArea" stylesheets="@../style/toDoList.css" />
                            </children>
                         </HBox>
                      </children>

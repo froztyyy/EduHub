@@ -5,83 +5,58 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefWidth="600.0" styleClass="main-bg" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddListWindowController">
+<AnchorPane id="AnchorPane" fx:id="addlistwindow" prefHeight="444.0" prefWidth="431.0" styleClass="main-bg" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddListWindowController">
    <children>
-      <VBox prefWidth="600.0" spacing="15.0">
-         <children>
-            <HBox prefWidth="200.0" styleClass="secondary-bg">
-               <children>
-                  <TextField fx:id="txtDescription" prefHeight="26.0" prefWidth="533.0" promptText="Short Description" styleClass="txtField">
-                     <font>
-                        <Font name="Arial" size="20.0" />
-                     </font>
-                  </TextField>
-               </children>
-               <padding>
-                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-               </padding>
-            </HBox>
-            <VBox prefHeight="200.0" prefWidth="100.0" styleClass="txtArea">
-               <children>
-                  <TextArea fx:id="txtDetails" promptText="Details" styleClass="textArea">
-                     <font>
-                        <Font name="Arial" size="20.0" />
-                     </font>
-                     <padding>
-                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                     </padding>
-                  </TextArea>
-               </children>
-            </VBox>
-            <VBox prefWidth="100.0" spacing="15.0">
-               <children>
-                  <Label text="Due" textFill="GREY">
-                     <font>
-                        <Font name="Arial" size="20.0" />
-                     </font>
-                  </Label>
-                  <DatePicker fx:id="dueDatePicker">
-                     <styleClass>
-                        <String fx:value="datePicker" />
-                        <String fx:value="arrow" />
-                        <String fx:value="arrow-button" />
-                        <String fx:value="content" />
-                        <String fx:value="popup-content" />
-                     </styleClass>
-                  </DatePicker>
-               </children>
-               <padding>
-                  <Insets left="20.0" />
-               </padding>
-            </VBox>
-            <HBox alignment="CENTER_RIGHT" prefWidth="200.0" spacing="15.0">
-               <children>
-                  <Button fx:id="btnSubmit" layoutX="528.0" layoutY="48.0" mnemonicParsing="false" onAction="#handleButtonSubmit" styleClass="btns" text="Submit">
-                     <font>
-                        <Font name="Arial" size="12.0" />
-                     </font>
-                     <padding>
-                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
-                     </padding>
-                  </Button>
-               </children>
-               <padding>
-                  <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-               </padding>
-            </HBox>
-         </children>
+      <TextField fx:id="txtDescription" layoutX="56.0" layoutY="93.0" prefHeight="25.0" prefWidth="319.0" promptText="Title" styleClass="txtField">
+         <font>
+            <Font name="Arial" size="15.0" />
+         </font>
+      </TextField>
+      <TextArea fx:id="txtDetails" layoutX="29.0" layoutY="133.0" prefHeight="183.0" prefWidth="373.0" promptText="Note" styleClass="textArea">
+         <font>
+            <Font name="Arial" size="13.0" />
+         </font>
          <padding>
             <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
          </padding>
-      </VBox>
+      </TextArea>
+      <DatePicker fx:id="dueDatePicker" layoutX="138.0" layoutY="328.0" promptText="Deadline">
+         <styleClass>
+            <String fx:value="datePicker" />
+            <String fx:value="arrow" />
+            <String fx:value="arrow-button" />
+            <String fx:value="content" />
+            <String fx:value="popup-content" />
+         </styleClass>
+      </DatePicker>
+      <Button fx:id="btnSubmit" layoutX="164.0" layoutY="370.0" mnemonicParsing="false" onAction="#handleButtonSubmit" prefHeight="37.0" prefWidth="122.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;" text="Submit" textFill="WHITE">
+         <font>
+            <Font name="Arial Bold" size="15.0" />
+         </font>
+         <padding>
+            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+         </padding>
+      </Button>
+      <Button layoutX="359.0" layoutY="27.0" mnemonicParsing="false" onAction="#close" style="-fx-background-color: transparent;" styleClass="btns">
+         <graphic>
+            <ImageView fitHeight="41.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../media/delete.png" />
+               </image>
+               <effect>
+                  <ColorAdjust brightness="1.0" />
+               </effect>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
    <stylesheets>
       <URL value="@toDoList.css" />

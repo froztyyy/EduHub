@@ -6,9 +6,11 @@ package controller;
 
 /**
  *
- * @author jcarl
+ * @author lugtu
  */
-public class getYearSectionData {
+public class GetArchiveYearSectionData {
+
+    private String SectionName;
 
     public String getSectionName() {
         return SectionName;
@@ -17,5 +19,4 @@ public class getYearSectionData {
     public void setSectionName(String SectionName) {
         this.SectionName = SectionName;
     }
-    private String SectionName;
 }
