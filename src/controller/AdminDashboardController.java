@@ -296,21 +296,45 @@ public class AdminDashboardController implements Initializable {
     @FXML
     private TableColumn<GetArchiveFeedBack, Integer> archiveFeedBackComment;
     @FXML
-    private TableView<?> archiveStudentAccTbl;
+    private TableView<GetArchiveStudentAccountData> archiveStudentAccTbl;
     @FXML
-    private TableColumn<?, ?> archiveStudID;
+    private TableColumn<GetArchiveStudentAccountData, String> archiveStudID;
     @FXML
-    private TableColumn<?, ?> archivePassword;
+    private TableColumn<GetArchiveStudentAccountData, String> archivePassword;
     @FXML
-    private TableColumn<?, ?> archiveRoleID;
+    private TableColumn<GetArchiveStudentAccountData, String> archiveRoleID;
     @FXML
-    private TableColumn<?, ?> archiveSurname;
+    private TableColumn<GetArchiveStudentAccountData, String> archiveSurname;
     @FXML
-    private TableColumn<?, ?> archiveFirstname;
+    private TableColumn<GetArchiveStudentAccountData, String> archiveFirstname;
     @FXML
-    private TableColumn<?, ?> archiveMiddleName;
+    private TableColumn<GetArchiveStudentAccountData, String> archiveMiddleName;
     @FXML
-    private TableColumn<?, ?> archiveSuffix;
+    private TableColumn<GetArchiveStudentAccountData, String> archiveSuffix;
+    @FXML
+    private TableColumn<GetArchiveStudentAccountData, String> archiveCourseStudent;
+    @FXML
+    private TableColumn<GetArchiveStudentAccountData, String> archiveYearSectionStudent;
+    @FXML
+    private TableView<GetArchiveOfficerData> archiveOfficerAccTbl;
+    @FXML
+    private TableColumn<GetArchiveOfficerData, String> archiveStudIDOfficer;
+    @FXML
+    private TableColumn<GetArchiveOfficerData, String> archivePasswordOfficer;
+    @FXML
+    private TableColumn<GetArchiveOfficerData, String> archiveRoleIDOfficer;
+    @FXML
+    private TableColumn<GetArchiveOfficerData, String> archiveSurnameOfficer;
+    @FXML
+    private TableColumn<GetArchiveOfficerData, String> archiveFirstnameOfficer;
+    @FXML
+    private TableColumn<GetArchiveOfficerData, String> archiveMiddleNameOfficer;
+    @FXML
+    private TableColumn<GetArchiveOfficerData, String> archiveSuffixOfficer;
+    @FXML
+    private TableColumn<GetArchiveOfficerData, String> archiveCourseOfficer;
+    @FXML
+    private TableColumn<GetArchiveOfficerData, String> archiveYearSectionOfficer;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -455,6 +479,33 @@ public class AdminDashboardController implements Initializable {
         archiveExperienceRate.setCellValueFactory(new PropertyValueFactory<>("experienceRating"));
         archiveFeedBackComment.setCellValueFactory(new PropertyValueFactory<>("feedbackReport"));
         loadArchiveFeedBackData();
+
+        // Initialize the table columns
+        archiveStudID.setCellValueFactory(new PropertyValueFactory<>("tblStudentID"));
+        archivePassword.setCellValueFactory(new PropertyValueFactory<>("tblPassword"));
+        archiveRoleID.setCellValueFactory(new PropertyValueFactory<>("tblRoleID"));
+        archiveSurname.setCellValueFactory(new PropertyValueFactory<>("tblSurname"));
+        archiveFirstname.setCellValueFactory(new PropertyValueFactory<>("tblFirstName"));
+        archiveMiddleName.setCellValueFactory(new PropertyValueFactory<>("tblMiddlename"));
+        archiveSuffix.setCellValueFactory(new PropertyValueFactory<>("tblSuffix"));
+        archiveCourseStudent.setCellValueFactory(new PropertyValueFactory<>("tblCourse"));
+        archiveYearSectionStudent.setCellValueFactory(new PropertyValueFactory<>("tblYearSection"));
+
+        // Additional initialization logic if needed
+        loadArchiveStudentData();
+
+        archiveStudIDOfficer.setCellValueFactory(new PropertyValueFactory<>("tblStudentID"));
+        archivePasswordOfficer.setCellValueFactory(new PropertyValueFactory<>("tblPassword"));
+        archiveRoleIDOfficer.setCellValueFactory(new PropertyValueFactory<>("tblRoleID"));
+        archiveSurnameOfficer.setCellValueFactory(new PropertyValueFactory<>("tblSurname"));
+        archiveFirstnameOfficer.setCellValueFactory(new PropertyValueFactory<>("tblFirstName"));
+        archiveMiddleNameOfficer.setCellValueFactory(new PropertyValueFactory<>("tblMiddlename"));
+        archiveSuffixOfficer.setCellValueFactory(new PropertyValueFactory<>("tblSuffix"));
+        archiveCourseOfficer.setCellValueFactory(new PropertyValueFactory<>("tblCourse"));
+        archiveYearSectionOfficer.setCellValueFactory(new PropertyValueFactory<>("tblYearSection"));
+
+        // Additional initialization logic if needed
+        loadArchiveOfficerData();
 
     }
 
@@ -1051,7 +1102,7 @@ public class AdminDashboardController implements Initializable {
     }
 
     @FXML
-    private void btnDelete(ActionEvent event) {
+    private void btnDelete(ActionEvent event) throws SQLException {
         OfficerAccountData selectedOfficer = tblOfficerData.getSelectionModel().getSelectedItem();
 
         if (selectedOfficer != null) {
@@ -1071,6 +1122,9 @@ public class AdminDashboardController implements Initializable {
 
                 // Remove from the database
                 deleteOfficerFromDatabase(selectedOfficer);
+                insertIntoArchiveOfficerTable(connect, selectedOfficer);
+                loadOfficerAccountData();
+                loadArchiveOfficerData();
 
                 // Inform the user about successful deletion
                 showAlert("Success", "Officer Account Deleted", "Officer account removed successfully.");
@@ -1617,9 +1671,10 @@ public class AdminDashboardController implements Initializable {
     //////////////////////////////////////////////
     // STUDENT SECTION
     @FXML
-    private void deleteAcc(ActionEvent event) {
+    private void deleteAcc(ActionEvent event) throws SQLException {
         // Get the selected officer account data from the table
         OfficerAccountData selectedstudent = tblStudentAcc.getSelectionModel().getSelectedItem();
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
         alert.setHeaderText("Delete Officer Account");
@@ -1634,6 +1689,10 @@ public class AdminDashboardController implements Initializable {
 
             // Remove the selected officer account from the table view
             tblStudentAcc.getItems().remove(selectedstudent);
+            insertIntoArchiveStudentAccountTable(connect, selectedstudent);
+            loadStudentAccountData();
+
+            loadArchiveStudentData();
             showSuccessAlert("Student Account deleted successfully!");
 
         } else {
@@ -2602,9 +2661,291 @@ public class AdminDashboardController implements Initializable {
         }
     }
 
-    
     ///////////////////////////////// 
     // STUDENT MANAGEMENT GOES TO ARCHIVE
-    
-    
+    private ObservableList<GetArchiveStudentAccountData> archiveStudentData;
+
+    private void loadArchiveStudentData() {
+        archiveStudentData = FXCollections.observableArrayList();
+        connect = database.getConnection();
+
+        try {
+            prepare = connect.prepareStatement("SELECT StudentID, Password, RoleID, Surname, FirstName, MiddleName, Suffix, CourseID, SectionID FROM trash_student");
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                GetArchiveStudentAccountData studentAccount = new GetArchiveStudentAccountData();
+                studentAccount.setTblStudentID(result.getString("StudentID"));
+                studentAccount.setTblPassword(result.getString("Password"));
+                studentAccount.setTblRoleID(result.getString("RoleID"));
+                studentAccount.setTblSurname(result.getString("Surname"));
+                studentAccount.setTblFirstName(result.getString("FirstName"));
+                studentAccount.setTblMiddlename(result.getString("MiddleName"));
+                studentAccount.setTblSuffix(result.getString("Suffix"));
+                studentAccount.setTblCourse(result.getString("CourseID"));
+                studentAccount.setTblYearSection(result.getString("SectionID"));
+                archiveStudentData.add(studentAccount);
+            }
+
+            archiveStudentAccTbl.setItems(archiveStudentData);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeResources();
+        }
+    }
+
+    @FXML
+    private void restoreStudentAccount(ActionEvent event) {
+        GetArchiveStudentAccountData selectedStudent = archiveStudentAccTbl.getSelectionModel().getSelectedItem();
+
+        if (selectedStudent != null) {
+            try {
+                connect = database.getConnection();
+                insertIntoStudentAccountTable(connect, selectedStudent);
+                deleteFromArchiveStudentAccountTable(connect, selectedStudent);
+
+                showSuccessAlert("Student account retrieved successfully!");
+
+                loadArchiveStudentData();
+                // Additional method calls if needed
+                loadStudentAccountData();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle exceptions appropriately (show error message, log, etc.)
+            } finally {
+                closeResources();
+            }
+        } else {
+            showWarningAlert("Please select a student account to retrieve.");
+        }
+    }
+
+    @FXML
+    private void deleteStudentAccountArchive(ActionEvent event) {
+        GetArchiveStudentAccountData selectedStudent = archiveStudentAccTbl.getSelectionModel().getSelectedItem();
+
+        if (selectedStudent != null) {
+            try {
+                connect = database.getConnection();
+                insertIntoBackupStudentAccountDatabase(connect, selectedStudent);
+                deleteFromArchiveStudentAccountTable(connect, selectedStudent);
+
+                showSuccessAlert("Student account permanently deleted!");
+
+                loadArchiveStudentData();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle exceptions appropriately (show error message, log, etc.)
+            } finally {
+                closeResources();
+            }
+        } else {
+            showWarningAlert("Please select a student account to permanently delete.");
+        }
+    }
+
+    private void insertIntoArchiveStudentAccountTable(java.sql.Connection conn, OfficerAccountData studentAccount) throws SQLException {
+        String insertQuery = "INSERT INTO trash_student (StudentID, Password, RoleID, Surname, FirstName, MiddleName, Suffix, CourseID, SectionID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement prepare = conn.prepareStatement(insertQuery)) {
+            prepare.setString(1, studentAccount.getTblStudentID());
+            prepare.setString(2, studentAccount.getTblPassword());
+            prepare.setString(3, studentAccount.getTblRoleID());
+            prepare.setString(4, studentAccount.getTblSurname());
+            prepare.setString(5, studentAccount.getTblFirstName());
+            prepare.setString(6, studentAccount.getTblMiddlename());
+            prepare.setString(7, studentAccount.getTblSuffix());
+            prepare.setString(8, studentAccount.getTblCourse());
+            prepare.setString(9, studentAccount.getTblYearSection());
+            prepare.executeUpdate();
+        }
+    }
+
+    private void insertIntoStudentAccountTable(java.sql.Connection conn, GetArchiveStudentAccountData studentAccount) throws SQLException {
+        String insertQuery = "INSERT INTO account_student (StudentID, Password, RoleID, Surname, FirstName, MiddleName, Suffix, CourseID, SectionID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement prepare = conn.prepareStatement(insertQuery)) {
+            prepare.setString(1, studentAccount.getTblStudentID());
+            prepare.setString(2, studentAccount.getTblPassword());
+            prepare.setString(3, studentAccount.getTblRoleID());
+            prepare.setString(4, studentAccount.getTblSurname());
+            prepare.setString(5, studentAccount.getTblFirstName());
+            prepare.setString(6, studentAccount.getTblMiddlename());
+            prepare.setString(7, studentAccount.getTblSuffix());
+            prepare.setString(8, studentAccount.getTblCourse());
+            prepare.setString(9, studentAccount.getTblYearSection());
+            prepare.executeUpdate();
+        }
+
+    }
+
+    private void deleteFromArchiveStudentAccountTable(java.sql.Connection conn, GetArchiveStudentAccountData studentAccount) throws SQLException {
+        String deleteQuery = "DELETE FROM trash_student WHERE StudentID = ?";
+        try (PreparedStatement prepare = conn.prepareStatement(deleteQuery)) {
+            prepare.setString(1, studentAccount.getTblStudentID());
+            prepare.executeUpdate();
+        }
+    }
+
+    private void insertIntoBackupStudentAccountDatabase(java.sql.Connection conn, GetArchiveStudentAccountData studentAccount) throws SQLException {
+        String insertQuery = "INSERT INTO backup_student (StudentID, Password, RoleID, Surname, FirstName, MiddleName, Suffix, CourseID, SectionID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement prepare = conn.prepareStatement(insertQuery)) {
+            prepare.setString(1, studentAccount.getTblStudentID());
+            prepare.setString(2, studentAccount.getTblPassword());
+            prepare.setString(3, studentAccount.getTblRoleID());
+            prepare.setString(4, studentAccount.getTblSurname());
+            prepare.setString(5, studentAccount.getTblFirstName());
+            prepare.setString(6, studentAccount.getTblMiddlename());
+            prepare.setString(7, studentAccount.getTblSuffix());
+            prepare.setString(8, studentAccount.getTblCourse());
+            prepare.setString(9, studentAccount.getTblYearSection());
+            prepare.executeUpdate();
+        }
+    }
+    ///////////////////////////////// 
+    // OFFICER MANAGEMENT GOES TO ARCHIVE
+    private ObservableList<GetArchiveOfficerData> archiveOfficerData;
+
+    private void loadArchiveOfficerData() {
+        archiveOfficerData = FXCollections.observableArrayList();
+        connect = database.getConnection();
+
+        try {
+            prepare = connect.prepareStatement("SELECT StudentID, Password, RoleID, Surname, FirstName, MiddleName, Suffix, CourseID, SectionID FROM trash_officer");
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                GetArchiveOfficerData officerAccount = new GetArchiveOfficerData();
+                officerAccount.setTblStudentID(result.getString("StudentID"));
+                officerAccount.setTblPassword(result.getString("Password"));
+                officerAccount.setTblRoleID(result.getString("RoleID"));
+                officerAccount.setTblSurname(result.getString("Surname"));
+                officerAccount.setTblFirstName(result.getString("FirstName"));
+                officerAccount.setTblMiddlename(result.getString("MiddleName"));
+                officerAccount.setTblSuffix(result.getString("Suffix"));
+                officerAccount.setTblCourse(result.getString("CourseID"));
+                officerAccount.setTblYearSection(result.getString("SectionID"));
+                archiveOfficerData.add(officerAccount);
+
+                    // ... (your existing code)
+
+                    // Print statements for debugging
+                    System.out.println("StudentID: " + officerAccount.getTblStudentID());
+                    // ... (repeat for other properties)
+                
+            }
+
+            archiveOfficerAccTbl.setItems(archiveOfficerData);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeResources();
+        }
+    }
+
+    @FXML
+    private void restoreOfficerAccount(ActionEvent event) {
+        GetArchiveOfficerData selectedOfficer = archiveOfficerAccTbl.getSelectionModel().getSelectedItem();
+
+        if (selectedOfficer != null) {
+            try {
+                connect = database.getConnection();
+                insertIntoOfficerTable(connect, selectedOfficer);
+                deleteFromArchiveOfficerTable(connect, selectedOfficer);
+
+                showSuccessAlert("Officer account retrieved successfully!");
+
+                loadArchiveOfficerData();
+                // Additional logic if needed
+                loadOfficerAccountData();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle exceptions appropriately (show error message, log, etc.)
+            } finally {
+                closeResources();
+            }
+        } else {
+            showWarningAlert("Please select an officer account to retrieve.");
+        }
+    }
+
+    @FXML
+    private void deleteOfficerArchive(ActionEvent event) {
+        GetArchiveOfficerData selectedOfficer = archiveOfficerAccTbl.getSelectionModel().getSelectedItem();
+
+        if (selectedOfficer != null) {
+            try {
+                connect = database.getConnection();
+                insertIntoBackupOfficerDatabase(connect, selectedOfficer);
+                deleteFromArchiveOfficerTable(connect, selectedOfficer);
+
+                showSuccessAlert("Officer account permanently deleted!");
+
+                loadArchiveOfficerData();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle exceptions appropriately (show error message, log, etc.)
+            } finally {
+                closeResources();
+            }
+        } else {
+            showWarningAlert("Please select an officer account to permanently delete.");
+        }
+    }
+
+    private void insertIntoArchiveOfficerTable(java.sql.Connection conn, OfficerAccountData officer) throws SQLException {
+        String insertQuery = "INSERT INTO trash_officer (StudentID, Password, RoleID, Surname, FirstName, MiddleName, Suffix, CourseID, SectionID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement prepare = conn.prepareStatement(insertQuery)) {
+            prepare.setString(1, officer.getTblStudentID());
+            prepare.setString(2, officer.getTblPassword());
+            prepare.setString(3, officer.getTblRoleID());
+            prepare.setString(4, officer.getTblSurname());
+            prepare.setString(5, officer.getTblFirstName());
+            prepare.setString(6, officer.getTblMiddlename());
+            prepare.setString(7, officer.getTblSuffix());
+            prepare.setString(8, officer.getTblCourse());
+            prepare.setString(9, officer.getTblYearSection());
+            prepare.executeUpdate();
+        }
+    }
+
+    private void insertIntoOfficerTable(java.sql.Connection conn, GetArchiveOfficerData officer) throws SQLException {
+        String insertQuery = "INSERT INTO account_student (StudentID, Password, RoleID, Surname, FirstName, MiddleName, Suffix, CourseID, SectionID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement prepare = conn.prepareStatement(insertQuery)) {
+            prepare.setString(1, officer.getTblStudentID());
+            prepare.setString(2, officer.getTblPassword());
+            prepare.setString(3, officer.getTblRoleID());
+            prepare.setString(4, officer.getTblSurname());
+            prepare.setString(5, officer.getTblFirstName());
+            prepare.setString(6, officer.getTblMiddlename());
+            prepare.setString(7, officer.getTblSuffix());
+            prepare.setString(8, officer.getTblCourse());
+            prepare.setString(9, officer.getTblYearSection());
+            prepare.executeUpdate();
+        }
+    }
+
+    private void deleteFromArchiveOfficerTable(java.sql.Connection conn, GetArchiveOfficerData officer) throws SQLException {
+        String deleteQuery = "DELETE FROM trash_officer WHERE StudentID = ?";
+        try (PreparedStatement prepare = conn.prepareStatement(deleteQuery)) {
+            prepare.setString(1, officer.getTblStudentID());
+            prepare.executeUpdate();
+        }
+    }
+
+    private void insertIntoBackupOfficerDatabase(java.sql.Connection conn, GetArchiveOfficerData officer) throws SQLException {
+        String insertQuery = "INSERT INTO backup_officer (StudentID, Password, RoleID, Surname, FirstName, MiddleName, Suffix, CourseID, SectionID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement prepare = conn.prepareStatement(insertQuery)) {
+            prepare.setString(1, officer.getTblStudentID());
+            prepare.setString(2, officer.getTblPassword());
+            prepare.setString(3, officer.getTblRoleID());
+            prepare.setString(4, officer.getTblSurname());
+            prepare.setString(5, officer.getTblFirstName());
+            prepare.setString(6, officer.getTblMiddlename());
+            prepare.setString(7, officer.getTblSuffix());
+            prepare.setString(8, officer.getTblCourse());
+            prepare.setString(9, officer.getTblYearSection());
+            prepare.executeUpdate();
+        }
+    }
 }

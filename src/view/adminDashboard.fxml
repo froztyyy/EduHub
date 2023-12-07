@@ -986,8 +986,8 @@
                                     <TableColumn fx:id="archiveFirstname" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="91.0" text="First Name" />
                                     <TableColumn fx:id="archiveMiddleName" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="89.0" text="Middle Name" />
                                     <TableColumn fx:id="archiveSuffix" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="40.0" text="Suffix" />
-                                    <TableColumn fx:id="archiveCourse" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="57.0" text="Course" />
-                                    <TableColumn fx:id="archiveYearSection" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="57.0" text="Year &amp; Section" />
+                                    <TableColumn fx:id="archiveCourseStudent" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="57.0" text="Course" />
+                                    <TableColumn fx:id="archiveYearSectionStudent" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="57.0" text="Year &amp; Section" />
                                  </columns>
                                  <styleClass>
                                     <String fx:value="employeetable" />
@@ -1012,17 +1012,17 @@
                         </Text>
                         <Pane layoutX="666.0" layoutY="444.0" prefHeight="216.0" prefWidth="638.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 15px;">
                            <children>
-                              <TableView editable="true" fixedCellSize="0.0" layoutX="7.0" layoutY="6.0" prefHeight="197.0" prefWidth="621.0" stylesheets="@../style/adminDesigns.css">
+                              <TableView fx:id="archiveOfficerAccTbl" editable="true" fixedCellSize="0.0" layoutX="7.0" layoutY="6.0" prefHeight="197.0" prefWidth="621.0" stylesheets="@../style/adminDesigns.css">
                                  <columns>
-                                    <TableColumn maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="108.0" text="Student ID" />
-                                    <TableColumn maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="39.0" text="Password" />
-                                    <TableColumn maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="40.0" text="Role ID" />
-                                    <TableColumn maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="66.0" text="Surname" />
-                                    <TableColumn maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="91.0" text="First Name" />
-                                    <TableColumn maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="89.0" text="Middle Name" />
-                                    <TableColumn maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="40.0" text="Suffix" />
-                                    <TableColumn maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="57.0" text="Course" />
-                                    <TableColumn maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="57.0" text="Year &amp; Section" />
+                                    <TableColumn fx:id="archiveStudIDOfficer" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="108.0" text="Student ID" />
+                                    <TableColumn fx:id="archivePasswordOfficer" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="39.0" text="Password" />
+                                    <TableColumn fx:id="archiveRoleIDOfficer" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="40.0" text="Role ID" />
+                                    <TableColumn fx:id="archiveSurnameOfficer" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="66.0" text="Surname" />
+                                    <TableColumn fx:id="archiveFirstnameOfficer" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="91.0" text="First Name" />
+                                    <TableColumn fx:id="archiveMiddleNameOfficer" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="89.0" text="Middle Name" />
+                                    <TableColumn fx:id="archiveSuffixOfficer" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="40.0" text="Suffix" />
+                                    <TableColumn fx:id="archiveCourseOfficer" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="57.0" text="Course" />
+                                    <TableColumn fx:id="archiveYearSectionOfficer" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="57.0" text="Year &amp; Section" />
                                  </columns>
                                  <styleClass>
                                     <String fx:value="employeetable" />
@@ -1101,7 +1101,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button layoutX="1220.0" layoutY="37.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="30.0" style="-fx-background-color: transparent;">
+                        <Button layoutX="1220.0" layoutY="37.0" mnemonicParsing="false" onAction="#restoreStudentAccount" prefHeight="23.0" prefWidth="30.0" style="-fx-background-color: transparent;">
                            <graphic>
                               <ImageView fitHeight="19.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -1128,7 +1128,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button layoutX="1220.0" layoutY="396.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="30.0" style="-fx-background-color: transparent;">
+                        <Button layoutX="1220.0" layoutY="396.0" mnemonicParsing="false" onAction="#restoreOfficerAccount" prefHeight="23.0" prefWidth="30.0" style="-fx-background-color: transparent;">
                            <graphic>
                               <ImageView fitHeight="19.0" fitWidth="18.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -1180,7 +1180,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button layoutX="1254.0" layoutY="36.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="30.0" style="-fx-background-color: transparent;">
+                        <Button layoutX="1254.0" layoutY="36.0" mnemonicParsing="false" onAction="#deleteStudentAccountArchive" prefHeight="23.0" prefWidth="30.0" style="-fx-background-color: transparent;">
                            <graphic>
                               <ImageView fitHeight="29.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
@@ -1198,7 +1198,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Button layoutX="1254.0" layoutY="395.0" mnemonicParsing="false" prefHeight="23.0" prefWidth="30.0" style="-fx-background-color: transparent;">
+                        <Button layoutX="1254.0" layoutY="395.0" mnemonicParsing="false" onAction="#deleteOfficerArchive" prefHeight="23.0" prefWidth="30.0" style="-fx-background-color: transparent;">
                            <graphic>
                               <ImageView fitHeight="29.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
