@@ -132,12 +132,11 @@ public class SignInWindowController implements Initializable {
 
     @FXML
     private void signInButton(ActionEvent event) {
-        String sql = "SELECT * FROM account_student WHERE StudentID = ? and Password = ?";
-
+        
         connect = database.getConnection();
-
+        
         try {
-            prepare = connect.prepareStatement(sql);
+            prepare = connect.prepareStatement("SELECT * FROM account_student WHERE StudentID = ? and Password = ?");
             prepare.setString(1, si_userID.getText());
             prepare.setString(2, si_password.getText());
             result = prepare.executeQuery();
@@ -163,8 +162,10 @@ public class SignInWindowController implements Initializable {
                         alert.showAndWait();
 
                         String surname = result.getString("Surname");
-                        int studentID = result.getInt("studentID");
-                        System.out.println("Retrieved studentID: " + studentID);
+                        String studentID = result.getString("studentID");
+                        String courseID = result.getString("courseID");
+                        String sectionID = result.getString("sectionID");
+                        System.out.println("Retrieved: " + studentID + courseID + sectionID);
 
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/userDashboard.fxml"));
                         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -174,10 +175,13 @@ public class SignInWindowController implements Initializable {
                         UserDashboardController userDashboardController = loader.getController();
 
                         // Set the username using the method in UserDashboardController
-                        userDashboardController.setUsername(surname);
+                        userDashboardController.user_Surname(surname);
 
                         // Set the studentID using the method in UserDashboardController
-                        userDashboardController.setStudentID(studentID);
+                        userDashboardController.user_StudentID(studentID);
+
+                        userDashboardController.user_CourseID(courseID);
+                        userDashboardController.user_SectionID(sectionID);
 
                         ((Node) (event.getSource())).getScene().getWindow().hide();
                         stage.setWidth(1332);
@@ -217,8 +221,27 @@ public class SignInWindowController implements Initializable {
                         alert.setContentText("Successfully Login as Officer!");
                         alert.showAndWait();
 
-                        Parent root = FXMLLoader.load(getClass().getResource("/view/officerDashboard.fxml"));
+                        String Surname = result.getString("Surname");
+                        String studentID = result.getString("studentID");
+                        String courseID = result.getString("courseID");
+                        String sectionID = result.getString("sectionID");
+                        System.out.println("Retrieved: " + Surname+ studentID + courseID + sectionID);
+
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/officerDashboard.fxml"));
                         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        Parent root = loader.load();
+
+                        // Get the controller of the loaded FXML file
+                        OfficerDashboardController officerDashboardController = loader.getController();
+
+                        // Set the username using the method in UserDashboardController
+                        officerDashboardController.user_Surname(Surname);
+
+                        // Set the studentID using the method in UserDashboardController
+                        officerDashboardController.user_StudentID(studentID);
+
+                        officerDashboardController.user_CourseID(courseID);
+                        officerDashboardController.user_SectionID(sectionID);
 
                         ((Node) (event.getSource())).getScene().getWindow().hide();
                         stage.setWidth(1332);

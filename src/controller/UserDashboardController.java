@@ -219,6 +219,12 @@ public class UserDashboardController implements Initializable {
     private GridPane AnnouncementHandler;
     @FXML
     private Label greetingLabelTime;
+    @FXML
+    private Label lblCourse;
+    @FXML
+    private Label lblSection;
+    @FXML
+    private GridPane announcementCardDash;
 
     /**
      * Initializes the controller class.
@@ -259,7 +265,7 @@ public class UserDashboardController implements Initializable {
                 )
         );
         Background backgroundObject = new Background(background);
-        imageGradientWelcome.setBackground(backgroundObject);
+        /*imageGradientWelcome.setBackground(backgroundObject);*/
 
         dateFocus = ZonedDateTime.now();
         today = ZonedDateTime.now();
@@ -296,7 +302,7 @@ public class UserDashboardController implements Initializable {
         fetchAudienceNameToComboBox(audiencelist);
         fetchPriorityNameToComboBox(prioritylist);
 
-        DisplayAnnouncement();
+        DisplayAnnouncementDash();
     }
 
     private final boolean stop = false;
@@ -1243,7 +1249,7 @@ public class UserDashboardController implements Initializable {
 
     public ObservableList<ToDoListData> getToDoListData() throws SQLException {
 
-        String sql = "Select Title, Note, Deadline FROM todo";
+        String sql = "Select Title, Note, Deadline FROM mod_todo_pending";
         ObservableList<ToDoListData> toDoList = FXCollections.observableArrayList();
         connect = database.getConnection();
 
@@ -1318,7 +1324,7 @@ public class UserDashboardController implements Initializable {
 
     public ObservableList<ArchiveToDoListData> getArchiveToDoListData() throws SQLException {
 
-        String sql = "Select Title, Note, Deadline FROM todo";
+        String sql = "Select Title, Note, Deadline FROM mod_todo_archive";
         ObservableList<ArchiveToDoListData> archiveToDoList = FXCollections.observableArrayList();
         connect = database.getConnection();
 
@@ -1450,13 +1456,40 @@ public class UserDashboardController implements Initializable {
         timeClockWindow.setVisible(false);
     }
 
-    private String username;
-    private int studentID;
+    private String user_StudentID;
+    private String user_Password;
+    private String user_CourseID;
+    private String user_SectionID;
+    private String user_Surname;
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void user_StudentID(String studentID) {
+        this.user_StudentID = studentID;
+        updateStudentId();
+        DisplayAnnouncementDash();
+    }
+
+    public void user_Password(String password) {
+        this.user_Password = password;
+
+    }
+
+    public void user_CourseID(String courseID) {
+        this.user_CourseID = courseID;
+        updateCourseId();
+        DisplayAnnouncementDash();
+    }
+
+    public void user_SectionID(String sectionID) {
+        this.user_SectionID = sectionID;
+        updateSectionId();
+        DisplayAnnouncementDash();
+    }
+
+    public void user_Surname(String surname) {
+        this.user_Surname = surname;
         updateGreeting();
         updateGreetingForTime();
+        DisplayAnnouncementDash();
     }
 
     private String getGreeting() {
@@ -1473,22 +1506,32 @@ public class UserDashboardController implements Initializable {
 
     public void updateGreeting() {
         String greeting = getGreeting();
-        greetingLabel.setText(greeting + ", " + username + "!");
+        greetingLabel.setText(greeting + ", " + user_Surname + "!");
     }
 
     public void updateGreetingForTime() {
         String greeting = getGreeting();
-        greetingLabelTime.setText(greeting + ", " + username + "!");
+        greetingLabelTime.setText(greeting + ", " + user_Surname + "!");
     }
 
     public void updateStudentId() {
-        lblStudentID.setText(String.valueOf(studentID));
+        lblStudentID.setText(user_StudentID);
+    }
+
+    public void updateCourseId() {
+        lblCourse.setText(user_CourseID);
+    }
+
+    public void updateSectionId() {
+        lblSection.setText(user_SectionID);
     }
 
     private void fetchAudienceNameToComboBox(ComboBox<String> comboBox) {
+        
+        connect = database.getConnection();
 
         try {
-            prepare = connect.prepareStatement("SELECT AudienceName FROM audience");
+            prepare = connect.prepareStatement("SELECT AudienceName FROM filter_audience");
             result = prepare.executeQuery();
 
             List<String> items = new ArrayList<>();
@@ -1505,9 +1548,11 @@ public class UserDashboardController implements Initializable {
     }
 
     private void fetchPriorityNameToComboBox(ComboBox<String> comboBox) {
+        
+        connect = database.getConnection();
 
         try {
-            prepare = connect.prepareStatement("SELECT PriorityName FROM priority_level");
+            prepare = connect.prepareStatement("SELECT PriorityName FROM filter_priority");
             result = prepare.executeQuery();
 
             List<String> items = new ArrayList<>();
@@ -1523,103 +1568,35 @@ public class UserDashboardController implements Initializable {
         }
     }
 
-    @FXML
-    private void handlepostsubmit(ActionEvent event) throws IOException {
-
-        try {
-            // Establish a database connection
-            connect = database.getConnection();
-
-            // Prepare the SQL statement
-            String sql = "INSERT INTO announcement (Title,Body,AudienceID,PriorityID,StudentID) VALUES (?, ?,?,?,?)";
-            prepare = connect.prepareStatement(sql);
-
-            // Set values from the user input
-            prepare.setString(1, TitleText.getText());
-            prepare.setString(2, AnnouncementText.getText());
-            prepare.setString(3, audiencelist.getValue()); // Set a default value for Homeroom if it's null
-            prepare.setString(4, prioritylist.getValue());
-            prepare.setInt(5, studentID);// Set a default value for Medium if it's null
-            // Convert LocalDate to java.sql.Date
-
-            // Execute the SQL statement
-            prepare.executeUpdate();
-
-            DisplayAnnouncement();
-
-            // Show a success alert
-            showSuccessAlert();
-
-            clearFields();
-
-        } catch (SQLException e) {
-            // Handle any SQL errors
-            e.printStackTrace();
-            showErrorAlert("Error", "Failed to insert values into the database.");
-        } finally {
-            // Close resources
-            try {
-                if (prepare != null) {
-                    prepare.close();
-                }
-                if (connect != null) {
-                    connect.close();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private void clearFields() {
-        // Reset values of input fields
-        TitleText.clear();
-        AnnouncementText.clear();
-        audiencelist.setValue(null); // Set default value or null based on your requirements
-        prioritylist.setValue(null);
-        // Reset other fields as needed
-    }
-
-    private void showSuccessAlert() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Success");
-        alert.setHeaderText(null);
-        alert.setContentText("Values successfully inserted into the database.");
-        alert.showAndWait();
-    }
-
-    private void showErrorAlert(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    public void setStudentID(int studentID) throws SQLException {
-        this.studentID = studentID;
-        updateStudentId();
-        DisplayAnnouncement();
-    }
-
     private ObservableList<AnnouncementData> Announcement = FXCollections.observableArrayList();
 
     public ObservableList<AnnouncementData> getAnnouncementData() throws SQLException {
 
-        String sql = "Select Title, Body FROM announcement where StudentID = ? ORDER BY AnnouncementID DESC";
+        String sql = "Select Title, Body,AudienceID,PriorityID,StudentID,Surname, CourseID, SectionID, postDate FROM mod_announce where CourseID = ? and SectionID = ? and AudienceID in (?,?,?) ORDER BY PriorityID ASC";
         ObservableList<AnnouncementData> Announcement = FXCollections.observableArrayList();
         connect = database.getConnection();
 
         try {
             prepare = connect.prepareStatement(sql);
-            prepare.setInt(1, studentID);
+            prepare.setString(1, user_CourseID);
+            prepare.setString(2, user_SectionID);
+            prepare.setString(3, "Everyone");
+            prepare.setString(4, "Homeroom");
+            prepare.setString(5, "Only Me");
             result = prepare.executeQuery();
 
             while (result.next()) {
                 String title = result.getString("Title");
                 String body = result.getString("Body");
+                String audience = result.getString("AudienceID");
+                String priority = result.getString("PriorityID");
+                String courseID = result.getString("CourseID");
+                String sectionID = result.getString("SectionID");
+                String surname = result.getString("Surname");
+                String postDate = result.getString("postDate");
+                String studentID = result.getString("StudentID");
 
-                AnnouncementData announcementData = new AnnouncementData(title, body);
+                AnnouncementData announcementData = new AnnouncementData(title, audience, priority, courseID, sectionID, body, postDate, studentID, surname);
 
                 Announcement.add(announcementData);
             }
@@ -1632,51 +1609,45 @@ public class UserDashboardController implements Initializable {
         return Announcement;
     }
 
-    public void DisplayAnnouncement() {
+    public void DisplayAnnouncementDash() {
         try {
             Announcement.clear();
             Announcement.addAll(getAnnouncementData());
 
-            Platform.runLater(() -> {
-                int maxColumns = 1;
-                int row = 0;
-                int column = 0;
+            int maxColumns = 1;
+            int row = 0;
+            int column = 0;
 
-                AnnouncementHandler.getChildren().clear();
-                AnnouncementHandler.getRowConstraints().clear();
-                AnnouncementHandler.getColumnConstraints().clear();
+            announcementCardDash.getChildren().clear();
+            announcementCardDash.getRowConstraints().clear();
+            announcementCardDash.getColumnConstraints().clear();
 
-                for (int q = 0; q < Announcement.size(); q++) {
-                    try {
-                        if (column >= maxColumns) {
-                            // Move to the next row when the maximum number of columns is reached
-                            column = 0;
-                            row++;
-                        }
-
-                        FXMLLoader loader = new FXMLLoader();
-                        loader.setLocation(getClass().getResource("/view/DisplayAnnouncement.fxml"));
-                        AnchorPane pane = loader.load();
-                        DisplayAnnouncementController cardController = loader.getController();
-                        cardController.setData(Announcement.get(q));
-
-                        AnnouncementHandler.add(pane, column++, row);
-
-                        GridPane.setMargin(pane, new Insets(5));
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
+            for (int q = 0; q < Announcement.size(); q++) {
+                try {
+                    if (column >= maxColumns) {
+                        // Move to the next row when the maximum number of columns is reached
+                        column = 0;
+                        row++;
                     }
-                }
 
-                currentDisplayIndex = 0;
-                if (!Announcement.isEmpty()) {
-                    AnnouncementData firstAnnounce = Announcement.get(0);
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(getClass().getResource("/view/announcementCard.fxml"));
+                    AnchorPane pane = loader.load();
+                    AnnouncementCardController cardController = loader.getController();
+                    cardController.setData(Announcement.get(q));
+
+                    announcementCardDash.add(pane, column++, row);
+
+                    GridPane.setMargin(pane, new Insets(5));
+
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            });
+            }
+
+            currentDisplayIndex = 0;
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
 }

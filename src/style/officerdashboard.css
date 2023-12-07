@@ -75,6 +75,10 @@
     -fx-margin: 5px;
 }
 
+.combo-box .list-cell:selected {
+    -fx-text-fill: white; /* or any other color */
+}
+
 .combo-box-popup .list-view .list-cell:selected {
     -fx-background-radius: 10px;
     -fx-background-color: gray;
