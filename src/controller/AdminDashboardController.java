@@ -4,7 +4,6 @@
  */
 package controller;
 
-import com.sun.jdi.connect.spi.Connection;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -63,7 +62,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javax.imageio.ImageIO;
 
