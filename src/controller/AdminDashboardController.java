@@ -295,6 +295,22 @@ public class AdminDashboardController implements Initializable {
     private TableColumn<GetArchiveFeedBack, Integer> archiveExperienceRate;
     @FXML
     private TableColumn<GetArchiveFeedBack, Integer> archiveFeedBackComment;
+    @FXML
+    private TableView<?> archiveStudentAccTbl;
+    @FXML
+    private TableColumn<?, ?> archiveStudID;
+    @FXML
+    private TableColumn<?, ?> archivePassword;
+    @FXML
+    private TableColumn<?, ?> archiveRoleID;
+    @FXML
+    private TableColumn<?, ?> archiveSurname;
+    @FXML
+    private TableColumn<?, ?> archiveFirstname;
+    @FXML
+    private TableColumn<?, ?> archiveMiddleName;
+    @FXML
+    private TableColumn<?, ?> archiveSuffix;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -2464,7 +2480,6 @@ public class AdminDashboardController implements Initializable {
     // FEEDBACK GOES TO ARCHIVE 
     private ObservableList<GetArchiveFeedBack> archiveFeedBackData;
 
-    @FXML
     private void loadArchiveFeedBackData() {
         archiveFeedBackData = FXCollections.observableArrayList();
         connect = database.getConnection();
@@ -2587,4 +2602,9 @@ public class AdminDashboardController implements Initializable {
         }
     }
 
+    
+    ///////////////////////////////// 
+    // STUDENT MANAGEMENT GOES TO ARCHIVE
+    
+    
 }
