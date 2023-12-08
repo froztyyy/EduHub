@@ -5,6 +5,7 @@
 package controller;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -63,6 +64,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.WritableImage;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javax.imageio.ImageIO;
 
 /**
@@ -333,6 +335,62 @@ public class AdminDashboardController implements Initializable {
     private TableColumn<GetArchiveOfficerData, String> archiveCourseOfficer;
     @FXML
     private TableColumn<GetArchiveOfficerData, String> archiveYearSectionOfficer;
+    @FXML
+    private Text lblRoleID;
+    @FXML
+    private Pane ListCourseYearWindow;
+    @FXML
+    private Button trashCourseYearButton;
+    @FXML
+    private Pane trashCourseYearWindow;
+    @FXML
+    private Button ListCourseYearButton;
+    @FXML
+    private Pane listStudentAccountWindow;
+    @FXML
+    private Button trashStudentAccountButton;
+    @FXML
+    private Pane trashSrudentAccountWindow;
+    @FXML
+    private Button ListStudentAccountButton;
+    @FXML
+    private Pane listOfficerAccountWindow;
+    @FXML
+    private Button trashOfficerAccountButton;
+    @FXML
+    private Pane trashOfficerAccountWindow;
+    @FXML
+    private Button ListOfficerAccountButton;
+    @FXML
+    private Pane listFeedbackWIndow;
+    @FXML
+    private Button trashFeedbackButton;
+    @FXML
+    private Pane trashFeedbackWindow;
+    @FXML
+    private Button ListFeedBackButton;
+    @FXML
+    private Pane eduhubAccount1;
+    @FXML
+    private Text lblStudentID1;
+    @FXML
+    private Text lblPassword1;
+    @FXML
+    private Text lblSurname1;
+    @FXML
+    private Text lblFirstName1;
+    @FXML
+    private Text lblMiddleName1;
+    @FXML
+    private Text lblCourse1;
+    @FXML
+    private Text lblYearSection1;
+    @FXML
+    private Text lblRoleID1;
+    @FXML
+    private Text lblSuffix1;
+    @FXML
+    private Pane sideCard;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -505,8 +563,43 @@ public class AdminDashboardController implements Initializable {
         // Additional initialization logic if needed
         loadArchiveOfficerData();
 
+        // Add a mouse click event handler to the userDashboardWindow
+        // Add a mouse click event handler to the userDashboardWindow
+        userDashboradWindow.setOnMouseClicked(event -> {
+            Node clickedNode = event.getPickResult().getIntersectedNode();
+
+            // Check if the clicked node is not the side panel
+            if (!isNodeInsideSidePanel(clickedNode)) {
+                // Close the side panel
+                closeSideNavigation(new ActionEvent()); // Pass a dummy ActionEvent
+            }
+        });
+
+        ListCourseYearWindow.setVisible(true);
+        trashCourseYearWindow.setVisible(false);
+
+        listStudentAccountWindow.setVisible(true);
+        trashSrudentAccountWindow.setVisible(false);
+
+        listOfficerAccountWindow.setVisible(true);
+        trashOfficerAccountWindow.setVisible(false);
+
+        listFeedbackWIndow.setVisible(true);
+        trashFeedbackWindow.setVisible(false);
+
+        sideCard.setTranslateX(489);
     }
 
+    private boolean isNodeInsideSidePanel(Node node) {
+        // Check if the node or its parent is the side panel
+        while (node != null) {
+            if (node == sidePanel) {
+                return true;
+            }
+            node = node.getParent();
+        }
+        return false;
+    }
     private final boolean stop = false;
     private Timeline timeline;
     private boolean running = false;
@@ -1072,6 +1165,7 @@ public class AdminDashboardController implements Initializable {
         if (selectedAccount != null) {
             // Populate the text fields and combo boxes with the selected item's data
             txtStudentID.setText(selectedAccount.getTblStudentID());
+
             txtPassword.setText(selectedAccount.getTblPassword());
             txtSurname.setText(selectedAccount.getTblSurname());
             txtFirstname.setText(selectedAccount.getTblFirstName());
@@ -1081,6 +1175,16 @@ public class AdminDashboardController implements Initializable {
             // Assuming cbCourse and cbSectionYear are ComboBox<String>
             cbCourse.setValue(selectedAccount.getTblCourse());
             cbSectionYear.setValue(selectedAccount.getTblYearSection());
+
+            lblStudentID1.setText(selectedAccount.getTblStudentID());
+            lblPassword1.setText(selectedAccount.getTblPassword());
+            lblSurname1.setText(selectedAccount.getTblSurname());
+            lblFirstName1.setText(selectedAccount.getTblFirstName());
+            lblMiddleName1.setText(selectedAccount.getTblMiddlename());
+            lblSuffix1.setText(selectedAccount.getTblSuffix());
+            lblRoleID1.setText(selectedAccount.getTblRoleID());
+            lblCourse1.setText(selectedAccount.getTblCourse());
+            lblYearSection1.setText(selectedAccount.getTblYearSection());
         }
     }
 
@@ -1813,6 +1917,7 @@ public class AdminDashboardController implements Initializable {
             lblMiddleName.setText(selectedAccount.getTblMiddlename());
             lblSuffix.setText(selectedAccount.getTblSuffix());
             lblCourse.setText(selectedAccount.getTblCourse());
+            lblRoleID.setText(selectedAccount.getTblRoleID());
             lblYearSection.setText(selectedAccount.getTblYearSection());
 
         }
@@ -2825,12 +2930,11 @@ public class AdminDashboardController implements Initializable {
                 officerAccount.setTblYearSection(result.getString("SectionID"));
                 archiveOfficerData.add(officerAccount);
 
-                    // ... (your existing code)
+                // ... (your existing code)
+                // Print statements for debugging
+                System.out.println("StudentID: " + officerAccount.getTblStudentID());
+                // ... (repeat for other properties)
 
-                    // Print statements for debugging
-                    System.out.println("StudentID: " + officerAccount.getTblStudentID());
-                    // ... (repeat for other properties)
-                
             }
 
             archiveOfficerAccTbl.setItems(archiveOfficerData);
@@ -2945,5 +3049,501 @@ public class AdminDashboardController implements Initializable {
             prepare.setString(9, officer.getTblYearSection());
             prepare.executeUpdate();
         }
+    }
+
+    @FXML
+    private void PrintMasterList(ActionEvent event) {
+        List<OfficerAccountData> data = tblStudentAcc.getItems();
+        showSaveDialogAndGenerate(data);
+    }
+
+    private void showSaveDialogAndGenerate(List<OfficerAccountData> data) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+
+        // Show save file dialog
+        Stage stage = (Stage) userDashboradWindow.getScene().getWindow();
+        File file = fileChooser.showSaveDialog(stage);
+
+        if (file != null) {
+            if (file.getName().toLowerCase().endsWith(".csv")) {
+                generateCSVFromTableView(data, file);
+            } else if (file.getName().toLowerCase().endsWith(".pdf")) {
+                generatePDFFromTableView(data, file);
+
+            } else {
+                showAlert("Unsupported file format");
+            }
+        }
+    }
+
+    public static void generateCSVFromTableView(List<OfficerAccountData> data, File file) {
+        try (FileWriter csvWriter = new FileWriter(file)) {
+            // Write header
+            csvWriter.append("StudentID,Password,RoleID,Surname,FirstName,MiddleName,Suffix,Course,YearSection\n");
+
+            // Write data
+            for (OfficerAccountData item : data) {
+                csvWriter.append(item.getTblStudentID()).append(",");
+                csvWriter.append(item.getTblPassword()).append(",");
+                csvWriter.append(item.getTblRoleID()).append(",");
+                csvWriter.append(item.getTblSurname()).append(",");
+                csvWriter.append(item.getTblFirstName()).append(",");
+                csvWriter.append(item.getTblMiddlename()).append(",");
+                csvWriter.append(item.getTblSuffix()).append(",");
+                csvWriter.append(item.getTblCourse()).append(",");
+                csvWriter.append(item.getTblYearSection()).append("\n");
+            }
+
+            System.out.println("CSV file generated successfully!");
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information");
+            alert.setHeaderText(null);
+            alert.setContentText("CSV file generated successfully!");
+            alert.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void generatePDFFromTableView(List<OfficerAccountData> data, File file) {
+        // Code to generate PDF using a library like Apache PDFBox
+        // Example: Use Apache PDFBox to create a table in PDF
+        // (Add Apache PDFBox library to your project)
+        // ...
+
+        showAlert("PDF file generated successfully!");
+    }
+
+    private void generatePNGFromTableView(List<OfficerAccountData> data, File file) {
+        WritableImage image = tblStudentAcc.snapshot(new SnapshotParameters(), null);
+        try {
+            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
+            showAlert("PNG file generated successfully!");
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error generating PNG file");
+        }
+    }
+
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    @FXML
+    private void PrintDataOfficer(ActionEvent event) {
+        // Capture the content of the specified pane
+        WritableImage writableImage = new WritableImage((int) eduhubAccount1.getWidth(), (int) eduhubAccount1.getHeight());
+        SnapshotParameters snapshotParameters = new SnapshotParameters();
+        eduhubAccount1.snapshot(snapshotParameters, writableImage);
+
+        // Ask the user if they want to print the data
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Print Confirmation");
+        alert.setHeaderText("Do you want to print the data?");
+        alert.setContentText("Choose your option.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // User clicked "OK", proceed with saving the image
+            saveImage(writableImage);
+        }
+    }
+
+    @FXML
+    private void PrintMasterOfficer(ActionEvent event) {
+        List<OfficerAccountData> data = tblOfficerData.getItems();
+        showSaveDialogAndGenerate(data);
+    }
+
+    @FXML
+    private void PrintDataCourse(ActionEvent event) {
+        List<getCourseData> data = tblCourseData.getItems();
+        showSaveDialogAndGenerateCourse(data);
+    }
+
+    private void showSaveDialogAndGenerateCourse(List<getCourseData> data) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+
+        // Show save file dialog
+        Stage stage = (Stage) userDashboradWindow.getScene().getWindow();
+        File file = fileChooser.showSaveDialog(stage);
+
+        if (file != null) {
+            if (file.getName().toLowerCase().endsWith(".csv")) {
+                generateCSVFromTableViewCourse(data, file);
+            } else if (file.getName().toLowerCase().endsWith(".pdf")) {
+                generatePDFFromTableViewCourse(data, file);
+
+            } else {
+                showAlert("Unsupported file format");
+            }
+        }
+    }
+
+    public static void generateCSVFromTableViewCourse(List<getCourseData> data, File file) {
+        try (FileWriter csvWriter = new FileWriter(file)) {
+            // Write header
+            csvWriter.append("Course Abbreviation,Course Name\n");
+
+            // Write data
+            for (getCourseData item : data) {
+                csvWriter.append(item.getCourseAbb()).append(",");
+                csvWriter.append(item.getCourseName()).append("\n");
+            }
+
+            System.out.println("CSV file generated successfully!");
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information");
+            alert.setHeaderText(null);
+            alert.setContentText("CSV file generated successfully!");
+            alert.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void generatePDFFromTableViewCourse(List<getCourseData> data, File file) {
+        // Code to generate PDF using a library like Apache PDFBox
+        // Example: Use Apache PDFBox to create a table in PDF
+        // (Add Apache PDFBox library to your project)
+        // ...
+
+        showAlert("PDF file generated successfully!");
+    }
+
+    @FXML
+    private void PrintDataYearSection(ActionEvent event) {
+        List<getYearSectionData> data = tblYearSectionData.getItems();
+        showSaveDialogAndGenerateYearSection(data);
+    }
+
+    private void showSaveDialogAndGenerateYearSection(List<getYearSectionData> data) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+
+        // Show save file dialog
+        Stage stage = (Stage) userDashboradWindow.getScene().getWindow();
+        File file = fileChooser.showSaveDialog(stage);
+
+        if (file != null) {
+            if (file.getName().toLowerCase().endsWith(".csv")) {
+                generateCSVFromTableViewYearSection(data, file);
+            } else if (file.getName().toLowerCase().endsWith(".pdf")) {
+                generatePDFFromTableViewYearSection(data, file);
+
+            } else {
+                showAlert("Unsupported file format");
+            }
+        }
+    }
+
+    public static void generateCSVFromTableViewYearSection(List<getYearSectionData> data, File file) {
+        try (FileWriter csvWriter = new FileWriter(file)) {
+            // Write header
+            csvWriter.append("Year and Section\n");
+
+            // Write data
+            for (getYearSectionData item : data) {
+                csvWriter.append(item.getSectionName()).append("\n");
+            }
+
+            System.out.println("CSV file generated successfully!");
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information");
+            alert.setHeaderText(null);
+            alert.setContentText("CSV file generated successfully!");
+            alert.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void generatePDFFromTableViewYearSection(List<getYearSectionData> data, File file) {
+        // Code to generate PDF using a library like Apache PDFBox
+        // Example: Use Apache PDFBox to create a table in PDF
+        // (Add Apache PDFBox library to your project)
+        // ...
+
+        showAlert("PDF file generated successfully!");
+    }
+
+    @FXML
+    private void PrintDataFeedback(ActionEvent event) {
+        List<Feedback> data = tableFeedBack.getItems();
+        showSaveDialogAndGenerateFeedBack(data);
+    }
+
+    private void showSaveDialogAndGenerateFeedBack(List<Feedback> data) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+
+        // Show save file dialog
+        Stage stage = (Stage) userDashboradWindow.getScene().getWindow();
+        File file = fileChooser.showSaveDialog(stage);
+
+        if (file != null) {
+            if (file.getName().toLowerCase().endsWith(".csv")) {
+                generateCSVFromTableViewFeedback(data, file);
+            } else if (file.getName().toLowerCase().endsWith(".pdf")) {
+                generatePDFFromTableViewFeedback(data, file);
+
+            } else {
+                showAlert("Unsupported file format");
+            }
+        }
+    }
+
+    public static void generateCSVFromTableViewFeedback(List<Feedback> data, File file) {
+        try (FileWriter csvWriter = new FileWriter(file)) {
+            // Write header
+            csvWriter.append("Design Rate, Function Rate, Experience Rate, FeedBack Comment\n");
+
+            // Write data
+            for (Feedback item : data) {
+                csvWriter.append(item.getDesignRating()).append(",");
+                csvWriter.append(item.getFunctionRating()).append(",");
+                csvWriter.append(item.getExperienceRating()).append(",");
+                csvWriter.append(item.getFeedbackReport()).append("\n");
+            }
+
+            System.out.println("CSV file generated successfully!");
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information");
+            alert.setHeaderText(null);
+            alert.setContentText("CSV file generated successfully!");
+            alert.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void generatePDFFromTableViewFeedback(List<Feedback> data, File file) {
+        // Code to generate PDF using a library like Apache PDFBox
+        // Example: Use Apache PDFBox to create a table in PDF
+        // (Add Apache PDFBox library to your project)
+        // ...
+
+        showAlert("PDF file generated successfully!");
+    }
+
+    /////////////////////////////
+    // Switch Form for YearSection Trash
+    private Button lastClickedButtonYearSection = ListCourseYearButton;
+
+    private void setButtonColorCourseSection(Button button, boolean isSelected) {
+        if (isSelected) {
+            button.getStyleClass().add("selected-button");
+        } else {
+            button.getStyleClass().remove("selected-button");
+        }
+    }
+
+    @FXML
+    private void SwitchFormCourseSection(ActionEvent event) {
+        Button clickedButton = (Button) event.getSource();
+        System.out.println("changing");
+
+        if (clickedButton == lastClickedButtonYearSection) {
+            // Ignore the click if the same button was clicked twice in a row
+            return;
+        }
+
+        try {
+            // Update the last clicked button
+            lastClickedButtonYearSection = clickedButton;
+
+            if (clickedButton == ListCourseYearButton) {
+                setButtonColorCourseSection(ListCourseYearButton, true);
+                setButtonColorCourseSection(trashCourseYearButton, false);
+
+                ListCourseYearWindow.setVisible(true);
+                trashCourseYearWindow.setVisible(false);
+
+            } else if (clickedButton == trashCourseYearButton) {
+                setButtonColorCourseSection(ListCourseYearButton, false);
+                setButtonColorCourseSection(trashCourseYearButton, true);
+
+                ListCourseYearWindow.setVisible(false);
+                trashCourseYearWindow.setVisible(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /////////////////////////////
+    // Switch Form for Student Account Trash
+    private Button lastClickedButtonStudentAcc = ListStudentAccountButton;
+
+    private void setButtonStudentAcc(Button button, boolean isSelected) {
+        if (isSelected) {
+            button.getStyleClass().add("selected-button");
+        } else {
+            button.getStyleClass().remove("selected-button");
+        }
+    }
+
+    @FXML
+    private void SwitchFormStudentAccount(ActionEvent event) {
+        Button clickedButton = (Button) event.getSource();
+        System.out.println("changing");
+
+        if (clickedButton == lastClickedButtonStudentAcc) {
+            // Ignore the click if the same button was clicked twice in a row
+            return;
+        }
+
+        try {
+            // Update the last clicked button
+            lastClickedButtonStudentAcc = clickedButton;
+
+            if (clickedButton == ListStudentAccountButton) {
+                setButtonColorCourseSection(ListStudentAccountButton, true);
+                setButtonColorCourseSection(trashStudentAccountButton, false);
+
+                listStudentAccountWindow.setVisible(true);
+                trashSrudentAccountWindow.setVisible(false);
+
+            } else if (clickedButton == trashStudentAccountButton) {
+                setButtonColorCourseSection(ListStudentAccountButton, false);
+                setButtonColorCourseSection(trashStudentAccountButton, true);
+
+                listStudentAccountWindow.setVisible(false);
+                trashSrudentAccountWindow.setVisible(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /////////////////////////////
+    // Switch Form for Officer Account Trash
+    private Button lastClickedButtonOfficerAcc = ListOfficerAccountButton;
+
+    private void setButtonOfficerAcc(Button button, boolean isSelected) {
+        if (isSelected) {
+            button.getStyleClass().add("selected-button");
+        } else {
+            button.getStyleClass().remove("selected-button");
+        }
+    }
+
+    @FXML
+    private void SwitchFormOfficerAccount(ActionEvent event) {
+        Button clickedButton = (Button) event.getSource();
+        System.out.println("changing");
+
+        if (clickedButton == lastClickedButtonOfficerAcc) {
+            // Ignore the click if the same button was clicked twice in a row
+            return;
+        }
+
+        try {
+            // Update the last clicked button
+            lastClickedButtonOfficerAcc = clickedButton;
+
+            if (clickedButton == ListOfficerAccountButton) {
+                setButtonColorCourseSection(ListOfficerAccountButton, true);
+                setButtonColorCourseSection(trashOfficerAccountButton, false);
+
+                listOfficerAccountWindow.setVisible(true);
+                trashOfficerAccountWindow.setVisible(false);
+
+            } else if (clickedButton == trashOfficerAccountButton) {
+                setButtonColorCourseSection(ListOfficerAccountButton, false);
+                setButtonColorCourseSection(trashOfficerAccountButton, true);
+
+                listOfficerAccountWindow.setVisible(false);
+                trashOfficerAccountWindow.setVisible(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /////////////////////////////
+    // Switch Form for FeedBAck Trash
+    private Button lastClickedButtonFeedback = ListFeedBackButton;
+
+    private void setButtonFeedback(Button button, boolean isSelected) {
+        if (isSelected) {
+            button.getStyleClass().add("selected-button");
+        } else {
+            button.getStyleClass().remove("selected-button");
+        }
+    }
+
+    @FXML
+    private void SwitchFormFeedback(ActionEvent event) {
+        Button clickedButton = (Button) event.getSource();
+        System.out.println("changing");
+
+        if (clickedButton == lastClickedButtonFeedback) {
+            // Ignore the click if the same button was clicked twice in a row
+            return;
+        }
+
+        try {
+            // Update the last clicked button
+            lastClickedButtonFeedback = clickedButton;
+
+            if (clickedButton == ListFeedBackButton) {
+                setButtonColorCourseSection(ListFeedBackButton, true);
+                setButtonColorCourseSection(trashFeedbackButton, false);
+
+                listFeedbackWIndow.setVisible(true);
+                trashFeedbackWindow.setVisible(false);
+
+            } else if (clickedButton == trashFeedbackButton) {
+                setButtonColorCourseSection(ListFeedBackButton, false);
+                setButtonColorCourseSection(trashFeedbackButton, true);
+
+                listFeedbackWIndow.setVisible(false);
+                trashFeedbackWindow.setVisible(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void showSideCardDetailsOfficer(ActionEvent event) {
+        applyBlurEffect(true);
+
+        TranslateTransition slider1 = new TranslateTransition();
+        slider1.setNode(sideCard);
+        slider1.setToX(0);
+        slider1.setDuration(Duration.seconds(.5));
+        slider1.play();
+    }
+
+    @FXML
+    private void closeSideCardOfficer(ActionEvent event) {
+        // Apply blur effect during closing animation
+        applyBlurEffect(false);
+
+        TranslateTransition slider1 = new TranslateTransition();
+        slider1.setNode(sideCard);
+        slider1.setToX(489);
+        slider1.setDuration(Duration.seconds(.5));
+        slider1.play();
     }
 }
