@@ -4,6 +4,8 @@
  */
 package controller;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -31,6 +33,7 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -40,12 +43,15 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -54,6 +60,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
@@ -70,10 +77,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import javax.imageio.ImageIO;
 
 /**
  * FXML Controller class
@@ -200,7 +209,7 @@ public class OfficerDashboardController implements Initializable {
     private Button btnSubmit;
     @FXML
     private GridPane announcementCard;
-     @FXML
+    @FXML
     private Pane toDoButton;
     @FXML
     private Pane toDoWindow;
@@ -218,6 +227,60 @@ public class OfficerDashboardController implements Initializable {
     private GridPane taskCard;
     @FXML
     private TextField txtTitleTask;
+    @FXML
+    private Pane listStudentAccountWindow;
+    @FXML
+    private Button trashStudentAccountButton;
+    @FXML
+    private Pane trashSrudentAccountWindow1;
+    @FXML
+    private Button ListStudentAccountButton;
+    @FXML
+    private TableView<GetArchiveStudentAccountData> archiveStudentAccTbl;
+    @FXML
+    private TableColumn<GetArchiveStudentAccountData, String> archiveStudID;
+    @FXML
+    private TableColumn<GetArchiveStudentAccountData, String> archivePassword;
+    @FXML
+    private TableColumn<GetArchiveStudentAccountData, String> archiveRoleID;
+    @FXML
+    private TableColumn<GetArchiveStudentAccountData, String> archiveSurname;
+    @FXML
+    private TableColumn<GetArchiveStudentAccountData, String> archiveFirstname;
+    @FXML
+    private TableColumn<GetArchiveStudentAccountData, String> archiveMiddleName;
+    @FXML
+    private TableColumn<GetArchiveStudentAccountData, String> archiveSuffix;
+    @FXML
+    private TableColumn<GetArchiveStudentAccountData, String> archiveCourseStudent;
+    @FXML
+    private TableColumn<GetArchiveStudentAccountData, String> archiveYearSectionStudent;
+    @FXML
+    private Pane sideCard;
+    @FXML
+    private Pane eduhubAccount1;
+    @FXML
+    private Text lblStudentID1;
+    @FXML
+    private Text lblPassword1;
+    @FXML
+    private Text lblSurname1;
+    @FXML
+    private Text lblFirstName1;
+    @FXML
+    private Text lblMiddleName1;
+    @FXML
+    private Text lblCourse1;
+    @FXML
+    private Text lblYearSection1;
+    @FXML
+    private Text lblRoleID1;
+    @FXML
+    private Text lblSuffix1;
+    @FXML
+    private Label numberItemsStudentTrash;
+    @FXML
+    private CheckBox selectAllStudentTable;
 
     /**
      * Initializes the controller class.
@@ -274,7 +337,7 @@ public class OfficerDashboardController implements Initializable {
 
         timeNowForDashboard();
         dateLabelForDashboard();
-     
+
         connect = database.getConnection();
         fetchCourseToComboBox(cbCourse);
         fetchSectionToComboBox(cbSectionYear);
@@ -304,9 +367,59 @@ public class OfficerDashboardController implements Initializable {
 
         fetchAudienceToComboBox(cbAudience);
         fetchPriorityLevelToComboBox(cbPriorityLevel);
-        
+
         fetchAudienceToComboBoxToDo(cbAudienceToDo);
         fetchPriorityLevelToComboBoxToDo(cbPriorityToDo);
+
+        listStudentAccountWindow.setVisible(true);
+        trashSrudentAccountWindow1.setVisible(false);
+
+        // Initialize the table columns
+        archiveStudID.setCellValueFactory(new PropertyValueFactory<>("tblStudentID"));
+        archivePassword.setCellValueFactory(new PropertyValueFactory<>("tblPassword"));
+        archiveRoleID.setCellValueFactory(new PropertyValueFactory<>("tblRoleID"));
+        archiveSurname.setCellValueFactory(new PropertyValueFactory<>("tblSurname"));
+        archiveFirstname.setCellValueFactory(new PropertyValueFactory<>("tblFirstName"));
+        archiveMiddleName.setCellValueFactory(new PropertyValueFactory<>("tblMiddlename"));
+        archiveSuffix.setCellValueFactory(new PropertyValueFactory<>("tblSuffix"));
+        archiveCourseStudent.setCellValueFactory(new PropertyValueFactory<>("tblCourse"));
+        archiveYearSectionStudent.setCellValueFactory(new PropertyValueFactory<>("tblYearSection"));
+
+        // Additional initialization logic if needed
+        loadArchiveStudentData();
+
+        sideCard.setTranslateX(489);
+        sideCard.setVisible(true);
+
+        tblStudentData.setOnMouseClicked(event -> {
+            // Check if a row is clicked
+            if (event.getClickCount() == 1) {
+                handleTableClick();
+            }
+        });
+
+        userDashboradWindow.setOnMouseClicked(event -> {
+            Node clickedNode = event.getPickResult().getIntersectedNode();
+
+            // Check if the clicked node is not the side panel
+            if (!isNodeInsideSidePanel(clickedNode)) {
+                // Close the side panel
+                closeSideNavigation(new ActionEvent()); // Pass a dummy ActionEvent
+            }
+        });
+
+        tblStudentData.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    }
+
+    private boolean isNodeInsideSidePanel(Node node) {
+        // Check if the node or its parent is the side panel
+        while (node != null) {
+            if (node == sidePanel) {
+                return true;
+            }
+            node = node.getParent();
+        }
+        return false;
     }
 
     private final boolean stop = false;
@@ -950,7 +1063,7 @@ public class OfficerDashboardController implements Initializable {
 
     @FXML
     private void handleCreateAccount(ActionEvent event) {
-        
+
         if (txtStudentID.getText().isEmpty() || txtPassword.getText().isEmpty() || txtSurname.getText().isEmpty()
                 || txtFirstname.getText().isEmpty() || cbCourse.getValue() == null || cbSectionYear.getValue() == null) {
             showErrorAlert("Please fill in all required fields");
@@ -965,8 +1078,7 @@ public class OfficerDashboardController implements Initializable {
             showErrorAlert("Invalid StudentID. Please enter a valid integer.");
             return;
         }
-        
-        
+
         String sql = "INSERT INTO account_student (StudentID, Password, RoleID, Surname, Firstname, Middlename, Suffix, CourseID, SectionID) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -988,7 +1100,7 @@ public class OfficerDashboardController implements Initializable {
 
             // Execute the SQL query
             prepare.executeUpdate();
-            
+
             // Add the additional column to the tables and insert the StudentID
             addStudentIDColumnAndInsertValue("mod_announce", studentID);
             addStudentIDColumnAndInsertValue("mod_announce_archive", studentID);
@@ -1005,8 +1117,8 @@ public class OfficerDashboardController implements Initializable {
             System.out.println("controller.AdminDashboardController.handleCreateAccount()");
         }
     }
-    
-        // Method to add the StudentID column to a table and insert the StudentID value
+
+    // Method to add the StudentID column to a table and insert the StudentID value
     private void addStudentIDColumnAndInsertValue(String tableName, String studentID) {
         String alterTableSql = "ALTER TABLE `" + tableName + "` ADD `" + studentID + "` BOOLEAN NOT NULL DEFAULT FALSE";
 
@@ -1014,7 +1126,7 @@ public class OfficerDashboardController implements Initializable {
             // Execute the SQL query to add the column
             prepare = connect.prepareStatement(alterTableSql);
             prepare.executeUpdate();
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Failed to add StudentID column and insert value to " + tableName);
@@ -1028,7 +1140,7 @@ public class OfficerDashboardController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    
+
     private void showErrorAlert(String content) {
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
         errorAlert.setTitle("Error");
@@ -1106,6 +1218,16 @@ public class OfficerDashboardController implements Initializable {
             // Assuming cbCourse and cbSectionYear are ComboBox<String>
             cbCourse.setValue(selectedAccount.getTblCourse());
             cbSectionYear.setValue(selectedAccount.getTblYearSection());
+
+            lblStudentID1.setText(selectedAccount.getTblStudentID());
+            lblPassword1.setText(selectedAccount.getTblPassword());
+            lblSurname1.setText(selectedAccount.getTblSurname());
+            lblFirstName1.setText(selectedAccount.getTblFirstName());
+            lblMiddleName1.setText(selectedAccount.getTblMiddlename());
+            lblSuffix1.setText(selectedAccount.getTblSuffix());
+            lblRoleID1.setText(selectedAccount.getTblRoleID());
+            lblCourse1.setText(selectedAccount.getTblCourse());
+            lblYearSection1.setText(selectedAccount.getTblYearSection());
         }
     }
 
@@ -1125,48 +1247,102 @@ public class OfficerDashboardController implements Initializable {
     }
 
     @FXML
-    private void btnDelete(ActionEvent event) {
-        StudentAccountDataList selectedOfficer = tblStudentData.getSelectionModel().getSelectedItem();
+    private void btnDelete(ActionEvent event) throws SQLException {
+        ObservableList<StudentAccountDataList> selectedItems = tblStudentData.getSelectionModel().getSelectedItems();
 
-        if (selectedOfficer != null) {
-            // Show confirmation alert
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Confirmation");
-            alert.setHeaderText("Delete Officer Account");
-            alert.setContentText("Are you sure you want to delete this officer account?");
+        if (!selectedItems.isEmpty()) {
+            // Check the state of the "Select All" checkbox
+            if (selectAllStudentTable.isSelected()) {
+                // "Select All" is active, delete all selected items
 
-            Optional<ButtonType> result = alert.showAndWait();
+                // Show confirmation alert
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation");
+                alert.setHeaderText("Delete Officer Accounts");
+                alert.setContentText("Are you sure you want to delete all selected officer accounts?");
 
-            if (result.isPresent() && result.get() == ButtonType.OK) {
-                // User clicked OK, proceed with deletion
+                Optional<ButtonType> result = alert.showAndWait();
 
-                // Remove from UI
-                tblStudentData.getItems().remove(selectedOfficer);
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    // User clicked OK, proceed with deletion
 
-                // Remove from the database
-                deleteStudentFromDatabase(selectedOfficer);
+                    // Remove from UI
+                    tblStudentData.getItems().removeAll(selectedItems);
 
-                tblStudentData.getItems().remove(selectedOfficer);
+                    // Remove from the database and archive
+                    for (StudentAccountDataList selectedOfficer : selectedItems) {
+                        deleteStudentFromDatabase(selectedOfficer);
+                        insertIntoArchiveStudentAccountTable(connect, selectedOfficer);
+                    }
 
-                // Inform the user about successful deletion
-                showAlert("Success", "User Account Deleted", "User account removed successfully.");
-                txtStudentID.clear();
-                txtPassword.clear();
-                txtSurname.clear();
-                txtFirstname.clear();
-                txtMiddlename.clear();
-                txtSuffix.clear();
+                    // Reload data after deletion
+                    loadStudentAccountData();
+                    loadArchiveStudentData();
 
-                // Clear or set the combo boxes to be empty
-                cbCourse.setValue(null);
-                cbSectionYear.setValue(null);
+                    // Inform the user about successful deletion
+                    showAlert("Success", "User Accounts Deleted", "User accounts removed successfully.");
+
+                    // Clear other UI elements
+                    txtStudentID.clear();
+                    txtPassword.clear();
+                    txtSurname.clear();
+                    txtFirstname.clear();
+                    txtMiddlename.clear();
+                    txtSuffix.clear();
+
+                    // Clear or set the combo boxes to be empty
+                    cbCourse.setValue(null);
+                    cbSectionYear.setValue(null);
+                }
+            } else {
+                // "Select All" is not active, delete only the first selected item
+
+                StudentAccountDataList selectedOfficer = selectedItems.get(0);
+
+                // Show confirmation alert
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation");
+                alert.setHeaderText("Delete Officer Account");
+                alert.setContentText("Are you sure you want to delete this officer account?");
+
+                Optional<ButtonType> result = alert.showAndWait();
+
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    // User clicked OK, proceed with deletion
+
+                    // Remove from UI
+                    tblStudentData.getItems().remove(selectedOfficer);
+
+                    // Remove from the database and archive
+                    deleteStudentFromDatabase(selectedOfficer);
+                    insertIntoArchiveStudentAccountTable(connect, selectedOfficer);
+
+                    // Reload data after deletion
+                    loadStudentAccountData();
+                    loadArchiveStudentData();
+
+                    // Inform the user about successful deletion
+                    showAlert("Success", "User Account Deleted", "User account removed successfully.");
+
+                    // Clear other UI elements
+                    txtStudentID.clear();
+                    txtPassword.clear();
+                    txtSurname.clear();
+                    txtFirstname.clear();
+                    txtMiddlename.clear();
+                    txtSuffix.clear();
+
+                    // Clear or set the combo boxes to be empty
+                    cbCourse.setValue(null);
+                    cbSectionYear.setValue(null);
+                }
             }
         } else {
             // Inform the user that no item is selected
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("No Selection");
-            alert.setHeaderText("No User Account Selected");
-            alert.setContentText("Please select an User account in the table.");
+            alert.setHeaderText("No User Accounts Selected");
+            alert.setContentText("Please select user accounts in the table.");
             alert.showAndWait();
         }
     }
@@ -1175,9 +1351,17 @@ public class OfficerDashboardController implements Initializable {
         connect = database.getConnection();
 
         try {
-            String deleteQuery = "DELETE FROM account_student WHERE StudentID = ?";
-            prepare = connect.prepareStatement(deleteQuery);
-            prepare.setString(1, studentAccountDataList.getTblStudentID());
+            // Check if the "Select All" statement is active
+            if (selectAllStudentTable.isSelected()) {
+                // If "Select All" is active, delete all records without specifying the StudentID
+                String deleteQuery = "DELETE FROM account_student WHERE RoleID = 3";
+                prepare = connect.prepareStatement(deleteQuery);
+            } else {
+                // If "Select All" is not active, delete the specific record based on StudentID
+                String deleteQuery = "DELETE FROM account_student WHERE StudentID = ?";
+                prepare = connect.prepareStatement(deleteQuery);
+                prepare.setString(1, studentAccountDataList.getTblStudentID());
+            }
 
             int affectedRows = prepare.executeUpdate();
 
@@ -1394,35 +1578,34 @@ public class OfficerDashboardController implements Initializable {
 
     @FXML
     private void handlePostAnnouncement(ActionEvent event) {
-        
-    if (txtTitle.getText().isEmpty() && txtArea.getText().isEmpty() && cbPriorityLevel.getValue() == null && cbAudience.getValue() == null) {
-        // Show an alert indicating that Title, Note, and Priority are required
-        showErrorAlert("Please enter Title, Note, and select Priority");
-        return; // Stop further execution
-    }
 
-    // Check which fields are missing
-    if (txtTitle.getText().isEmpty()) {
-        showErrorAlert("Please enter Title");
-        return;
-    }
-    
-    if (cbAudience.getValue() == null) {
-        showErrorAlert("Please select Audience");
-        return;
-    }
+        if (txtTitle.getText().isEmpty() && txtArea.getText().isEmpty() && cbPriorityLevel.getValue() == null && cbAudience.getValue() == null) {
+            // Show an alert indicating that Title, Note, and Priority are required
+            showErrorAlert("Please enter Title, Note, and select Priority");
+            return; // Stop further execution
+        }
 
-    if (cbPriorityLevel.getValue() == null) {
-        showErrorAlert("Please select Priority");
-        return;
-    }
+        // Check which fields are missing
+        if (txtTitle.getText().isEmpty()) {
+            showErrorAlert("Please enter Title");
+            return;
+        }
 
-    if (txtArea.getText().isEmpty()) {
-        showErrorAlert("Please enter Note");
-        return;
-    }
+        if (cbAudience.getValue() == null) {
+            showErrorAlert("Please select Audience");
+            return;
+        }
 
-        
+        if (cbPriorityLevel.getValue() == null) {
+            showErrorAlert("Please select Priority");
+            return;
+        }
+
+        if (txtArea.getText().isEmpty()) {
+            showErrorAlert("Please enter Note");
+            return;
+        }
+
         String sql = "INSERT INTO mod_announce (Title, Body,AudienceID,PriorityID,StudentID,Surname, CourseID, SectionID) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         connect = database.getConnection();
@@ -1463,7 +1646,6 @@ public class OfficerDashboardController implements Initializable {
         cbAudience.setValue(null);
         cbPriorityLevel.setValue(null);
     }
-    
 
     private ObservableList<AnnouncementData> Announcement = FXCollections.observableArrayList();
 
@@ -1550,8 +1732,8 @@ public class OfficerDashboardController implements Initializable {
             e.printStackTrace();
         }
     }
-    
-     private void fetchAudienceToComboBoxToDo(ComboBox<String> comboBox) {
+
+    private void fetchAudienceToComboBoxToDo(ComboBox<String> comboBox) {
 
         try {
             prepare = connect.prepareStatement("SELECT AudienceName FROM filter_audience");
@@ -1588,6 +1770,7 @@ public class OfficerDashboardController implements Initializable {
             System.out.println("Error fetching course data: " + e.getMessage());
         }
     }
+
     /*
     
     private void handleButtonSubmit(ActionEvent event) throws IOException {
@@ -1638,5 +1821,411 @@ public class OfficerDashboardController implements Initializable {
             }
         }
     }
-*/
+     */
+    private Button lastClickedButtonStudentAcc = ListStudentAccountButton;
+
+    private void setButtonStudentAcc(Button button, boolean isSelected) {
+        if (isSelected) {
+            button.getStyleClass().add("selected-button");
+        } else {
+            button.getStyleClass().remove("selected-button");
+        }
+    }
+
+    @FXML
+    private void SwitchFormStudentAccount(ActionEvent event) {
+        Button clickedButton = (Button) event.getSource();
+        System.out.println("changing");
+
+        if (clickedButton == lastClickedButtonStudentAcc) {
+            // Ignore the click if the same button was clicked twice in a row
+            return;
+        }
+
+        try {
+            // Update the last clicked button
+            lastClickedButtonStudentAcc = clickedButton;
+
+            if (clickedButton == ListStudentAccountButton) {
+                setButtonStudentAcc(ListStudentAccountButton, true);
+                setButtonStudentAcc(trashStudentAccountButton, false);
+
+                listStudentAccountWindow.setVisible(true);
+                trashSrudentAccountWindow1.setVisible(false);
+
+            } else if (clickedButton == trashStudentAccountButton) {
+                setButtonStudentAcc(ListStudentAccountButton, false);
+                setButtonStudentAcc(trashStudentAccountButton, true);
+
+                listStudentAccountWindow.setVisible(false);
+                trashSrudentAccountWindow1.setVisible(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    ///////////////////////////////// 
+    // STUDENT MANAGEMENT GOES TO ARCHIVE
+    private ObservableList<GetArchiveStudentAccountData> archiveStudentData;
+
+    private void loadArchiveStudentData() {
+        archiveStudentData = FXCollections.observableArrayList();
+        connect = database.getConnection();
+
+        try {
+            prepare = connect.prepareStatement("SELECT StudentID, Password, RoleID, Surname, FirstName, MiddleName, Suffix, CourseID, SectionID FROM trash_student");
+            result = prepare.executeQuery();
+
+            int rowCount = 0; // Counter for the number of rows
+
+            while (result.next()) {
+                GetArchiveStudentAccountData studentAccount = new GetArchiveStudentAccountData();
+                studentAccount.setTblStudentID(result.getString("StudentID"));
+                studentAccount.setTblPassword(result.getString("Password"));
+                studentAccount.setTblRoleID(result.getString("RoleID"));
+                studentAccount.setTblSurname(result.getString("Surname"));
+                studentAccount.setTblFirstName(result.getString("FirstName"));
+                studentAccount.setTblMiddlename(result.getString("MiddleName"));
+                studentAccount.setTblSuffix(result.getString("Suffix"));
+                studentAccount.setTblCourse(result.getString("CourseID"));
+                studentAccount.setTblYearSection(result.getString("SectionID"));
+                archiveStudentData.add(studentAccount);
+                rowCount++;
+            }
+
+            archiveStudentAccTbl.setItems(archiveStudentData);
+
+            // Set the label text to the number of rows
+            numberItemsStudentTrash.setText(String.valueOf(rowCount));
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeResources();
+        }
+    }
+
+    @FXML
+    private void restoreStudentAccount(ActionEvent event) {
+        GetArchiveStudentAccountData selectedStudent = archiveStudentAccTbl.getSelectionModel().getSelectedItem();
+
+        if (selectedStudent != null) {
+            try {
+                connect = database.getConnection();
+                insertIntoStudentAccountTable(connect, selectedStudent);
+                deleteFromArchiveStudentAccountTable(connect, selectedStudent);
+
+                showSuccessAlert("Student account retrieved successfully!");
+
+                loadArchiveStudentData();
+                // Additional method calls if needed
+                loadStudentAccountData();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle exceptions appropriately (show error message, log, etc.)
+            } finally {
+                closeResources();
+            }
+        } else {
+            showWarningAlert("Please select a student account to retrieve.");
+        }
+    }
+
+    @FXML
+    private void deleteStudentAccountArchive(ActionEvent event) {
+        GetArchiveStudentAccountData selectedStudent = archiveStudentAccTbl.getSelectionModel().getSelectedItem();
+
+        if (selectedStudent != null) {
+            try {
+                connect = database.getConnection();
+                insertIntoBackupStudentAccountDatabase(connect, selectedStudent);
+                deleteFromArchiveStudentAccountTable(connect, selectedStudent);
+
+                showSuccessAlert("Student account permanently deleted!");
+
+                loadArchiveStudentData();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle exceptions appropriately (show error message, log, etc.)
+            } finally {
+                closeResources();
+            }
+        } else {
+            showWarningAlert("Please select a student account to permanently delete.");
+        }
+    }
+
+    private void insertIntoArchiveStudentAccountTable(java.sql.Connection conn, StudentAccountDataList studentAccount) throws SQLException {
+        String insertQuery = "INSERT INTO trash_student (StudentID, Password, RoleID, Surname, FirstName, MiddleName, Suffix, CourseID, SectionID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement prepare = conn.prepareStatement(insertQuery)) {
+            prepare.setString(1, studentAccount.getTblStudentID());
+            prepare.setString(2, studentAccount.getTblPassword());
+            prepare.setString(3, studentAccount.getTblRoleID());
+            prepare.setString(4, studentAccount.getTblSurname());
+            prepare.setString(5, studentAccount.getTblFirstName());
+            prepare.setString(6, studentAccount.getTblMiddlename());
+            prepare.setString(7, studentAccount.getTblSuffix());
+            prepare.setString(8, studentAccount.getTblCourse());
+            prepare.setString(9, studentAccount.getTblYearSection());
+            prepare.executeUpdate();
+        }
+    }
+
+    private void insertIntoStudentAccountTable(java.sql.Connection conn, GetArchiveStudentAccountData studentAccount) throws SQLException {
+        String insertQuery = "INSERT INTO account_student (StudentID, Password, RoleID, Surname, FirstName, MiddleName, Suffix, CourseID, SectionID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement prepare = conn.prepareStatement(insertQuery)) {
+            prepare.setString(1, studentAccount.getTblStudentID());
+            prepare.setString(2, studentAccount.getTblPassword());
+            prepare.setString(3, studentAccount.getTblRoleID());
+            prepare.setString(4, studentAccount.getTblSurname());
+            prepare.setString(5, studentAccount.getTblFirstName());
+            prepare.setString(6, studentAccount.getTblMiddlename());
+            prepare.setString(7, studentAccount.getTblSuffix());
+            prepare.setString(8, studentAccount.getTblCourse());
+            prepare.setString(9, studentAccount.getTblYearSection());
+            prepare.executeUpdate();
+        }
+
+    }
+
+    private void deleteFromArchiveStudentAccountTable(java.sql.Connection conn, GetArchiveStudentAccountData studentAccount) throws SQLException {
+        String deleteQuery = "DELETE FROM trash_student WHERE StudentID = ?";
+        try (PreparedStatement prepare = conn.prepareStatement(deleteQuery)) {
+            prepare.setString(1, studentAccount.getTblStudentID());
+            prepare.executeUpdate();
+        }
+    }
+
+    private void insertIntoBackupStudentAccountDatabase(java.sql.Connection conn, GetArchiveStudentAccountData studentAccount) throws SQLException {
+        String insertQuery = "INSERT INTO backup_student (StudentID, Password, RoleID, Surname, FirstName, MiddleName, Suffix, CourseID, SectionID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement prepare = conn.prepareStatement(insertQuery)) {
+            prepare.setString(1, studentAccount.getTblStudentID());
+            prepare.setString(2, studentAccount.getTblPassword());
+            prepare.setString(3, studentAccount.getTblRoleID());
+            prepare.setString(4, studentAccount.getTblSurname());
+            prepare.setString(5, studentAccount.getTblFirstName());
+            prepare.setString(6, studentAccount.getTblMiddlename());
+            prepare.setString(7, studentAccount.getTblSuffix());
+            prepare.setString(8, studentAccount.getTblCourse());
+            prepare.setString(9, studentAccount.getTblYearSection());
+            prepare.executeUpdate();
+        }
+    }
+
+    private void showWarningAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void closeResources() {
+        try {
+            if (result != null) {
+                result.close();
+            }
+            if (prepare != null) {
+                prepare.close();
+            }
+            if (connect != null) {
+                connect.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void PrintMasterList(ActionEvent event) {
+        List<StudentAccountDataList> data = tblStudentData.getItems();
+        showSaveDialogAndGenerate(data);
+    }
+
+    private void showSaveDialogAndGenerate(List<StudentAccountDataList> data) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+
+        // Show save file dialog
+        Stage stage = (Stage) userDashboradWindow.getScene().getWindow();
+        File file = fileChooser.showSaveDialog(stage);
+
+        if (file != null) {
+            if (file.getName().toLowerCase().endsWith(".csv")) {
+                generateCSVFromTableView(data, file);
+            } else if (file.getName().toLowerCase().endsWith(".pdf")) {
+                generatePDFFromTableView(data, file);
+
+            } else {
+                showAlert("Unsupported file format");
+            }
+        }
+    }
+
+    public static void generateCSVFromTableView(List<StudentAccountDataList> data, File file) {
+        try (FileWriter csvWriter = new FileWriter(file)) {
+            // Write header
+            csvWriter.append("StudentID,Password,RoleID,Surname,FirstName,MiddleName,Suffix,Course,YearSection\n");
+
+            // Write data
+            for (StudentAccountDataList item : data) {
+                csvWriter.append(item.getTblStudentID()).append(",");
+                csvWriter.append(item.getTblPassword()).append(",");
+                csvWriter.append(item.getTblRoleID()).append(",");
+                csvWriter.append(item.getTblSurname()).append(",");
+                csvWriter.append(item.getTblFirstName()).append(",");
+                csvWriter.append(item.getTblMiddlename()).append(",");
+                csvWriter.append(item.getTblSuffix()).append(",");
+                csvWriter.append(item.getTblCourse()).append(",");
+                csvWriter.append(item.getTblYearSection()).append("\n");
+            }
+
+            System.out.println("CSV file generated successfully!");
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information");
+            alert.setHeaderText(null);
+            alert.setContentText("CSV file generated successfully!");
+            alert.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void generatePDFFromTableView(List<StudentAccountDataList> data, File file) {
+        // Code to generate PDF using a library like Apache PDFBox
+        // Example: Use Apache PDFBox to create a table in PDF
+        // (Add Apache PDFBox library to your project)
+        // ...
+
+        showAlert("PDF file generated successfully!");
+    }
+
+    private void generatePNGFromTableView(List<OfficerAccountData> data, File file) {
+        WritableImage image = tblStudentData.snapshot(new SnapshotParameters(), null);
+        try {
+            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
+            showAlert("PNG file generated successfully!");
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error generating PNG file");
+        }
+    }
+
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    @FXML
+    private void PrintDataOfficer(ActionEvent event) {
+        // Capture the content of the specified pane
+        WritableImage writableImage = new WritableImage((int) eduhubAccount1.getWidth(), (int) eduhubAccount1.getHeight());
+        SnapshotParameters snapshotParameters = new SnapshotParameters();
+        eduhubAccount1.snapshot(snapshotParameters, writableImage);
+
+        // Ask the user if they want to print the data
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Print Confirmation");
+        alert.setHeaderText("Do you want to print the data?");
+        alert.setContentText("Choose your option.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // User clicked "OK", proceed with saving the image
+            saveImage(writableImage);
+        }
+    }
+
+    private void saveImage(WritableImage writableImage) {
+        // Use a FileChooser to prompt the user for the file location
+        javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+        fileChooser.setTitle("Save Image");
+        fileChooser.getExtensionFilters().add(new javafx.stage.FileChooser.ExtensionFilter("PNG Files", "*.png"));
+
+        File file = fileChooser.showSaveDialog(null);
+
+        if (file != null) {
+            try {
+                // Convert the WritableImage to a BufferedImage
+                java.awt.image.BufferedImage bufferedImage = SwingFXUtils.fromFXImage(writableImage, null);
+
+                // Save the BufferedImage to the selected file location
+                ImageIO.write(bufferedImage, "png", file);
+
+                // Show a success alert
+                Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                successAlert.setTitle("Success");
+                successAlert.setHeaderText(null);
+                successAlert.setContentText("Data successfully printed and saved to your computer.");
+                successAlert.showAndWait();
+            } catch (IOException e) {
+                e.printStackTrace();
+                // Show an error alert if there's an issue with saving the image
+                Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                errorAlert.setTitle("Error");
+                errorAlert.setHeaderText(null);
+                errorAlert.setContentText("Error saving the image. Please try again.");
+                errorAlert.showAndWait();
+            }
+        }
+    }
+
+    @FXML
+    private void showSideCardDetailsOfficer(ActionEvent event) {
+        applyBlurEffect(true);
+
+        TranslateTransition slider1 = new TranslateTransition();
+        slider1.setNode(sideCard);
+        slider1.setToX(0);
+        slider1.setDuration(Duration.seconds(.5));
+        slider1.play();
+    }
+
+    @FXML
+    private void closeSideCardOfficer(ActionEvent event) {
+        // Apply blur effect during closing animation
+        applyBlurEffect(false);
+
+        TranslateTransition slider1 = new TranslateTransition();
+        slider1.setNode(sideCard);
+        slider1.setToX(489);
+        slider1.setDuration(Duration.seconds(.5));
+        slider1.play();
+    }
+
+    @FXML
+    private void refreshStudentTable(ActionEvent event) {
+        loadStudentAccountData();
+    }
+
+    @FXML
+    private void refreshStudentTableArchive(ActionEvent event) {
+        loadArchiveStudentData();
+    }
+
+    private void selectAllRows(boolean isSelected) {
+        tblStudentData.getItems().forEach(item -> {
+            tblStudentData.getSelectionModel().select(item);
+        });
+    }
+
+    @FXML
+    private void selectAllStudentTable(ActionEvent event) {
+        if (selectAllStudentTable.isSelected()) {
+            // Select all rows in the table
+            tblStudentData.getSelectionModel().selectAll();
+        } else {
+            // Deselect all rows in the table
+            tblStudentData.getSelectionModel().clearSelection();
+        }
+    }
+
 }
