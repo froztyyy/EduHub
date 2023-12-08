@@ -221,6 +221,8 @@ public class UserDashboardController implements Initializable {
     private TextField txtTitle;
     @FXML
     private TextArea txtBody;
+    @FXML
+    private Button refreshannounce;
 
     /**
      * Initializes the controller class.
@@ -1603,6 +1605,29 @@ public class UserDashboardController implements Initializable {
             System.out.println("Post announced");
         }
     }
+    
+    @FXML
+    private void RefreshAnnouncement(ActionEvent event) {
+        try {
+            // Call the method to refresh announcements
+            refreshAnnouncements();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Method to refresh announcements
+    private void refreshAnnouncements() throws SQLException {
+        // Clear existing announcements
+        Announcement.clear();
+        // Fetch new announcements
+        Announcement.addAll(getAnnouncementData());
+        // Redisplay announcements
+        DisplayAnnouncementDash();
+    }
+    
+    
+    
 
     private void showSuccessAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
