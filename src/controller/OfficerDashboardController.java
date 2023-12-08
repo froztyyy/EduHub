@@ -303,10 +303,14 @@ public class OfficerDashboardController implements Initializable {
         DisplayAnnouncement();
 
         fetchAudienceToComboBox(cbAudience);
+        cbAudience.setValue("Audience");
         fetchPriorityLevelToComboBox(cbPriorityLevel);
+        cbPriorityLevel.setValue("Priority Level");
         
         fetchAudienceToComboBoxToDo(cbAudienceToDo);
+        cbAudienceToDo.setValue("Audience");
         fetchPriorityLevelToComboBoxToDo(cbPriorityToDo);
+        cbPriorityToDo.setValue("Priority Level");
     }
 
     private final boolean stop = false;
@@ -1388,6 +1392,7 @@ public class OfficerDashboardController implements Initializable {
         cbAudience.setValue(null);
         cbPriorityLevel.setValue(null);
     }
+    
 
     private ObservableList<AnnouncementData> Announcement = FXCollections.observableArrayList();
 

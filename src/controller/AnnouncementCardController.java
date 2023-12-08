@@ -14,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -41,6 +42,8 @@ public class AnnouncementCardController implements Initializable {
     private AnchorPane announcementCard;
     @FXML
     private TextField txtTitle;
+    @FXML
+    private Button btnRemove;
 
     /**
      * Initializes the controller class.
@@ -60,6 +63,11 @@ public class AnnouncementCardController implements Initializable {
         txtBody.setText(announcementData.getBody());
         lblPostDate.setText(announcementData.getPostDate());
     }
+    
+    public void setRemoveButtonVisible(boolean visible) {
+        btnRemove.setVisible(visible);
+    }
+
 
     @FXML
     private void handleRemoveButton(ActionEvent event) {

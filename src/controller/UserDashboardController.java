@@ -96,11 +96,7 @@ public class UserDashboardController implements Initializable {
     @FXML
     private Pane blurringEffect;
     @FXML
-    private AnchorPane imageGradientWelcome;
-    @FXML
     private Pane homeWindow;
-    @FXML
-    private Label fontsizeGrow;
     @FXML
     private Pane announcementWindow;
     @FXML
@@ -206,14 +202,6 @@ public class UserDashboardController implements Initializable {
     @FXML
     private Label greetingLabel;
     @FXML
-    private ComboBox<String> audiencelist;
-    @FXML
-    private ComboBox<String> prioritylist;
-    @FXML
-    private TextField TitleText;
-    @FXML
-    private TextArea AnnouncementText;
-    @FXML
     private Button PostButton;
     @FXML
     private GridPane AnnouncementHandler;
@@ -225,6 +213,14 @@ public class UserDashboardController implements Initializable {
     private Label lblSection;
     @FXML
     private GridPane announcementCardDash;
+    @FXML
+    private ComboBox<String> cbAudience;
+    @FXML
+    private ComboBox<String> cbPriority;
+    @FXML
+    private TextField txtTitle;
+    @FXML
+    private TextArea txtBody;
 
     /**
      * Initializes the controller class.
@@ -299,8 +295,9 @@ public class UserDashboardController implements Initializable {
         timeline.play();
 
         homeDisplayListCard();
-        fetchAudienceNameToComboBox(audiencelist);
-        fetchPriorityNameToComboBox(prioritylist);
+        
+        fetchPriorityNameToComboBox(cbPriority);
+        cbPriority.setValue("Priority Level");
 
         DisplayAnnouncementDash();
     }
@@ -1466,6 +1463,7 @@ public class UserDashboardController implements Initializable {
         this.user_StudentID = studentID;
         updateStudentId();
         DisplayAnnouncementDash();
+
     }
 
     public void user_Password(String password) {
@@ -1526,29 +1524,8 @@ public class UserDashboardController implements Initializable {
         lblSection.setText(user_SectionID);
     }
 
-    private void fetchAudienceNameToComboBox(ComboBox<String> comboBox) {
-        
-        connect = database.getConnection();
-
-        try {
-            prepare = connect.prepareStatement("SELECT AudienceName FROM filter_audience");
-            result = prepare.executeQuery();
-
-            List<String> items = new ArrayList<>();
-            while (result.next()) {
-                String itemName = result.getString("AudienceName");
-                items.add(itemName);
-            }
-
-            comboBox.getItems().addAll(items);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Error fetching course data: " + e.getMessage());
-        }
-    }
-
     private void fetchPriorityNameToComboBox(ComboBox<String> comboBox) {
-        
+
         connect = database.getConnection();
 
         try {
@@ -1566,6 +1543,56 @@ public class UserDashboardController implements Initializable {
             e.printStackTrace();
             System.out.println("Error fetching course data: " + e.getMessage());
         }
+    }
+
+    @FXML
+    private void handlePostAnnouncement(ActionEvent event) {
+        String sql = "INSERT INTO mod_announce (Title, Body,AudienceID,PriorityID,StudentID,Surname, CourseID, SectionID) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        connect = database.getConnection();
+
+        try {
+
+            prepare = connect.prepareStatement(sql);
+
+            // Set parameters for the prepared statement
+            prepare.setString(1, txtTitle.getText());
+            prepare.setString(2, txtBody.getText());
+            prepare.setString(3, "Homeroom");
+            prepare.setString(4, cbPriority.getValue());
+            prepare.setString(5, user_StudentID);
+            prepare.setString(6, user_Surname);
+            prepare.setString(7, user_CourseID); // Assuming you're using the value from the ComboBox
+            prepare.setString(8, user_SectionID); // Assuming you're using the value from the ComboBox
+
+            // Execute the SQL query
+            prepare.executeUpdate();
+
+            // Show success alert
+            showSuccessAlert("Announcement created successfully!");
+
+            // Load and refresh the TableView
+            DisplayAnnouncementDash();
+            clearFieldPost();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Post announced");
+        }
+    }
+
+    private void showSuccessAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    private void clearFieldPost() {
+        txtTitle.clear();
+        txtBody.clear();
+        cbPriority.setValue(null);
     }
 
     private ObservableList<AnnouncementData> Announcement = FXCollections.observableArrayList();
@@ -1635,6 +1662,7 @@ public class UserDashboardController implements Initializable {
                     AnchorPane pane = loader.load();
                     AnnouncementCardController cardController = loader.getController();
                     cardController.setData(Announcement.get(q));
+                    cardController.setRemoveButtonVisible(false);
 
                     announcementCardDash.add(pane, column++, row);
 

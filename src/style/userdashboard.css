@@ -262,16 +262,6 @@
     -fx-border-radius: 10px;
 }
 
-.announcementCard:hover {
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
-}
-
-.announcementCard:pressed {
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
-}
-
 .textArea {
     -fx-background-color: #2f2f2f;
     -fx-background-radius: 10px;
