@@ -156,3 +156,84 @@
     -fx-border-radius: 10px;
     -fx-background-radius: 10px;
 }
+
+.textArea {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10px;
+    -fx-border-color: gray;
+    -fx-border-width: 1px;
+    -fx-border-radius: 10px;
+    -fx-prompt-text-fill: gray;
+    -fx-text-fill: silver;
+}
+.textArea .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.textArea .scroll-pane .viewport{
+    -fx-background-color: transparent;
+}
+
+.textArea .scroll-pane .content{
+    -fx-background-color: transparent;
+}
+
+.textArea:pressed {
+    -fx-prompt-text-fill: transparent;
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+}
+
+.textArea:focused {
+    -fx-prompt-text-fill: transparent;
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+}
+
+.datePicker {
+    -fx-background-color: #f0f0f0; /* Change background color */
+    -fx-text-fill: #333333; /* Change text color */
+    -fx-font-size: 14px; /* Change font size */
+}
+
+.datePicker .arrow-button {
+    -fx-background-color: #dddddd; /* Change button color */
+}
+
+.datePicker .arrow {
+    -fx-background-color: #555555; /* Change arrow color */
+}
+
+.datePicker .popup-content {
+    -fx-background-color: #ffffff; /* Change popup content background color */
+}
+
+.scrllPane {
+    -fx-background-color: transparent;
+}
+
+.scrllPane .viewport {
+    -fx-background-color: transparent;
+}
+
+.scrllPane .content{
+    -fx-background-color: transparent;
+}
+
+.scrllPane .scroll-bar:horizontal {
+    -fx-background-color: transparent; /* Set the fill color */
+}
+
+/* Vertical ScrollBar */
+.scrllPane .scroll-bar:vertical {
+    -fx-background-color: transparent; /* Set the fill color */
+}
+
+.scrllPane .scroll-bar:horizontal .thumb{
+    -fx-background-color: #121212; /* Set the fill color */
+}
+
+/* Vertical ScrollBar */
+.scrllPane .scroll-bar:vertical .thumb{
+    -fx-background-color: #121212; /* Set the fill color */
+}
