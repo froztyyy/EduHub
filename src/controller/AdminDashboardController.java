@@ -4,6 +4,8 @@
  */
 package controller;
 
+import java.awt.image.BufferedImage;
+import javafx.print.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -54,6 +56,10 @@ import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.print.PageLayout;
+import javafx.print.PageOrientation;
+import javafx.print.Paper;
+import javafx.print.PrinterJob;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
@@ -391,6 +397,8 @@ public class AdminDashboardController implements Initializable {
     private Text lblSuffix1;
     @FXML
     private Pane sideCard;
+    @FXML
+    private TextField searchSectionCourse;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -588,6 +596,7 @@ public class AdminDashboardController implements Initializable {
         trashFeedbackWindow.setVisible(false);
 
         sideCard.setTranslateX(489);
+        sideCard.setVisible(true);
     }
 
     private boolean isNodeInsideSidePanel(Node node) {
@@ -1925,22 +1934,115 @@ public class AdminDashboardController implements Initializable {
 
     @FXML
     private void PrintData(ActionEvent event) {
-        // Capture the content of the specified pane
-        WritableImage writableImage = new WritableImage((int) eduhubAccount.getWidth(), (int) eduhubAccount.getHeight());
-        SnapshotParameters snapshotParameters = new SnapshotParameters();
-        eduhubAccount.snapshot(snapshotParameters, writableImage);
-
         // Ask the user if they want to print the data
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Print Confirmation");
         alert.setHeaderText("Do you want to print the data?");
         alert.setContentText("Choose your option.");
 
+        ButtonType buttonTypePNG = new ButtonType("PNG");
+        ButtonType buttonTypePDF = new ButtonType("PDF");
+
+        alert.getButtonTypes().setAll(buttonTypePNG, buttonTypePDF);
+
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            // User clicked "OK", proceed with saving the image
-            saveImage(writableImage);
+        if (result.isPresent()) {
+            if (result.get() == buttonTypePNG) {
+                saveAsPNG();
+            } else if (result.get() == buttonTypePDF) {
+                saveAsPDF();
+            }
         }
+    }
+
+    private void saveAsPNG() {
+        WritableImage writableImage = new WritableImage((int) eduhubAccount.getWidth(), (int) eduhubAccount.getHeight());
+        SnapshotParameters snapshotParameters = new SnapshotParameters();
+        eduhubAccount.snapshot(snapshotParameters, writableImage);
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Image");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG Files", "*.png"));
+
+        File file = fileChooser.showSaveDialog(null);
+
+        if (file != null) {
+            try {
+                BufferedImage bufferedImage = SwingFXUtils.fromFXImage(writableImage, null);
+                ImageIO.write(bufferedImage, "png", file);
+
+                showAlert("Success", "Data successfully printed and saved to your computer.");
+            } catch (IOException e) {
+                e.printStackTrace();
+                showErrorAlert("Error saving the image. Please try again.");
+            }
+        }
+    }
+
+   private void saveAsPDF() {
+    PrinterJob printerJob = PrinterJob.createPrinterJob();
+
+    if (printerJob != null) {
+        PageLayout pageLayout = printerJob.getJobSettings().getPageLayout();
+
+        // Set the page layout to Portrait
+        printerJob.getJobSettings().setPageLayout(
+                PrinterJob.createPrinterJob()
+                        .getPrinter()
+                        .createPageLayout(
+                                Paper.A4,
+                                PageOrientation.PORTRAIT,
+                                PrinterJob.createPrinterJob().getPrinter().getDefaultPageLayout().getLeftMargin(),
+                                PrinterJob.createPrinterJob().getPrinter().getDefaultPageLayout().getTopMargin(),
+                                PrinterJob.createPrinterJob().getPrinter().getDefaultPageLayout().getPrintableWidth(),
+                                PrinterJob.createPrinterJob().getPrinter().getDefaultPageLayout().getPrintableHeight()
+                        )
+        );
+
+        // Set the content to be printed
+        boolean success = printerJob.printPage(eduhubAccount);
+
+        if (success) {
+            // Prompt for printing
+            boolean printConfirmed = printerJob.showPrintDialog(null);
+
+            if (printConfirmed) {
+                // Print the content
+                success = printerJob.printPage(eduhubAccount);
+
+                if (success) {
+                    showAlert("Success", "Data successfully printed and saved to your computer.");
+                } else {
+                    showErrorAlert("Error printing. Please try again.");
+                }
+            } else {
+                showAlert("Success", "Data successfully saved to your computer.");
+            }
+
+            printerJob.endJob();
+        } else {
+            showErrorAlert("Error saving the PDF. Please try again.");
+        }
+
+        // Reset the page layout to the original
+        printerJob.getJobSettings().setPageLayout(pageLayout);
+    }
+}
+
+    private void showAlert(String title, String content) {
+        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+        successAlert.setTitle(title);
+        successAlert.setHeaderText(null);
+        successAlert.setContentText(content);
+        successAlert.showAndWait();
+    }
+
+    private void showErrorAlert(String content) {
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setTitle("Error");
+        errorAlert.setHeaderText(null);
+        errorAlert.setContentText(content);
+        errorAlert.showAndWait();
     }
 
     private void saveImage(WritableImage writableImage) {
@@ -3546,4 +3648,5 @@ public class AdminDashboardController implements Initializable {
         slider1.setDuration(Duration.seconds(.5));
         slider1.play();
     }
+
 }

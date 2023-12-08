@@ -394,14 +394,98 @@
                   </AnchorPane>
                </children>
             </Pane>
-            <Pane fx:id="courseYearWindow" layoutY="95.0" visible="false">
+            <Pane fx:id="courseYearWindow" layoutY="95.0">
                <children>
-                  <Pane fx:id="ListCourseYearWindow" layoutX="2.0" layoutY="2.0" prefHeight="697.0" prefWidth="1332.0" stylesheets="@../style/admindashboard.css" visible="false">
+                  <Pane fx:id="ListCourseYearWindow" layoutX="2.0" layoutY="2.0" prefHeight="697.0" prefWidth="1332.0" stylesheets="@../style/admindashboard.css">
                      <children>
                         <Pane layoutX="27.0" layoutY="79.0" prefHeight="582.0" prefWidth="411.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 15px;">
                            <effect>
                               <ColorAdjust brightness="-0.36" />
                            </effect>
+                           <children>
+                              <TextField fx:id="searchCourseTF" layoutX="204.0" layoutY="60.0" onAction="#searchCourse" prefHeight="26.0" prefWidth="172.0" promptText="Search Course" styleClass="txtFieldTranparent" stylesheets="@../style/adminlogin.css">
+                                 <font>
+                                    <Font name="Arial" size="12.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </TextField>
+                              <Label layoutX="25.0" layoutY="68.0" text="Course Abbreviation :" textFill="#d7d7d7">
+                                 <font>
+                                    <Font name="Arial" size="16.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="searchSection" layoutX="203.0" layoutY="342.0" onAction="#searchSection" prefHeight="37.0" prefWidth="180.0" promptText="Search Year" styleClass="txtFieldTranparent" stylesheets="@../style/adminlogin.css">
+                                 <font>
+                                    <Font name="Arial" size="12.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </TextField>
+                              <TextField fx:id="txtCourseAbb" layoutX="23.0" layoutY="109.0" prefHeight="40.0" prefWidth="365.0" styleClass="txtField" />
+                              <Pane layoutX="22.0" layoutY="169.0" prefHeight="75.0" prefWidth="397.0">
+                                 <children>
+                                    <VBox prefWidth="365.0" spacing="15.0">
+                                       <children>
+                                          <Label text="Course Name :" textFill="#d7d7d7">
+                                             <font>
+                                                <Font name="Arial" size="16.0" />
+                                             </font>
+                                          </Label>
+                                          <TextField fx:id="txtCourseName" prefHeight="40.0" prefWidth="400.0" styleClass="txtField" />
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </Pane>
+                              <Label layoutX="25.0" layoutY="351.0" text="Year &amp; Section" textFill="#d7d7d7">
+                                 <font>
+                                    <Font name="Arial" size="16.0" />
+                                 </font>
+                              </Label>
+                              <HBox layoutX="57.0" layoutY="262.0" spacing="15.0">
+                                 <children>
+                                    <Button fx:id="btnCreateCourse" alignment="CENTER" mnemonicParsing="false" onAction="#handleCreateCourse" prefHeight="30.0" prefWidth="137.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;" text="Create" textFill="WHITE">
+                                       <font>
+                                          <Font name="Arial Bold" size="13.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                                       </padding>
+                                    </Button>
+                                    <Button fx:id="btnDeleteCourse" alignment="CENTER" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleDeleteCourse" prefWidth="142.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;" text="Delete" textFill="WHITE">
+                                       <font>
+                                          <Font name="Arial Bold" size="13.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                                       </padding>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                              <TextField fx:id="txtYearSection" layoutX="21.0" layoutY="398.0" prefHeight="40.0" prefWidth="365.0" styleClass="txtField" />
+                              <HBox layoutX="47.0" layoutY="463.0" prefHeight="36.0" prefWidth="312.0" spacing="15.0">
+                                 <children>
+                                    <Button fx:id="btnCreateYearSection" alignment="CENTER" mnemonicParsing="false" onAction="#handleCreateYearSection" prefHeight="36.0" prefWidth="151.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;" text="Create" textFill="WHITE">
+                                       <font>
+                                          <Font name="Arial Bold" size="13.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                                       </padding>
+                                    </Button>
+                                    <Button fx:id="btnDeleteYearSection" alignment="CENTER" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleDeleteYearSection" prefHeight="36.0" prefWidth="140.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;" text="Delete" textFill="WHITE">
+                                       <font>
+                                          <Font name="Arial Bold" size="13.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                                       </padding>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                           </children>
                         </Pane>
                         <Text fill="WHITE" layoutX="457.0" layoutY="56.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Course and">
                            <font>
@@ -414,74 +498,6 @@
                            </font>
                         </Text>
                         <Pane layoutX="39.0" layoutY="196.0" />
-                        <Pane layoutX="44.0" layoutY="299.0" prefHeight="75.0" prefWidth="397.0">
-                           <children>
-                              <VBox prefWidth="365.0" spacing="15.0">
-                                 <children>
-                                    <Label text="Course Name :" textFill="#d7d7d7">
-                                       <font>
-                                          <Font name="Arial" size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <TextField fx:id="txtCourseName" prefHeight="40.0" prefWidth="400.0" styleClass="txtField" />
-                                 </children>
-                              </VBox>
-                           </children>
-                        </Pane>
-                        <HBox layoutX="81.0" layoutY="405.0" spacing="15.0">
-                           <children>
-                              <Button fx:id="btnCreateCourse" alignment="CENTER" mnemonicParsing="false" onAction="#handleCreateCourse" prefHeight="30.0" prefWidth="137.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;" text="Create" textFill="WHITE">
-                                 <font>
-                                    <Font name="Arial Bold" size="13.0" />
-                                 </font>
-                                 <padding>
-                                    <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
-                                 </padding>
-                              </Button>
-                              <Button fx:id="btnDeleteCourse" alignment="CENTER" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleDeleteCourse" prefWidth="142.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;" text="Delete" textFill="WHITE">
-                                 <font>
-                                    <Font name="Arial Bold" size="13.0" />
-                                 </font>
-                                 <padding>
-                                    <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
-                                 </padding>
-                              </Button>
-                           </children>
-                        </HBox>
-                        <Pane layoutX="44.0" layoutY="468.0" prefHeight="75.0" prefWidth="397.0">
-                           <children>
-                              <VBox prefWidth="365.0" spacing="15.0">
-                                 <children>
-                                    <Label text="Year &amp; Section" textFill="#d7d7d7">
-                                       <font>
-                                          <Font name="Arial" size="16.0" />
-                                       </font>
-                                    </Label>
-                                    <TextField fx:id="txtYearSection" prefHeight="40.0" prefWidth="400.0" styleClass="txtField" />
-                                 </children>
-                              </VBox>
-                           </children>
-                        </Pane>
-                        <HBox layoutX="67.0" layoutY="572.0" prefHeight="36.0" prefWidth="312.0" spacing="15.0">
-                           <children>
-                              <Button fx:id="btnCreateYearSection" alignment="CENTER" mnemonicParsing="false" onAction="#handleCreateYearSection" prefHeight="36.0" prefWidth="151.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;" text="Create" textFill="WHITE">
-                                 <font>
-                                    <Font name="Arial Bold" size="13.0" />
-                                 </font>
-                                 <padding>
-                                    <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
-                                 </padding>
-                              </Button>
-                              <Button fx:id="btnDeleteYearSection" alignment="CENTER" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleDeleteYearSection" prefHeight="36.0" prefWidth="140.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;" text="Delete" textFill="WHITE">
-                                 <font>
-                                    <Font name="Arial Bold" size="13.0" />
-                                 </font>
-                                 <padding>
-                                    <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
-                                 </padding>
-                              </Button>
-                           </children>
-                        </HBox>
                         <Pane layoutX="457.0" layoutY="72.0" prefHeight="591.0" prefWidth="653.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 15px;">
                            <children>
                               <TableView fx:id="tblCourseData" layoutX="13.0" layoutY="14.0" prefHeight="566.0" prefWidth="627.0" stylesheets="@../style/adminDesigns.css">
@@ -523,22 +539,6 @@
                               <ColorAdjust />
                            </effect>
                         </Pane>
-                        <TextField fx:id="searchCourseTF" layoutX="51.0" layoutY="118.0" onAction="#searchCourse" prefHeight="37.0" prefWidth="172.0" promptText="Search Course" styleClass="txtFieldTranparent" stylesheets="@../style/adminlogin.css">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </TextField>
-                        <TextField fx:id="searchSection" layoutX="231.0" layoutY="118.0" onAction="#searchSection" prefHeight="37.0" prefWidth="180.0" promptText="Search Year" styleClass="txtFieldTranparent" stylesheets="@../style/adminlogin.css">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </TextField>
                         <Button layoutX="1015.0" layoutY="31.0" mnemonicParsing="false" onAction="#PrintDataCourse" prefHeight="31.0" prefWidth="95.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;" text="Print" textAlignment="CENTER" textFill="WHITE">
                            <padding>
                               <Insets bottom="8.0" left="20.0" right="20.0" top="8.0" />
@@ -570,19 +570,9 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <VBox layoutX="45.0" layoutY="204.0" prefWidth="365.0" spacing="15.0">
-                           <children>
-                              <Label text="Course Abbreviation :" textFill="#d7d7d7">
-                                 <font>
-                                    <Font name="Arial" size="16.0" />
-                                 </font>
-                              </Label>
-                              <TextField fx:id="txtCourseAbb" prefHeight="40.0" prefWidth="148.0" styleClass="txtField" />
-                           </children>
-                        </VBox>
                      </children>
                   </Pane>
-                  <Pane fx:id="trashCourseYearWindow" layoutX="3.0" layoutY="3.0" prefHeight="697.0" prefWidth="1332.0" stylesheets="@../style/admindashboard.css">
+                  <Pane fx:id="trashCourseYearWindow" layoutX="3.0" layoutY="3.0" prefHeight="697.0" prefWidth="1332.0" stylesheets="@../style/admindashboard.css" visible="false">
                      <children>
                         <Button fx:id="ListCourseYearButton" layoutX="40.0" layoutY="28.0" mnemonicParsing="false" onAction="#SwitchFormCourseSection" prefHeight="39.0" prefWidth="55.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" textFill="WHITE">
                            <font>
@@ -977,7 +967,7 @@
                   </Pane>
                </children>
             </Pane>
-            <Pane fx:id="officerWindow" layoutY="94.5">
+            <Pane fx:id="officerWindow" layoutY="94.5" visible="false">
                <children>
                   <Pane fx:id="listOfficerAccountWindow" layoutY="0.5" prefHeight="697.0" prefWidth="1332.0" stylesheets="@../style/admindashboard.css">
                      <children>
@@ -1551,7 +1541,7 @@
             </Pane>
          </children>
       </Pane>
-      <Pane fx:id="sideCard" layoutX="843.0" layoutY="138.0" prefHeight="697.0" prefWidth="489.0" style="-fx-background-color: #090909;">
+      <Pane fx:id="sideCard" layoutX="843.0" layoutY="138.0" prefHeight="697.0" prefWidth="489.0" style="-fx-background-color: #090909;" visible="false">
          <children>
             <Button layoutX="409.0" layoutY="32.0" mnemonicParsing="false" onAction="#closeSideCardOfficer" style="-fx-background-color: transparent;">
                <graphic>
