@@ -51,7 +51,9 @@ import javafx.util.Duration;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -62,6 +64,7 @@ import javafx.print.Paper;
 import javafx.print.PrinterJob;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
@@ -69,6 +72,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.WritableImage;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javax.imageio.ImageIO;
@@ -405,6 +409,8 @@ public class AdminDashboardController implements Initializable {
     private Label numberItemsOfficerTrash;
     @FXML
     private Label numberItemsFeedbackTrash;
+    @FXML
+    private PieChart PiechartStudentNumber;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -602,6 +608,8 @@ public class AdminDashboardController implements Initializable {
 
         sideCard.setTranslateX(489);
         sideCard.setVisible(true);
+        // Add a listener to PieChart to wait for it to be fully initialized
+        Platform.runLater(this::populatePieChart);
     }
 
     private boolean isNodeInsideSidePanel(Node node) {
@@ -1305,6 +1313,7 @@ public class AdminDashboardController implements Initializable {
                 cbSectionYear.setValue(null);
                 int officerCount = fetchNumberOfOfficer();
                 lblOfficerNumber.setText(String.valueOf(officerCount));
+
             }
         } else {
             // Inform the user that no item is selected
@@ -1531,6 +1540,7 @@ public class AdminDashboardController implements Initializable {
             clearAndLoadCourseData();
             int coursesCount = fetchNumberOfCourses();
             lblCoursesAvailable.setText(String.valueOf(coursesCount));
+            Platform.runLater(this::populatePieChart);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1574,6 +1584,8 @@ public class AdminDashboardController implements Initializable {
                     int coursesCount = fetchNumberOfCourses();
                     lblCoursesAvailable.setText(String.valueOf(coursesCount));
                     loadArchiveCourseData();
+                    Platform.runLater(this::populatePieChart);
+
                 }
             } else {
                 // If no item is selected, show a warning or error message
@@ -1927,6 +1939,11 @@ public class AdminDashboardController implements Initializable {
 
             loadArchiveStudentData();
             showSuccessAlert("Student Account deleted successfully!");
+            int studentCount = fetchNumberOfStudents();
+            lblNumberOfStudents.setText(String.valueOf(studentCount));
+            Platform.runLater(this::populatePieChart);
+            fetchHighestStudentCount();
+            fetchLowestStudentCount();
 
         } else {
             System.out.println("Please select an officer account to delete.");
@@ -2614,6 +2631,7 @@ public class AdminDashboardController implements Initializable {
                     int coursesCount = fetchNumberOfCourses();
                     lblCoursesAvailable.setText(String.valueOf(coursesCount));
                     loadCourseData();
+
                 } else {
                     // If no item is selected, show a warning or error message
                     showWarningAlert("Please select a course to retrieve.");
@@ -3042,6 +3060,10 @@ public class AdminDashboardController implements Initializable {
                 loadArchiveStudentData();
                 // Additional method calls if needed
                 loadStudentAccountData();
+                int studentCount = fetchNumberOfStudents();
+                lblNumberOfStudents.setText(String.valueOf(studentCount));
+                fetchHighestStudentCount();
+                fetchLowestStudentCount();
             } catch (SQLException e) {
                 e.printStackTrace();
                 // Handle exceptions appropriately (show error message, log, etc.)
@@ -3193,6 +3215,8 @@ public class AdminDashboardController implements Initializable {
                 loadArchiveOfficerData();
                 // Additional logic if needed
                 loadOfficerAccountData();
+                int officerCount = fetchNumberOfOfficer();
+                lblOfficerNumber.setText(String.valueOf(officerCount));
             } catch (SQLException e) {
                 e.printStackTrace();
                 // Handle exceptions appropriately (show error message, log, etc.)
@@ -3783,6 +3807,10 @@ public class AdminDashboardController implements Initializable {
     @FXML
     private void refreshCourseTable(ActionEvent event) {
         loadCourseData();
+        int coursesCount = fetchNumberOfCourses();
+        lblCoursesAvailable.setText(String.valueOf(coursesCount));
+        Platform.runLater(this::populatePieChart);
+
     }
 
     @FXML
@@ -3803,6 +3831,12 @@ public class AdminDashboardController implements Initializable {
     @FXML
     private void refreshStudentTable(ActionEvent event) {
         loadStudentAccountData();
+        int studentCount = fetchNumberOfStudents();
+        lblNumberOfStudents.setText(String.valueOf(studentCount));
+        Platform.runLater(this::populatePieChart);
+        fetchHighestStudentCount();
+        fetchLowestStudentCount();
+
     }
 
     @FXML
@@ -3813,6 +3847,8 @@ public class AdminDashboardController implements Initializable {
     @FXML
     private void refreshOfficerTable(ActionEvent event) {
         loadOfficerAccountData();
+        int officerCount = fetchNumberOfOfficer();
+        lblOfficerNumber.setText(String.valueOf(officerCount));
     }
 
     @FXML
@@ -3830,4 +3866,93 @@ public class AdminDashboardController implements Initializable {
         loadArchiveFeedBackData();
     }
 
+    private void populatePieChart() {
+
+        try {
+            connect = database.getConnection();
+
+            // Query to get the count of students in each section
+            String query = "SELECT SectionID, COUNT(*) as count FROM account_student GROUP BY SectionID";
+            prepare = connect.prepareStatement(query);
+            result = prepare.executeQuery();
+
+            // Create a map to store section counts
+            Map<String, Integer> sectionCounts = new HashMap<>();
+
+            // Fetch data and populate the map
+            while (result.next()) {
+                String sectionID = result.getString("SectionID");
+                int count = result.getInt("count");
+                sectionCounts.put(sectionID, count);
+            }
+
+            // Clear existing data in PieChart
+            PiechartStudentNumber.getData().clear();
+
+            // Add data to PieChart with custom colors
+            int colorIndex = 0;
+            for (Map.Entry<String, Integer> entry : sectionCounts.entrySet()) {
+                String sectionID = entry.getKey();
+                int count = entry.getValue();
+
+                // Define custom colors for each section
+                Color sliceColor = getCustomColor(colorIndex);
+
+                PieChart.Data slice = new PieChart.Data(sectionID, count);
+                PiechartStudentNumber.getData().add(slice);
+
+                colorIndex++;
+            }
+
+            // Set custom colors after the PieChart is fully initialized
+            setCustomColors();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close resources in a finally block
+            try {
+                if (result != null) {
+                    result.close();
+                }
+                if (prepare != null) {
+                    prepare.close();
+                }
+                if (connect != null) {
+                    connect.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    private Color getCustomColor(int index) {
+        // Define an array of custom colors
+        Color[] customColors = {
+            Color.DARKGRAY,
+            Color.DARKSLATEGRAY,
+            Color.BLACK,
+            Color.GRAY, // Add more colors as needed
+        };
+
+        // Return the color based on the index, cycle through colors if needed
+        return customColors[index % customColors.length];
+    }
+
+    private void setCustomColors() {
+        int colorIndex = 0;
+        for (PieChart.Data data : PiechartStudentNumber.getData()) {
+            Color sliceColor = getCustomColor(colorIndex);
+            data.getNode().setStyle("-fx-pie-color: " + toRGBCode(sliceColor) + ";");
+            colorIndex++;
+        }
+    }
+
+    private String toRGBCode(Color color) {
+        int r = (int) (color.getRed() * 255);
+        int g = (int) (color.getGreen() * 255);
+        int b = (int) (color.getBlue() * 255);
+        return String.format("#%02X%02X%02X", r, g, b);
+    }
 }

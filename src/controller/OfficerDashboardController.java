@@ -281,6 +281,8 @@ public class OfficerDashboardController implements Initializable {
     private Label numberItemsStudentTrash;
     @FXML
     private CheckBox selectAllStudentTable;
+    @FXML
+    private CheckBox selectAllStudentTableArchive;
 
     /**
      * Initializes the controller class.
@@ -410,6 +412,7 @@ public class OfficerDashboardController implements Initializable {
         });
 
         tblStudentData.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        archiveStudentAccTbl.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     }
 
     private boolean isNodeInsideSidePanel(Node node) {
@@ -1267,14 +1270,14 @@ public class OfficerDashboardController implements Initializable {
                 if (result.isPresent() && result.get() == ButtonType.OK) {
                     // User clicked OK, proceed with deletion
 
-                    // Remove from UI
-                    tblStudentData.getItems().removeAll(selectedItems);
-
                     // Remove from the database and archive
                     for (StudentAccountDataList selectedOfficer : selectedItems) {
                         deleteStudentFromDatabase(selectedOfficer);
                         insertIntoArchiveStudentAccountTable(connect, selectedOfficer);
                     }
+
+                    // Clear the table
+                    tblStudentData.getItems().clear();
 
                     // Reload data after deletion
                     loadStudentAccountData();
@@ -1284,59 +1287,41 @@ public class OfficerDashboardController implements Initializable {
                     showAlert("Success", "User Accounts Deleted", "User accounts removed successfully.");
 
                     // Clear other UI elements
-                    txtStudentID.clear();
-                    txtPassword.clear();
-                    txtSurname.clear();
-                    txtFirstname.clear();
-                    txtMiddlename.clear();
-                    txtSuffix.clear();
-
-                    // Clear or set the combo boxes to be empty
-                    cbCourse.setValue(null);
-                    cbSectionYear.setValue(null);
+                    clearUIElements();
                 }
             } else {
-                // "Select All" is not active, delete only the first selected item
+                // "Select All" is not active, delete only the selected items
 
-                StudentAccountDataList selectedOfficer = selectedItems.get(0);
+                for (StudentAccountDataList selectedOfficer : selectedItems) {
+                    // Show confirmation alert for each selected item
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Confirmation");
+                    alert.setHeaderText("Delete Officer Account");
+                    alert.setContentText("Are you sure you want to delete this officer account?");
 
-                // Show confirmation alert
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Confirmation");
-                alert.setHeaderText("Delete Officer Account");
-                alert.setContentText("Are you sure you want to delete this officer account?");
+                    Optional<ButtonType> result = alert.showAndWait();
 
-                Optional<ButtonType> result = alert.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        // User clicked OK, proceed with deletion
 
-                if (result.isPresent() && result.get() == ButtonType.OK) {
-                    // User clicked OK, proceed with deletion
-
-                    // Remove from UI
-                    tblStudentData.getItems().remove(selectedOfficer);
-
-                    // Remove from the database and archive
-                    deleteStudentFromDatabase(selectedOfficer);
-                    insertIntoArchiveStudentAccountTable(connect, selectedOfficer);
-
-                    // Reload data after deletion
-                    loadStudentAccountData();
-                    loadArchiveStudentData();
-
-                    // Inform the user about successful deletion
-                    showAlert("Success", "User Account Deleted", "User account removed successfully.");
-
-                    // Clear other UI elements
-                    txtStudentID.clear();
-                    txtPassword.clear();
-                    txtSurname.clear();
-                    txtFirstname.clear();
-                    txtMiddlename.clear();
-                    txtSuffix.clear();
-
-                    // Clear or set the combo boxes to be empty
-                    cbCourse.setValue(null);
-                    cbSectionYear.setValue(null);
+                        // Remove from the database and archive
+                        deleteStudentFromDatabase(selectedOfficer);
+                        insertIntoArchiveStudentAccountTable(connect, selectedOfficer);
+                    }
                 }
+
+                // Clear the table
+                tblStudentData.getItems().removeAll(selectedItems);
+
+                // Reload data after deletion
+                loadStudentAccountData();
+                loadArchiveStudentData();
+
+                // Inform the user about successful deletion
+                showAlert("Success", "User Accounts Deleted", "User accounts removed successfully.");
+
+                // Clear other UI elements
+                clearUIElements();
             }
         } else {
             // Inform the user that no item is selected
@@ -1346,6 +1331,20 @@ public class OfficerDashboardController implements Initializable {
             alert.setContentText("Please select user accounts in the table.");
             alert.showAndWait();
         }
+    }
+
+// Other methods...
+    private void clearUIElements() {
+        txtStudentID.clear();
+        txtPassword.clear();
+        txtSurname.clear();
+        txtFirstname.clear();
+        txtMiddlename.clear();
+        txtSuffix.clear();
+
+        // Clear or set the combo boxes to be empty
+        cbCourse.setValue(null);
+        cbSectionYear.setValue(null);
     }
 
     private void deleteStudentFromDatabase(StudentAccountDataList studentAccountDataList) {
@@ -2332,6 +2331,17 @@ public class OfficerDashboardController implements Initializable {
         } else {
             // Deselect all rows in the table
             tblStudentData.getSelectionModel().clearSelection();
+        }
+    }
+
+    @FXML
+    private void selectAllStudentTableArchive(ActionEvent event) {
+        if (selectAllStudentTableArchive.isSelected()) {
+            // Select all rows in the table
+            archiveStudentAccTbl.getSelectionModel().selectAll();
+        } else {
+            // Deselect all rows in the table
+            archiveStudentAccTbl.getSelectionModel().clearSelection();
         }
     }
 

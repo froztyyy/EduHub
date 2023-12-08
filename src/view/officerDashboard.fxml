@@ -596,7 +596,7 @@
             </Pane>
             <Pane fx:id="studentManagementWIndow" layoutY="95.0" visible="false">
                <children>
-                  <Pane fx:id="listStudentAccountWindow" prefHeight="697.0" prefWidth="1332.0">
+                  <Pane fx:id="listStudentAccountWindow" prefHeight="697.0" prefWidth="1332.0" visible="false">
                      <children>
                         <Label layoutX="36.0" layoutY="33.0" text="Student Account" textFill="WHITE">
                            <font>
@@ -791,7 +791,7 @@
                         </CheckBox>
                      </children>
                   </Pane>
-                  <Pane fx:id="trashSrudentAccountWindow1" layoutX="4.0" layoutY="3.0" prefHeight="704.0" prefWidth="1332.0" visible="false">
+                  <Pane fx:id="trashSrudentAccountWindow1" layoutX="4.0" layoutY="3.0" prefHeight="704.0" prefWidth="1332.0">
                      <children>
                         <Button fx:id="ListStudentAccountButton" layoutX="38.0" layoutY="27.0" mnemonicParsing="false" onAction="#SwitchFormStudentAccount" prefHeight="39.0" prefWidth="55.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" textFill="WHITE">
                            <font>
@@ -878,6 +878,11 @@
                               </ImageView>
                            </graphic>
                         </Button>
+                        <CheckBox fx:id="selectAllStudentTableArchive" layoutX="898.0" layoutY="46.0" mnemonicParsing="false" onAction="#selectAllStudentTableArchive" prefHeight="21.0" prefWidth="95.0" text="Select All" textFill="WHITE">
+                           <font>
+                              <Font name="Arial" size="13.0" />
+                           </font>
+                        </CheckBox>
                      </children>
                   </Pane>
                </children>

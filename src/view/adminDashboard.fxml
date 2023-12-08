@@ -5,6 +5,7 @@
 <?import javafx.scene.chart.BarChart?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
@@ -169,32 +170,32 @@
                <children>
                   <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="698.0" prefWidth="1332.0">
                      <children>
-                        <Text fill="WHITE" layoutX="239.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PROGRESS">
+                        <Text fill="WHITE" layoutX="362.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PROGRESS">
                            <font>
-                              <Font name="Arial Bold" size="41.0" />
+                              <Font name="Arial Bold" size="46.0" />
                            </font>
                         </Text>
-                        <ImageView fitHeight="33.0" fitWidth="25.0" layoutX="205.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="37.0" fitWidth="38.0" layoutX="313.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../media/icons/Screenshot%202023-11-19%20161348.png" />
                            </image>
                         </ImageView>
-                        <Label layoutX="52.0" layoutY="83.0" prefHeight="27.0" prefWidth="157.0" text="Welcome, Admin" textFill="#5d5d61">
+                        <Label layoutX="156.0" layoutY="61.0" prefHeight="27.0" prefWidth="157.0" text="Welcome, Admin" textFill="WHITE">
                            <font>
-                              <Font name="Arial Bold" size="18.0" />
+                              <Font name="Arial Bold" size="19.0" />
                            </font>
                         </Label>
-                        <Text fill="WHITE" layoutX="52.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&amp; ANALYSIS">
+                        <Text fill="WHITE" layoutX="152.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="&amp; ANALYSIS">
                            <font>
-                              <Font name="Arial Bold" size="41.0" />
+                              <Font name="Arial Bold" size="46.0" />
                            </font>
                         </Text>
-                        <Text fill="#2b4fe4" layoutX="52.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="EDUHUB">
+                        <Text fill="#2b4fe4" layoutX="152.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0" text="EDUHUB">
                            <font>
-                              <Font name="Arial Bold" size="41.0" />
+                              <Font name="Arial Bold" size="46.0" />
                            </font>
                         </Text>
-                        <Pane layoutX="614.0" layoutY="31.0" prefHeight="204.0" prefWidth="232.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;">
+                        <Pane layoutX="691.0" layoutY="31.0" prefHeight="204.0" prefWidth="232.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;">
                            <children>
                               <Label layoutX="25.0" layoutY="28.0" text="No. of Students" textFill="WHITE">
                                  <font>
@@ -220,7 +221,7 @@
                               </HBox>
                            </children>
                         </Pane>
-                        <Pane layoutX="859.0" layoutY="31.0" prefHeight="204.0" prefWidth="206.0" style="-fx-background-color: #F3f3f3; -fx-background-radius: 20px;">
+                        <Pane layoutX="964.0" layoutY="31.0" prefHeight="204.0" prefWidth="206.0" style="-fx-background-color: #F3f3f3; -fx-background-radius: 20px;">
                            <effect>
                               <Blend />
                            </effect>
@@ -249,21 +250,21 @@
                               </HBox>
                            </children>
                         </Pane>
-                        <Pane layoutX="1080.0" layoutY="31.0" prefHeight="97.0" prefWidth="200.0" style="-fx-background-color: #6B6B6B; -fx-background-radius: 20px;">
+                        <Pane layoutX="520.0" layoutY="297.0" prefHeight="124.0" prefWidth="250.0" style="-fx-background-color: #6B6B6B; -fx-background-radius: 20px;">
                            <children>
                               <Label layoutX="27.0" layoutY="14.0" text="Council Officers" textFill="WHITE">
                                  <font>
-                                    <Font name="Arial Bold" size="16.0" />
+                                    <Font name="Arial Bold" size="21.0" />
                                  </font>
                               </Label>
                               <HBox alignment="CENTER_LEFT" layoutX="27.0" layoutY="60.0" spacing="10.0">
                                  <children>
-                                    <Label fx:id="lblOfficerNumber" text="###" textFill="#323232">
+                                    <Label fx:id="lblOfficerNumber" text="###" textFill="WHITE">
                                        <font>
-                                          <Font name="Arial Bold" size="20.0" />
+                                          <Font name="Arial Bold" size="30.0" />
                                        </font>
                                     </Label>
-                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../media/icons/icons8-student-50.png" />
                                        </image>
@@ -275,58 +276,14 @@
                               </HBox>
                            </children>
                         </Pane>
-                        <Pane layoutX="45.0" layoutY="270.0" prefHeight="379.0" prefWidth="600.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" stylesheets="@../style/admindashboard.css">
+                        <Pane layoutX="109.0" layoutY="266.0" prefHeight="379.0" prefWidth="325.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" stylesheets="@../style/admindashboard.css">
                            <children>
-                              <Label layoutX="26.0" layoutY="41.0" text="Student Numbers Across Courses" textFill="WHITE">
+                              <Label layoutX="26.0" layoutY="30.0" prefHeight="20.0" prefWidth="261.0" text="Student Numbers Across Courses" textFill="WHITE">
                                  <font>
                                     <Font name="Arial Bold" size="16.0" />
                                  </font>
                               </Label>
-                              <HBox alignment="BOTTOM_LEFT" layoutX="318.0" layoutY="30.0">
-                                 <children>
-                                    <Label fx:id="lblHighestCountStudent" text="##" textFill="WHITE">
-                                       <font>
-                                          <Font name="Arial" size="35.0" />
-                                       </font>
-                                    </Label>
-                                    <ImageView fitHeight="22.0" fitWidth="119.0" pickOnBounds="true" preserveRatio="true" rotate="139.8">
-                                       <image>
-                                          <Image url="@../media/icons/icons8-back-50%20(1).png" />
-                                       </image>
-                                       <effect>
-                                          <ColorAdjust brightness="1.0" contrast="0.31" />
-                                       </effect>
-                                    </ImageView>
-                                    <Label fx:id="lblHighestCountCourse" text="course" textFill="WHITE">
-                                       <font>
-                                          <Font name="Arial" size="12.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <HBox alignment="BOTTOM_LEFT" layoutX="452.0" layoutY="30.0">
-                                 <children>
-                                    <Label fx:id="lblLowestCountStudent" text="##" textFill="WHITE">
-                                       <font>
-                                          <Font name="Arial" size="35.0" />
-                                       </font>
-                                    </Label>
-                                    <ImageView fitHeight="22.0" fitWidth="119.0" pickOnBounds="true" preserveRatio="true" rotate="-35.0">
-                                       <image>
-                                          <Image url="@../media/icons/icons8-back-50%20(1).png" />
-                                       </image>
-                                       <effect>
-                                          <ColorAdjust brightness="1.0" contrast="0.31" />
-                                       </effect>
-                                    </ImageView>
-                                    <Label fx:id="lblLowestCountCourse" text="course" textFill="WHITE">
-                                       <font>
-                                          <Font name="Arial" size="12.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <BarChart fx:id="bchartStudentNumber" barGap="5.0" layoutX="50.0" layoutY="80.0" legendVisible="false" prefHeight="280.0" styleClass="chart">
+                              <BarChart fx:id="bchartStudentNumber" barGap="5.0" layoutX="50.0" layoutY="80.0" legendVisible="false" prefHeight="280.0" styleClass="chart" visible="false">
                                  <xAxis>
                                     <CategoryAxis side="BOTTOM" />
                                  </xAxis>
@@ -337,9 +294,10 @@
                                     <Insets right="10.0" top="10.0" />
                                  </padding>
                               </BarChart>
+                              <PieChart fx:id="PiechartStudentNumber" layoutX="26.0" layoutY="63.0" prefHeight="280.0" prefWidth="261.0" />
                            </children>
                         </Pane>
-                        <Pane layoutX="670.0" layoutY="270.0" prefHeight="379.0" prefWidth="609.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" stylesheets="@../style/admindashboard.css">
+                        <Pane layoutX="792.0" layoutY="266.0" prefHeight="379.0" prefWidth="431.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" stylesheets="@../style/admindashboard.css">
                            <children>
                               <Label layoutX="28.0" layoutY="27.0" text="Number of Task per Deadline" textFill="WHITE">
                                  <font>
@@ -351,7 +309,7 @@
                                     <Font name="Arial Bold" size="15.0" />
                                  </font>
                               </Label>
-                              <BarChart fx:id="bchartTaskPDeadline" layoutX="55.0" layoutY="77.0" legendVisible="false" prefHeight="280.0" prefWidth="500.0" styleClass="chart">
+                              <BarChart fx:id="bchartTaskPDeadline" layoutX="26.0" layoutY="77.0" legendVisible="false" prefHeight="263.0" prefWidth="379.0" styleClass="chart">
                                  <xAxis>
                                     <CategoryAxis side="BOTTOM" />
                                  </xAxis>
@@ -364,21 +322,21 @@
                               </BarChart>
                            </children>
                         </Pane>
-                        <Pane layoutX="1080.0" layoutY="145.0" prefHeight="89.0" prefWidth="200.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 20px;">
+                        <Pane layoutX="520.0" layoutY="480.0" prefHeight="124.0" prefWidth="250.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 20px;">
                            <children>
                               <Label layoutX="21.0" layoutY="14.0" text="No. of Admins" textFill="WHITE">
                                  <font>
-                                    <Font name="Arial Bold" size="16.0" />
+                                    <Font name="Arial Bold" size="21.0" />
                                  </font>
                               </Label>
-                              <HBox layoutX="21.0" layoutY="45.0" spacing="10.0">
+                              <HBox layoutX="21.0" layoutY="62.0" spacing="10.0">
                                  <children>
                                     <Label fx:id="lblAdminNumber" text="###" textFill="SILVER">
                                        <font>
-                                          <Font name="Arial Bold" size="20.0" />
+                                          <Font name="Arial Bold" size="30.0" />
                                        </font>
                                     </Label>
-                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../media/icons/icons8-student-50.png" />
                                        </image>
@@ -390,18 +348,59 @@
                               </HBox>
                            </children>
                         </Pane>
+                        <VBox layoutX="452.0" layoutY="311.0">
+                           <children>
+                              <Label fx:id="lblHighestCountStudent" text="##" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial" size="41.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fitHeight="27.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" rotate="139.8">
+                                 <image>
+                                    <Image url="@../media/icons/icons8-back-50%20(1).png" />
+                                 </image>
+                                 <effect>
+                                    <ColorAdjust brightness="1.0" contrast="0.31" />
+                                 </effect>
+                              </ImageView>
+                              <Label fx:id="lblHighestCountCourse" text="course" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                        <VBox layoutX="452.0" layoutY="456.0" prefHeight="103.0" prefWidth="57.0">
+                           <children>
+                              <Label fx:id="lblLowestCountStudent" text="##" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial" size="41.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fitHeight="27.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" rotate="-35.0">
+                                 <image>
+                                    <Image url="@../media/icons/icons8-back-50%20(1).png" />
+                                 </image>
+                                 <effect>
+                                    <ColorAdjust brightness="1.0" contrast="0.31" />
+                                 </effect>
+                              </ImageView>
+                              <Label fx:id="lblLowestCountCourse" text="course" textFill="WHITE">
+                                 <font>
+                                    <Font name="Arial" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
                      </children>
                   </AnchorPane>
                </children>
             </Pane>
-            <Pane fx:id="courseYearWindow" layoutY="95.0" visible="false">
+            <Pane fx:id="courseYearWindow" layoutY="95.0">
                <children>
                   <Pane fx:id="ListCourseYearWindow" layoutX="2.0" layoutY="2.0" prefHeight="697.0" prefWidth="1332.0" stylesheets="@../style/admindashboard.css">
                      <children>
                         <Pane layoutX="27.0" layoutY="79.0" prefHeight="582.0" prefWidth="411.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 15px;">
-                           <effect>
-                              <ColorAdjust brightness="-0.36" />
-                           </effect>
                            <children>
                               <TextField fx:id="searchCourseTF" layoutX="204.0" layoutY="60.0" onAction="#searchCourse" prefHeight="26.0" prefWidth="172.0" promptText="Search Course" styleClass="txtFieldTranparent" stylesheets="@../style/adminlogin.css">
                                  <font>
@@ -1351,7 +1350,7 @@
                   </Pane>
                </children>
             </Pane>
-            <Pane fx:id="feedbackWindow" layoutX="-2.0" layoutY="97.0">
+            <Pane fx:id="feedbackWindow" layoutX="-2.0" layoutY="97.0" visible="false">
                <children>
                   <Pane fx:id="listFeedbackWIndow" prefHeight="699.0" prefWidth="1332.0" styleClass="tab" visible="false">
                      <children>
