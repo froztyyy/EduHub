@@ -52,7 +52,7 @@
 
 .txtField {
     -fx-background-color: transparent;
-    -fx-border-color: gray;
+    -fx-border-color: transparent;
     -fx-border-width: 1px;
     -fx-border-radius: 10px;
     -fx-prompt-text-fill: gray;
@@ -67,6 +67,7 @@
 .txtField:pressed {
     -fx-background-color: transparent;
     -fx-prompt-text-fill: transparent;
+ 
     -fx-text-fill: silver;
 }
 .txtField:focused {

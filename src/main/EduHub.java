@@ -62,7 +62,7 @@ public class EduHub extends Application {
         // Simulate initialization work (replace with your actual initialization code)
         Thread initThread = new Thread(() -> {
             try {
-                Thread.sleep(2500); // Simulate 10 seconds of initialization time
+                Thread.sleep(1500); // Simulate 10 seconds of initialization time
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

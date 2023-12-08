@@ -44,6 +44,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -103,70 +104,20 @@ public class OfficerDashboardController implements Initializable {
     private Pane announcementWindow;
     @FXML
     private Pane calendarWindow;
-    private Pane todoWindow;
-    @FXML
-    private Pane timeClockWindow;
     @FXML
     private Pane homeButton;
     @FXML
     private Pane announcementButton;
     @FXML
     private Pane calendarButton;
-    private Pane toDolistButton;
-    @FXML
-    private Pane timeClockButton;
     @FXML
     private Pane sidePanel;
     ZonedDateTime dateFocus;
     ZonedDateTime today;
     @FXML
-    private AnchorPane clockPane;
-    private Label lblTime;
-    @FXML
-    private Label lblTimerTime;
-    @FXML
-    private Label lblTimer;
-    private Pane bottomNavigation;
-    @FXML
-    private TextField txtHour;
-    @FXML
-    private TextField txtMinute;
-    @FXML
-    private TextField txtSecond;
-    @FXML
-    private Button btnPlay;
-    @FXML
-    private Button btnPause;
-    @FXML
-    private Button btnStop;
-    @FXML
-    private Button btnTimerPause;
-    @FXML
-    private Button btnTimerStart;
-    @FXML
-    private Button btnTimerStop;
-    @FXML
     private Label lblTimeDashboard;
     @FXML
     private Label lblDateDashboard;
-    @FXML
-    private Label dayAndYear;
-    @FXML
-    private Label monthToday;
-    @FXML
-    private Label time;
-    @FXML
-    private Label location;
-    @FXML
-    private TextField txtHourForAlarm;
-    @FXML
-    private TextField txtMinuteForAlarm;
-    @FXML
-    private TextField txtSecondAlarm;
-    @FXML
-    private Button setAlarm;
-    @FXML
-    private Button removeAlarm;
     @FXML
     private FlowPane calendarBig;
     @FXML
@@ -249,6 +200,24 @@ public class OfficerDashboardController implements Initializable {
     private Button btnSubmit;
     @FXML
     private GridPane announcementCard;
+     @FXML
+    private Pane toDoButton;
+    @FXML
+    private Pane toDoWindow;
+    @FXML
+    private ComboBox<String> cbAudienceToDo;
+    @FXML
+    private ComboBox<String> cbPriorityToDo;
+    @FXML
+    private TextArea txtBodyTask;
+    @FXML
+    private DatePicker datePickerTask;
+    @FXML
+    private Button btnCreateTask;
+    @FXML
+    private GridPane taskCard;
+    @FXML
+    private TextField txtTitleTask;
 
     /**
      * Initializes the controller class.
@@ -301,15 +270,11 @@ public class OfficerDashboardController implements Initializable {
         announcementWindow.setVisible(true);
         calendarWindow.setVisible(false);
         studentManagementWIndow.setVisible(false);
-        timeClockWindow.setVisible(false);
-
-        timeline = new Timeline(new KeyFrame(Duration.seconds(1), this::updateTimer));
-        timeline.setCycleCount(Timeline.INDEFINITE);
+        toDoWindow.setVisible(false);
 
         timeNowForDashboard();
         dateLabelForDashboard();
-        TimeAndDateLocation();
-
+     
         connect = database.getConnection();
         fetchCourseToComboBox(cbCourse);
         fetchSectionToComboBox(cbSectionYear);
@@ -338,7 +303,14 @@ public class OfficerDashboardController implements Initializable {
         DisplayAnnouncement();
 
         fetchAudienceToComboBox(cbAudience);
+        cbAudience.setValue("Audience");
         fetchPriorityLevelToComboBox(cbPriorityLevel);
+        cbPriorityLevel.setValue("Priority Level");
+        
+        fetchAudienceToComboBoxToDo(cbAudienceToDo);
+        cbAudienceToDo.setValue("Audience");
+        fetchPriorityLevelToComboBoxToDo(cbPriorityToDo);
+        cbPriorityToDo.setValue("Priority Level");
     }
 
     private final boolean stop = false;
@@ -519,52 +491,52 @@ public class OfficerDashboardController implements Initializable {
                 setButtonColor(announcementButton, true);
                 setButtonColor(calendarButton, false);
                 setButtonColor(studentManagementButton, false);
-                setButtonColor(timeClockButton, false);
+                setButtonColor(toDoButton, false);
 
                 homeWindow.setVisible(false);
                 announcementWindow.setVisible(true);
                 calendarWindow.setVisible(false);
                 studentManagementWIndow.setVisible(false);
-                timeClockWindow.setVisible(false);
+                toDoWindow.setVisible(false);
 
             } else if (clickedButton == calendarButton) {
                 setButtonColor(homeButton, false);
                 setButtonColor(announcementButton, false);
                 setButtonColor(calendarButton, true);
                 setButtonColor(studentManagementButton, false);
-                setButtonColor(timeClockButton, false);
+                setButtonColor(toDoButton, false);
 
                 homeWindow.setVisible(false);
                 announcementWindow.setVisible(false);
                 calendarWindow.setVisible(true);
                 studentManagementWIndow.setVisible(false);
-                timeClockWindow.setVisible(false);
+                toDoWindow.setVisible(false);
 
             } else if (clickedButton == studentManagementButton) {
                 setButtonColor(homeButton, false);
                 setButtonColor(announcementButton, false);
                 setButtonColor(calendarButton, false);
                 setButtonColor(studentManagementButton, true);
-                setButtonColor(timeClockButton, false);
+                setButtonColor(toDoButton, false);
 
                 homeWindow.setVisible(false);
                 announcementWindow.setVisible(false);
                 calendarWindow.setVisible(false);
                 studentManagementWIndow.setVisible(true);
-                timeClockWindow.setVisible(false);
+                toDoWindow.setVisible(false);
 
-            } else if (clickedButton == timeClockButton) {
+            } else if (clickedButton == toDoButton) {
                 setButtonColor(homeButton, false);
                 setButtonColor(announcementButton, false);
                 setButtonColor(calendarButton, false);
                 setButtonColor(studentManagementButton, false);
-                setButtonColor(timeClockButton, true);
+                setButtonColor(toDoButton, true);
 
                 homeWindow.setVisible(false);
                 announcementWindow.setVisible(false);
                 calendarWindow.setVisible(false);
                 studentManagementWIndow.setVisible(false);
-                timeClockWindow.setVisible(true);
+                toDoWindow.setVisible(true);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -844,157 +816,6 @@ public class OfficerDashboardController implements Initializable {
         }
 
         return createCalendarMap(calendarActivities);
-    }
-
-    public void TimeAndDateLocation() {
-        // Set the date format for dd/yy
-        SimpleDateFormat dayAndYearFormat = new SimpleDateFormat("dd/yy");
-
-        // Set the date format for the full month name
-        DateTimeFormatter monthFormatter = DateTimeFormatter.ofPattern("MMMM", Locale.ENGLISH);
-
-        // Set the date format for the time
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("h:mm a");
-
-        // Get the current date and time
-        LocalDateTime now = LocalDateTime.now();
-
-        // Set the values to the labels
-        dayAndYear.setText(dayAndYearFormat.format(new Date()));
-        monthToday.setText(now.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH));
-        time.setText(now.format(timeFormatter));
-
-        // Set the location (replace with actual location retrieval logic)
-        location.setText(getLocation());// Replace this with actual location retrieval logic
-
-    }
-
-    // Dummy method for location retrieval (replace with actual logic)
-    private String getLocation() {
-        Locale defaultLocale = Locale.getDefault();
-        String city = defaultLocale.getDisplayCountry();
-        String country = defaultLocale.getDisplayCountry();
-
-        // Return the formatted location string
-        return city + ", " + country;
-    }
-
-    @FXML
-    public void handleStartTimer(ActionEvent event) {
-        // Check if the timer thread is already running
-        if (timerThread == null || !timerThread.isAlive()) {
-            try {
-                hour = txtHour.getText().isEmpty() ? 0 : Integer.parseInt(txtHour.getText());
-                minute = txtMinute.getText().isEmpty() ? 0 : Integer.parseInt(txtMinute.getText());
-                second = txtSecond.getText().isEmpty() ? 0 : Integer.parseInt(txtSecond.getText());
-
-                // Create a new thread for the timer
-                timerThread = new Thread(() -> {
-                    while (!Thread.interrupted()) {
-                        try {
-                            Thread.sleep(1000);
-                            second--;
-                            if (second < 0) {
-                                second = 59;
-                                minute--;
-                                if (minute < 0) {
-                                    minute = 59;
-                                    hour--;
-                                    if (hour < 0) {
-                                        // Timer has expired
-                                        break;
-                                    }
-                                }
-                            }
-
-                            Platform.runLater(() -> {
-                                lblTimerTime.setText(String.format("%02d : %02d : %02d", hour, minute, second));
-                            });
-                        } catch (InterruptedException e) {
-                            // Thread interrupted, stop the timer
-                            break;
-                        }
-                    }
-
-                    // Timer has expired, play an alarm sound
-                    System.out.println("Beep!");
-                });
-
-                // Start the timer thread
-                timerThread.start();
-            } catch (NumberFormatException e) {
-                // Handle the case where the input is not a valid integer
-                e.printStackTrace(); // You might want to log the error or display a message to the user
-            }
-        }
-    }
-
-    @FXML
-    public void handlePauseTimer(ActionEvent event) {
-        // Interrupt the timer thread to pause it
-        if (timerThread != null) {
-            timerThread.interrupt();
-        }
-    }
-
-    @FXML
-    public void handleStopTimer(ActionEvent event) {
-        // Interrupt the timer thread to stop it
-        if (timerThread != null) {
-            timerThread.interrupt();
-        }
-
-        // Reset the time to 0
-        hour = 0;
-        minute = 0;
-        second = 0;
-
-        // Update the UI
-        Platform.runLater(() -> {
-            lblTimerTime.setText(String.format("%02d : %02d : %02d", hour, minute, second));
-
-            txtHour.setText("");
-            txtMinute.setText("");
-            txtSecond.setText("");
-
-        });
-    }
-
-    @FXML
-    private void handlePlay(ActionEvent event) {
-        if (!running) {
-            timeline.play();
-            running = true;
-        }
-    }
-
-    @FXML
-    private void handlePause(ActionEvent event) {
-        if (running) {
-            timeline.pause();
-            running = false;
-        }
-    }
-
-    @FXML
-    private void handleStop(ActionEvent event) {
-        timeline.stop();
-        running = false;
-        seconds = 0;
-        updateTimer(null);
-    }
-
-    private void updateTimer(ActionEvent event) {
-        seconds++;
-        lblTimer.setText(formatTime(seconds));
-    }
-
-    private String formatTime(int totalSeconds) {
-        int hours = totalSeconds / 3600;
-        int minutes = (totalSeconds % 3600) / 60;
-        int remainingSeconds = totalSeconds % 60;
-
-        return String.format("%02d : %02d : %02d", hours, minutes, remainingSeconds);
     }
 
     private void timeNowForDashboard() {
@@ -1571,12 +1392,13 @@ public class OfficerDashboardController implements Initializable {
         cbAudience.setValue(null);
         cbPriorityLevel.setValue(null);
     }
+    
 
     private ObservableList<AnnouncementData> Announcement = FXCollections.observableArrayList();
 
     public ObservableList<AnnouncementData> getAnnouncementData() throws SQLException {
 
-        String sql = "Select Title, Body,AudienceID,PriorityID,StudentID,Surname, CourseID, SectionID, postDate FROM mod_announce where CourseID = ? and SectionID = ? and AudienceID in (?,?,?,?) ORDER BY PriorityID ASC";
+        String sql = "SELECT Title, Body, AudienceID, PriorityID, StudentID, Surname, CourseID, SectionID, postDate FROM mod_announce WHERE CourseID = ? AND SectionID = ? AND AudienceID IN (?, ?, ? ,?) ORDER BY AnnouncementID DESC, PriorityID ASC";
         ObservableList<AnnouncementData> Announcement = FXCollections.observableArrayList();
         connect = database.getConnection();
 
@@ -1587,7 +1409,7 @@ public class OfficerDashboardController implements Initializable {
             prepare.setString(3, "Everyone");  // Replace with the actual value or variable
             prepare.setString(4, "Homeroom");  // Replace with the actual value or variable
             prepare.setString(5, "Officer");
-            prepare.setString(6,"Only Me");
+            prepare.setString(6, "Only Me");
             result = prepare.executeQuery();
 
             while (result.next()) {
@@ -1657,4 +1479,93 @@ public class OfficerDashboardController implements Initializable {
             e.printStackTrace();
         }
     }
+    
+     private void fetchAudienceToComboBoxToDo(ComboBox<String> comboBox) {
+
+        try {
+            prepare = connect.prepareStatement("SELECT AudienceName FROM filter_audience");
+            result = prepare.executeQuery();
+
+            List<String> items = new ArrayList<>();
+            while (result.next()) {
+                String itemName = result.getString("AudienceName");
+                items.add(itemName);
+            }
+
+            comboBox.getItems().addAll(items);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error fetching course data: " + e.getMessage());
+        }
+    }
+
+    private void fetchPriorityLevelToComboBoxToDo(ComboBox<String> comboBox) {
+
+        try {
+            prepare = connect.prepareStatement("SELECT PriorityName FROM filter_priority");
+            result = prepare.executeQuery();
+
+            List<String> items = new ArrayList<>();
+            while (result.next()) {
+                String itemName = result.getString("PriorityName");
+                items.add(itemName);
+            }
+
+            comboBox.getItems().addAll(items);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error fetching course data: " + e.getMessage());
+        }
+    }
+    /*
+    
+    private void handleButtonSubmit(ActionEvent event) throws IOException {
+        
+        connect = database.getConnection();
+        
+        try {
+            // Establish a database connection
+         
+
+            // Prepare the SQL statement
+            String sql = "INSERT INTO mod_task_pending (title, details, due_date) VALUES (?, ?, ?)";
+            prepare = connect.prepareStatement(sql);
+
+            // Set values from the user input
+            prepare.setString(1, txtTitleTask.getText());
+            prepare.setString(2, txtDetails.getText());
+            prepare.setDate(3, java.sql.Date.valueOf(dueDatePicker.getValue())); // Convert LocalDate to java.sql.Date
+
+            // Execute the SQL statement
+            prepare.executeUpdate();
+
+            if (toDoListUiController != null) {
+                toDoListUiController.homeDisplayListCard();
+            } else {
+                // Handle the case where the controller is not set
+                System.out.println("Error: Controller not set.");
+            }
+
+            // Show a success alert
+            showSuccessAlert();
+
+        } catch (SQLException e) {
+            // Handle any SQL errors
+            e.printStackTrace();
+            showErrorAlert("Error", "Failed to insert values into the database.");
+        } finally {
+            // Close resources
+            try {
+                if (prepare != null) {
+                    prepare.close();
+                }
+                if (connect != null) {
+                    connect.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+*/
 }

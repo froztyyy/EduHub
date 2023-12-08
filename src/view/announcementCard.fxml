@@ -4,19 +4,20 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefWidth="550.0" style="-fx-background-color: transparent;" stylesheets="@../style/announcementCard.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AnnouncementCardController">
+<AnchorPane id="AnchorPane" fx:id="announcementCard" prefWidth="550.0" style="-fx-background-color: transparent;" stylesheets="@../style/announcementCard.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AnnouncementCardController">
    <children>
       <VBox spacing="15.0" styleClass="secondary-bg" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
          <children>
             <HBox alignment="CENTER" spacing="15.0">
                <children>
-                  <Label fx:id="lblSurname" text="Surname" textFill="WHITE">
+                  <Label fx:id="lblSurname" text="Surname" textFill="#a8a8a8">
                      <font>
                         <Font name="Arial" size="13.0" />
                      </font>
@@ -24,18 +25,18 @@
                         <Insets left="15.0" />
                      </padding>
                   </Label>
-                  <Label fx:id="lblPriorityLevel" text="Priority Level" textFill="#686868">
-                     <font>
-                        <Font name="Arial Italic" size="12.0" />
-                     </font>
-                  </Label>
                   <Label fx:id="lblAudience" text="Audience" textFill="#686868">
                      <font>
                         <Font name="Arial Italic" size="12.0" />
                      </font>
                   </Label>
+                  <Label fx:id="lblPriorityLevel" text="Priority Level" textFill="#686868">
+                     <font>
+                        <Font name="Arial Italic" size="12.0" />
+                     </font>
+                  </Label>
                   <Pane HBox.hgrow="ALWAYS" />
-                  <Button mnemonicParsing="false" styleClass="btns" text="Remove">
+                  <Button fx:id="btnRemove" mnemonicParsing="false" onAction="#handleRemoveButton" styleClass="btns" text="Remove">
                      <font>
                         <Font name="Arial" size="13.0" />
                      </font>
@@ -47,11 +48,10 @@
             </HBox>
             <HBox alignment="CENTER" spacing="15.0">
                <children>
-                  <Label fx:id="lblTitle" text="Title" textFill="WHITE">
+                  <TextField fx:id="txtTitle" editable="false" styleClass="txtField">
                      <font>
-                        <Font name="Arial" size="15.0" />
-                     </font>
-                  </Label>
+                        <Font name="Arial Bold" size="15.0" />
+                     </font></TextField>
                   <Pane HBox.hgrow="ALWAYS" />
                   <Label fx:id="lblPostDate" text="postDate" textFill="#eeeeee">
                      <font>
@@ -59,11 +59,8 @@
                      </font>
                   </Label>
                </children>
-               <padding>
-                  <Insets left="15.0" right="15.0" />
-               </padding>
             </HBox>
-            <TextArea fx:id="txtBody" prefHeight="250.0" prefWidth="500.0" styleClass="textArea" text="Details">
+            <TextArea fx:id="txtBody" editable="false" prefHeight="250.0" prefWidth="500.0" styleClass="textArea" text="Details" wrapText="true">
                <padding>
                   <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
                </padding>
