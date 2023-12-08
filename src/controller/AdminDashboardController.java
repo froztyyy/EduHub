@@ -286,8 +286,6 @@ public class AdminDashboardController implements Initializable {
     @FXML
     private TableColumn<GetArchiveCourseData, String> archiveCourseName;
     @FXML
-    private Label courseArchiveCount;
-    @FXML
     private TableView<GetArchiveYearSectionData> archiveYearSectionTbl;
     @FXML
     private TableColumn<GetArchiveYearSectionData, String> archiveYearSection;
@@ -398,7 +396,15 @@ public class AdminDashboardController implements Initializable {
     @FXML
     private Pane sideCard;
     @FXML
-    private TextField searchSectionCourse;
+    private Label numberItemsYearSectionTrash;
+    @FXML
+    private Label numberItemsCourseYearTrash;
+    @FXML
+    private Label numberItemsStudentTrash;
+    @FXML
+    private Label numberItemsOfficerTrash;
+    @FXML
+    private Label numberItemsFeedbackTrash;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -533,7 +539,6 @@ public class AdminDashboardController implements Initializable {
         archiveCourse.setCellValueFactory(new PropertyValueFactory<>("CourseAbb"));
         archiveCourseName.setCellValueFactory(new PropertyValueFactory<>("CourseName"));
         loadArchiveCourseData();
-        updateCourseArchiveCount();
 
         archiveYearSection.setCellValueFactory(new PropertyValueFactory<>("SectionName"));
         loadArchiveYearSectionData();
@@ -1071,23 +1076,23 @@ public class AdminDashboardController implements Initializable {
 
     @FXML
     private void handleCreateAccount(ActionEvent event) {
-        
-    if (txtStudentID.getText().isEmpty() || txtPassword.getText().isEmpty() ||
-        txtSurname.getText().isEmpty() || txtFirstname.getText().isEmpty() ||
-        cbCourse.getValue() == null || cbSectionYear.getValue() == null) {
-        showAlert("Please fill in all required fields");
-        return;
-    }
 
-    // Check for datatype errors
-    try {
-        // Assuming StudentID is an integer
-        Integer.parseInt(txtStudentID.getText());
-    } catch (NumberFormatException e) {
-        showAlert("Invalid StudentID. Please enter a valid integer.");
-        return;
-    }
-        
+        if (txtStudentID.getText().isEmpty() || txtPassword.getText().isEmpty()
+                || txtSurname.getText().isEmpty() || txtFirstname.getText().isEmpty()
+                || cbCourse.getValue() == null || cbSectionYear.getValue() == null) {
+            showAlert("Please fill in all required fields");
+            return;
+        }
+
+        // Check for datatype errors
+        try {
+            // Assuming StudentID is an integer
+            Integer.parseInt(txtStudentID.getText());
+        } catch (NumberFormatException e) {
+            showAlert("Invalid StudentID. Please enter a valid integer.");
+            return;
+        }
+
         String sql = "INSERT INTO account_student (StudentID, Password, RoleID, Surname, Firstname, Middlename, Suffix, CourseID, SectionID) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -1109,7 +1114,7 @@ public class AdminDashboardController implements Initializable {
 
             // Execute the SQL query
             prepare.executeUpdate();
-            
+
             // Add the additional column to the tables and insert the StudentID
             addStudentIDColumnAndInsertValue("mod_announce", studentID);
             addStudentIDColumnAndInsertValue("mod_announce_archive", studentID);
@@ -1117,7 +1122,7 @@ public class AdminDashboardController implements Initializable {
 
             // Show success alert
             showSuccessAlert("Account created successfully!");
-            
+
             txtStudentID.clear();
             txtPassword.clear();
             txtSurname.clear();
@@ -1148,13 +1153,13 @@ public class AdminDashboardController implements Initializable {
             // Execute the SQL query to add the column
             prepare = connect.prepareStatement(alterTableSql);
             prepare.executeUpdate();
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Failed to add StudentID column and insert value to " + tableName);
         }
     }
-    
+
     private void showSuccessAlert(String message) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Success");
@@ -1490,22 +1495,22 @@ public class AdminDashboardController implements Initializable {
     private void handleCreateCourse(ActionEvent event) {
         String sql = "Insert into filter_course (CourseAbb, CourseName)" + "Values (? , ?)";
 
-            // Check if CourseAbb and CourseName are not empty
+        // Check if CourseAbb and CourseName are not empty
         if (txtCourseAbb.getText().isEmpty() || txtCourseName.getText().isEmpty()) {
             showWarningAlert("Please fill in all required fields.");
             return; // Exit the method if validation fails
         }
-        
-        if (txtCourseAbb.getText().isEmpty()){
+
+        if (txtCourseAbb.getText().isEmpty()) {
             showWarningAlert("Course Abbreviation cannot be empty.");
             return;
         }
-        
-        if (txtCourseName.getText().isEmpty()){
+
+        if (txtCourseName.getText().isEmpty()) {
             showWarningAlert("Course Name cannot be empty.");
             return;
         }
-        
+
         try {
             connect = database.getConnection();
             prepare = connect.prepareStatement(sql);
@@ -1534,55 +1539,54 @@ public class AdminDashboardController implements Initializable {
     }
 
     @FXML
-private void handleDeleteCourse(ActionEvent event) {
-    try {
-        connect = database.getConnection();
+    private void handleDeleteCourse(ActionEvent event) {
+        try {
+            connect = database.getConnection();
 
-        // Get the selected item from the table
-        getCourseData selectedCourse = tblCourseData.getSelectionModel().getSelectedItem();
+            // Get the selected item from the table
+            getCourseData selectedCourse = tblCourseData.getSelectionModel().getSelectedItem();
 
-        if (selectedCourse != null) {
-            // Show a confirmation alert
-            Alert alert = new Alert(AlertType.CONFIRMATION);
-            alert.setTitle("Confirmation");
-            alert.setHeaderText("Are you sure you want to remove this item?");
-            alert.setContentText("This will move the data to archive.");
+            if (selectedCourse != null) {
+                // Show a confirmation alert
+                Alert alert = new Alert(AlertType.CONFIRMATION);
+                alert.setTitle("Confirmation");
+                alert.setHeaderText("Are you sure you want to remove this item?");
+                alert.setContentText("This will move the data to archive.");
 
-            // Wait for user's response
-            Optional<ButtonType> result = alert.showAndWait();
+                // Wait for user's response
+                Optional<ButtonType> result = alert.showAndWait();
 
-            if (result.isPresent() && result.get() == ButtonType.OK) {
-                // User clicked OK, proceed with removal
+                if (result.isPresent() && result.get() == ButtonType.OK) {
+                    // User clicked OK, proceed with removal
 
-                // First, delete the course from the task table (filter_course)
-                deleteFromTaskTable(connect, selectedCourse.getCourseAbb());
+                    // First, delete the course from the task table (filter_course)
+                    deleteFromTaskTable(connect, selectedCourse.getCourseAbb());
 
-                // Now, insert the course into the archive table (trash_course)
-                insertIntoArchiveTable(connect, selectedCourse);
+                    // Now, insert the course into the archive table (trash_course)
+                    insertIntoArchiveTable(connect, selectedCourse);
 
-                showSuccessAlert("Course removed successfully!");
+                    showSuccessAlert("Course removed successfully!");
 
-                // Refresh the table and ComboBox after removal
-                loadCourseData();
-                cbCourse.getItems().clear();
-                fetchCourseToComboBox(cbCourse);
-                int coursesCount = fetchNumberOfCourses();
-                lblCoursesAvailable.setText(String.valueOf(coursesCount));
-                loadArchiveCourseData();
-                updateCourseArchiveCount();
+                    // Refresh the table and ComboBox after removal
+                    loadCourseData();
+                    cbCourse.getItems().clear();
+                    fetchCourseToComboBox(cbCourse);
+                    int coursesCount = fetchNumberOfCourses();
+                    lblCoursesAvailable.setText(String.valueOf(coursesCount));
+                    loadArchiveCourseData();
+                }
+            } else {
+                // If no item is selected, show a warning or error message
+                showWarningAlert("Please select a course to remove.");
             }
-        } else {
-            // If no item is selected, show a warning or error message
-            showWarningAlert("Please select a course to remove.");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Handle exceptions appropriately (show error message, log, etc.)
+        } finally {
+            closeResources();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
-        // Handle exceptions appropriately (show error message, log, etc.)
-    } finally {
-        closeResources();
     }
-}
-    
+
 //    @FXML
 //    private void handleDeleteCourse(ActionEvent event) {
 //        // Show a confirmation alert
@@ -1619,7 +1623,6 @@ private void handleDeleteCourse(ActionEvent event) {
 //                    int coursesCount = fetchNumberOfCourses();
 //                    lblCoursesAvailable.setText(String.valueOf(coursesCount));
 //                    loadArchiveCourseData();
-//                    updateCourseArchiveCount();
 //                } else {
 //                    // If no item is selected, show a warning or error message
 //                    showWarningAlert("Please select a course to remove.");
@@ -1633,7 +1636,6 @@ private void handleDeleteCourse(ActionEvent event) {
 //            }
 //        }
 //    }
-
     private void showWarningAlert(String message) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Problem Occured");
@@ -1741,13 +1743,13 @@ private void handleDeleteCourse(ActionEvent event) {
     // SECTION SECTION
     @FXML
     private void handleCreateYearSection(ActionEvent event) {
-        
+
         // Check if txtYearSection is not empty
         if (txtYearSection.getText().isEmpty()) {
             showWarningAlert("Please fill in all required fields.");
             return; // Exit the method if validation fails
         }
-        
+
         String sql = "Insert into filter_section (SectionName)" + "Values (?)";
 
         try {
@@ -1795,7 +1797,6 @@ private void handleDeleteCourse(ActionEvent event) {
                 cbSectionYear.getItems().clear();
                 fetchSectionToComboBox(cbSectionYear);
                 loadArchiveYearSectionData();
-                updateCourseArchiveCount();
             } catch (SQLException e) {
                 e.printStackTrace();
                 // Handle exceptions appropriately (show error message, log, etc.)
@@ -2100,55 +2101,55 @@ private void handleDeleteCourse(ActionEvent event) {
         }
     }
 
-   private void saveAsPDF() {
-    PrinterJob printerJob = PrinterJob.createPrinterJob();
+    private void saveAsPDF() {
+        PrinterJob printerJob = PrinterJob.createPrinterJob();
 
-    if (printerJob != null) {
-        PageLayout pageLayout = printerJob.getJobSettings().getPageLayout();
+        if (printerJob != null) {
+            PageLayout pageLayout = printerJob.getJobSettings().getPageLayout();
 
-        // Set the page layout to Portrait
-        printerJob.getJobSettings().setPageLayout(
-                PrinterJob.createPrinterJob()
-                        .getPrinter()
-                        .createPageLayout(
-                                Paper.A4,
-                                PageOrientation.PORTRAIT,
-                                PrinterJob.createPrinterJob().getPrinter().getDefaultPageLayout().getLeftMargin(),
-                                PrinterJob.createPrinterJob().getPrinter().getDefaultPageLayout().getTopMargin(),
-                                PrinterJob.createPrinterJob().getPrinter().getDefaultPageLayout().getPrintableWidth(),
-                                PrinterJob.createPrinterJob().getPrinter().getDefaultPageLayout().getPrintableHeight()
-                        )
-        );
+            // Set the page layout to Portrait
+            printerJob.getJobSettings().setPageLayout(
+                    PrinterJob.createPrinterJob()
+                            .getPrinter()
+                            .createPageLayout(
+                                    Paper.A4,
+                                    PageOrientation.PORTRAIT,
+                                    PrinterJob.createPrinterJob().getPrinter().getDefaultPageLayout().getLeftMargin(),
+                                    PrinterJob.createPrinterJob().getPrinter().getDefaultPageLayout().getTopMargin(),
+                                    PrinterJob.createPrinterJob().getPrinter().getDefaultPageLayout().getPrintableWidth(),
+                                    PrinterJob.createPrinterJob().getPrinter().getDefaultPageLayout().getPrintableHeight()
+                            )
+            );
 
-        // Set the content to be printed
-        boolean success = printerJob.printPage(eduhubAccount);
+            // Set the content to be printed
+            boolean success = printerJob.printPage(eduhubAccount);
 
-        if (success) {
-            // Prompt for printing
-            boolean printConfirmed = printerJob.showPrintDialog(null);
+            if (success) {
+                // Prompt for printing
+                boolean printConfirmed = printerJob.showPrintDialog(null);
 
-            if (printConfirmed) {
-                // Print the content
-                success = printerJob.printPage(eduhubAccount);
+                if (printConfirmed) {
+                    // Print the content
+                    success = printerJob.printPage(eduhubAccount);
 
-                if (success) {
-                    showAlert("Success", "Data successfully printed and saved to your computer.");
+                    if (success) {
+                        showAlert("Success", "Data successfully printed and saved to your computer.");
+                    } else {
+                        showErrorAlert("Error printing. Please try again.");
+                    }
                 } else {
-                    showErrorAlert("Error printing. Please try again.");
+                    showAlert("Success", "Data successfully saved to your computer.");
                 }
+
+                printerJob.endJob();
             } else {
-                showAlert("Success", "Data successfully saved to your computer.");
+                showErrorAlert("Error saving the PDF. Please try again.");
             }
 
-            printerJob.endJob();
-        } else {
-            showErrorAlert("Error saving the PDF. Please try again.");
+            // Reset the page layout to the original
+            printerJob.getJobSettings().setPageLayout(pageLayout);
         }
-
-        // Reset the page layout to the original
-        printerJob.getJobSettings().setPageLayout(pageLayout);
     }
-}
 
     private void showAlert(String title, String content) {
         Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
@@ -2549,15 +2550,20 @@ private void handleDeleteCourse(ActionEvent event) {
         try {
             prepare = connect.prepareStatement("SELECT CourseAbb, CourseName FROM trash_course");
             result = prepare.executeQuery();
+            int rowCount = 0; // Counter for the number of rows
 
             while (result.next()) {
                 GetArchiveCourseData courseData = new GetArchiveCourseData(); // Corrected variable name
                 courseData.setCourseAbb(result.getString("CourseAbb"));
                 courseData.setCourseName(result.getString("CourseName"));
                 archiveCourseData.add(courseData); // Corrected variable name
+                rowCount++;
             }
 
             archiveCoursetbl.setItems(archiveCourseData); // Assuming archiveCoursetbl is the TableView in your FXML
+            // Set the label text to the number of rows concatenated with " Items"
+            numberItemsCourseYearTrash.setText(rowCount + " Items");
+
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -2689,24 +2695,10 @@ private void handleDeleteCourse(ActionEvent event) {
         }
     }
 
-    private void updateCourseArchiveCount() {
-        try {
-            connect = database.getConnection();
-            prepare = connect.prepareStatement("SELECT COUNT(CourseID) FROM trash_course");
-            result = prepare.executeQuery();
-            int count = result.next() ? result.getInt(1) : 0;
-            courseArchiveCount.setText(count + " items");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeResources();
-        }
-    }
-
     ////////////////////////////////// 
     // YEAR GOES TO ARCHIVE 
     private void deleteFromYearSectionTable(java.sql.Connection conn, String sectionName) throws SQLException {
-        
+
         String deleteQuery = "DELETE FROM filter_section WHERE SectionName = ?";
         try (PreparedStatement prepare = conn.prepareStatement(deleteQuery)) {
             prepare.setString(1, sectionName);
@@ -2732,20 +2724,25 @@ private void handleDeleteCourse(ActionEvent event) {
         try {
             prepare = connect.prepareStatement("SELECT SectionName FROM trash_section");
             result = prepare.executeQuery();
-
+            int rowCount = 0; // Counter for the number of rows
             while (result.next()) {
                 GetArchiveYearSectionData yearSectionData = new GetArchiveYearSectionData();
                 yearSectionData.setSectionName(result.getString("SectionName"));
                 archiveYearSectionData.add(yearSectionData);
+                rowCount++;
             }
 
             archiveYearSectionTbl.setItems(archiveYearSectionData);
+
+            // Set the label text to the number of rows concatenated with " Items"
+            numberItemsYearSectionTrash.setText(rowCount + " Items");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
             // Close the result set, statement, and connection in a finally block
             closeResources();
         }
+
     }
 
     @FXML
@@ -2772,7 +2769,6 @@ private void handleDeleteCourse(ActionEvent event) {
 
                     // Delete the section from the trash_section table
                     deleteFromArchiveYearSectionTable(connect, selectedYearSection);
-                    updateCourseArchiveCount();
 
                     showSuccessAlert("Year & Section retrieved successfully!");
 
@@ -2834,7 +2830,6 @@ private void handleDeleteCourse(ActionEvent event) {
 
                     // Delete the section from the trash_section table
                     deleteFromArchiveYearSectionTable(connect, selectedYearSection);
-                    updateCourseArchiveCount();
 
                     showSuccessAlert("Year & Section permanently deleted!");
 
@@ -2873,6 +2868,7 @@ private void handleDeleteCourse(ActionEvent event) {
         try {
             prepare = connect.prepareStatement("SELECT designRating, functionRating, experienceRating, feedbackReport FROM trash_feedback");
             result = prepare.executeQuery();
+            int rowCount = 0; // Counter for the number of rows
 
             while (result.next()) {
                 GetArchiveFeedBack feedback = new GetArchiveFeedBack();
@@ -2881,9 +2877,13 @@ private void handleDeleteCourse(ActionEvent event) {
                 feedback.setExperienceRating(result.getInt("experienceRating"));
                 feedback.setFeedbackReport(result.getString("feedbackReport"));
                 archiveFeedBackData.add(feedback);
+                rowCount++;
+
             }
 
             archiveFeedBacktbl.setItems(archiveFeedBackData);
+            // Set the label text to the number of rows concatenated with " Items"
+            numberItemsFeedbackTrash.setText(rowCount + " Items");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -2999,6 +2999,7 @@ private void handleDeleteCourse(ActionEvent event) {
         try {
             prepare = connect.prepareStatement("SELECT StudentID, Password, RoleID, Surname, FirstName, MiddleName, Suffix, CourseID, SectionID FROM trash_student");
             result = prepare.executeQuery();
+            int rowCount = 0; // Counter for the number of rows
 
             while (result.next()) {
                 GetArchiveStudentAccountData studentAccount = new GetArchiveStudentAccountData();
@@ -3012,9 +3013,13 @@ private void handleDeleteCourse(ActionEvent event) {
                 studentAccount.setTblCourse(result.getString("CourseID"));
                 studentAccount.setTblYearSection(result.getString("SectionID"));
                 archiveStudentData.add(studentAccount);
+                rowCount++;
+
             }
 
             archiveStudentAccTbl.setItems(archiveStudentData);
+            // Set the label text to the number of rows concatenated with " Items"
+            numberItemsStudentTrash.setText(rowCount + " Items");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -3140,6 +3145,7 @@ private void handleDeleteCourse(ActionEvent event) {
         try {
             prepare = connect.prepareStatement("SELECT StudentID, Password, RoleID, Surname, FirstName, MiddleName, Suffix, CourseID, SectionID FROM trash_officer");
             result = prepare.executeQuery();
+            int rowCount = 0; // Counter for the number of rows
 
             while (result.next()) {
                 GetArchiveOfficerData officerAccount = new GetArchiveOfficerData();
@@ -3153,6 +3159,7 @@ private void handleDeleteCourse(ActionEvent event) {
                 officerAccount.setTblCourse(result.getString("CourseID"));
                 officerAccount.setTblYearSection(result.getString("SectionID"));
                 archiveOfficerData.add(officerAccount);
+                rowCount++;
 
                 // ... (your existing code)
                 // Print statements for debugging
@@ -3162,6 +3169,8 @@ private void handleDeleteCourse(ActionEvent event) {
             }
 
             archiveOfficerAccTbl.setItems(archiveOfficerData);
+            // Set the label text to the number of rows concatenated with " Items"
+            numberItemsOfficerTrash.setText(rowCount + " Items");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -3769,6 +3778,56 @@ private void handleDeleteCourse(ActionEvent event) {
         slider1.setToX(489);
         slider1.setDuration(Duration.seconds(.5));
         slider1.play();
+    }
+
+    @FXML
+    private void refreshCourseTable(ActionEvent event) {
+        loadCourseData();
+    }
+
+    @FXML
+    private void refreshYearTable(ActionEvent event) {
+        loadYearSectionData();
+    }
+
+    @FXML
+    private void refreshCourseYearTableArchive(ActionEvent event) {
+        loadArchiveCourseData();
+    }
+
+    @FXML
+    private void refreshYearSectionTableArchive(ActionEvent event) {
+        loadArchiveYearSectionData();
+    }
+
+    @FXML
+    private void refreshStudentTable(ActionEvent event) {
+        loadStudentAccountData();
+    }
+
+    @FXML
+    private void refreshStudentTableArchive(ActionEvent event) {
+        loadArchiveStudentData();
+    }
+
+    @FXML
+    private void refreshOfficerTable(ActionEvent event) {
+        loadOfficerAccountData();
+    }
+
+    @FXML
+    private void refreshOfficerTableArchive(ActionEvent event) {
+        loadArchiveOfficerData();
+    }
+
+    @FXML
+    private void refreshFeedBackTable(ActionEvent event) {
+        loadFeedbackData();
+    }
+
+    @FXML
+    private void refreshFeedBackTableArchive(ActionEvent event) {
+        loadArchiveFeedBackData();
     }
 
 }

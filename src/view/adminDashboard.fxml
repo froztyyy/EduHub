@@ -394,7 +394,7 @@
                   </AnchorPane>
                </children>
             </Pane>
-            <Pane fx:id="courseYearWindow" layoutY="95.0">
+            <Pane fx:id="courseYearWindow" layoutY="95.0" visible="false">
                <children>
                   <Pane fx:id="ListCourseYearWindow" layoutX="2.0" layoutY="2.0" prefHeight="697.0" prefWidth="1332.0" stylesheets="@../style/admindashboard.css">
                      <children>
@@ -570,6 +570,30 @@
                               </ImageView>
                            </graphic>
                         </Button>
+                        <Button layoutX="960.0" layoutY="30.0" mnemonicParsing="false" onAction="#refreshCourseTable" prefHeight="32.0" prefWidth="44.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" textFill="WHITE">
+                           <font>
+                              <Font name="Arial" size="12.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/icons/icons8-refresh-26.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button layoutX="1163.0" layoutY="30.0" mnemonicParsing="false" onAction="#refreshYearTable" prefHeight="32.0" prefWidth="44.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" textFill="WHITE">
+                           <font>
+                              <Font name="Arial" size="12.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/icons/icons8-refresh-26.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
                      </children>
                   </Pane>
                   <Pane fx:id="trashCourseYearWindow" layoutX="3.0" layoutY="3.0" prefHeight="697.0" prefWidth="1332.0" stylesheets="@../style/admindashboard.css" visible="false">
@@ -594,7 +618,7 @@
                               <Font name="Arial Bold" size="24.0" />
                            </font>
                         </Text>
-                        <Text fill="#2b4fe4" layoutX="695.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Year List">
+                        <Text fill="#2b4fe4" layoutX="686.0" layoutY="54.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Year List">
                            <font>
                               <Font name="Arial Bold" size="24.0" />
                            </font>
@@ -662,12 +686,12 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Label layoutX="407.0" layoutY="36.0" text="4 items" textFill="#9e9e9e">
+                        <Label fx:id="numberItemsYearSectionTrash" layoutX="407.0" layoutY="36.0" text="4 items" textFill="#9e9e9e">
                            <font>
                               <Font name="Arial" size="16.0" />
                            </font>
                         </Label>
-                        <Label fx:id="courseArchiveCount" layoutX="1094.0" layoutY="36.0" text="4 items" textFill="#9e9e9e">
+                        <Label fx:id="numberItemsCourseYearTrash" layoutX="1094.0" layoutY="36.0" text="4 items" textFill="#9e9e9e">
                            <font>
                               <Font name="Arial" size="16.0" />
                            </font>
@@ -686,6 +710,30 @@
                               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../media/icons/icons8-full-trash-24.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button layoutX="1034.0" layoutY="30.0" mnemonicParsing="false" onAction="#refreshCourseYearTableArchive" prefHeight="32.0" prefWidth="44.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" textFill="WHITE">
+                           <font>
+                              <Font name="Arial" size="12.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/icons/icons8-refresh-26.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button layoutX="344.0" layoutY="30.0" mnemonicParsing="false" onAction="#refreshYearSectionTableArchive" prefHeight="32.0" prefWidth="44.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" textFill="WHITE">
+                           <font>
+                              <Font name="Arial" size="12.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/icons/icons8-refresh-26.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -886,6 +934,18 @@
                               </ImageView>
                            </graphic>
                         </Button>
+                        <Button layoutX="284.0" layoutY="23.0" mnemonicParsing="false" onAction="#refreshStudentTable" prefHeight="32.0" prefWidth="44.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" textFill="WHITE">
+                           <font>
+                              <Font name="Arial" size="12.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/icons/icons8-refresh-26.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
                      </children>
                   </Pane>
                   <Pane fx:id="trashSrudentAccountWindow" layoutX="5.0" prefHeight="704.0" prefWidth="1332.0" visible="false">
@@ -949,7 +1009,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Label layoutX="1096.0" layoutY="46.0" text="4 items" textFill="#9e9e9e">
+                        <Label fx:id="numberItemsStudentTrash" layoutX="1096.0" layoutY="46.0" text="4 items" textFill="#9e9e9e">
                            <font>
                               <Font name="Arial" size="18.0" />
                            </font>
@@ -959,6 +1019,18 @@
                               <ImageView fitHeight="28.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../media/icons/icons8-full-trash-24.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button layoutX="450.0" layoutY="37.0" mnemonicParsing="false" onAction="#refreshStudentTableArchive" prefHeight="32.0" prefWidth="44.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" textFill="WHITE">
+                           <font>
+                              <Font name="Arial" size="12.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/icons/icons8-refresh-26.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -1174,6 +1246,18 @@
                               <Font name="Arial" size="13.0" />
                            </font>
                         </Button>
+                        <Button layoutX="684.0" layoutY="35.0" mnemonicParsing="false" onAction="#refreshOfficerTable" prefHeight="32.0" prefWidth="44.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" textFill="WHITE">
+                           <font>
+                              <Font name="Arial" size="12.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/icons/icons8-refresh-26.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
                      </children>
                   </Pane>
                   <Pane fx:id="trashOfficerAccountWindow" layoutY="1.0" prefHeight="697.0" prefWidth="1332.0" stylesheets="@../style/admindashboard.css" visible="false">
@@ -1203,7 +1287,7 @@
                               <Font name="Arial Bold" size="27.0" />
                            </font>
                         </Text>
-                        <Label layoutX="1100.0" layoutY="50.0" text="4 items" textFill="#9e9e9e">
+                        <Label fx:id="numberItemsOfficerTrash" layoutX="1100.0" layoutY="50.0" text="4 items" textFill="#9e9e9e">
                            <font>
                               <Font name="Arial" size="17.0" />
                            </font>
@@ -1251,11 +1335,23 @@
                               </TableView>
                            </children>
                         </Pane>
+                        <Button layoutX="1034.0" layoutY="44.0" mnemonicParsing="false" onAction="#refreshOfficerTableArchive" prefHeight="32.0" prefWidth="44.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" textFill="WHITE">
+                           <font>
+                              <Font name="Arial" size="12.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/icons/icons8-refresh-26.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
                      </children>
                   </Pane>
                </children>
             </Pane>
-            <Pane fx:id="feedbackWindow" layoutX="-2.0" layoutY="97.0" visible="false">
+            <Pane fx:id="feedbackWindow" layoutX="-2.0" layoutY="97.0">
                <children>
                   <Pane fx:id="listFeedbackWIndow" prefHeight="699.0" prefWidth="1332.0" styleClass="tab" visible="false">
                      <children>
@@ -1320,6 +1416,18 @@
                               </ImageView>
                            </graphic>
                         </Button>
+                        <Button layoutX="821.0" layoutY="31.0" mnemonicParsing="false" onAction="#refreshFeedBackTable" prefHeight="32.0" prefWidth="44.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" textFill="WHITE">
+                           <font>
+                              <Font name="Arial" size="12.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/icons/icons8-refresh-26.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
                      </children>
                   </Pane>
                   <Pane fx:id="trashFeedbackWindow" layoutY="3.0" prefHeight="699.0" prefWidth="1332.0" styleClass="tab">
@@ -1343,7 +1451,7 @@
                               </ImageView>
                            </graphic>
                         </Button>
-                        <Label layoutX="1129.0" layoutY="42.0" text="4 items" textFill="#9e9e9e">
+                        <Label fx:id="numberItemsFeedbackTrash" layoutX="1129.0" layoutY="42.0" text="4 items" textFill="#9e9e9e">
                            <font>
                               <Font name="Arial" size="16.0" />
                            </font>
@@ -1389,6 +1497,18 @@
                                  <effect>
                                     <ColorAdjust brightness="1.0" contrast="-0.02" />
                                  </effect>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button layoutX="1065.0" layoutY="33.0" mnemonicParsing="false" onAction="#refreshFeedBackTableArchive" prefHeight="32.0" prefWidth="44.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" textFill="WHITE">
+                           <font>
+                              <Font name="Arial" size="12.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../media/icons/icons8-refresh-26.png" />
+                                 </image>
                               </ImageView>
                            </graphic>
                         </Button>

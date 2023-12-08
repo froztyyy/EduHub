@@ -1896,8 +1896,8 @@ public class OfficerDashboardController implements Initializable {
 
             archiveStudentAccTbl.setItems(archiveStudentData);
 
-            // Set the label text to the number of rows
-            numberItemsStudentTrash.setText(String.valueOf(rowCount));
+            // Set the label text to the number of rows concatenated with " Items"
+            numberItemsStudentTrash.setText(rowCount + " Items");
 
         } catch (SQLException e) {
             e.printStackTrace();
