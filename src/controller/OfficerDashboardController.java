@@ -1008,7 +1008,7 @@ public class OfficerDashboardController implements Initializable {
     
         // Method to add the StudentID column to a table and insert the StudentID value
     private void addStudentIDColumnAndInsertValue(String tableName, String studentID) {
-        String alterTableSql = "ALTER TABLE `" + tableName + "` ADD `" + studentID + "` BOOLEAN NOT NULL";
+        String alterTableSql = "ALTER TABLE `" + tableName + "` ADD `" + studentID + "` BOOLEAN NOT NULL DEFAULT FALSE";
 
         try {
             // Execute the SQL query to add the column
