@@ -76,6 +76,15 @@ public class AnnouncementData {
 
     private String title;
     private String text;
+
+    public String getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(String deadline) {
+        this.deadline = deadline;
+    }
+    private String deadline;
     private String audience;
     private String priority;
     private String user_StudentID;
@@ -111,6 +120,7 @@ public class AnnouncementData {
         this.user_Surname = user_Surname;
         this.body = body;
         this.postDate = postDate;
+        this.deadline = deadline;
     }
 
 }

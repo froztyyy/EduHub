@@ -370,6 +370,7 @@ public class OfficerDashboardController implements Initializable {
 
         fetchAudienceToComboBoxToDo(cbAudienceToDo);
         fetchPriorityLevelToComboBoxToDo(cbPriorityToDo);
+        homeDisplayListCard();
 
         listStudentAccountWindow.setVisible(true);
         trashSrudentAccountWindow1.setVisible(false);
@@ -1521,21 +1522,25 @@ public class OfficerDashboardController implements Initializable {
     public void user_StudentID(String studentID) {
         this.user_StudentID = studentID;
         DisplayAnnouncement();
+        homeDisplayListCard();
     }
 
     public void user_CourseID(String courseID) {
         this.user_CourseID = courseID;
         DisplayAnnouncement();
+        homeDisplayListCard();
     }
 
     public void user_SectionID(String sectionID) {
         this.user_SectionID = sectionID;
         DisplayAnnouncement();
+        homeDisplayListCard();
     }
 
     public void user_Surname(String surname) {
         this.user_Surname = surname;
         DisplayAnnouncement();
+        homeDisplayListCard();
     }
 
     private void fetchAudienceToComboBox(ComboBox<String> comboBox) {
@@ -1771,37 +1776,36 @@ public class OfficerDashboardController implements Initializable {
         }
     }
 
-    /*
-    
-    private void handleButtonSubmit(ActionEvent event) throws IOException {
-        
+    @FXML
+    private void handleButtonCreateTask(ActionEvent event) throws IOException {
         connect = database.getConnection();
-        
-        try {
-            // Establish a database connection
-         
 
-            // Prepare the SQL statement
-            String sql = "INSERT INTO mod_task_pending (title, details, due_date) VALUES (?, ?, ?)";
-            prepare = connect.prepareStatement(sql);
+        String sql = "INSERT INTO mod_todo_pending (StudentID, Title, Note, Deadline, AudienceID, PriorityID, Surname, CourseID, SectionID) VALUES (?, ?, ?, ?, ? , ? ,? ,?, ?)";
+
+        try {
+            System.out.println("Current studentID: " + user_StudentID);
 
             // Set values from the user input
-            prepare.setString(1, txtTitleTask.getText());
-            prepare.setString(2, txtDetails.getText());
-            prepare.setDate(3, java.sql.Date.valueOf(dueDatePicker.getValue())); // Convert LocalDate to java.sql.Date
+            prepare = connect.prepareStatement(sql);
+            prepare.setString(1, user_StudentID);
+            prepare.setString(2, txtTitleTask.getText());
+            prepare.setString(3, txtBodyTask.getText());
+            prepare.setDate(4, java.sql.Date.valueOf(datePickerTask.getValue())); // Convert LocalDate to java.sql.Date
+            prepare.setString(5,cbAudienceToDo.getValue());
+            prepare.setString(6, cbPriorityToDo.getValue());
+            prepare.setString(7, user_Surname);
+            prepare.setString(8,user_CourseID);
+            prepare.setString(9, user_SectionID);
+
+            // Debug: Print the prepared statement
+            System.out.println("Prepared Statement: " + prepare);
 
             // Execute the SQL statement
             prepare.executeUpdate();
 
-            if (toDoListUiController != null) {
-                toDoListUiController.homeDisplayListCard();
-            } else {
-                // Handle the case where the controller is not set
-                System.out.println("Error: Controller not set.");
-            }
-
             // Show a success alert
             showSuccessAlert();
+            homeDisplayListCard();
 
         } catch (SQLException e) {
             // Handle any SQL errors
@@ -1821,7 +1825,110 @@ public class OfficerDashboardController implements Initializable {
             }
         }
     }
-     */
+    
+    private void showSuccessAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText("Values successfully inserted into the database.");
+        alert.showAndWait();
+    }
+
+    private void showErrorAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+    
+     private ObservableList<ToDoListData> toDoList = FXCollections.observableArrayList();
+
+    public ObservableList<ToDoListData> getToDoListData() throws SQLException {
+
+        String sql = "SELECT Title, Note, Deadline, AudienceID, PriorityID, StudentID, Surname, CourseID, SectionID, postDate FROM mod_todo_pending WHERE CourseID = ? AND SectionID = ? AND AudienceID IN (?, ?, ? ,?) ORDER BY PostDate DESC, PriorityID ASC";
+        ObservableList<ToDoListData> toDoList = FXCollections.observableArrayList();
+        connect = database.getConnection();
+
+        try {
+            prepare = connect.prepareStatement(sql);
+            prepare.setString(1, user_CourseID);
+            prepare.setString(2, user_SectionID);
+            prepare.setString(3, "Everyone");  // Replace with the actual value or variable
+            prepare.setString(4, "Homeroom");  // Replace with the actual value or variable
+            prepare.setString(5, "Officers");
+            prepare.setString(6, "Only Me");
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                String title = result.getString("Title");
+                String note = result.getString("Note");
+                String deadline = result.getString("Deadline");
+                String audience = result.getString("AudienceID");
+                String priority = result.getString("PriorityID");
+                String surname = result.getString("Surname");
+                String courseID = result.getString("CourseID");
+                String sectionID = result.getString("SectionID");
+                String studentID = result.getString("StudentID");
+                String postDate = result.getString("PostDate");
+
+                ToDoListData todoListData = new ToDoListData(title, note, deadline, audience, priority, courseID, sectionID, surname,studentID, postDate);
+
+                toDoList.add(todoListData);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close resources (result, prepare, connect) if needed
+        }
+
+        return toDoList;
+    }
+
+    public void homeDisplayListCard() {
+        try {
+            toDoList.clear();
+            toDoList.addAll(getToDoListData());
+
+            int maxColumns = 2;
+            int row = 0;
+            int column = 0;
+
+            taskCard.getChildren().clear();
+            taskCard.getRowConstraints().clear();
+            taskCard.getColumnConstraints().clear();
+
+            for (int q = 0; q < toDoList.size(); q++) {
+                try {
+                    if (column >= maxColumns) {
+                        // Move to the next row when the maximum number of columns is reached
+                        column = 0;
+                        row++;
+                    }
+
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(getClass().getResource("/view/displayList.fxml"));
+                    AnchorPane pane = loader.load();
+                    controller.DisplayListController cardController = loader.getController();
+                    cardController.setData(toDoList.get(q));
+
+                    taskCard.add(pane, column++, row);
+
+                    GridPane.setMargin(pane, new Insets(5));
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            currentDisplayIndex = 0;
+            if (!toDoList.isEmpty()) {
+                ToDoListData firstToDo = toDoList.get(0);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
     private Button lastClickedButtonStudentAcc = ListStudentAccountButton;
 
     private void setButtonStudentAcc(Button button, boolean isSelected) {

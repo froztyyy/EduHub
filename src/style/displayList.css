@@ -1,0 +1,90 @@
+/*
+ * Empty Stylesheet file.
+ */
+
+.btns {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10px;
+}
+
+.btns:hover {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+.btns:pressed {
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+}
+
+.main-bg {
+    -fx-background-color: #0A0A0A;
+}
+
+.secondary-bg {
+    -fx-background-color: #121212;
+    -fx-background-radius: 10px;
+}
+
+.textArea {
+    -fx-background-color: #2f2f2f;
+    -fx-background-radius: 10px;
+    -fx-prompt-text-fill: gray;
+    -fx-text-fill: white;
+}
+
+.textArea .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.textArea .scroll-pane .viewport{
+    -fx-background-color: transparent;
+}
+
+.textArea .scroll-pane .content{
+    -fx-background-color: transparent;
+}
+
+.textArea:pressed {
+    -fx-prompt-text-fill: transparent;
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+}
+
+.textArea:focused {
+    -fx-prompt-text-fill: transparent;
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+}
+
+.check-box {
+    -fx-background-color: transparent;
+
+        
+}
+
+.check-box:selected .box {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
+
+.check-box:selected .box > .mark {
+    -fx-background-color:gray;
+}
+
+.check-box .box {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+        -fx-border-color: gray;
+    -fx-border-radius: 10px;
+    -fx-border-width: 1px;
+}
+
+.check-box .box > .mark {
+    -fx-background-color: transparent;
+}
+
+.txtField {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}

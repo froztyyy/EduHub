@@ -88,13 +88,6 @@ public class AddListWindowController implements Initializable {
             // Execute the SQL statement
             prepare.executeUpdate();
 
-            if (toDoListUiController != null) {
-                toDoListUiController.homeDisplayListCard();
-            } else {
-                // Handle the case where the controller is not set
-                System.out.println("Error: Controller not set.");
-            }
-
             // Show a success alert
             showSuccessAlert();
 

@@ -18,10 +18,13 @@ import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 
 /**
  * FXML Controller class
@@ -37,18 +40,28 @@ public class DisplayListController implements Initializable {
     @FXML
     private Button btnRemove;
     @FXML
-    private Label lblDescription;
-    @FXML
     private Label lblDueDate;
     @FXML
     private TextArea txtDetailsDisplay;
+    @FXML
+    private CheckBox cbComplete;
+    @FXML
+    private Label txtSurname;
+    @FXML
+    private Label txtAudience;
+    @FXML
+    private Label txtPriority;
+    @FXML
+    private Pane paneGrey;
+    @FXML
+    private Label lblTitle;
 
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+      cbComplete.setOnAction(event -> handleCheckBoxClick());
     }    
 
     private ToDoListData todoData;
@@ -60,18 +73,36 @@ public class DisplayListController implements Initializable {
     public void setData(ToDoListData todoData) throws SQLException {
         this.todoData = todoData;
 
-        lblDescription.setText(todoData.getDescription());
-        lblDueDate.setText(todoData.getDue_date());
-        txtDetailsDisplay.setText(todoData.getDetails());
+        lblTitle.setText(todoData.getTitle());
+        lblDueDate.setText(todoData.getDeadline());
+        txtDetailsDisplay.setText(todoData.getBody());
+        txtSurname.setText(todoData.getUser_Surname());
+        txtAudience.setText(todoData.getAudience());
+        txtPriority.setText(todoData.getPriority());
+    }
+  
 
+    private void adjustLayout(GridPane gridPane) {
+        // Iterate through the children of the grid pane and update their row and column indices
+        int maxColumns =  2;
+        int row = 0;
+        int column = 0;
+
+        for (Node node : gridPane.getChildren()) {
+            if (column >= maxColumns) {
+                // Move to the next row when the maximum number of columns is reached
+                column = 0;
+                row++;
+            }
+
+            // Set the new row and column indices for the remaining cards
+            GridPane.setRowIndex(node, row);
+            GridPane.setColumnIndex(node, column);
+
+            column++;
+        }
     }
     
-    private UserDashboardController toDoListUiController;
-
-    public void setToDoListUiController(UserDashboardController toDoListUiController) {
-        this.toDoListUiController = toDoListUiController;
-    }
-
     @FXML
     private void handleRemoveButton(ActionEvent event) {
         // Show a confirmation alert
@@ -94,70 +125,65 @@ public class DisplayListController implements Initializable {
 
             // Adjust the layout of the remaining cards
             adjustLayout(parentGridPane);
+            saveToArchive();
             
-            if (toDoListUiController != null) {
-                toDoListUiController.archiveDisplayListCard();
-            } else {
-                // Handle the case where the controller is not set
-                System.out.println("Error: Controller not set.");
-            }
-            // Save data to the "archive" table in the database
-            saveToArchiveAndDeleteFromTask();
-
         }
     }
-
-    private void adjustLayout(GridPane gridPane) {
-        // Iterate through the children of the grid pane and update their row and column indices
-        int maxColumns = 3;
-        int row = 0;
-        int column = 0;
-
-        for (Node node : gridPane.getChildren()) {
-            if (column >= maxColumns) {
-                // Move to the next row when the maximum number of columns is reached
-                column = 0;
-                row++;
-            }
-
-            // Set the new row and column indices for the remaining cards
-            GridPane.setRowIndex(node, row);
-            GridPane.setColumnIndex(node, column);
-
-            column++;
-        }
-    }
-
-    private void saveToArchiveAndDeleteFromTask() {
+    
+     private void saveToArchive() {
         try (Connection conn = database.getConnection()) {
             if (conn != null) {
                 // First, delete the task from the task table
-                deleteFromTaskTable(conn);
+                deleteFromAnnouncementTable(conn);
 
                 // Now, insert the task into the archive table
                 insertIntoArchiveTable(conn);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            System.out.println("Post Deleted");
             // Handle the exception as needed
         }
     }
 
-    private void deleteFromTaskTable(Connection conn) throws SQLException {
-        String deleteQuery = "DELETE FROM todo WHERE title = ?";
+    private void deleteFromAnnouncementTable(Connection conn) throws SQLException {
+        String deleteQuery = "DELETE FROM mod_todo_pending WHERE Title = ? ";
         try (PreparedStatement preparedStatement = conn.prepareStatement(deleteQuery)) {
-            preparedStatement.setString(1, todoData.getDescription());
+            preparedStatement.setString(1, todoData.getTitle());
             preparedStatement.executeUpdate();
         }
     }
 
     private void insertIntoArchiveTable(Connection conn) throws SQLException {
-        String insertQuery = "INSERT INTO archive (title, deadline, note) VALUES (?, ?, ?)";
+        String insertQuery = "INSERT INTO mod_todo_archive (Title, Note, AudienceID, PriorityID, StudentID, Surname, CourseID, SectionID, PostDate) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement preparedStatement = conn.prepareStatement(insertQuery)) {
-            preparedStatement.setString(1, todoData.getDescription());
-            preparedStatement.setString(2, todoData.getDue_date());
-            preparedStatement.setString(3, todoData.getDetails());
+            preparedStatement.setString(1, todoData.getTitle());
+            preparedStatement.setString(2, todoData.getBody());
+            preparedStatement.setString(3, todoData.getAudience());
+            preparedStatement.setString(4, todoData.getPriority());
+            preparedStatement.setString(5, todoData.getUser_StudentID());
+            preparedStatement.setString(6, todoData.getUser_Surname());
+            preparedStatement.setString(7, todoData.getUser_CourseID());
+            preparedStatement.setString(8, todoData.getUser_SectionID());
+            preparedStatement.setString(9, todoData.getPostDate());
             preparedStatement.executeUpdate();
         }
     }
+ 
+    private void handleCheckBoxClick() {
+        // Check if the CheckBox is selected
+        if (cbComplete.isSelected()) {
+            // Enable the visibility of the Pane
+            paneGrey.setVisible(true);
+
+
+        } else {
+            // Disable the visibility of the Pane
+            paneGrey.setVisible(false);
+
+            // You can add additional logic here if needed when the CheckBox is deselected
+        }
+    }
+
 }

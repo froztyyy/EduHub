@@ -46,6 +46,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -185,26 +186,16 @@ public class UserDashboardController implements Initializable {
     private Label yearNote;
     @FXML
     private Text infoNote;
-    @FXML
     private Pane listPane;
-    @FXML
-    private GridPane listHandler;
-    @FXML
     private Pane archivePane;
-    @FXML
     private Button btnAddList;
-    @FXML
     private Button btnArchive;
-    @FXML
-    private GridPane archiveListHandler;
     @FXML
     private Label lblStudentID;
     @FXML
     private Label greetingLabel;
     @FXML
     private Button PostButton;
-    @FXML
-    private GridPane AnnouncementHandler;
     @FXML
     private Label greetingLabelTime;
     @FXML
@@ -214,8 +205,6 @@ public class UserDashboardController implements Initializable {
     @FXML
     private GridPane announcementCardDash;
     @FXML
-    private ComboBox<String> cbAudience;
-    @FXML
     private ComboBox<String> cbPriority;
     @FXML
     private TextField txtTitle;
@@ -223,6 +212,18 @@ public class UserDashboardController implements Initializable {
     private TextArea txtBody;
     @FXML
     private Button refreshannounce;
+    @FXML
+    private TextField txtTitleTask;
+    @FXML
+    private ComboBox<String> cbPriorityToDo;
+    @FXML
+    private TextArea txtBodyTask;
+    @FXML
+    private DatePicker datePickerTask;
+    @FXML
+    private Button btnCreateTask;
+    @FXML
+    private GridPane taskCard;
 
     /**
      * Initializes the controller class.
@@ -284,8 +285,6 @@ public class UserDashboardController implements Initializable {
         dateLabelForDashboard();
         TimeAndDateLocation();
 
-        homeDisplayListCard();
-        archiveDisplayListCard();
         listPane.setVisible(true);
         archivePane.setVisible(false);
 
@@ -296,8 +295,8 @@ public class UserDashboardController implements Initializable {
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
 
-        homeDisplayListCard();
-        
+        todoCard();
+
         fetchPriorityNameToComboBox(cbPriority);
 
         DisplayAnnouncementDash();
@@ -1142,7 +1141,6 @@ public class UserDashboardController implements Initializable {
 
     private Button lastClickedButtonForToDoList = null;
 
-    @FXML
     public void SwitchFormForTodoList(ActionEvent event) {
         Button clickedButton = (Button) event.getSource();
 
@@ -1176,7 +1174,6 @@ public class UserDashboardController implements Initializable {
         }
     }
 
-    @FXML
     private void handleButtonAddList(ActionEvent event) throws IOException {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/addListWindow.fxml"));
@@ -1229,7 +1226,7 @@ public class UserDashboardController implements Initializable {
                 feedbackStage.setOpacity(1);
             });
 
-            homeDisplayListCard();
+            todoCard();
 
             // Controller for the new window (if needed)
             // YourControllerClass controller = loader.getController();
@@ -1243,24 +1240,121 @@ public class UserDashboardController implements Initializable {
     private ResultSet result;
     private int currentDisplayIndex = 0;
 
+    private void fetchPriorityLevelToComboBoxToDo(ComboBox<String> comboBox) {
+
+        try {
+            prepare = connect.prepareStatement("SELECT PriorityName FROM filter_priority");
+            result = prepare.executeQuery();
+
+            List<String> items = new ArrayList<>();
+            while (result.next()) {
+                String itemName = result.getString("PriorityName");
+                items.add(itemName);
+            }
+
+            comboBox.getItems().addAll(items);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error fetching course data: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleButtonCreateTask(ActionEvent event) throws IOException {
+        connect = database.getConnection();
+
+        String sql = "INSERT INTO mod_todo_pending (StudentID, Title, Note, Deadline, AudienceID, PriorityID, Surname, CourseID, SectionID) VALUES (?, ?, ?, ?, ? , ? ,? ,?, ?)";
+
+        try {
+            System.out.println("Current studentID: " + user_StudentID);
+
+            // Set values from the user input
+            prepare = connect.prepareStatement(sql);
+            prepare.setString(1, user_StudentID);
+            prepare.setString(2, txtTitleTask.getText());
+            prepare.setString(3, txtBodyTask.getText());
+            prepare.setDate(4, java.sql.Date.valueOf(datePickerTask.getValue())); // Convert LocalDate to java.sql.Date
+            prepare.setString(5, "Only Me");
+            prepare.setString(6, cbPriorityToDo.getValue());
+            prepare.setString(7, user_Surname);
+            prepare.setString(8, user_CourseID);
+            prepare.setString(9, user_SectionID);
+
+            // Debug: Print the prepared statement
+            System.out.println("Prepared Statement: " + prepare);
+
+            // Execute the SQL statement
+            prepare.executeUpdate();
+
+            // Show a success alert
+            showSuccessAlert();
+            todoCard();
+
+        } catch (SQLException e) {
+            // Handle any SQL errors
+            e.printStackTrace();
+            showErrorAlert("Error", "Failed to insert values into the database.");
+        } finally {
+            // Close resources
+            try {
+                if (prepare != null) {
+                    prepare.close();
+                }
+                if (connect != null) {
+                    connect.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void showSuccessAlert() {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Success");
+        alert.setHeaderText(null);
+        alert.setContentText("Values successfully inserted into the database.");
+        alert.showAndWait();
+    }
+
+    private void showErrorAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
     private ObservableList<ToDoListData> toDoList = FXCollections.observableArrayList();
 
     public ObservableList<ToDoListData> getToDoListData() throws SQLException {
 
-        String sql = "Select Title, Note, Deadline FROM mod_todo_pending";
+        String sql = "SELECT Title, Note, Deadline, AudienceID, PriorityID, StudentID, Surname, CourseID, SectionID, postDate FROM mod_todo_pending WHERE CourseID = ? AND SectionID = ? AND AudienceID IN (?, ?, ?) ORDER BY PostDate DESC, PriorityID ASC";
         ObservableList<ToDoListData> toDoList = FXCollections.observableArrayList();
         connect = database.getConnection();
 
         try {
             prepare = connect.prepareStatement(sql);
+            prepare.setString(1, user_CourseID);
+            prepare.setString(2, user_SectionID);
+            prepare.setString(3, "Everyone");  // Replace with the actual value or variable
+            prepare.setString(4, "Homeroom");  // Replace with the actual value or variabl;
+            prepare.setString(5, "Only Me");
             result = prepare.executeQuery();
 
             while (result.next()) {
-                String description = result.getString("Title");
-                String details = result.getString("Note");
-                String due_date = result.getString("Deadline");
+                String title = result.getString("Title");
+                String note = result.getString("Note");
+                String deadline = result.getString("Deadline");
+                String audience = result.getString("AudienceID");
+                String priority = result.getString("PriorityID");
+                String surname = result.getString("Surname");
+                String courseID = result.getString("CourseID");
+                String sectionID = result.getString("SectionID");
+                String studentID = result.getString("StudentID");
+                String postDate = result.getString("PostDate");
 
-                ToDoListData todoListData = new ToDoListData(description, details, due_date);
+                ToDoListData todoListData = new ToDoListData(title, note, deadline, audience, priority, courseID, sectionID, surname, studentID, postDate);
 
                 toDoList.add(todoListData);
             }
@@ -1273,18 +1367,18 @@ public class UserDashboardController implements Initializable {
         return toDoList;
     }
 
-    public void homeDisplayListCard() {
+    public void todoCard() {
         try {
             toDoList.clear();
             toDoList.addAll(getToDoListData());
 
-            int maxColumns = 4;
+            int maxColumns = 2;
             int row = 0;
             int column = 0;
 
-            listHandler.getChildren().clear();
-            listHandler.getRowConstraints().clear();
-            listHandler.getColumnConstraints().clear();
+            taskCard.getChildren().clear();
+            taskCard.getRowConstraints().clear();
+            taskCard.getColumnConstraints().clear();
 
             for (int q = 0; q < toDoList.size(); q++) {
                 try {
@@ -1300,7 +1394,7 @@ public class UserDashboardController implements Initializable {
                     controller.DisplayListController cardController = loader.getController();
                     cardController.setData(toDoList.get(q));
 
-                    listHandler.add(pane, column++, row);
+                    taskCard.add(pane, column++, row);
 
                     GridPane.setMargin(pane, new Insets(5));
 
@@ -1318,142 +1412,6 @@ public class UserDashboardController implements Initializable {
         }
     }
 
-    private ObservableList<ArchiveToDoListData> archiveToDoList = FXCollections.observableArrayList();
-
-    public ObservableList<ArchiveToDoListData> getArchiveToDoListData() throws SQLException {
-
-        String sql = "Select Title, Note, Deadline FROM mod_todo_archive";
-        ObservableList<ArchiveToDoListData> archiveToDoList = FXCollections.observableArrayList();
-        connect = database.getConnection();
-
-        try {
-            prepare = connect.prepareStatement(sql);
-            result = prepare.executeQuery();
-
-            while (result.next()) {
-                String description = result.getString("Title");
-                String details = result.getString("Note");
-                String due_date = result.getString("Deadline");
-
-                ArchiveToDoListData archiveToDoListData = new ArchiveToDoListData(description, details, due_date);
-
-                archiveToDoList.add(archiveToDoListData);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            // Close resources (result, prepare, connect) if needed
-        }
-
-        return archiveToDoList;
-    }
-
-    public void archiveDisplayListCard() {
-        try {
-            archiveToDoList.clear();
-            archiveToDoList.addAll(getArchiveToDoListData());
-
-            int maxColumns = 4;
-            int row = 0;
-            int column = 0;
-
-            archiveListHandler.getChildren().clear();
-            archiveListHandler.getRowConstraints().clear();
-            archiveListHandler.getColumnConstraints().clear();
-
-            for (int q = 0; q < archiveToDoList.size(); q++) {
-                try {
-                    if (column >= maxColumns) {
-                        // Move to the next row when the maximum number of columns is reached
-                        column = 0;
-                        row++;
-                    }
-
-                    FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(getClass().getResource("/view/archiveDisplayCard.fxml"));
-                    AnchorPane pane = loader.load();
-                    controller.ArchiveDisplayCardController archiveCardController = loader.getController();
-                    archiveCardController.setArchiveData(archiveToDoList.get(q));
-
-                    archiveListHandler.add(pane, column++, row);
-
-                    GridPane.setMargin(pane, new Insets(5));
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            currentDisplayIndex = 0;
-            if (!archiveToDoList.isEmpty()) {
-                ArchiveToDoListData firstToDo = archiveToDoList.get(0);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public void refreshArchiveDisplay() {
-        // Clear the archive display
-        archiveListHandler.getChildren().clear();
-
-        try {
-            // Reload and display the archive data
-            archiveToDoList.clear();
-            archiveToDoList.addAll(getArchiveToDoListData());
-
-            int maxColumns = 3;
-            int row = 0;
-            int column = 0;
-
-            for (int q = 0; q < archiveToDoList.size(); q++) {
-                try {
-                    if (column >= maxColumns) {
-                        // Move to the next row when the maximum number of columns is reached
-                        column = 0;
-                        row++;
-                    }
-
-                    FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(getClass().getResource("archiveDisplayCard.fxml"));
-                    AnchorPane pane = loader.load();
-                    ArchiveDisplayCardController archiveCardController = loader.getController();
-                    archiveCardController.setArchiveData(archiveToDoList.get(q));
-
-                    archiveListHandler.add(pane, column++, row);
-
-                    GridPane.setMargin(pane, new Insets(5));
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            currentDisplayIndex = 0;
-            if (!archiveToDoList.isEmpty()) {
-                ArchiveToDoListData firstToDo = archiveToDoList.get(0);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-    private void viewNowtodo(ActionEvent event) {
-        setButtonColor(homeButton, false);
-        setButtonColor(announcementButton, false);
-        setButtonColor(calendarButton, false);
-        setButtonColor(toDolistButton, true);
-        setButtonColor(timeClockButton, false);
-
-        homeWindow.setVisible(false);
-        announcementWindow.setVisible(false);
-        calendarWindow.setVisible(false);
-        todoWindow.setVisible(true);
-        timeClockWindow.setVisible(false);
-    }
-
     private String user_StudentID;
     private String user_Password;
     private String user_CourseID;
@@ -1464,7 +1422,7 @@ public class UserDashboardController implements Initializable {
         this.user_StudentID = studentID;
         updateStudentId();
         DisplayAnnouncementDash();
-
+        todoCard();
     }
 
     public void user_Password(String password) {
@@ -1476,12 +1434,14 @@ public class UserDashboardController implements Initializable {
         this.user_CourseID = courseID;
         updateCourseId();
         DisplayAnnouncementDash();
+        todoCard();
     }
 
     public void user_SectionID(String sectionID) {
         this.user_SectionID = sectionID;
         updateSectionId();
         DisplayAnnouncementDash();
+        todoCard();
     }
 
     public void user_Surname(String surname) {
@@ -1489,6 +1449,7 @@ public class UserDashboardController implements Initializable {
         updateGreeting();
         updateGreetingForTime();
         DisplayAnnouncementDash();
+        todoCard();
     }
 
     private String getGreeting() {
@@ -1548,30 +1509,30 @@ public class UserDashboardController implements Initializable {
 
     @FXML
     private void handlePostAnnouncement(ActionEvent event) {
-        
-            // Check if Title and Note are not empty, and PriorityID is selected
-    if (txtTitle.getText().isEmpty() && txtBody.getText().isEmpty() && cbPriority.getValue() == null) {
-        // Show an alert indicating that Title, Note, and Priority are required
-        showErrorAlert("Please enter Title, Note, and select Priority");
-        return; // Stop further execution
-    }
 
-    // Check which fields are missing
-    if (txtTitle.getText().isEmpty()) {
-        showErrorAlert("Please enter Title");
-        return;
-    }
+        // Check if Title and Note are not empty, and PriorityID is selected
+        if (txtTitle.getText().isEmpty() && txtBody.getText().isEmpty() && cbPriority.getValue() == null) {
+            // Show an alert indicating that Title, Note, and Priority are required
+            showErrorAlert("Please enter Title, Note, and select Priority");
+            return; // Stop further execution
+        }
 
-    if (txtBody.getText().isEmpty()) {
-        showErrorAlert("Please enter Note");
-        return;
-    }
+        // Check which fields are missing
+        if (txtTitle.getText().isEmpty()) {
+            showErrorAlert("Please enter Title");
+            return;
+        }
 
-    if (cbPriority.getValue() == null) {
-        showErrorAlert("Please select Priority");
-        return;
-    }
-        
+        if (txtBody.getText().isEmpty()) {
+            showErrorAlert("Please enter Note");
+            return;
+        }
+
+        if (cbPriority.getValue() == null) {
+            showErrorAlert("Please select Priority");
+            return;
+        }
+
         String sql = "INSERT INTO mod_announce (Title, Body,AudienceID,PriorityID,StudentID,Surname, CourseID, SectionID) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         connect = database.getConnection();
@@ -1605,7 +1566,7 @@ public class UserDashboardController implements Initializable {
             System.out.println("Post announced");
         }
     }
-    
+
     @FXML
     private void RefreshAnnouncement(ActionEvent event) {
         try {
@@ -1625,9 +1586,6 @@ public class UserDashboardController implements Initializable {
         // Redisplay announcements
         DisplayAnnouncementDash();
     }
-    
-    
-    
 
     private void showSuccessAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -1636,7 +1594,7 @@ public class UserDashboardController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    
+
     private void showErrorAlert(String content) {
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
         errorAlert.setTitle("Error");
@@ -1733,5 +1691,9 @@ public class UserDashboardController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @FXML
+    private void viewNowtodo(ActionEvent event) {
     }
 }

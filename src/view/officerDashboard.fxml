@@ -30,7 +30,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.OfficerDashboardController">
+<Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.OfficerDashboardController">
    <children>
       <Pane prefHeight="43.0" prefWidth="1332.0" style="-fx-background-color: black;">
          <children>
@@ -399,7 +399,7 @@
                      </padding>
                   </HBox>
                </children></Pane>
-            <Pane fx:id="toDoWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" stylesheets="@../style/officerdashboard.css" visible="false">
+            <Pane fx:id="toDoWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" stylesheets="@../style/officerdashboard.css">
                <children>
                   <HBox prefHeight="697.0" prefWidth="1332.0" spacing="15.0">
                      <children>
@@ -594,7 +594,7 @@
                   </Button>
                </children>
             </Pane>
-            <Pane fx:id="studentManagementWIndow" layoutY="95.0">
+            <Pane fx:id="studentManagementWIndow" layoutY="95.0" visible="false">
                <children>
                   <Pane fx:id="listStudentAccountWindow" prefHeight="697.0" prefWidth="1332.0">
                      <children>
@@ -884,7 +884,7 @@
             </Pane>
          </children>
       </Pane>
-      <Pane fx:id="sidePanel" layoutY="49.0" prefHeight="793.0" prefWidth="357.0" style="-fx-background-color: #161B22;">
+      <Pane fx:id="sidePanel" layoutY="49.0" prefHeight="793.0" prefWidth="357.0" style="-fx-background-color: #161B22;" visible="false">
          <children>
             <ImageView fitHeight="58.0" fitWidth="44.0" layoutX="22.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
                <image>
