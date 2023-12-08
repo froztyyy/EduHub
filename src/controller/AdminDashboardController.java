@@ -1096,6 +1096,7 @@ public class AdminDashboardController implements Initializable {
             prepare = connect.prepareStatement(sql);
 
             // Set parameters for the prepared statement
+            String studentID = txtStudentID.getText();
             prepare.setString(1, txtStudentID.getText());
             prepare.setString(2, txtPassword.getText());
             prepare.setInt(3, 2); // Assuming RoleID has a default value of 2
@@ -1108,9 +1109,25 @@ public class AdminDashboardController implements Initializable {
 
             // Execute the SQL query
             prepare.executeUpdate();
+            
+            // Add the additional column to the tables and insert the StudentID
+            addStudentIDColumnAndInsertValue("mod_announce", studentID);
+            addStudentIDColumnAndInsertValue("mod_announce_archive", studentID);
+            addStudentIDColumnAndInsertValue("backup_announce", studentID);
 
             // Show success alert
             showSuccessAlert("Account created successfully!");
+            
+            txtStudentID.clear();
+            txtPassword.clear();
+            txtSurname.clear();
+            txtFirstname.clear();
+            txtMiddlename.clear();
+            txtSuffix.clear();
+
+            // Clear or set the combo boxes to be empty
+            cbCourse.setValue(null);
+            cbSectionYear.setValue(null);
 
             // Load and refresh the TableView
             loadOfficerAccountData();
@@ -1123,6 +1140,21 @@ public class AdminDashboardController implements Initializable {
         }
     }
 
+    // Method to add the StudentID column to a table and insert the StudentID value
+    private void addStudentIDColumnAndInsertValue(String tableName, String studentID) {
+        String alterTableSql = "ALTER TABLE `" + tableName + "` ADD `" + studentID + "` BOOLEAN NOT NULL DEFAULT FALSE";
+
+        try {
+            // Execute the SQL query to add the column
+            prepare = connect.prepareStatement(alterTableSql);
+            prepare.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Failed to add StudentID column and insert value to " + tableName);
+        }
+    }
+    
     private void showSuccessAlert(String message) {
         Alert alert = new Alert(AlertType.INFORMATION);
         alert.setTitle("Success");
