@@ -303,14 +303,10 @@ public class OfficerDashboardController implements Initializable {
         DisplayAnnouncement();
 
         fetchAudienceToComboBox(cbAudience);
-        cbAudience.setValue("Audience");
         fetchPriorityLevelToComboBox(cbPriorityLevel);
-        cbPriorityLevel.setValue("Priority Level");
         
         fetchAudienceToComboBoxToDo(cbAudienceToDo);
-        cbAudienceToDo.setValue("Audience");
         fetchPriorityLevelToComboBoxToDo(cbPriorityToDo);
-        cbPriorityToDo.setValue("Priority Level");
     }
 
     private final boolean stop = false;
@@ -954,6 +950,23 @@ public class OfficerDashboardController implements Initializable {
 
     @FXML
     private void handleCreateAccount(ActionEvent event) {
+        
+        if (txtStudentID.getText().isEmpty() || txtPassword.getText().isEmpty() || txtSurname.getText().isEmpty()
+                || txtFirstname.getText().isEmpty() || cbCourse.getValue() == null || cbSectionYear.getValue() == null) {
+            showErrorAlert("Please fill in all required fields");
+            return;
+        }
+
+        // Check for datatype errors
+        try {
+            // Assuming StudentID is an integer
+            Integer.parseInt(txtStudentID.getText());
+        } catch (NumberFormatException e) {
+            showErrorAlert("Invalid StudentID. Please enter a valid integer.");
+            return;
+        }
+        
+        
         String sql = "INSERT INTO account_student (StudentID, Password, RoleID, Surname, Firstname, Middlename, Suffix, CourseID, SectionID) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -962,6 +975,7 @@ public class OfficerDashboardController implements Initializable {
             prepare = connect.prepareStatement(sql);
 
             // Set parameters for the prepared statement
+            String studentID = txtStudentID.getText();
             prepare.setString(1, txtStudentID.getText());
             prepare.setString(2, txtPassword.getText());
             prepare.setInt(3, 3); // Assuming RoleID has a default value of 2
@@ -974,6 +988,11 @@ public class OfficerDashboardController implements Initializable {
 
             // Execute the SQL query
             prepare.executeUpdate();
+            
+            // Add the additional column to the tables and insert the StudentID
+            addStudentIDColumnAndInsertValue("mod_announce", studentID);
+            addStudentIDColumnAndInsertValue("mod_announce_archive", studentID);
+            addStudentIDColumnAndInsertValue("backup_announce", studentID);
 
             // Show success alert
             showSuccessAlert("Account created successfully!");
@@ -986,6 +1005,21 @@ public class OfficerDashboardController implements Initializable {
             System.out.println("controller.AdminDashboardController.handleCreateAccount()");
         }
     }
+    
+        // Method to add the StudentID column to a table and insert the StudentID value
+    private void addStudentIDColumnAndInsertValue(String tableName, String studentID) {
+        String alterTableSql = "ALTER TABLE `" + tableName + "` ADD `" + studentID + "` BOOLEAN NOT NULL";
+
+        try {
+            // Execute the SQL query to add the column
+            prepare = connect.prepareStatement(alterTableSql);
+            prepare.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Failed to add StudentID column and insert value to " + tableName);
+        }
+    }
 
     private void showSuccessAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -993,6 +1027,14 @@ public class OfficerDashboardController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+    
+    private void showErrorAlert(String content) {
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setTitle("Error");
+        errorAlert.setHeaderText(null);
+        errorAlert.setContentText(content);
+        errorAlert.showAndWait();
     }
 
     private ObservableList<StudentAccountDataList> studentAccountDataList;
@@ -1107,7 +1149,7 @@ public class OfficerDashboardController implements Initializable {
                 tblStudentData.getItems().remove(selectedOfficer);
 
                 // Inform the user about successful deletion
-                showAlert("Success", "Officer Account Deleted", "Officer account removed successfully.");
+                showAlert("Success", "User Account Deleted", "User account removed successfully.");
                 txtStudentID.clear();
                 txtPassword.clear();
                 txtSurname.clear();
@@ -1123,8 +1165,8 @@ public class OfficerDashboardController implements Initializable {
             // Inform the user that no item is selected
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("No Selection");
-            alert.setHeaderText("No Officer Account Selected");
-            alert.setContentText("Please select an officer account in the table.");
+            alert.setHeaderText("No User Account Selected");
+            alert.setContentText("Please select an User account in the table.");
             alert.showAndWait();
         }
     }
@@ -1140,7 +1182,7 @@ public class OfficerDashboardController implements Initializable {
             int affectedRows = prepare.executeUpdate();
 
             if (affectedRows > 0) {
-                System.out.println("Officer account deleted successfully from the database.");
+                System.out.println("User account deleted successfully from the database.");
             } else {
                 System.out.println("Failed to delete officer account from the database.");
             }
@@ -1176,7 +1218,7 @@ public class OfficerDashboardController implements Initializable {
                     updatedMiddlename, updatedSuffix, updatedCourse, updatedYearSection);
 
             // Inform the user about successful update
-            showAlert("Success", "Officer Account Updated", "Officer account updated successfully.");
+            showAlert("Success", "User Account Updated", "User account updated successfully.");
 
             // Clear and reload the data in the TableView
             clearAndLoadStudentAccountData();
@@ -1190,7 +1232,7 @@ public class OfficerDashboardController implements Initializable {
             // Inform the user that no item is selected
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("No Selection");
-            alert.setHeaderText("No Officer Account Selected");
+            alert.setHeaderText("No User Account Selected");
             alert.setContentText("Please select an officer account in the table.");
             alert.showAndWait();
         }
@@ -1352,6 +1394,35 @@ public class OfficerDashboardController implements Initializable {
 
     @FXML
     private void handlePostAnnouncement(ActionEvent event) {
+        
+    if (txtTitle.getText().isEmpty() && txtArea.getText().isEmpty() && cbPriorityLevel.getValue() == null && cbAudience.getValue() == null) {
+        // Show an alert indicating that Title, Note, and Priority are required
+        showErrorAlert("Please enter Title, Note, and select Priority");
+        return; // Stop further execution
+    }
+
+    // Check which fields are missing
+    if (txtTitle.getText().isEmpty()) {
+        showErrorAlert("Please enter Title");
+        return;
+    }
+    
+    if (cbAudience.getValue() == null) {
+        showErrorAlert("Please select Audience");
+        return;
+    }
+
+    if (cbPriorityLevel.getValue() == null) {
+        showErrorAlert("Please select Priority");
+        return;
+    }
+
+    if (txtArea.getText().isEmpty()) {
+        showErrorAlert("Please enter Note");
+        return;
+    }
+
+        
         String sql = "INSERT INTO mod_announce (Title, Body,AudienceID,PriorityID,StudentID,Surname, CourseID, SectionID) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         connect = database.getConnection();
@@ -1398,7 +1469,7 @@ public class OfficerDashboardController implements Initializable {
 
     public ObservableList<AnnouncementData> getAnnouncementData() throws SQLException {
 
-        String sql = "SELECT Title, Body, AudienceID, PriorityID, StudentID, Surname, CourseID, SectionID, postDate FROM mod_announce WHERE CourseID = ? AND SectionID = ? AND AudienceID IN (?, ?, ? ,?) ORDER BY AnnouncementID DESC, PriorityID ASC";
+        String sql = "SELECT Title, Body, AudienceID, PriorityID, StudentID, Surname, CourseID, SectionID, postDate FROM mod_announce WHERE CourseID = ? AND SectionID = ? AND AudienceID IN (?, ?, ? ,?) ORDER BY AnnouncementID DESC, PostDate DESC";
         ObservableList<AnnouncementData> Announcement = FXCollections.observableArrayList();
         connect = database.getConnection();
 

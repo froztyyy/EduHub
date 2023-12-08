@@ -1071,6 +1071,23 @@ public class AdminDashboardController implements Initializable {
 
     @FXML
     private void handleCreateAccount(ActionEvent event) {
+        
+    if (txtStudentID.getText().isEmpty() || txtPassword.getText().isEmpty() ||
+        txtSurname.getText().isEmpty() || txtFirstname.getText().isEmpty() ||
+        cbCourse.getValue() == null || cbSectionYear.getValue() == null) {
+        showAlert("Please fill in all required fields");
+        return;
+    }
+
+    // Check for datatype errors
+    try {
+        // Assuming StudentID is an integer
+        Integer.parseInt(txtStudentID.getText());
+    } catch (NumberFormatException e) {
+        showAlert("Invalid StudentID. Please enter a valid integer.");
+        return;
+    }
+        
         String sql = "INSERT INTO account_student (StudentID, Password, RoleID, Surname, Firstname, Middlename, Suffix, CourseID, SectionID) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -1441,6 +1458,22 @@ public class AdminDashboardController implements Initializable {
     private void handleCreateCourse(ActionEvent event) {
         String sql = "Insert into filter_course (CourseAbb, CourseName)" + "Values (? , ?)";
 
+            // Check if CourseAbb and CourseName are not empty
+        if (txtCourseAbb.getText().isEmpty() || txtCourseName.getText().isEmpty()) {
+            showWarningAlert("Please fill in all required fields.");
+            return; // Exit the method if validation fails
+        }
+        
+        if (txtCourseAbb.getText().isEmpty()){
+            showWarningAlert("Course Abbreviation cannot be empty.");
+            return;
+        }
+        
+        if (txtCourseName.getText().isEmpty()){
+            showWarningAlert("Course Name cannot be empty.");
+            return;
+        }
+        
         try {
             connect = database.getConnection();
             prepare = connect.prepareStatement(sql);
@@ -1469,59 +1502,109 @@ public class AdminDashboardController implements Initializable {
     }
 
     @FXML
-    private void handleDeleteCourse(ActionEvent event) {
-        // Show a confirmation alert
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Confirmation");
-        alert.setHeaderText("Are you sure you want to remove this item?");
-        alert.setContentText("This will move the data to archive.");
+private void handleDeleteCourse(ActionEvent event) {
+    try {
+        connect = database.getConnection();
 
-        // Wait for user's response
-        Optional<ButtonType> result = alert.showAndWait();
+        // Get the selected item from the table
+        getCourseData selectedCourse = tblCourseData.getSelectionModel().getSelectedItem();
 
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            // User clicked OK, proceed with removal
+        if (selectedCourse != null) {
+            // Show a confirmation alert
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Confirmation");
+            alert.setHeaderText("Are you sure you want to remove this item?");
+            alert.setContentText("This will move the data to archive.");
 
-            try {
-                connect = database.getConnection();
+            // Wait for user's response
+            Optional<ButtonType> result = alert.showAndWait();
 
-                // Get the selected item from the table
-                getCourseData selectedCourse = tblCourseData.getSelectionModel().getSelectedItem();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                // User clicked OK, proceed with removal
 
-                if (selectedCourse != null) {
-                    // First, delete the course from the task table (filter_course)
-                    deleteFromTaskTable(connect, selectedCourse.getCourseAbb());
+                // First, delete the course from the task table (filter_course)
+                deleteFromTaskTable(connect, selectedCourse.getCourseAbb());
 
-                    // Now, insert the course into the archive table (trash_course)
-                    insertIntoArchiveTable(connect, selectedCourse);
+                // Now, insert the course into the archive table (trash_course)
+                insertIntoArchiveTable(connect, selectedCourse);
 
-                    showSuccessAlert("Course removed successfully!");
+                showSuccessAlert("Course removed successfully!");
 
-                    // Refresh the table and ComboBox after removal
-                    loadCourseData();
-                    cbCourse.getItems().clear();
-                    fetchCourseToComboBox(cbCourse);
-                    int coursesCount = fetchNumberOfCourses();
-                    lblCoursesAvailable.setText(String.valueOf(coursesCount));
-                    loadArchiveCourseData();
-                    updateCourseArchiveCount();
-                } else {
-                    // If no item is selected, show a warning or error message
-                    showWarningAlert("Please select a course to remove.");
-                }
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-                // Handle exceptions appropriately (show error message, log, etc.)
-            } finally {
-                closeResources();
+                // Refresh the table and ComboBox after removal
+                loadCourseData();
+                cbCourse.getItems().clear();
+                fetchCourseToComboBox(cbCourse);
+                int coursesCount = fetchNumberOfCourses();
+                lblCoursesAvailable.setText(String.valueOf(coursesCount));
+                loadArchiveCourseData();
+                updateCourseArchiveCount();
             }
+        } else {
+            // If no item is selected, show a warning or error message
+            showWarningAlert("Please select a course to remove.");
         }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        // Handle exceptions appropriately (show error message, log, etc.)
+    } finally {
+        closeResources();
     }
+}
+    
+//    @FXML
+//    private void handleDeleteCourse(ActionEvent event) {
+//        // Show a confirmation alert
+//        Alert alert = new Alert(AlertType.CONFIRMATION);
+//        alert.setTitle("Confirmation");
+//        alert.setHeaderText("Are you sure you want to remove this item?");
+//        alert.setContentText("This will move the data to archive.");
+//
+//        // Wait for user's response
+//        Optional<ButtonType> result = alert.showAndWait();
+//
+//        if (result.isPresent() && result.get() == ButtonType.OK) {
+//            // User clicked OK, proceed with removal
+//
+//            try {
+//                connect = database.getConnection();
+//
+//                // Get the selected item from the table
+//                getCourseData selectedCourse = tblCourseData.getSelectionModel().getSelectedItem();
+//
+//                if (selectedCourse != null) {
+//                    // First, delete the course from the task table (filter_course)
+//                    deleteFromTaskTable(connect, selectedCourse.getCourseAbb());
+//
+//                    // Now, insert the course into the archive table (trash_course)
+//                    insertIntoArchiveTable(connect, selectedCourse);
+//
+//                    showSuccessAlert("Course removed successfully!");
+//
+//                    // Refresh the table and ComboBox after removal
+//                    loadCourseData();
+//                    cbCourse.getItems().clear();
+//                    fetchCourseToComboBox(cbCourse);
+//                    int coursesCount = fetchNumberOfCourses();
+//                    lblCoursesAvailable.setText(String.valueOf(coursesCount));
+//                    loadArchiveCourseData();
+//                    updateCourseArchiveCount();
+//                } else {
+//                    // If no item is selected, show a warning or error message
+//                    showWarningAlert("Please select a course to remove.");
+//                }
+//
+//            } catch (SQLException e) {
+//                e.printStackTrace();
+//                // Handle exceptions appropriately (show error message, log, etc.)
+//            } finally {
+//                closeResources();
+//            }
+//        }
+//    }
 
     private void showWarningAlert(String message) {
         Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Success");
+        alert.setTitle("Problem Occured");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
@@ -1626,6 +1709,13 @@ public class AdminDashboardController implements Initializable {
     // SECTION SECTION
     @FXML
     private void handleCreateYearSection(ActionEvent event) {
+        
+        // Check if txtYearSection is not empty
+        if (txtYearSection.getText().isEmpty()) {
+            showWarningAlert("Please fill in all required fields.");
+            return; // Exit the method if validation fails
+        }
+        
         String sql = "Insert into filter_section (SectionName)" + "Values (?)";
 
         try {
@@ -1643,8 +1733,7 @@ public class AdminDashboardController implements Initializable {
             cbSectionYear.getItems().clear();
             fetchSectionToComboBox(cbSectionYear);
 
-            txtCourseAbb.clear();
-            txtCourseName.clear();
+            txtYearSection.clear();
             clearAndLoadSectionNameData();
             // Optionally, you can show a success message or perform other actions here
         } catch (SQLException e) {
@@ -2249,7 +2338,7 @@ public class AdminDashboardController implements Initializable {
             }
 
             // Assuming 'prepare' is your PreparedStatement
-            prepare = connect.prepareStatement("select count(*) as NumberOfToDo, Deadline from todo group by deadline");
+            prepare = connect.prepareStatement("select count(*) as NumberOfToDo, Deadline from mod_todo_pending group by deadline");
             result = prepare.executeQuery();
 
             while (result.next()) {
@@ -2355,7 +2444,7 @@ public class AdminDashboardController implements Initializable {
             connect = database.getConnection();
 
             // Your SQL query
-            String sqlQuery = "select count(*) as ToDoCount from todo";
+            String sqlQuery = "select count(*) as ToDoCount from mod_todo_pending";
 
             // Execute the query
             prepare = connect.prepareStatement(sqlQuery);
@@ -2585,6 +2674,7 @@ public class AdminDashboardController implements Initializable {
     ////////////////////////////////// 
     // YEAR GOES TO ARCHIVE 
     private void deleteFromYearSectionTable(java.sql.Connection conn, String sectionName) throws SQLException {
+        
         String deleteQuery = "DELETE FROM filter_section WHERE SectionName = ?";
         try (PreparedStatement prepare = conn.prepareStatement(deleteQuery)) {
             prepare.setString(1, sectionName);
