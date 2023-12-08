@@ -273,14 +273,11 @@
 }
 
 .textArea {
-    -fx-background-color: transparent;
-    -fx-border-color: gray;
-    -fx-border-width: 1.5px;
-    -fx-border-radius: 10px;
+    -fx-background-color: #2f2f2f;
+    -fx-background-radius: 10px;
     -fx-prompt-text-fill: gray;
-    -fx-text-fill: silver;
+    -fx-text-fill: white;
 }
-
 .textArea .scroll-pane {
     -fx-background-color: transparent;
 }

@@ -4,8 +4,10 @@
  */
 package controller;
 
-import com.sun.jdi.connect.spi.Connection;
+import java.awt.image.BufferedImage;
+import javafx.print.*;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -54,6 +56,10 @@ import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.print.PageLayout;
+import javafx.print.PageOrientation;
+import javafx.print.Paper;
+import javafx.print.PrinterJob;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
@@ -63,8 +69,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
 import javax.imageio.ImageIO;
 
 /**
@@ -295,6 +301,104 @@ public class AdminDashboardController implements Initializable {
     private TableColumn<GetArchiveFeedBack, Integer> archiveExperienceRate;
     @FXML
     private TableColumn<GetArchiveFeedBack, Integer> archiveFeedBackComment;
+    @FXML
+    private TableView<GetArchiveStudentAccountData> archiveStudentAccTbl;
+    @FXML
+    private TableColumn<GetArchiveStudentAccountData, String> archiveStudID;
+    @FXML
+    private TableColumn<GetArchiveStudentAccountData, String> archivePassword;
+    @FXML
+    private TableColumn<GetArchiveStudentAccountData, String> archiveRoleID;
+    @FXML
+    private TableColumn<GetArchiveStudentAccountData, String> archiveSurname;
+    @FXML
+    private TableColumn<GetArchiveStudentAccountData, String> archiveFirstname;
+    @FXML
+    private TableColumn<GetArchiveStudentAccountData, String> archiveMiddleName;
+    @FXML
+    private TableColumn<GetArchiveStudentAccountData, String> archiveSuffix;
+    @FXML
+    private TableColumn<GetArchiveStudentAccountData, String> archiveCourseStudent;
+    @FXML
+    private TableColumn<GetArchiveStudentAccountData, String> archiveYearSectionStudent;
+    @FXML
+    private TableView<GetArchiveOfficerData> archiveOfficerAccTbl;
+    @FXML
+    private TableColumn<GetArchiveOfficerData, String> archiveStudIDOfficer;
+    @FXML
+    private TableColumn<GetArchiveOfficerData, String> archivePasswordOfficer;
+    @FXML
+    private TableColumn<GetArchiveOfficerData, String> archiveRoleIDOfficer;
+    @FXML
+    private TableColumn<GetArchiveOfficerData, String> archiveSurnameOfficer;
+    @FXML
+    private TableColumn<GetArchiveOfficerData, String> archiveFirstnameOfficer;
+    @FXML
+    private TableColumn<GetArchiveOfficerData, String> archiveMiddleNameOfficer;
+    @FXML
+    private TableColumn<GetArchiveOfficerData, String> archiveSuffixOfficer;
+    @FXML
+    private TableColumn<GetArchiveOfficerData, String> archiveCourseOfficer;
+    @FXML
+    private TableColumn<GetArchiveOfficerData, String> archiveYearSectionOfficer;
+    @FXML
+    private Text lblRoleID;
+    @FXML
+    private Pane ListCourseYearWindow;
+    @FXML
+    private Button trashCourseYearButton;
+    @FXML
+    private Pane trashCourseYearWindow;
+    @FXML
+    private Button ListCourseYearButton;
+    @FXML
+    private Pane listStudentAccountWindow;
+    @FXML
+    private Button trashStudentAccountButton;
+    @FXML
+    private Pane trashSrudentAccountWindow;
+    @FXML
+    private Button ListStudentAccountButton;
+    @FXML
+    private Pane listOfficerAccountWindow;
+    @FXML
+    private Button trashOfficerAccountButton;
+    @FXML
+    private Pane trashOfficerAccountWindow;
+    @FXML
+    private Button ListOfficerAccountButton;
+    @FXML
+    private Pane listFeedbackWIndow;
+    @FXML
+    private Button trashFeedbackButton;
+    @FXML
+    private Pane trashFeedbackWindow;
+    @FXML
+    private Button ListFeedBackButton;
+    @FXML
+    private Pane eduhubAccount1;
+    @FXML
+    private Text lblStudentID1;
+    @FXML
+    private Text lblPassword1;
+    @FXML
+    private Text lblSurname1;
+    @FXML
+    private Text lblFirstName1;
+    @FXML
+    private Text lblMiddleName1;
+    @FXML
+    private Text lblCourse1;
+    @FXML
+    private Text lblYearSection1;
+    @FXML
+    private Text lblRoleID1;
+    @FXML
+    private Text lblSuffix1;
+    @FXML
+    private Pane sideCard;
+    @FXML
+    private TextField searchSectionCourse;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -440,8 +544,71 @@ public class AdminDashboardController implements Initializable {
         archiveFeedBackComment.setCellValueFactory(new PropertyValueFactory<>("feedbackReport"));
         loadArchiveFeedBackData();
 
+        // Initialize the table columns
+        archiveStudID.setCellValueFactory(new PropertyValueFactory<>("tblStudentID"));
+        archivePassword.setCellValueFactory(new PropertyValueFactory<>("tblPassword"));
+        archiveRoleID.setCellValueFactory(new PropertyValueFactory<>("tblRoleID"));
+        archiveSurname.setCellValueFactory(new PropertyValueFactory<>("tblSurname"));
+        archiveFirstname.setCellValueFactory(new PropertyValueFactory<>("tblFirstName"));
+        archiveMiddleName.setCellValueFactory(new PropertyValueFactory<>("tblMiddlename"));
+        archiveSuffix.setCellValueFactory(new PropertyValueFactory<>("tblSuffix"));
+        archiveCourseStudent.setCellValueFactory(new PropertyValueFactory<>("tblCourse"));
+        archiveYearSectionStudent.setCellValueFactory(new PropertyValueFactory<>("tblYearSection"));
+
+        // Additional initialization logic if needed
+        loadArchiveStudentData();
+
+        archiveStudIDOfficer.setCellValueFactory(new PropertyValueFactory<>("tblStudentID"));
+        archivePasswordOfficer.setCellValueFactory(new PropertyValueFactory<>("tblPassword"));
+        archiveRoleIDOfficer.setCellValueFactory(new PropertyValueFactory<>("tblRoleID"));
+        archiveSurnameOfficer.setCellValueFactory(new PropertyValueFactory<>("tblSurname"));
+        archiveFirstnameOfficer.setCellValueFactory(new PropertyValueFactory<>("tblFirstName"));
+        archiveMiddleNameOfficer.setCellValueFactory(new PropertyValueFactory<>("tblMiddlename"));
+        archiveSuffixOfficer.setCellValueFactory(new PropertyValueFactory<>("tblSuffix"));
+        archiveCourseOfficer.setCellValueFactory(new PropertyValueFactory<>("tblCourse"));
+        archiveYearSectionOfficer.setCellValueFactory(new PropertyValueFactory<>("tblYearSection"));
+
+        // Additional initialization logic if needed
+        loadArchiveOfficerData();
+
+        // Add a mouse click event handler to the userDashboardWindow
+        // Add a mouse click event handler to the userDashboardWindow
+        userDashboradWindow.setOnMouseClicked(event -> {
+            Node clickedNode = event.getPickResult().getIntersectedNode();
+
+            // Check if the clicked node is not the side panel
+            if (!isNodeInsideSidePanel(clickedNode)) {
+                // Close the side panel
+                closeSideNavigation(new ActionEvent()); // Pass a dummy ActionEvent
+            }
+        });
+
+        ListCourseYearWindow.setVisible(true);
+        trashCourseYearWindow.setVisible(false);
+
+        listStudentAccountWindow.setVisible(true);
+        trashSrudentAccountWindow.setVisible(false);
+
+        listOfficerAccountWindow.setVisible(true);
+        trashOfficerAccountWindow.setVisible(false);
+
+        listFeedbackWIndow.setVisible(true);
+        trashFeedbackWindow.setVisible(false);
+
+        sideCard.setTranslateX(489);
+        sideCard.setVisible(true);
     }
 
+    private boolean isNodeInsideSidePanel(Node node) {
+        // Check if the node or its parent is the side panel
+        while (node != null) {
+            if (node == sidePanel) {
+                return true;
+            }
+            node = node.getParent();
+        }
+        return false;
+    }
     private final boolean stop = false;
     private Timeline timeline;
     private boolean running = false;
@@ -1007,6 +1174,7 @@ public class AdminDashboardController implements Initializable {
         if (selectedAccount != null) {
             // Populate the text fields and combo boxes with the selected item's data
             txtStudentID.setText(selectedAccount.getTblStudentID());
+
             txtPassword.setText(selectedAccount.getTblPassword());
             txtSurname.setText(selectedAccount.getTblSurname());
             txtFirstname.setText(selectedAccount.getTblFirstName());
@@ -1016,6 +1184,16 @@ public class AdminDashboardController implements Initializable {
             // Assuming cbCourse and cbSectionYear are ComboBox<String>
             cbCourse.setValue(selectedAccount.getTblCourse());
             cbSectionYear.setValue(selectedAccount.getTblYearSection());
+
+            lblStudentID1.setText(selectedAccount.getTblStudentID());
+            lblPassword1.setText(selectedAccount.getTblPassword());
+            lblSurname1.setText(selectedAccount.getTblSurname());
+            lblFirstName1.setText(selectedAccount.getTblFirstName());
+            lblMiddleName1.setText(selectedAccount.getTblMiddlename());
+            lblSuffix1.setText(selectedAccount.getTblSuffix());
+            lblRoleID1.setText(selectedAccount.getTblRoleID());
+            lblCourse1.setText(selectedAccount.getTblCourse());
+            lblYearSection1.setText(selectedAccount.getTblYearSection());
         }
     }
 
@@ -1035,7 +1213,7 @@ public class AdminDashboardController implements Initializable {
     }
 
     @FXML
-    private void btnDelete(ActionEvent event) {
+    private void btnDelete(ActionEvent event) throws SQLException {
         OfficerAccountData selectedOfficer = tblOfficerData.getSelectionModel().getSelectedItem();
 
         if (selectedOfficer != null) {
@@ -1055,6 +1233,9 @@ public class AdminDashboardController implements Initializable {
 
                 // Remove from the database
                 deleteOfficerFromDatabase(selectedOfficer);
+                insertIntoArchiveOfficerTable(connect, selectedOfficer);
+                loadOfficerAccountData();
+                loadArchiveOfficerData();
 
                 // Inform the user about successful deletion
                 showAlert("Success", "Officer Account Deleted", "Officer account removed successfully.");
@@ -1601,9 +1782,10 @@ public class AdminDashboardController implements Initializable {
     //////////////////////////////////////////////
     // STUDENT SECTION
     @FXML
-    private void deleteAcc(ActionEvent event) {
+    private void deleteAcc(ActionEvent event) throws SQLException {
         // Get the selected officer account data from the table
         OfficerAccountData selectedstudent = tblStudentAcc.getSelectionModel().getSelectedItem();
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Confirmation");
         alert.setHeaderText("Delete Officer Account");
@@ -1618,6 +1800,10 @@ public class AdminDashboardController implements Initializable {
 
             // Remove the selected officer account from the table view
             tblStudentAcc.getItems().remove(selectedstudent);
+            insertIntoArchiveStudentAccountTable(connect, selectedstudent);
+            loadStudentAccountData();
+
+            loadArchiveStudentData();
             showSuccessAlert("Student Account deleted successfully!");
 
         } else {
@@ -1740,6 +1926,7 @@ public class AdminDashboardController implements Initializable {
             lblMiddleName.setText(selectedAccount.getTblMiddlename());
             lblSuffix.setText(selectedAccount.getTblSuffix());
             lblCourse.setText(selectedAccount.getTblCourse());
+            lblRoleID.setText(selectedAccount.getTblRoleID());
             lblYearSection.setText(selectedAccount.getTblYearSection());
 
         }
@@ -1747,22 +1934,115 @@ public class AdminDashboardController implements Initializable {
 
     @FXML
     private void PrintData(ActionEvent event) {
-        // Capture the content of the specified pane
-        WritableImage writableImage = new WritableImage((int) eduhubAccount.getWidth(), (int) eduhubAccount.getHeight());
-        SnapshotParameters snapshotParameters = new SnapshotParameters();
-        eduhubAccount.snapshot(snapshotParameters, writableImage);
-
         // Ask the user if they want to print the data
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Print Confirmation");
         alert.setHeaderText("Do you want to print the data?");
         alert.setContentText("Choose your option.");
 
+        ButtonType buttonTypePNG = new ButtonType("PNG");
+        ButtonType buttonTypePDF = new ButtonType("PDF");
+
+        alert.getButtonTypes().setAll(buttonTypePNG, buttonTypePDF);
+
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            // User clicked "OK", proceed with saving the image
-            saveImage(writableImage);
+        if (result.isPresent()) {
+            if (result.get() == buttonTypePNG) {
+                saveAsPNG();
+            } else if (result.get() == buttonTypePDF) {
+                saveAsPDF();
+            }
         }
+    }
+
+    private void saveAsPNG() {
+        WritableImage writableImage = new WritableImage((int) eduhubAccount.getWidth(), (int) eduhubAccount.getHeight());
+        SnapshotParameters snapshotParameters = new SnapshotParameters();
+        eduhubAccount.snapshot(snapshotParameters, writableImage);
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Image");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PNG Files", "*.png"));
+
+        File file = fileChooser.showSaveDialog(null);
+
+        if (file != null) {
+            try {
+                BufferedImage bufferedImage = SwingFXUtils.fromFXImage(writableImage, null);
+                ImageIO.write(bufferedImage, "png", file);
+
+                showAlert("Success", "Data successfully printed and saved to your computer.");
+            } catch (IOException e) {
+                e.printStackTrace();
+                showErrorAlert("Error saving the image. Please try again.");
+            }
+        }
+    }
+
+   private void saveAsPDF() {
+    PrinterJob printerJob = PrinterJob.createPrinterJob();
+
+    if (printerJob != null) {
+        PageLayout pageLayout = printerJob.getJobSettings().getPageLayout();
+
+        // Set the page layout to Portrait
+        printerJob.getJobSettings().setPageLayout(
+                PrinterJob.createPrinterJob()
+                        .getPrinter()
+                        .createPageLayout(
+                                Paper.A4,
+                                PageOrientation.PORTRAIT,
+                                PrinterJob.createPrinterJob().getPrinter().getDefaultPageLayout().getLeftMargin(),
+                                PrinterJob.createPrinterJob().getPrinter().getDefaultPageLayout().getTopMargin(),
+                                PrinterJob.createPrinterJob().getPrinter().getDefaultPageLayout().getPrintableWidth(),
+                                PrinterJob.createPrinterJob().getPrinter().getDefaultPageLayout().getPrintableHeight()
+                        )
+        );
+
+        // Set the content to be printed
+        boolean success = printerJob.printPage(eduhubAccount);
+
+        if (success) {
+            // Prompt for printing
+            boolean printConfirmed = printerJob.showPrintDialog(null);
+
+            if (printConfirmed) {
+                // Print the content
+                success = printerJob.printPage(eduhubAccount);
+
+                if (success) {
+                    showAlert("Success", "Data successfully printed and saved to your computer.");
+                } else {
+                    showErrorAlert("Error printing. Please try again.");
+                }
+            } else {
+                showAlert("Success", "Data successfully saved to your computer.");
+            }
+
+            printerJob.endJob();
+        } else {
+            showErrorAlert("Error saving the PDF. Please try again.");
+        }
+
+        // Reset the page layout to the original
+        printerJob.getJobSettings().setPageLayout(pageLayout);
+    }
+}
+
+    private void showAlert(String title, String content) {
+        Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+        successAlert.setTitle(title);
+        successAlert.setHeaderText(null);
+        successAlert.setContentText(content);
+        successAlert.showAndWait();
+    }
+
+    private void showErrorAlert(String content) {
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setTitle("Error");
+        errorAlert.setHeaderText(null);
+        errorAlert.setContentText(content);
+        errorAlert.showAndWait();
     }
 
     private void saveImage(WritableImage writableImage) {
@@ -2464,7 +2744,6 @@ public class AdminDashboardController implements Initializable {
     // FEEDBACK GOES TO ARCHIVE 
     private ObservableList<GetArchiveFeedBack> archiveFeedBackData;
 
-    @FXML
     private void loadArchiveFeedBackData() {
         archiveFeedBackData = FXCollections.observableArrayList();
         connect = database.getConnection();
@@ -2585,6 +2864,789 @@ public class AdminDashboardController implements Initializable {
             prepare.setString(4, feedBack.getFeedbackReport());
             prepare.executeUpdate();
         }
+    }
+
+    ///////////////////////////////// 
+    // STUDENT MANAGEMENT GOES TO ARCHIVE
+    private ObservableList<GetArchiveStudentAccountData> archiveStudentData;
+
+    private void loadArchiveStudentData() {
+        archiveStudentData = FXCollections.observableArrayList();
+        connect = database.getConnection();
+
+        try {
+            prepare = connect.prepareStatement("SELECT StudentID, Password, RoleID, Surname, FirstName, MiddleName, Suffix, CourseID, SectionID FROM trash_student");
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                GetArchiveStudentAccountData studentAccount = new GetArchiveStudentAccountData();
+                studentAccount.setTblStudentID(result.getString("StudentID"));
+                studentAccount.setTblPassword(result.getString("Password"));
+                studentAccount.setTblRoleID(result.getString("RoleID"));
+                studentAccount.setTblSurname(result.getString("Surname"));
+                studentAccount.setTblFirstName(result.getString("FirstName"));
+                studentAccount.setTblMiddlename(result.getString("MiddleName"));
+                studentAccount.setTblSuffix(result.getString("Suffix"));
+                studentAccount.setTblCourse(result.getString("CourseID"));
+                studentAccount.setTblYearSection(result.getString("SectionID"));
+                archiveStudentData.add(studentAccount);
+            }
+
+            archiveStudentAccTbl.setItems(archiveStudentData);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeResources();
+        }
+    }
+
+    @FXML
+    private void restoreStudentAccount(ActionEvent event) {
+        GetArchiveStudentAccountData selectedStudent = archiveStudentAccTbl.getSelectionModel().getSelectedItem();
+
+        if (selectedStudent != null) {
+            try {
+                connect = database.getConnection();
+                insertIntoStudentAccountTable(connect, selectedStudent);
+                deleteFromArchiveStudentAccountTable(connect, selectedStudent);
+
+                showSuccessAlert("Student account retrieved successfully!");
+
+                loadArchiveStudentData();
+                // Additional method calls if needed
+                loadStudentAccountData();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle exceptions appropriately (show error message, log, etc.)
+            } finally {
+                closeResources();
+            }
+        } else {
+            showWarningAlert("Please select a student account to retrieve.");
+        }
+    }
+
+    @FXML
+    private void deleteStudentAccountArchive(ActionEvent event) {
+        GetArchiveStudentAccountData selectedStudent = archiveStudentAccTbl.getSelectionModel().getSelectedItem();
+
+        if (selectedStudent != null) {
+            try {
+                connect = database.getConnection();
+                insertIntoBackupStudentAccountDatabase(connect, selectedStudent);
+                deleteFromArchiveStudentAccountTable(connect, selectedStudent);
+
+                showSuccessAlert("Student account permanently deleted!");
+
+                loadArchiveStudentData();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle exceptions appropriately (show error message, log, etc.)
+            } finally {
+                closeResources();
+            }
+        } else {
+            showWarningAlert("Please select a student account to permanently delete.");
+        }
+    }
+
+    private void insertIntoArchiveStudentAccountTable(java.sql.Connection conn, OfficerAccountData studentAccount) throws SQLException {
+        String insertQuery = "INSERT INTO trash_student (StudentID, Password, RoleID, Surname, FirstName, MiddleName, Suffix, CourseID, SectionID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement prepare = conn.prepareStatement(insertQuery)) {
+            prepare.setString(1, studentAccount.getTblStudentID());
+            prepare.setString(2, studentAccount.getTblPassword());
+            prepare.setString(3, studentAccount.getTblRoleID());
+            prepare.setString(4, studentAccount.getTblSurname());
+            prepare.setString(5, studentAccount.getTblFirstName());
+            prepare.setString(6, studentAccount.getTblMiddlename());
+            prepare.setString(7, studentAccount.getTblSuffix());
+            prepare.setString(8, studentAccount.getTblCourse());
+            prepare.setString(9, studentAccount.getTblYearSection());
+            prepare.executeUpdate();
+        }
+    }
+
+    private void insertIntoStudentAccountTable(java.sql.Connection conn, GetArchiveStudentAccountData studentAccount) throws SQLException {
+        String insertQuery = "INSERT INTO account_student (StudentID, Password, RoleID, Surname, FirstName, MiddleName, Suffix, CourseID, SectionID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement prepare = conn.prepareStatement(insertQuery)) {
+            prepare.setString(1, studentAccount.getTblStudentID());
+            prepare.setString(2, studentAccount.getTblPassword());
+            prepare.setString(3, studentAccount.getTblRoleID());
+            prepare.setString(4, studentAccount.getTblSurname());
+            prepare.setString(5, studentAccount.getTblFirstName());
+            prepare.setString(6, studentAccount.getTblMiddlename());
+            prepare.setString(7, studentAccount.getTblSuffix());
+            prepare.setString(8, studentAccount.getTblCourse());
+            prepare.setString(9, studentAccount.getTblYearSection());
+            prepare.executeUpdate();
+        }
+
+    }
+
+    private void deleteFromArchiveStudentAccountTable(java.sql.Connection conn, GetArchiveStudentAccountData studentAccount) throws SQLException {
+        String deleteQuery = "DELETE FROM trash_student WHERE StudentID = ?";
+        try (PreparedStatement prepare = conn.prepareStatement(deleteQuery)) {
+            prepare.setString(1, studentAccount.getTblStudentID());
+            prepare.executeUpdate();
+        }
+    }
+
+    private void insertIntoBackupStudentAccountDatabase(java.sql.Connection conn, GetArchiveStudentAccountData studentAccount) throws SQLException {
+        String insertQuery = "INSERT INTO backup_student (StudentID, Password, RoleID, Surname, FirstName, MiddleName, Suffix, CourseID, SectionID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement prepare = conn.prepareStatement(insertQuery)) {
+            prepare.setString(1, studentAccount.getTblStudentID());
+            prepare.setString(2, studentAccount.getTblPassword());
+            prepare.setString(3, studentAccount.getTblRoleID());
+            prepare.setString(4, studentAccount.getTblSurname());
+            prepare.setString(5, studentAccount.getTblFirstName());
+            prepare.setString(6, studentAccount.getTblMiddlename());
+            prepare.setString(7, studentAccount.getTblSuffix());
+            prepare.setString(8, studentAccount.getTblCourse());
+            prepare.setString(9, studentAccount.getTblYearSection());
+            prepare.executeUpdate();
+        }
+    }
+    ///////////////////////////////// 
+    // OFFICER MANAGEMENT GOES TO ARCHIVE
+    private ObservableList<GetArchiveOfficerData> archiveOfficerData;
+
+    private void loadArchiveOfficerData() {
+        archiveOfficerData = FXCollections.observableArrayList();
+        connect = database.getConnection();
+
+        try {
+            prepare = connect.prepareStatement("SELECT StudentID, Password, RoleID, Surname, FirstName, MiddleName, Suffix, CourseID, SectionID FROM trash_officer");
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                GetArchiveOfficerData officerAccount = new GetArchiveOfficerData();
+                officerAccount.setTblStudentID(result.getString("StudentID"));
+                officerAccount.setTblPassword(result.getString("Password"));
+                officerAccount.setTblRoleID(result.getString("RoleID"));
+                officerAccount.setTblSurname(result.getString("Surname"));
+                officerAccount.setTblFirstName(result.getString("FirstName"));
+                officerAccount.setTblMiddlename(result.getString("MiddleName"));
+                officerAccount.setTblSuffix(result.getString("Suffix"));
+                officerAccount.setTblCourse(result.getString("CourseID"));
+                officerAccount.setTblYearSection(result.getString("SectionID"));
+                archiveOfficerData.add(officerAccount);
+
+                // ... (your existing code)
+                // Print statements for debugging
+                System.out.println("StudentID: " + officerAccount.getTblStudentID());
+                // ... (repeat for other properties)
+
+            }
+
+            archiveOfficerAccTbl.setItems(archiveOfficerData);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeResources();
+        }
+    }
+
+    @FXML
+    private void restoreOfficerAccount(ActionEvent event) {
+        GetArchiveOfficerData selectedOfficer = archiveOfficerAccTbl.getSelectionModel().getSelectedItem();
+
+        if (selectedOfficer != null) {
+            try {
+                connect = database.getConnection();
+                insertIntoOfficerTable(connect, selectedOfficer);
+                deleteFromArchiveOfficerTable(connect, selectedOfficer);
+
+                showSuccessAlert("Officer account retrieved successfully!");
+
+                loadArchiveOfficerData();
+                // Additional logic if needed
+                loadOfficerAccountData();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle exceptions appropriately (show error message, log, etc.)
+            } finally {
+                closeResources();
+            }
+        } else {
+            showWarningAlert("Please select an officer account to retrieve.");
+        }
+    }
+
+    @FXML
+    private void deleteOfficerArchive(ActionEvent event) {
+        GetArchiveOfficerData selectedOfficer = archiveOfficerAccTbl.getSelectionModel().getSelectedItem();
+
+        if (selectedOfficer != null) {
+            try {
+                connect = database.getConnection();
+                insertIntoBackupOfficerDatabase(connect, selectedOfficer);
+                deleteFromArchiveOfficerTable(connect, selectedOfficer);
+
+                showSuccessAlert("Officer account permanently deleted!");
+
+                loadArchiveOfficerData();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                // Handle exceptions appropriately (show error message, log, etc.)
+            } finally {
+                closeResources();
+            }
+        } else {
+            showWarningAlert("Please select an officer account to permanently delete.");
+        }
+    }
+
+    private void insertIntoArchiveOfficerTable(java.sql.Connection conn, OfficerAccountData officer) throws SQLException {
+        String insertQuery = "INSERT INTO trash_officer (StudentID, Password, RoleID, Surname, FirstName, MiddleName, Suffix, CourseID, SectionID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement prepare = conn.prepareStatement(insertQuery)) {
+            prepare.setString(1, officer.getTblStudentID());
+            prepare.setString(2, officer.getTblPassword());
+            prepare.setString(3, officer.getTblRoleID());
+            prepare.setString(4, officer.getTblSurname());
+            prepare.setString(5, officer.getTblFirstName());
+            prepare.setString(6, officer.getTblMiddlename());
+            prepare.setString(7, officer.getTblSuffix());
+            prepare.setString(8, officer.getTblCourse());
+            prepare.setString(9, officer.getTblYearSection());
+            prepare.executeUpdate();
+        }
+    }
+
+    private void insertIntoOfficerTable(java.sql.Connection conn, GetArchiveOfficerData officer) throws SQLException {
+        String insertQuery = "INSERT INTO account_student (StudentID, Password, RoleID, Surname, FirstName, MiddleName, Suffix, CourseID, SectionID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement prepare = conn.prepareStatement(insertQuery)) {
+            prepare.setString(1, officer.getTblStudentID());
+            prepare.setString(2, officer.getTblPassword());
+            prepare.setString(3, officer.getTblRoleID());
+            prepare.setString(4, officer.getTblSurname());
+            prepare.setString(5, officer.getTblFirstName());
+            prepare.setString(6, officer.getTblMiddlename());
+            prepare.setString(7, officer.getTblSuffix());
+            prepare.setString(8, officer.getTblCourse());
+            prepare.setString(9, officer.getTblYearSection());
+            prepare.executeUpdate();
+        }
+    }
+
+    private void deleteFromArchiveOfficerTable(java.sql.Connection conn, GetArchiveOfficerData officer) throws SQLException {
+        String deleteQuery = "DELETE FROM trash_officer WHERE StudentID = ?";
+        try (PreparedStatement prepare = conn.prepareStatement(deleteQuery)) {
+            prepare.setString(1, officer.getTblStudentID());
+            prepare.executeUpdate();
+        }
+    }
+
+    private void insertIntoBackupOfficerDatabase(java.sql.Connection conn, GetArchiveOfficerData officer) throws SQLException {
+        String insertQuery = "INSERT INTO backup_officer (StudentID, Password, RoleID, Surname, FirstName, MiddleName, Suffix, CourseID, SectionID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement prepare = conn.prepareStatement(insertQuery)) {
+            prepare.setString(1, officer.getTblStudentID());
+            prepare.setString(2, officer.getTblPassword());
+            prepare.setString(3, officer.getTblRoleID());
+            prepare.setString(4, officer.getTblSurname());
+            prepare.setString(5, officer.getTblFirstName());
+            prepare.setString(6, officer.getTblMiddlename());
+            prepare.setString(7, officer.getTblSuffix());
+            prepare.setString(8, officer.getTblCourse());
+            prepare.setString(9, officer.getTblYearSection());
+            prepare.executeUpdate();
+        }
+    }
+
+    @FXML
+    private void PrintMasterList(ActionEvent event) {
+        List<OfficerAccountData> data = tblStudentAcc.getItems();
+        showSaveDialogAndGenerate(data);
+    }
+
+    private void showSaveDialogAndGenerate(List<OfficerAccountData> data) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+
+        // Show save file dialog
+        Stage stage = (Stage) userDashboradWindow.getScene().getWindow();
+        File file = fileChooser.showSaveDialog(stage);
+
+        if (file != null) {
+            if (file.getName().toLowerCase().endsWith(".csv")) {
+                generateCSVFromTableView(data, file);
+            } else if (file.getName().toLowerCase().endsWith(".pdf")) {
+                generatePDFFromTableView(data, file);
+
+            } else {
+                showAlert("Unsupported file format");
+            }
+        }
+    }
+
+    public static void generateCSVFromTableView(List<OfficerAccountData> data, File file) {
+        try (FileWriter csvWriter = new FileWriter(file)) {
+            // Write header
+            csvWriter.append("StudentID,Password,RoleID,Surname,FirstName,MiddleName,Suffix,Course,YearSection\n");
+
+            // Write data
+            for (OfficerAccountData item : data) {
+                csvWriter.append(item.getTblStudentID()).append(",");
+                csvWriter.append(item.getTblPassword()).append(",");
+                csvWriter.append(item.getTblRoleID()).append(",");
+                csvWriter.append(item.getTblSurname()).append(",");
+                csvWriter.append(item.getTblFirstName()).append(",");
+                csvWriter.append(item.getTblMiddlename()).append(",");
+                csvWriter.append(item.getTblSuffix()).append(",");
+                csvWriter.append(item.getTblCourse()).append(",");
+                csvWriter.append(item.getTblYearSection()).append("\n");
+            }
+
+            System.out.println("CSV file generated successfully!");
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information");
+            alert.setHeaderText(null);
+            alert.setContentText("CSV file generated successfully!");
+            alert.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void generatePDFFromTableView(List<OfficerAccountData> data, File file) {
+        // Code to generate PDF using a library like Apache PDFBox
+        // Example: Use Apache PDFBox to create a table in PDF
+        // (Add Apache PDFBox library to your project)
+        // ...
+
+        showAlert("PDF file generated successfully!");
+    }
+
+    private void generatePNGFromTableView(List<OfficerAccountData> data, File file) {
+        WritableImage image = tblStudentAcc.snapshot(new SnapshotParameters(), null);
+        try {
+            ImageIO.write(SwingFXUtils.fromFXImage(image, null), "png", file);
+            showAlert("PNG file generated successfully!");
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert("Error generating PNG file");
+        }
+    }
+
+    private void showAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Information");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    @FXML
+    private void PrintDataOfficer(ActionEvent event) {
+        // Capture the content of the specified pane
+        WritableImage writableImage = new WritableImage((int) eduhubAccount1.getWidth(), (int) eduhubAccount1.getHeight());
+        SnapshotParameters snapshotParameters = new SnapshotParameters();
+        eduhubAccount1.snapshot(snapshotParameters, writableImage);
+
+        // Ask the user if they want to print the data
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Print Confirmation");
+        alert.setHeaderText("Do you want to print the data?");
+        alert.setContentText("Choose your option.");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // User clicked "OK", proceed with saving the image
+            saveImage(writableImage);
+        }
+    }
+
+    @FXML
+    private void PrintMasterOfficer(ActionEvent event) {
+        List<OfficerAccountData> data = tblOfficerData.getItems();
+        showSaveDialogAndGenerate(data);
+    }
+
+    @FXML
+    private void PrintDataCourse(ActionEvent event) {
+        List<getCourseData> data = tblCourseData.getItems();
+        showSaveDialogAndGenerateCourse(data);
+    }
+
+    private void showSaveDialogAndGenerateCourse(List<getCourseData> data) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+
+        // Show save file dialog
+        Stage stage = (Stage) userDashboradWindow.getScene().getWindow();
+        File file = fileChooser.showSaveDialog(stage);
+
+        if (file != null) {
+            if (file.getName().toLowerCase().endsWith(".csv")) {
+                generateCSVFromTableViewCourse(data, file);
+            } else if (file.getName().toLowerCase().endsWith(".pdf")) {
+                generatePDFFromTableViewCourse(data, file);
+
+            } else {
+                showAlert("Unsupported file format");
+            }
+        }
+    }
+
+    public static void generateCSVFromTableViewCourse(List<getCourseData> data, File file) {
+        try (FileWriter csvWriter = new FileWriter(file)) {
+            // Write header
+            csvWriter.append("Course Abbreviation,Course Name\n");
+
+            // Write data
+            for (getCourseData item : data) {
+                csvWriter.append(item.getCourseAbb()).append(",");
+                csvWriter.append(item.getCourseName()).append("\n");
+            }
+
+            System.out.println("CSV file generated successfully!");
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information");
+            alert.setHeaderText(null);
+            alert.setContentText("CSV file generated successfully!");
+            alert.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void generatePDFFromTableViewCourse(List<getCourseData> data, File file) {
+        // Code to generate PDF using a library like Apache PDFBox
+        // Example: Use Apache PDFBox to create a table in PDF
+        // (Add Apache PDFBox library to your project)
+        // ...
+
+        showAlert("PDF file generated successfully!");
+    }
+
+    @FXML
+    private void PrintDataYearSection(ActionEvent event) {
+        List<getYearSectionData> data = tblYearSectionData.getItems();
+        showSaveDialogAndGenerateYearSection(data);
+    }
+
+    private void showSaveDialogAndGenerateYearSection(List<getYearSectionData> data) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+
+        // Show save file dialog
+        Stage stage = (Stage) userDashboradWindow.getScene().getWindow();
+        File file = fileChooser.showSaveDialog(stage);
+
+        if (file != null) {
+            if (file.getName().toLowerCase().endsWith(".csv")) {
+                generateCSVFromTableViewYearSection(data, file);
+            } else if (file.getName().toLowerCase().endsWith(".pdf")) {
+                generatePDFFromTableViewYearSection(data, file);
+
+            } else {
+                showAlert("Unsupported file format");
+            }
+        }
+    }
+
+    public static void generateCSVFromTableViewYearSection(List<getYearSectionData> data, File file) {
+        try (FileWriter csvWriter = new FileWriter(file)) {
+            // Write header
+            csvWriter.append("Year and Section\n");
+
+            // Write data
+            for (getYearSectionData item : data) {
+                csvWriter.append(item.getSectionName()).append("\n");
+            }
+
+            System.out.println("CSV file generated successfully!");
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information");
+            alert.setHeaderText(null);
+            alert.setContentText("CSV file generated successfully!");
+            alert.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void generatePDFFromTableViewYearSection(List<getYearSectionData> data, File file) {
+        // Code to generate PDF using a library like Apache PDFBox
+        // Example: Use Apache PDFBox to create a table in PDF
+        // (Add Apache PDFBox library to your project)
+        // ...
+
+        showAlert("PDF file generated successfully!");
+    }
+
+    @FXML
+    private void PrintDataFeedback(ActionEvent event) {
+        List<Feedback> data = tableFeedBack.getItems();
+        showSaveDialogAndGenerateFeedBack(data);
+    }
+
+    private void showSaveDialogAndGenerateFeedBack(List<Feedback> data) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save File");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+
+        // Show save file dialog
+        Stage stage = (Stage) userDashboradWindow.getScene().getWindow();
+        File file = fileChooser.showSaveDialog(stage);
+
+        if (file != null) {
+            if (file.getName().toLowerCase().endsWith(".csv")) {
+                generateCSVFromTableViewFeedback(data, file);
+            } else if (file.getName().toLowerCase().endsWith(".pdf")) {
+                generatePDFFromTableViewFeedback(data, file);
+
+            } else {
+                showAlert("Unsupported file format");
+            }
+        }
+    }
+
+    public static void generateCSVFromTableViewFeedback(List<Feedback> data, File file) {
+        try (FileWriter csvWriter = new FileWriter(file)) {
+            // Write header
+            csvWriter.append("Design Rate, Function Rate, Experience Rate, FeedBack Comment\n");
+
+            // Write data
+            for (Feedback item : data) {
+                csvWriter.append(item.getDesignRating()).append(",");
+                csvWriter.append(item.getFunctionRating()).append(",");
+                csvWriter.append(item.getExperienceRating()).append(",");
+                csvWriter.append(item.getFeedbackReport()).append("\n");
+            }
+
+            System.out.println("CSV file generated successfully!");
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information");
+            alert.setHeaderText(null);
+            alert.setContentText("CSV file generated successfully!");
+            alert.showAndWait();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void generatePDFFromTableViewFeedback(List<Feedback> data, File file) {
+        // Code to generate PDF using a library like Apache PDFBox
+        // Example: Use Apache PDFBox to create a table in PDF
+        // (Add Apache PDFBox library to your project)
+        // ...
+
+        showAlert("PDF file generated successfully!");
+    }
+
+    /////////////////////////////
+    // Switch Form for YearSection Trash
+    private Button lastClickedButtonYearSection = ListCourseYearButton;
+
+    private void setButtonColorCourseSection(Button button, boolean isSelected) {
+        if (isSelected) {
+            button.getStyleClass().add("selected-button");
+        } else {
+            button.getStyleClass().remove("selected-button");
+        }
+    }
+
+    @FXML
+    private void SwitchFormCourseSection(ActionEvent event) {
+        Button clickedButton = (Button) event.getSource();
+        System.out.println("changing");
+
+        if (clickedButton == lastClickedButtonYearSection) {
+            // Ignore the click if the same button was clicked twice in a row
+            return;
+        }
+
+        try {
+            // Update the last clicked button
+            lastClickedButtonYearSection = clickedButton;
+
+            if (clickedButton == ListCourseYearButton) {
+                setButtonColorCourseSection(ListCourseYearButton, true);
+                setButtonColorCourseSection(trashCourseYearButton, false);
+
+                ListCourseYearWindow.setVisible(true);
+                trashCourseYearWindow.setVisible(false);
+
+            } else if (clickedButton == trashCourseYearButton) {
+                setButtonColorCourseSection(ListCourseYearButton, false);
+                setButtonColorCourseSection(trashCourseYearButton, true);
+
+                ListCourseYearWindow.setVisible(false);
+                trashCourseYearWindow.setVisible(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /////////////////////////////
+    // Switch Form for Student Account Trash
+    private Button lastClickedButtonStudentAcc = ListStudentAccountButton;
+
+    private void setButtonStudentAcc(Button button, boolean isSelected) {
+        if (isSelected) {
+            button.getStyleClass().add("selected-button");
+        } else {
+            button.getStyleClass().remove("selected-button");
+        }
+    }
+
+    @FXML
+    private void SwitchFormStudentAccount(ActionEvent event) {
+        Button clickedButton = (Button) event.getSource();
+        System.out.println("changing");
+
+        if (clickedButton == lastClickedButtonStudentAcc) {
+            // Ignore the click if the same button was clicked twice in a row
+            return;
+        }
+
+        try {
+            // Update the last clicked button
+            lastClickedButtonStudentAcc = clickedButton;
+
+            if (clickedButton == ListStudentAccountButton) {
+                setButtonColorCourseSection(ListStudentAccountButton, true);
+                setButtonColorCourseSection(trashStudentAccountButton, false);
+
+                listStudentAccountWindow.setVisible(true);
+                trashSrudentAccountWindow.setVisible(false);
+
+            } else if (clickedButton == trashStudentAccountButton) {
+                setButtonColorCourseSection(ListStudentAccountButton, false);
+                setButtonColorCourseSection(trashStudentAccountButton, true);
+
+                listStudentAccountWindow.setVisible(false);
+                trashSrudentAccountWindow.setVisible(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /////////////////////////////
+    // Switch Form for Officer Account Trash
+    private Button lastClickedButtonOfficerAcc = ListOfficerAccountButton;
+
+    private void setButtonOfficerAcc(Button button, boolean isSelected) {
+        if (isSelected) {
+            button.getStyleClass().add("selected-button");
+        } else {
+            button.getStyleClass().remove("selected-button");
+        }
+    }
+
+    @FXML
+    private void SwitchFormOfficerAccount(ActionEvent event) {
+        Button clickedButton = (Button) event.getSource();
+        System.out.println("changing");
+
+        if (clickedButton == lastClickedButtonOfficerAcc) {
+            // Ignore the click if the same button was clicked twice in a row
+            return;
+        }
+
+        try {
+            // Update the last clicked button
+            lastClickedButtonOfficerAcc = clickedButton;
+
+            if (clickedButton == ListOfficerAccountButton) {
+                setButtonColorCourseSection(ListOfficerAccountButton, true);
+                setButtonColorCourseSection(trashOfficerAccountButton, false);
+
+                listOfficerAccountWindow.setVisible(true);
+                trashOfficerAccountWindow.setVisible(false);
+
+            } else if (clickedButton == trashOfficerAccountButton) {
+                setButtonColorCourseSection(ListOfficerAccountButton, false);
+                setButtonColorCourseSection(trashOfficerAccountButton, true);
+
+                listOfficerAccountWindow.setVisible(false);
+                trashOfficerAccountWindow.setVisible(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /////////////////////////////
+    // Switch Form for FeedBAck Trash
+    private Button lastClickedButtonFeedback = ListFeedBackButton;
+
+    private void setButtonFeedback(Button button, boolean isSelected) {
+        if (isSelected) {
+            button.getStyleClass().add("selected-button");
+        } else {
+            button.getStyleClass().remove("selected-button");
+        }
+    }
+
+    @FXML
+    private void SwitchFormFeedback(ActionEvent event) {
+        Button clickedButton = (Button) event.getSource();
+        System.out.println("changing");
+
+        if (clickedButton == lastClickedButtonFeedback) {
+            // Ignore the click if the same button was clicked twice in a row
+            return;
+        }
+
+        try {
+            // Update the last clicked button
+            lastClickedButtonFeedback = clickedButton;
+
+            if (clickedButton == ListFeedBackButton) {
+                setButtonColorCourseSection(ListFeedBackButton, true);
+                setButtonColorCourseSection(trashFeedbackButton, false);
+
+                listFeedbackWIndow.setVisible(true);
+                trashFeedbackWindow.setVisible(false);
+
+            } else if (clickedButton == trashFeedbackButton) {
+                setButtonColorCourseSection(ListFeedBackButton, false);
+                setButtonColorCourseSection(trashFeedbackButton, true);
+
+                listFeedbackWIndow.setVisible(false);
+                trashFeedbackWindow.setVisible(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void showSideCardDetailsOfficer(ActionEvent event) {
+        applyBlurEffect(true);
+
+        TranslateTransition slider1 = new TranslateTransition();
+        slider1.setNode(sideCard);
+        slider1.setToX(0);
+        slider1.setDuration(Duration.seconds(.5));
+        slider1.play();
+    }
+
+    @FXML
+    private void closeSideCardOfficer(ActionEvent event) {
+        // Apply blur effect during closing animation
+        applyBlurEffect(false);
+
+        TranslateTransition slider1 = new TranslateTransition();
+        slider1.setNode(sideCard);
+        slider1.setToX(489);
+        slider1.setDuration(Duration.seconds(.5));
+        slider1.play();
     }
 
 }

@@ -35,6 +35,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -46,6 +47,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.BoxBlur;
@@ -59,6 +61,7 @@ import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -234,6 +237,18 @@ public class OfficerDashboardController implements Initializable {
     private TableView<StudentAccountDataList> tblStudentData;
     @FXML
     private TextField searchStudent;
+    @FXML
+    private TextField txtTitle;
+    @FXML
+    private ComboBox<String> cbAudience;
+    @FXML
+    private ComboBox<String> cbPriorityLevel;
+    @FXML
+    private TextArea txtArea;
+    @FXML
+    private Button btnSubmit;
+    @FXML
+    private GridPane announcementCard;
 
     /**
      * Initializes the controller class.
@@ -319,6 +334,11 @@ public class OfficerDashboardController implements Initializable {
                 handleTableClick();
             }
         });
+
+        DisplayAnnouncement();
+
+        fetchAudienceToComboBox(cbAudience);
+        fetchPriorityLevelToComboBox(cbPriorityLevel);
     }
 
     private final boolean stop = false;
@@ -1071,7 +1091,7 @@ public class OfficerDashboardController implements Initializable {
     private ResultSet result;
 
     private void fetchCourseToComboBox(ComboBox<String> comboBox) {
-        String sql = "SELECT CourseAbb FROM course";
+        String sql = "SELECT CourseAbb FROM filter_course";
         connect = database.getConnection();
         try {
             prepare = connect.prepareStatement(sql);
@@ -1092,7 +1112,7 @@ public class OfficerDashboardController implements Initializable {
 
     private void fetchSectionToComboBox(ComboBox<String> comboBox) {
 
-        String sql = "SELECT SectionName FROM section";
+        String sql = "SELECT SectionName FROM filter_section";
         connect = database.getConnection();
         try {
             prepare = connect.prepareStatement(sql);
@@ -1446,4 +1466,195 @@ public class OfficerDashboardController implements Initializable {
         return source.toLowerCase().contains(target);
     }
 
+    private String user_StudentID;
+    private String user_CourseID;
+    private String user_SectionID;
+    private String user_Surname;
+
+    public void user_StudentID(String studentID) {
+        this.user_StudentID = studentID;
+        DisplayAnnouncement();
+    }
+
+    public void user_CourseID(String courseID) {
+        this.user_CourseID = courseID;
+        DisplayAnnouncement();
+    }
+
+    public void user_SectionID(String sectionID) {
+        this.user_SectionID = sectionID;
+        DisplayAnnouncement();
+    }
+
+    public void user_Surname(String surname) {
+        this.user_Surname = surname;
+        DisplayAnnouncement();
+    }
+
+    private void fetchAudienceToComboBox(ComboBox<String> comboBox) {
+
+        try {
+            prepare = connect.prepareStatement("SELECT AudienceName FROM filter_audience");
+            result = prepare.executeQuery();
+
+            List<String> items = new ArrayList<>();
+            while (result.next()) {
+                String itemName = result.getString("AudienceName");
+                items.add(itemName);
+            }
+
+            comboBox.getItems().addAll(items);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error fetching course data: " + e.getMessage());
+        }
+    }
+
+    private void fetchPriorityLevelToComboBox(ComboBox<String> comboBox) {
+
+        try {
+            prepare = connect.prepareStatement("SELECT PriorityName FROM filter_priority");
+            result = prepare.executeQuery();
+
+            List<String> items = new ArrayList<>();
+            while (result.next()) {
+                String itemName = result.getString("PriorityName");
+                items.add(itemName);
+            }
+
+            comboBox.getItems().addAll(items);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error fetching course data: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handlePostAnnouncement(ActionEvent event) {
+        String sql = "INSERT INTO mod_announce (Title, Body,AudienceID,PriorityID,StudentID,Surname, CourseID, SectionID) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        connect = database.getConnection();
+
+        try {
+
+            prepare = connect.prepareStatement(sql);
+
+            // Set parameters for the prepared statement
+            prepare.setString(1, txtTitle.getText());
+            prepare.setString(2, txtArea.getText());
+            prepare.setString(3, cbAudience.getValue());
+            prepare.setString(4, cbPriorityLevel.getValue());
+            prepare.setString(5, user_StudentID);
+            prepare.setString(6, user_Surname);
+            prepare.setString(7, user_CourseID); // Assuming you're using the value from the ComboBox
+            prepare.setString(8, user_SectionID); // Assuming you're using the value from the ComboBox
+
+            // Execute the SQL query
+            prepare.executeUpdate();
+
+            // Show success alert
+            showSuccessAlert("Announcement created successfully!");
+
+            // Load and refresh the TableView
+            DisplayAnnouncement();
+            clearFieldPost();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Post announced");
+        }
+    }
+
+    private void clearFieldPost() {
+        txtTitle.clear();
+        txtArea.clear();
+        cbAudience.setValue(null);
+        cbPriorityLevel.setValue(null);
+    }
+
+    private ObservableList<AnnouncementData> Announcement = FXCollections.observableArrayList();
+
+    public ObservableList<AnnouncementData> getAnnouncementData() throws SQLException {
+
+        String sql = "Select Title, Body,AudienceID,PriorityID,StudentID,Surname, CourseID, SectionID, postDate FROM mod_announce where CourseID = ? and SectionID = ? and AudienceID in (?,?,?,?) ORDER BY PriorityID ASC";
+        ObservableList<AnnouncementData> Announcement = FXCollections.observableArrayList();
+        connect = database.getConnection();
+
+        try {
+            prepare = connect.prepareStatement(sql);
+            prepare.setString(1, user_CourseID);
+            prepare.setString(2, user_SectionID);
+            prepare.setString(3, "Everyone");  // Replace with the actual value or variable
+            prepare.setString(4, "Homeroom");  // Replace with the actual value or variable
+            prepare.setString(5, "Officer");
+            prepare.setString(6,"Only Me");
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                String title = result.getString("Title");
+                String body = result.getString("Body");
+                String audience = result.getString("AudienceID");
+                String priority = result.getString("PriorityID");
+                String courseID = result.getString("CourseID");
+                String sectionID = result.getString("SectionID");
+                String surname = result.getString("Surname");
+                String postDate = result.getString("postDate");
+                String studentID = result.getString("StudentID");
+
+                AnnouncementData announcementData = new AnnouncementData(title, audience, priority, courseID, sectionID, body, postDate, studentID, surname);
+
+                Announcement.add(announcementData);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close resources (result, prepare, connect) if needed
+        }
+
+        return Announcement;
+    }
+
+    private int currentDisplayIndex = 0;
+
+    public void DisplayAnnouncement() {
+        try {
+            Announcement.clear();
+            Announcement.addAll(getAnnouncementData());
+
+            int maxColumns = 1;
+            int row = 0;
+            int column = 0;
+
+            announcementCard.getChildren().clear();
+            announcementCard.getRowConstraints().clear();
+            announcementCard.getColumnConstraints().clear();
+
+            for (int q = 0; q < Announcement.size(); q++) {
+                try {
+                    if (column >= maxColumns) {
+                        // Move to the next row when the maximum number of columns is reached
+                        column = 0;
+                        row++;
+                    }
+
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(getClass().getResource("/view/announcementCard.fxml"));
+                    AnchorPane pane = loader.load();
+                    AnnouncementCardController cardController = loader.getController();
+                    cardController.setData(Announcement.get(q));
+
+                    announcementCard.add(pane, column++, row);
+
+                    GridPane.setMargin(pane, new Insets(5));
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            currentDisplayIndex = 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
