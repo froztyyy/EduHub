@@ -297,7 +297,6 @@ public class UserDashboardController implements Initializable {
         homeDisplayListCard();
         
         fetchPriorityNameToComboBox(cbPriority);
-        cbPriority.setValue("Priority Level");
 
         DisplayAnnouncementDash();
     }
@@ -1547,6 +1546,30 @@ public class UserDashboardController implements Initializable {
 
     @FXML
     private void handlePostAnnouncement(ActionEvent event) {
+        
+            // Check if Title and Note are not empty, and PriorityID is selected
+    if (txtTitle.getText().isEmpty() && txtBody.getText().isEmpty() && cbPriority.getValue() == null) {
+        // Show an alert indicating that Title, Note, and Priority are required
+        showErrorAlert("Please enter Title, Note, and select Priority");
+        return; // Stop further execution
+    }
+
+    // Check which fields are missing
+    if (txtTitle.getText().isEmpty()) {
+        showErrorAlert("Please enter Title");
+        return;
+    }
+
+    if (txtBody.getText().isEmpty()) {
+        showErrorAlert("Please enter Note");
+        return;
+    }
+
+    if (cbPriority.getValue() == null) {
+        showErrorAlert("Please select Priority");
+        return;
+    }
+        
         String sql = "INSERT INTO mod_announce (Title, Body,AudienceID,PriorityID,StudentID,Surname, CourseID, SectionID) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         connect = database.getConnection();
@@ -1588,6 +1611,14 @@ public class UserDashboardController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
+    
+    private void showErrorAlert(String content) {
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setTitle("Error");
+        errorAlert.setHeaderText(null);
+        errorAlert.setContentText(content);
+        errorAlert.showAndWait();
+    }
 
     private void clearFieldPost() {
         txtTitle.clear();
@@ -1599,7 +1630,7 @@ public class UserDashboardController implements Initializable {
 
     public ObservableList<AnnouncementData> getAnnouncementData() throws SQLException {
 
-        String sql = "Select Title, Body,AudienceID,PriorityID,StudentID,Surname, CourseID, SectionID, postDate FROM mod_announce where CourseID = ? and SectionID = ? and AudienceID in (?,?,?) ORDER BY PriorityID ASC";
+        String sql = "Select Title, Body,AudienceID,PriorityID,StudentID,Surname, CourseID, SectionID, postDate FROM mod_announce where CourseID = ? and SectionID = ? and AudienceID in (?,?,?) ORDER BY PostDate DESC";
         ObservableList<AnnouncementData> Announcement = FXCollections.observableArrayList();
         connect = database.getConnection();
 
