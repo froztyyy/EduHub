@@ -283,6 +283,12 @@ public class OfficerDashboardController implements Initializable {
     private CheckBox selectAllStudentTable;
     @FXML
     private CheckBox selectAllStudentTableArchive;
+    @FXML
+    private Label txtIDtod;
+    @FXML
+    private Button refreshannounce1;
+    @FXML
+    private Button btnCreateTask11;
 
     /**
      * Initializes the controller class.
@@ -1048,7 +1054,7 @@ public class OfficerDashboardController implements Initializable {
     private void fetchSectionToComboBox(ComboBox<String> comboBox) {
 
         String sql = "SELECT SectionID FROM account_student where StudentID = ?";
-        
+
         connect = database.getConnection();
         try {
             prepare = connect.prepareStatement(sql);
@@ -1165,8 +1171,8 @@ public class OfficerDashboardController implements Initializable {
         try {
             // Assume your database connection is already established
             prepare = connect.prepareStatement("SELECT StudentID, Password, RoleID, Surname, Firstname, Middlename, Suffix, CourseID, SectionID FROM account_student WHERE CourseID = ? and SectionID = ? ORDER by UserID DESC");
-           prepare.setString(1, user_CourseID);
-           prepare.setString(2,user_SectionID);
+            prepare.setString(1, user_CourseID);
+            prepare.setString(2, user_SectionID);
             result = prepare.executeQuery(); // Execute the query and obtain the result set
 
             while (result.next()) {
@@ -1806,10 +1812,10 @@ public class OfficerDashboardController implements Initializable {
             prepare.setString(2, txtTitleTask.getText());
             prepare.setString(3, txtBodyTask.getText());
             prepare.setDate(4, java.sql.Date.valueOf(datePickerTask.getValue())); // Convert LocalDate to java.sql.Date
-            prepare.setString(5,cbAudienceToDo.getValue());
+            prepare.setString(5, cbAudienceToDo.getValue());
             prepare.setString(6, cbPriorityToDo.getValue());
             prepare.setString(7, user_Surname);
-            prepare.setString(8,user_CourseID);
+            prepare.setString(8, user_CourseID);
             prepare.setString(9, user_SectionID);
 
             // Debug: Print the prepared statement
@@ -1840,7 +1846,7 @@ public class OfficerDashboardController implements Initializable {
             }
         }
     }
-    
+
     private void showSuccessAlert() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Success");
@@ -1856,8 +1862,8 @@ public class OfficerDashboardController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
-    
-     private ObservableList<ToDoListData> toDoList = FXCollections.observableArrayList();
+
+    private ObservableList<ToDoListData> toDoList = FXCollections.observableArrayList();
 
     public ObservableList<ToDoListData> getToDoListData() throws SQLException {
 
@@ -1887,7 +1893,7 @@ public class OfficerDashboardController implements Initializable {
                 String studentID = result.getString("StudentID");
                 String postDate = result.getString("PostDate");
 
-                ToDoListData todoListData = new ToDoListData(title, note, deadline, audience, priority, courseID, sectionID, surname,studentID, postDate);
+                ToDoListData todoListData = new ToDoListData(title, note, deadline, audience, priority, courseID, sectionID, surname, studentID, postDate);
 
                 toDoList.add(todoListData);
             }
@@ -1925,7 +1931,20 @@ public class OfficerDashboardController implements Initializable {
                     loader.setLocation(getClass().getResource("/view/displayList.fxml"));
                     AnchorPane pane = loader.load();
                     controller.DisplayListController cardController = loader.getController();
+
+                    // Set OfficerDashboardController reference in DisplayListController
+                    cardController.setOfficerDashboardController(OfficerDashboardController.this); // Changed line
+
                     cardController.setData(toDoList.get(q));
+
+                    // Set the studentID in DisplayListController
+                    cardController.setStudentID(user_StudentID); // Replace with the actual studentID
+
+                    // Disable the btnRemove button if the studentID data is not equal to the current studentID
+                    if (user_StudentID != null && !user_StudentID.equals(toDoList.get(q).getUser_StudentID())) {
+                        cardController.disableRemoveButton();
+                        cardController.disableRemoveButton1();
+                    }
 
                     taskCard.add(pane, column++, row);
 
@@ -1944,6 +1963,7 @@ public class OfficerDashboardController implements Initializable {
             e.printStackTrace();
         }
     }
+
     private Button lastClickedButtonStudentAcc = ListStudentAccountButton;
 
     private void setButtonStudentAcc(Button button, boolean isSelected) {
@@ -2171,7 +2191,6 @@ public class OfficerDashboardController implements Initializable {
         fileChooser.setTitle("Save File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
 
-
         // Show save file dialog
         Stage stage = (Stage) userDashboradWindow.getScene().getWindow();
         File file = fileChooser.showSaveDialog(stage);
@@ -2356,6 +2375,79 @@ public class OfficerDashboardController implements Initializable {
             // Deselect all rows in the table
             archiveStudentAccTbl.getSelectionModel().clearSelection();
         }
+    }
+
+    @FXML
+    private void Refreshtodolist(ActionEvent event) throws SQLException {
+        getToDoListData();
+        homeDisplayListCard();
+    }
+
+    @FXML
+    private void handleUpdateButtonClick(ActionEvent event) {
+        ObservableList<ToDoListData> todolistdatass;
+
+        // Fetch data from the UI component
+        int selectedID = Integer.parseInt(txtIDtod.getText());
+        String updatedTitle = txtTitleTask.getText();
+        String updatedBody = txtBodyTask.getText();
+        String updatedAudience = cbAudience.getValue();
+        String updatedPriority = cbPriorityToDo.getValue();
+        LocalDate updatedDeadline = datePickerTask.getValue();
+
+        // Get the selected task ID (replace this with your actual method to get the selected task ID)
+        // Check if all required fields are filled
+        if (updatedTitle.isEmpty() || updatedBody.isEmpty() || updatedPriority == null || updatedDeadline == null) {
+            showErrorAlert("Error", "Please fill in all fields before updating.");
+            return;
+        }
+
+        try {
+            // Update the corresponding task in the database
+            connect = database.getConnection();
+            String updateQuery = "UPDATE mod_todo_pending SET Title=?, Note=?, Deadline=?, AudienceID=?, PriorityID=? WHERE ToDoID=?";
+            prepare = connect.prepareStatement(updateQuery);
+            prepare.setString(1, updatedTitle);
+            prepare.setString(2, updatedBody);
+            prepare.setDate(3, java.sql.Date.valueOf(updatedDeadline));
+            prepare.setString(4, updatedAudience);
+            prepare.setString(5, updatedPriority);
+            prepare.setInt(6, selectedID);
+
+            // Execute the update query
+            prepare.executeUpdate();
+
+            // Show a success alert
+            showSuccessAlert();
+            getToDoListData();
+            homeDisplayListCard();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showErrorAlert("Error", "Failed to update the task in the database.");
+        } finally {
+            // Close resources
+            try {
+                if (prepare != null) {
+                    prepare.close();
+                }
+                if (connect != null) {
+                    connect.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void setTaskData(int todoID, String title, String body, String audience, String priority, LocalDate deadline) {
+        txtIDtod.setText(String.valueOf(todoID));  // Set the data to the corresponding fields
+        txtTitleTask.setText(title);
+        txtBodyTask.setText(body);
+        cbAudienceToDo.setValue(audience);
+        cbPriorityToDo.setValue(priority);
+        datePickerTask.setValue(deadline);
+
+        // You can continue to set other fields accordingly...
     }
 
 }

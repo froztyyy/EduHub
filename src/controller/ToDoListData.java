@@ -74,6 +74,15 @@ public class ToDoListData {
         this.body = body;
     }
 
+    public int getTodoId() {
+        return todoId;
+    }
+
+    public void setTodoId(int todoId) {
+        this.todoId = todoId;
+    }
+
+    private int todoId;
     private String title;
     private String body;
     private String deadline;
@@ -102,6 +111,20 @@ public class ToDoListData {
     private String user_StudentID;
 
     public ToDoListData(String title, String body, String deadline, String audience, String priority, String user_CourseID, String user_SectionID, String user_Surname, String user_StudentID, String postDate) {
+        this.title = title;
+        this.body = body;
+        this.deadline = deadline;
+        this.audience = audience;
+        this.priority = priority;
+        this.user_CourseID = user_CourseID;
+        this.user_SectionID = user_SectionID;
+        this.user_Surname = user_Surname;
+        this.user_StudentID = user_StudentID;
+        this.postDate = postDate;
+    }
+
+    public ToDoListData(int todoId, String title, String body, String deadline, String audience, String priority, String user_CourseID, String user_SectionID, String user_Surname, String user_StudentID, String postDate) {
+        this.todoId = todoId;
         this.title = title;
         this.body = body;
         this.deadline = deadline;

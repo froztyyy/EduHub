@@ -239,6 +239,12 @@ public class UserDashboardController implements Initializable {
     private TableColumn<OfficerAccountData, String> tblFirstName;
     @FXML
     private TableColumn<OfficerAccountData, String> tblMiddleNameCol;
+    @FXML
+    private Button btnCreateTask1;
+    @FXML
+    private Label txtIDtod;
+    @FXML
+    private Button refreshannounce1;
 
     /**
      * Initializes the controller class.
@@ -1320,7 +1326,7 @@ public class UserDashboardController implements Initializable {
 
     public ObservableList<ToDoListData> getToDoListData() throws SQLException {
 
-        String sql = "SELECT Title, Note, Deadline, AudienceID, PriorityID, StudentID, Surname, CourseID, SectionID, postDate FROM mod_todo_pending WHERE CourseID = ? AND SectionID = ? AND AudienceID IN (?, ?, ?) ORDER BY PostDate DESC, PriorityID ASC";
+        String sql = "SELECT ToDoID, Title, Note, Deadline, AudienceID, PriorityID, StudentID, Surname, CourseID, SectionID, postDate FROM mod_todo_pending WHERE CourseID = ? AND SectionID = ? AND AudienceID IN (?, ?, ?) ORDER BY PostDate DESC, PriorityID ASC";
         ObservableList<ToDoListData> toDoList = FXCollections.observableArrayList();
         connect = database.getConnection();
 
@@ -1329,11 +1335,12 @@ public class UserDashboardController implements Initializable {
             prepare.setString(1, user_CourseID);
             prepare.setString(2, user_SectionID);
             prepare.setString(3, "Everyone");  // Replace with the actual value or variable
-            prepare.setString(4, "Homeroom");  // Replace with the actual value or variabl;
+            prepare.setString(4, "Homeroom");  // Replace with the actual value or variable
             prepare.setString(5, "Only Me");
             result = prepare.executeQuery();
 
             while (result.next()) {
+                int todoId = result.getInt("ToDoID");
                 String title = result.getString("Title");
                 String note = result.getString("Note");
                 String deadline = result.getString("Deadline");
@@ -1345,7 +1352,7 @@ public class UserDashboardController implements Initializable {
                 String studentID = result.getString("StudentID");
                 String postDate = result.getString("PostDate");
 
-                ToDoListData todoListData = new ToDoListData(title, note, deadline, audience, priority, courseID, sectionID, surname, studentID, postDate);
+                ToDoListData todoListData = new ToDoListData(todoId, title, note, deadline, audience, priority, courseID, sectionID, surname, studentID, postDate);
 
                 toDoList.add(todoListData);
             }
@@ -1383,8 +1390,17 @@ public class UserDashboardController implements Initializable {
                     loader.setLocation(getClass().getResource("/view/displayList.fxml"));
                     AnchorPane pane = loader.load();
                     controller.DisplayListController cardController = loader.getController();
+                    // Set UserDashboardController reference in DisplayListController
+                    cardController.setUserDashboardController(UserDashboardController.this);
                     cardController.setData(toDoList.get(q));
 
+                    // Set the studentID in DisplayListController
+                    cardController.setStudentID(user_StudentID); // Replace with the actual studentID
+                    // Disable the btnRemove button if the studentID data is not equal to the current studentID
+                    if (user_StudentID != null && !user_StudentID.equals(toDoList.get(q).getUser_StudentID())) {
+                        cardController.disableRemoveButton();
+                        cardController.disableRemoveButton1();
+                    }
                     taskCard.add(pane, column++, row);
 
                     GridPane.setMargin(pane, new Insets(5));
@@ -1796,5 +1812,75 @@ public class UserDashboardController implements Initializable {
                 ex.printStackTrace();
             }
         }
+    }
+
+    public void setTaskData(int todoID, String title, String body, String priority, LocalDate deadline) {
+        txtIDtod.setText(String.valueOf(todoID));  // Set the data to the corresponding fields
+        txtTitleTask.setText(title);
+        txtBodyTask.setText(body);
+        cbPriorityToDo.setValue(priority);
+        datePickerTask.setValue(deadline);
+
+        // You can continue to set other fields accordingly...
+    }
+
+    @FXML
+    private void handleUpdateButtonClick(ActionEvent event) {
+        ObservableList<ToDoListData> todolistdatass;
+
+        // Fetch data from the UI component
+        int selectedID = Integer.parseInt(txtIDtod.getText());
+        String updatedTitle = txtTitleTask.getText();
+        String updatedBody = txtBodyTask.getText();
+        String updatedPriority = cbPriorityToDo.getValue();
+        LocalDate updatedDeadline = datePickerTask.getValue();
+
+        // Get the selected task ID (replace this with your actual method to get the selected task ID)
+        // Check if all required fields are filled
+        if (updatedTitle.isEmpty() || updatedBody.isEmpty() || updatedPriority == null || updatedDeadline == null) {
+            showErrorAlert("Error", "Please fill in all fields before updating.");
+            return;
+        }
+
+        try {
+            // Update the corresponding task in the database
+            connect = database.getConnection();
+            String updateQuery = "UPDATE mod_todo_pending SET Title=?, Note=?, Deadline=?, PriorityID=? WHERE ToDoID=?";
+            prepare = connect.prepareStatement(updateQuery);
+            prepare.setString(1, updatedTitle);
+            prepare.setString(2, updatedBody);
+            prepare.setDate(3, java.sql.Date.valueOf(updatedDeadline));
+            prepare.setString(4, updatedPriority);
+            prepare.setInt(5, selectedID);
+
+            // Execute the update query
+            prepare.executeUpdate();
+
+            // Show a success alert
+            showSuccessAlert();
+            getToDoListData();
+            todoCard();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showErrorAlert("Error", "Failed to update the task in the database.");
+        } finally {
+            // Close resources
+            try {
+                if (prepare != null) {
+                    prepare.close();
+                }
+                if (connect != null) {
+                    connect.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
+    private void Refreshtodolist(ActionEvent event) throws SQLException {
+        getToDoListData();
+        todoCard();
     }
 }
