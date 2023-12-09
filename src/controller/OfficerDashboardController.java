@@ -2165,7 +2165,7 @@ public class OfficerDashboardController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+
 
         // Show save file dialog
         Stage stage = (Stage) userDashboradWindow.getScene().getWindow();
@@ -2174,9 +2174,6 @@ public class OfficerDashboardController implements Initializable {
         if (file != null) {
             if (file.getName().toLowerCase().endsWith(".csv")) {
                 generateCSVFromTableView(data, file);
-            } else if (file.getName().toLowerCase().endsWith(".pdf")) {
-                generatePDFFromTableView(data, file);
-
             } else {
                 showAlert("Unsupported file format");
             }

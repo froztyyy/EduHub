@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.BarChart?>
@@ -24,7 +33,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminDashboardController">
+<Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AdminDashboardController">
    <children>
       <Pane prefHeight="43.0" prefWidth="1332.0" style="-fx-background-color: black;">
          <children>
@@ -104,12 +113,15 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <ImageView fitHeight="58.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="56.0" fitWidth="57.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../media/icons/Screenshot%202023-11-17%20205052.png" />
+                                    <Image url="@../media/logo/3dgifmaker77747.gif" />
                                  </image>
+                                 <effect>
+                                    <ColorAdjust saturation="-0.93" />
+                                 </effect>
                               </ImageView>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="EDUHUB.ADMIN">
                                  <font>
                                     <Font name="Arial Bold" size="17.0" />
                                  </font>
@@ -396,7 +408,7 @@
                   </AnchorPane>
                </children>
             </Pane>
-            <Pane fx:id="courseYearWindow" layoutY="95.0">
+            <Pane fx:id="courseYearWindow" layoutY="95.0" visible="false">
                <children>
                   <Pane fx:id="ListCourseYearWindow" layoutX="2.0" layoutY="2.0" prefHeight="697.0" prefWidth="1332.0" stylesheets="@../style/admindashboard.css">
                      <children>
@@ -741,7 +753,7 @@
                   </Pane>
                </children>
             </Pane>
-            <Pane fx:id="sectionStudWindow" layoutX="-1.0" layoutY="99.0" visible="false">
+            <Pane fx:id="sectionStudWindow" layoutX="-1.0" layoutY="99.0">
                <children>
                   <Pane fx:id="listStudentAccountWindow" prefHeight="704.0" prefWidth="1332.0">
                      <children>
