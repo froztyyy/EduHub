@@ -2080,17 +2080,13 @@ public class AdminDashboardController implements Initializable {
         alert.setContentText("Choose your option.");
 
         ButtonType buttonTypePNG = new ButtonType("PNG");
-        ButtonType buttonTypePDF = new ButtonType("PDF");
 
-        alert.getButtonTypes().setAll(buttonTypePNG, buttonTypePDF);
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent()) {
             if (result.get() == buttonTypePNG) {
                 saveAsPNG();
-            } else if (result.get() == buttonTypePDF) {
-                saveAsPDF();
-            }
+            } 
         }
     }
 
@@ -3318,7 +3314,6 @@ public class AdminDashboardController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
 
         // Show save file dialog
         Stage stage = (Stage) userDashboradWindow.getScene().getWindow();
@@ -3327,9 +3322,6 @@ public class AdminDashboardController implements Initializable {
         if (file != null) {
             if (file.getName().toLowerCase().endsWith(".csv")) {
                 generateCSVFromTableView(data, file);
-            } else if (file.getName().toLowerCase().endsWith(".pdf")) {
-                generatePDFFromTableView(data, file);
-
             } else {
                 showAlert("Unsupported file format");
             }
@@ -3430,7 +3422,6 @@ public class AdminDashboardController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
 
         // Show save file dialog
         Stage stage = (Stage) userDashboradWindow.getScene().getWindow();
@@ -3439,9 +3430,6 @@ public class AdminDashboardController implements Initializable {
         if (file != null) {
             if (file.getName().toLowerCase().endsWith(".csv")) {
                 generateCSVFromTableViewCourse(data, file);
-            } else if (file.getName().toLowerCase().endsWith(".pdf")) {
-                generatePDFFromTableViewCourse(data, file);
-
             } else {
                 showAlert("Unsupported file format");
             }
@@ -3490,7 +3478,6 @@ public class AdminDashboardController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
 
         // Show save file dialog
         Stage stage = (Stage) userDashboradWindow.getScene().getWindow();
@@ -3499,9 +3486,6 @@ public class AdminDashboardController implements Initializable {
         if (file != null) {
             if (file.getName().toLowerCase().endsWith(".csv")) {
                 generateCSVFromTableViewYearSection(data, file);
-            } else if (file.getName().toLowerCase().endsWith(".pdf")) {
-                generatePDFFromTableViewYearSection(data, file);
-
             } else {
                 showAlert("Unsupported file format");
             }
@@ -3549,7 +3533,6 @@ public class AdminDashboardController implements Initializable {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save File");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("CSV Files", "*.csv"));
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
 
         // Show save file dialog
         Stage stage = (Stage) userDashboradWindow.getScene().getWindow();
@@ -3558,9 +3541,6 @@ public class AdminDashboardController implements Initializable {
         if (file != null) {
             if (file.getName().toLowerCase().endsWith(".csv")) {
                 generateCSVFromTableViewFeedback(data, file);
-            } else if (file.getName().toLowerCase().endsWith(".pdf")) {
-                generatePDFFromTableViewFeedback(data, file);
-
             } else {
                 showAlert("Unsupported file format");
             }
