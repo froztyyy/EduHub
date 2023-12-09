@@ -1717,8 +1717,13 @@ public class UserDashboardController implements Initializable {
         // Add logic to retrieve feedback data from the database
         // Replace the placeholders with your actual column names
         try {
-            prepare = connect.prepareStatement("SELECT Title, Deadline FROM mod_todo_pending where StudentID = ?");
-            prepare.setString(1, user_StudentID);
+            prepare = connect.prepareStatement("SELECT Title, Deadline FROM mod_todo_pending where CourseID = ? and SectionID = ? and AudienceID( ?, ?, ?) order by PostDate DESC, PriorityID ASC");
+            prepare.setString(1, user_CourseID);
+            prepare.setString(2, user_SectionID);
+            prepare.setString(3, "Everyone");
+            prepare.setString(4, "Homeroom");
+            prepare.setString(5, "Only Me");
+
             result = prepare.executeQuery(); // Execute the query and obtain the result set
 
             while (result.next()) {

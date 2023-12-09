@@ -118,12 +118,15 @@
                                     </ImageView>
                                  </graphic>
                               </Button>
-                              <ImageView fitHeight="58.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="62.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../media/icons/Screenshot%202023-11-17%20205052.png" />
+                                    <Image url="@../media/logo/3dgifmaker77747.gif" />
                                  </image>
+                                 <effect>
+                                    <ColorAdjust saturation="-0.58" />
+                                 </effect>
                               </ImageView>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
+                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="EDUHUB.OFFICER">
                                  <font>
                                     <Font name="Arial Bold" size="17.0" />
                                  </font>
@@ -338,7 +341,7 @@
                   </AnchorPane>
                </children>
             </Pane>
-            <Pane fx:id="announcementWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" stylesheets="@../style/userdashboard.css" visible="false">
+            <Pane fx:id="announcementWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" stylesheets="@../style/officerdashboard.css" visible="false">
                <children>
                   <HBox alignment="CENTER" prefHeight="698.0" prefWidth="1332.0" spacing="25.0">
                      <children>
@@ -407,7 +410,7 @@
                      </padding>
                   </HBox>
                </children></Pane>
-            <Pane fx:id="toDoWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" stylesheets="@../style/officerdashboard.css">
+            <Pane fx:id="toDoWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" stylesheets="@../style/officerdashboard.css" visible="false">
                <children>
                   <HBox prefHeight="697.0" prefWidth="1332.0" spacing="15.0">
                      <children>
@@ -440,7 +443,7 @@
                                        </padding>
                                     </TextArea>
                                     <DatePicker fx:id="datePickerTask" prefHeight="40.0" prefWidth="200.0" styleClass="datePicker" />
-                                    <Button fx:id="btnCreateTask" mnemonicParsing="false" styleClass="btns" text="Create Task">
+                                    <Button fx:id="btnCreateTask" mnemonicParsing="false" onAction="#handleButtonCreateTask" styleClass="btns" text="Create Task">
                                        <padding>
                                           <Insets bottom="8.0" left="25.0" right="25.0" top="8.0" />
                                        </padding>
@@ -602,9 +605,9 @@
                   </Button>
                </children>
             </Pane>
-            <Pane fx:id="studentManagementWIndow" layoutY="95.0" visible="false">
+            <Pane fx:id="studentManagementWIndow" layoutY="95.0">
                <children>
-                  <Pane fx:id="listStudentAccountWindow" prefHeight="697.0" prefWidth="1332.0" visible="false">
+                  <Pane fx:id="listStudentAccountWindow" prefHeight="697.0" prefWidth="1332.0">
                      <children>
                         <Label layoutX="36.0" layoutY="33.0" text="Student Account" textFill="WHITE">
                            <font>
@@ -655,7 +658,7 @@
                               <Font name="Arial" size="13.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtMiddlename" alignment="CENTER" layoutX="38.0" layoutY="378.0" prefHeight="29.0" prefWidth="160.0" styleClass="txtField" stylesheets="@../style/admindashboard.css">
+                        <TextField fx:id="txtMiddlename" layoutX="38.0" layoutY="378.0" prefHeight="29.0" prefWidth="160.0" styleClass="txtField" stylesheets="@../style/admindashboard.css">
                            <font>
                               <Font name="Arial" size="15.0" />
                            </font>
@@ -665,23 +668,23 @@
                               <Font name="Arial" size="13.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="txtSuffix" alignment="CENTER" layoutX="213.0" layoutY="378.0" prefHeight="29.0" prefWidth="149.0" styleClass="txtField" stylesheets="@../style/admindashboard.css">
+                        <TextField fx:id="txtSuffix" layoutX="213.0" layoutY="378.0" prefHeight="29.0" prefWidth="149.0" styleClass="txtField" stylesheets="@../style/admindashboard.css">
                            <font>
                               <Font name="Arial" size="15.0" />
                            </font>
                         </TextField>
-                        <Label layoutX="37.0" layoutY="441.0" text="Course" textFill="#d7d7d7">
+                        <Label layoutX="37.0" layoutY="441.0" text="Course" textFill="#d6d6d600">
                            <font>
                               <Font name="Arial" size="13.0" />
                            </font>
                         </Label>
-                        <ComboBox fx:id="cbCourse" layoutX="37.0" layoutY="467.0" prefWidth="150.0" styleClass="combobox" stylesheets="@../style/admindashboard.css" />
-                        <Label layoutX="212.0" layoutY="441.0" text="Year &amp; Section" textFill="#d7d7d7">
+                        <ComboBox fx:id="cbCourse" layoutX="37.0" layoutY="467.0" prefWidth="150.0" styleClass="combobox" stylesheets="@../style/admindashboard.css" visible="false" />
+                        <Label layoutX="212.0" layoutY="441.0" text="Year &amp; Section" textFill="#d6d6d600">
                            <font>
                               <Font name="Arial" size="13.0" />
                            </font>
                         </Label>
-                        <ComboBox fx:id="cbSectionYear" layoutX="212.0" layoutY="467.0" prefWidth="150.0" styleClass="combobox" stylesheets="@../style/admindashboard.css" />
+                        <ComboBox fx:id="cbSectionYear" layoutX="212.0" layoutY="467.0" prefWidth="150.0" styleClass="combobox" stylesheets="@../style/admindashboard.css" visible="false" />
                         <Button fx:id="btnCreateAccount" layoutX="37.0" layoutY="533.0" mnemonicParsing="false" onAction="#handleCreateAccount" prefHeight="36.0" prefWidth="169.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;" styleClass="btns" text="Create Account" textFill="WHITE">
                            <padding>
                               <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
@@ -799,7 +802,7 @@
                         </CheckBox>
                      </children>
                   </Pane>
-                  <Pane fx:id="trashSrudentAccountWindow1" layoutX="4.0" layoutY="3.0" prefHeight="704.0" prefWidth="1332.0">
+                  <Pane fx:id="trashSrudentAccountWindow1" layoutX="4.0" layoutY="3.0" prefHeight="704.0" prefWidth="1332.0" visible="false">
                      <children>
                         <Button fx:id="ListStudentAccountButton" layoutX="38.0" layoutY="27.0" mnemonicParsing="false" onAction="#SwitchFormStudentAccount" prefHeight="39.0" prefWidth="55.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" textFill="WHITE">
                            <font>
@@ -897,7 +900,7 @@
             </Pane>
          </children>
       </Pane>
-      <Pane fx:id="sidePanel" layoutY="49.0" prefHeight="793.0" prefWidth="357.0" style="-fx-background-color: #161B22;">
+      <Pane fx:id="sidePanel" layoutY="49.0" prefHeight="793.0" prefWidth="357.0" style="-fx-background-color: #161B22;" visible="false">
          <children>
             <ImageView fitHeight="58.0" fitWidth="44.0" layoutX="22.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
                <image>

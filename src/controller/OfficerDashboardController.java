@@ -1025,15 +1025,16 @@ public class OfficerDashboardController implements Initializable {
     private ResultSet result;
 
     private void fetchCourseToComboBox(ComboBox<String> comboBox) {
-        String sql = "SELECT CourseAbb FROM filter_course";
+        String sql = "SELECT CourseID FROM account_student where StudentID = ?";
         connect = database.getConnection();
         try {
             prepare = connect.prepareStatement(sql);
+            prepare.setString(1, user_StudentID);
             result = prepare.executeQuery();
 
             List<String> items = new ArrayList<>();
             while (result.next()) {
-                String itemName = result.getString("CourseAbb");
+                String itemName = result.getString("CourseID");
                 items.add(itemName);
             }
 
@@ -1046,15 +1047,17 @@ public class OfficerDashboardController implements Initializable {
 
     private void fetchSectionToComboBox(ComboBox<String> comboBox) {
 
-        String sql = "SELECT SectionName FROM filter_section";
+        String sql = "SELECT SectionID FROM account_student where StudentID = ?";
+        
         connect = database.getConnection();
         try {
             prepare = connect.prepareStatement(sql);
+            prepare.setString(1, user_StudentID);
             result = prepare.executeQuery();
 
             List<String> items = new ArrayList<>();
             while (result.next()) {
-                String itemName = result.getString("SectionName");
+                String itemName = result.getString("SectionID");
                 items.add(itemName);
             }
 
@@ -1069,7 +1072,7 @@ public class OfficerDashboardController implements Initializable {
     private void handleCreateAccount(ActionEvent event) {
 
         if (txtStudentID.getText().isEmpty() || txtPassword.getText().isEmpty() || txtSurname.getText().isEmpty()
-                || txtFirstname.getText().isEmpty() || cbCourse.getValue() == null || cbSectionYear.getValue() == null) {
+                || txtFirstname.getText().isEmpty()) {
             showErrorAlert("Please fill in all required fields");
             return;
         }
@@ -1099,8 +1102,8 @@ public class OfficerDashboardController implements Initializable {
             prepare.setString(5, txtFirstname.getText());
             prepare.setString(6, txtMiddlename.getText());
             prepare.setString(7, txtSuffix.getText());
-            prepare.setString(8, cbCourse.getValue()); // Assuming you're using the value from the ComboBox
-            prepare.setString(9, cbSectionYear.getValue()); // Assuming you're using the value from the ComboBox
+            prepare.setString(8, user_CourseID); // Assuming you're using the value from the ComboBox
+            prepare.setString(9, user_SectionID); // Assuming you're using the value from the ComboBox
 
             // Execute the SQL query
             prepare.executeUpdate();
@@ -1161,7 +1164,9 @@ public class OfficerDashboardController implements Initializable {
 
         try {
             // Assume your database connection is already established
-            prepare = connect.prepareStatement("SELECT StudentID, Password, RoleID, Surname, Firstname, Middlename, Suffix, CourseID, SectionID FROM account_student WHERE RoleID = 3");
+            prepare = connect.prepareStatement("SELECT StudentID, Password, RoleID, Surname, Firstname, Middlename, Suffix, CourseID, SectionID FROM account_student WHERE CourseID = ? and SectionID = ? ORDER by UserID DESC");
+           prepare.setString(1, user_CourseID);
+           prepare.setString(2,user_SectionID);
             result = prepare.executeQuery(); // Execute the query and obtain the result set
 
             while (result.next()) {
@@ -1522,18 +1527,24 @@ public class OfficerDashboardController implements Initializable {
         this.user_StudentID = studentID;
         DisplayAnnouncement();
         homeDisplayListCard();
+        fetchSectionToComboBox(cbSectionYear);
+        fetchCourseToComboBox(cbCourse);
     }
 
     public void user_CourseID(String courseID) {
         this.user_CourseID = courseID;
         DisplayAnnouncement();
         homeDisplayListCard();
+        fetchCourseToComboBox(cbCourse);
+        loadStudentAccountData();
     }
 
     public void user_SectionID(String sectionID) {
         this.user_SectionID = sectionID;
         DisplayAnnouncement();
         homeDisplayListCard();
+        fetchSectionToComboBox(cbSectionYear);
+        loadStudentAccountData();
     }
 
     public void user_Surname(String surname) {
