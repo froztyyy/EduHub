@@ -1666,7 +1666,7 @@ public class OfficerDashboardController implements Initializable {
 
     public ObservableList<AnnouncementData> getAnnouncementData() throws SQLException {
 
-        String sql = "SELECT Title, Body, AudienceID, PriorityID, StudentID, Surname, CourseID, SectionID, postDate FROM mod_announce WHERE CourseID = ? AND SectionID = ? AND AudienceID IN (?, ?, ? ,?) ORDER BY AnnouncementID DESC, PostDate DESC";
+        String sql = "SELECT AnnouncementID,Title, Body, AudienceID, PriorityID, StudentID, Surname, CourseID, SectionID, postDate FROM mod_announce WHERE CourseID = ? AND SectionID = ? AND AudienceID IN (?, ?, ? ,?) ORDER BY AnnouncementID DESC, PostDate DESC";
         ObservableList<AnnouncementData> Announcement = FXCollections.observableArrayList();
         connect = database.getConnection();
 
@@ -1681,6 +1681,7 @@ public class OfficerDashboardController implements Initializable {
             result = prepare.executeQuery();
 
             while (result.next()) {
+                Integer announcementID = result.getInt("AnnouncementID");
                 String title = result.getString("Title");
                 String body = result.getString("Body");
                 String audience = result.getString("AudienceID");
@@ -1690,10 +1691,13 @@ public class OfficerDashboardController implements Initializable {
                 String surname = result.getString("Surname");
                 String postDate = result.getString("postDate");
                 String studentID = result.getString("StudentID");
+                
 
-                AnnouncementData announcementData = new AnnouncementData(title, audience, priority, courseID, sectionID, body, postDate, studentID, surname);
-
+                AnnouncementData announcementData = new AnnouncementData(title, audience, priority, courseID, sectionID, body, postDate, studentID, surname,announcementID);
+                announcementData.setAnnouncementID(announcementID); // Set AnnouncementID
                 Announcement.add(announcementData);
+                
+                
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1703,6 +1707,7 @@ public class OfficerDashboardController implements Initializable {
 
         return Announcement;
     }
+
 
     private int currentDisplayIndex = 0;
 

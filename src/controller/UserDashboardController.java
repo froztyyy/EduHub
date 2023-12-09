@@ -1610,11 +1610,12 @@ public class UserDashboardController implements Initializable {
         cbPriority.setValue(null);
     }
 
+   
     private ObservableList<AnnouncementData> Announcement = FXCollections.observableArrayList();
 
     public ObservableList<AnnouncementData> getAnnouncementData() throws SQLException {
 
-        String sql = "Select Title, Body,AudienceID,PriorityID,StudentID,Surname, CourseID, SectionID, postDate FROM mod_announce where CourseID = ? and SectionID = ? and AudienceID in (?,?,?) ORDER BY PostDate DESC";
+        String sql = "Select AnnouncementID,Title, Body,AudienceID,PriorityID,StudentID,Surname, CourseID, SectionID, postDate FROM mod_announce where CourseID = ? and SectionID = ? and AudienceID in (?,?,?) ORDER BY PostDate DESC";
         ObservableList<AnnouncementData> Announcement = FXCollections.observableArrayList();
         connect = database.getConnection();
 
@@ -1628,6 +1629,7 @@ public class UserDashboardController implements Initializable {
             result = prepare.executeQuery();
 
             while (result.next()) {
+                Integer announcementID = result.getInt("AnnouncementID");
                 String title = result.getString("Title");
                 String body = result.getString("Body");
                 String audience = result.getString("AudienceID");
@@ -1638,8 +1640,8 @@ public class UserDashboardController implements Initializable {
                 String postDate = result.getString("postDate");
                 String studentID = result.getString("StudentID");
 
-                AnnouncementData announcementData = new AnnouncementData(title, audience, priority, courseID, sectionID, body, postDate, studentID, surname);
-
+                AnnouncementData announcementData = new AnnouncementData(title, audience, priority, courseID, sectionID, body, postDate, studentID, surname, announcementID);
+                announcementData.setAnnouncementID(announcementID); // Set AnnouncementID
                 Announcement.add(announcementData);
             }
         } catch (SQLException e) {
@@ -1678,6 +1680,8 @@ public class UserDashboardController implements Initializable {
                     AnnouncementCardController cardController = loader.getController();
                     cardController.setData(Announcement.get(q));
                     cardController.setRemoveButtonVisible(false);
+                    cardController.setEditButtonVisible(false);
+                    cardController.setUpdateButtonVisible(false);
 
                     announcementCardDash.add(pane, column++, row);
 

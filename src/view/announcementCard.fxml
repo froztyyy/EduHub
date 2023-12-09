@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="announcementCard" prefWidth="550.0" style="-fx-background-color: transparent;" stylesheets="@../style/announcementCard.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AnnouncementCardController">
+<AnchorPane id="AnchorPane" fx:id="announcementCard" prefWidth="550.0" style="-fx-background-color: transparent;" stylesheets="@../style/announcementCard.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AnnouncementCardController">
    <children>
       <VBox spacing="15.0" styleClass="secondary-bg" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
          <children>
@@ -35,7 +35,11 @@
                         <Font name="Arial Italic" size="12.0" />
                      </font>
                   </Label>
-                  <Pane HBox.hgrow="ALWAYS" />
+                  <Pane HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button fx:id="EditButton" layoutX="7.0" layoutY="1.0" mnemonicParsing="false" onAction="#handleEditButton" prefHeight="25.0" prefWidth="51.0" styleClass="btns" text="EDIT" />
+                        <Button fx:id="UpdateButton" layoutX="70.0" layoutY="1.0" mnemonicParsing="false" onAction="#handleUpdateButton" prefHeight="25.0" prefWidth="79.0" styleClass="btns" text="Update" />
+                     </children></Pane>
                   <Button fx:id="btnRemove" mnemonicParsing="false" onAction="#handleRemoveButton" styleClass="btns" text="Remove">
                      <font>
                         <Font name="Arial" size="13.0" />

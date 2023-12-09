@@ -1,13 +1,16 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package controller;
-
+package controller;
 /**
  *
  * @author PC
  */
+
+
+package controller;
+
 public class AnnouncementData {
 
     public String getUser_StudentID() {
@@ -73,9 +76,18 @@ public class AnnouncementData {
     public void setPriority(String priority) {
         this.priority = priority;
     }
+    
+    public void setAnnouncementID (Integer AnnouncementID) {
+        this.announcementID = announcementID;
+    }
+    
+    public Integer getAnnouncementID() {
+        return announcementID;
+    }
 
     private String title;
     private String text;
+    private Integer announcementID;
 
     public String getDeadline() {
         return deadline;
@@ -110,7 +122,7 @@ public class AnnouncementData {
     }
     private String postDate;
 
-    public AnnouncementData(String title, String audience, String priority, String user_CourseID, String user_SectionID, String body, String postDate, String user_StudentID, String user_Surname) {
+    public AnnouncementData(String title, String audience, String priority, String user_CourseID, String user_SectionID, String body, String postDate, String user_StudentID, String user_Surname,Integer announcementID) {
         this.title = title;
         this.audience = audience;
         this.priority = priority;
@@ -121,6 +133,8 @@ public class AnnouncementData {
         this.body = body;
         this.postDate = postDate;
         this.deadline = deadline;
+        this.announcementID = announcementID;
     }
 
-}
+   
+    }

@@ -2,6 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/javafx/FXMLController.java to edit this template
  */
+
 package controller;
 
 import java.net.URL;
@@ -44,6 +45,10 @@ public class AnnouncementCardController implements Initializable {
     private TextField txtTitle;
     @FXML
     private Button btnRemove;
+    @FXML
+    private Button EditButton;
+    @FXML
+    private Button UpdateButton;
 
     /**
      * Initializes the controller class.
@@ -53,6 +58,7 @@ public class AnnouncementCardController implements Initializable {
         // TODO
     }
     private AnnouncementData announcementData;
+    private boolean isEditing = false;
 
     public void setData(AnnouncementData announcementData) {
         this.announcementData = announcementData; // Set the announcementData field
@@ -62,10 +68,86 @@ public class AnnouncementCardController implements Initializable {
         lblPriorityLevel.setText(announcementData.getPriority());
         txtBody.setText(announcementData.getBody());
         lblPostDate.setText(announcementData.getPostDate());
+    }   
+       public void setRemoveButtonVisible(boolean visible) {
+        btnRemove.setVisible(visible);
+    }
+      public void setEditButtonVisible(boolean visible) {
+        EditButton.setVisible(visible);
+    }
+
+    public void setUpdateButtonVisible(boolean visible) {
+        UpdateButton.setVisible(visible);
+    }
+       
+       @FXML
+    private void handleUpdateButton(ActionEvent event) {
+    saveEditedAnnouncement(); // Call the method responsible for saving edited data
+    disableEditing(); // Disable editing mode after updating
+      }
+    
+       
+     @FXML
+     private void handleEditButton(ActionEvent event) {
+     enableEditing();
+     }
+      // Method to enable editing of announcement data
+        public void enableEditing() {
+        isEditing = true;
+        txtTitle.setEditable(true);
+        txtBody.setEditable(true);
     }
     
-    public void setRemoveButtonVisible(boolean visible) {
-        btnRemove.setVisible(visible);
+    public void saveEditedAnnouncement() {
+        if (isEditing) {
+            // Save changes to the announcementData object
+            announcementData.setTitle(txtTitle.getText());
+            announcementData.setBody(txtBody.getText());
+            // Update other fields as needed
+
+            // Perform any necessary database update or save operations here
+            // For example, update the announcement in the database
+            updateAnnouncementInDatabase();
+            
+            // Disable editing after saving changes
+            disableEditing();
+        }
+    }
+    
+    
+    // Method to update the announcement in the database
+    private void updateAnnouncementInDatabase() {
+    try (Connection conn = database.getConnection()) {
+        if (conn != null) {
+            // Prepare the SQL statement for updating the announcement
+            String updateQuery = "UPDATE mod_announce SET Title = ?, Body = ? WHERE AnnouncementID = ?";
+
+            try (PreparedStatement preparedStatement = conn.prepareStatement(updateQuery)) {
+                preparedStatement.setString(1, announcementData.getTitle());
+                preparedStatement.setString(2, announcementData.getBody());
+                preparedStatement.setInt(3, announcementData.getAnnouncementID());
+
+                // Execute the update statement
+                int affectedRows = preparedStatement.executeUpdate();
+
+                if (affectedRows > 0) {
+                    System.out.println("Announcement updated successfully.");
+                } else {
+                    System.out.println("No announcement found to update.");
+                }
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        // Handle exceptions related to database operations
+    }
+}
+    
+     private void disableEditing() {
+        isEditing = false;
+        txtTitle.setEditable(false);
+        txtBody.setEditable(false);
+        // Disable other fields if needed
     }
 
 
@@ -129,6 +211,7 @@ public class AnnouncementCardController implements Initializable {
             preparedStatement.setString(9, announcementData.getPostDate());
             preparedStatement.executeUpdate();
         }
+        
     }
 
 }
