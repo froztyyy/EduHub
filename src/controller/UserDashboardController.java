@@ -1429,6 +1429,7 @@ public class UserDashboardController implements Initializable {
         DisplayAnnouncementDash();
         todoCard();
         loadOfficerAccountData();
+        loadCourseData();
     }
 
     public void user_SectionID(String sectionID) {
@@ -1437,6 +1438,7 @@ public class UserDashboardController implements Initializable {
         DisplayAnnouncementDash();
         todoCard();
         loadOfficerAccountData();
+        loadCourseData();
     }
 
     public void user_Surname(String surname) {
@@ -1717,7 +1719,7 @@ public class UserDashboardController implements Initializable {
         // Add logic to retrieve feedback data from the database
         // Replace the placeholders with your actual column names
         try {
-            prepare = connect.prepareStatement("SELECT Title, Deadline FROM mod_todo_pending where CourseID = ? and SectionID = ? and AudienceID( ?, ?, ?) order by PostDate DESC, PriorityID ASC");
+            prepare = connect.prepareStatement("SELECT Title, Deadline FROM mod_todo_pending where CourseID = ? and SectionID = ? and AudienceID in ( ?, ?, ?) order by PostDate DESC, PriorityID ASC");
             prepare.setString(1, user_CourseID);
             prepare.setString(2, user_SectionID);
             prepare.setString(3, "Everyone");
