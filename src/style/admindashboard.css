@@ -4,6 +4,10 @@
     -fx-font-weight: bold;
 }
 
+.combo-box .list-cell:selected {
+    -fx-text-fill: white; /* or any other color */
+}
+
 .txtField {
     -fx-background-color: transparent;
     -fx-border-color: gray;
