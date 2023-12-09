@@ -48,8 +48,12 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -186,10 +190,7 @@ public class UserDashboardController implements Initializable {
     private Label yearNote;
     @FXML
     private Text infoNote;
-    private Pane listPane;
-    private Pane archivePane;
-    private Button btnAddList;
-    private Button btnArchive;
+
     @FXML
     private Label lblStudentID;
     @FXML
@@ -224,6 +225,20 @@ public class UserDashboardController implements Initializable {
     private Button btnCreateTask;
     @FXML
     private GridPane taskCard;
+    @FXML
+    private TableView<todolistTaskHub> tblTaskhub;
+    @FXML
+    private TableColumn<todolistTaskHub, String> tblTaskCol;
+    @FXML
+    private TableColumn<todolistTaskHub, String> tblDeadlineCol;
+    @FXML
+    private TableView<OfficerAccountData> tblClassMates;
+    @FXML
+    private TableColumn<OfficerAccountData, String> tblLastnameCol;
+    @FXML
+    private TableColumn<OfficerAccountData, String> tblFirstName;
+    @FXML
+    private TableColumn<OfficerAccountData, String> tblMiddleNameCol;
 
     /**
      * Initializes the controller class.
@@ -285,9 +300,6 @@ public class UserDashboardController implements Initializable {
         dateLabelForDashboard();
         TimeAndDateLocation();
 
-        listPane.setVisible(true);
-        archivePane.setVisible(false);
-
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             TimeAndDateLocation();
             updateGreeting();
@@ -297,9 +309,20 @@ public class UserDashboardController implements Initializable {
 
         todoCard();
 
-        fetchPriorityNameToComboBox(cbPriority);
+        fetchPriorityNameToComboBox(cbPriorityToDo);
 
         DisplayAnnouncementDash();
+
+        loadCourseData();
+
+        // Initialize columns
+        tblTaskCol.setCellValueFactory(new PropertyValueFactory<>("Title"));
+        tblDeadlineCol.setCellValueFactory(new PropertyValueFactory<>("Deadline"));
+
+        tblLastnameCol.setCellValueFactory(new PropertyValueFactory<>("tblSurname"));
+        tblFirstName.setCellValueFactory(new PropertyValueFactory<>("tblFirstName"));
+        tblMiddleNameCol.setCellValueFactory(new PropertyValueFactory<>("tblMiddlename"));
+        loadOfficerAccountData();
     }
 
     private final boolean stop = false;
@@ -1141,39 +1164,6 @@ public class UserDashboardController implements Initializable {
 
     private Button lastClickedButtonForToDoList = null;
 
-    public void SwitchFormForTodoList(ActionEvent event) {
-        Button clickedButton = (Button) event.getSource();
-
-        if (clickedButton == lastClickedButtonForToDoList) {
-            // Ignore the click if the same button was clicked twice in a row
-            return;
-        }
-
-        // Reset the color of the last clicked button
-        if (lastClickedButton != null) {
-            setButtonColor(lastClickedButton, false);
-        }
-
-        // Update the last clicked button
-        lastClickedButtonForToDoList = clickedButton;
-
-        if (clickedButton == btnAddList) {
-            setButtonColorForToDoList(btnAddList, true);
-            setButtonColorForToDoList(btnArchive, false);
-
-            listPane.setVisible(true);
-            archivePane.setVisible(false);
-
-        } else if (clickedButton == btnArchive) {
-            setButtonColorForToDoList(btnAddList, false);
-            setButtonColorForToDoList(btnArchive, true);
-
-            listPane.setVisible(false);
-            archivePane.setVisible(true);
-
-        }
-    }
-
     private void handleButtonAddList(ActionEvent event) throws IOException {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/addListWindow.fxml"));
@@ -1289,6 +1279,7 @@ public class UserDashboardController implements Initializable {
             // Show a success alert
             showSuccessAlert();
             todoCard();
+            loadCourseData();
 
         } catch (SQLException e) {
             // Handle any SQL errors
@@ -1423,6 +1414,8 @@ public class UserDashboardController implements Initializable {
         updateStudentId();
         DisplayAnnouncementDash();
         todoCard();
+        loadCourseData();
+        loadOfficerAccountData();
     }
 
     public void user_Password(String password) {
@@ -1435,6 +1428,7 @@ public class UserDashboardController implements Initializable {
         updateCourseId();
         DisplayAnnouncementDash();
         todoCard();
+        loadOfficerAccountData();
     }
 
     public void user_SectionID(String sectionID) {
@@ -1442,6 +1436,7 @@ public class UserDashboardController implements Initializable {
         updateSectionId();
         DisplayAnnouncementDash();
         todoCard();
+        loadOfficerAccountData();
     }
 
     public void user_Surname(String surname) {
@@ -1450,6 +1445,7 @@ public class UserDashboardController implements Initializable {
         updateGreetingForTime();
         DisplayAnnouncementDash();
         todoCard();
+        loadOfficerAccountData();
     }
 
     private String getGreeting() {
@@ -1572,6 +1568,7 @@ public class UserDashboardController implements Initializable {
         try {
             // Call the method to refresh announcements
             refreshAnnouncements();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -1585,6 +1582,8 @@ public class UserDashboardController implements Initializable {
         Announcement.addAll(getAnnouncementData());
         // Redisplay announcements
         DisplayAnnouncementDash();
+        loadCourseData();
+        loadOfficerAccountData();
     }
 
     private void showSuccessAlert(String message) {
@@ -1695,5 +1694,96 @@ public class UserDashboardController implements Initializable {
 
     @FXML
     private void viewNowtodo(ActionEvent event) {
+
+        setButtonColor(homeButton, false);
+        setButtonColor(announcementButton, false);
+        setButtonColor(calendarButton, false);
+        setButtonColor(toDolistButton, true);
+        setButtonColor(timeClockButton, false);
+
+        homeWindow.setVisible(false);
+        announcementWindow.setVisible(false);
+        calendarWindow.setVisible(false);
+        todoWindow.setVisible(true);
+        timeClockWindow.setVisible(false);
+    }
+
+    private ObservableList<todolistTaskHub> todolistdatas;
+
+    private void loadCourseData() {
+        todolistdatas = FXCollections.observableArrayList();
+        connect = database.getConnection();
+
+        // Add logic to retrieve feedback data from the database
+        // Replace the placeholders with your actual column names
+        try {
+            prepare = connect.prepareStatement("SELECT Title, Deadline FROM mod_todo_pending where StudentID = ?");
+            prepare.setString(1, user_StudentID);
+            result = prepare.executeQuery(); // Execute the query and obtain the result set
+
+            while (result.next()) {
+                todolistTaskHub todoListData = new todolistTaskHub();
+                todoListData.setTitle(result.getString("Title"));
+                todoListData.setDeadline(result.getString("Deadline"));
+                todolistdatas.add(todoListData);
+            }
+
+            tblTaskhub.setItems(todolistdatas);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close the result set, statement, and connection in a finally block
+            try {
+                if (result != null) {
+                    result.close();
+                }
+                if (prepare != null) {
+                    prepare.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    private ObservableList<OfficerAccountData> officerAccountDataList;
+
+    private void loadOfficerAccountData() {
+        officerAccountDataList = FXCollections.observableArrayList();
+        connect = database.getConnection();
+
+        try {
+            // Assume your database connection is already established
+            prepare = connect.prepareStatement("SELECT Surname, Firstname, Middlename FROM ACCOUNT_STUDENT WHERE SectionID = ? and CourseID = ?");
+            prepare.setString(1, user_SectionID);
+            prepare.setString(2, user_CourseID);
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                OfficerAccountData officerAccount = new OfficerAccountData();
+                officerAccount.setTblSurname(result.getString("Surname"));
+                officerAccount.setTblFirstName(result.getString("Firstname"));
+                officerAccount.setTblMiddlename(result.getString("Middlename"));
+
+                officerAccountDataList.add(officerAccount);
+            }
+            tblClassMates.setItems(officerAccountDataList);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close the result set, statement, and connection in a finally block
+            try {
+                if (result != null) {
+                    result.close();
+                }
+                if (prepare != null) {
+                    prepare.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 }
