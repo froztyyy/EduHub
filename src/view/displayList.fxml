@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="toDoDisplayCard" onMouseClicked="#handleToDoDisplayCardClick" style="-fx-background-color: transparent;" stylesheets="@../style/displayList.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DisplayListController">
+<AnchorPane fx:id="toDoDisplayCard" style="-fx-background-color: transparent;" stylesheets="@../style/displayList.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.DisplayListController">
    <children>
       <Button fx:id="btnDisplayCard" mnemonicParsing="false" prefWidth="350.0" style="-fx-background-color: #121212; -fx-background-radius: 10px;">
          <graphic>

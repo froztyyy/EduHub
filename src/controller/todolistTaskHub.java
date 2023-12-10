@@ -14,6 +14,16 @@ public class todolistTaskHub {
 
     private String Deadline;
 
+    public String getPriority() {
+        return Priority;
+    }
+
+    public void setPriority(String Priority) {
+        this.Priority = Priority;
+    }
+    
+    private String Priority;
+
     public String getTitle() {
         return Title;
     }

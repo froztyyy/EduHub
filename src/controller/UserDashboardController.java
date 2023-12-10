@@ -6,6 +6,7 @@ package controller;
 
 import java.io.IOException;
 import java.net.URL;
+import java.security.Timestamp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,6 +26,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -245,7 +249,27 @@ public class UserDashboardController implements Initializable {
     private Label txtIDtod;
     @FXML
     private Button refreshannounce1;
+    @FXML
+    private TableColumn<?, ?> tblPriority;
+    @FXML
+    private Label lblCompletedTask;
 
+    @FXML
+    private Label notifNumber;
+
+    @FXML
+    private Label announceCount;
+
+    /////////////////////////////////
+    private Timestamp latestUpdateTime;
+
+    @FXML
+    private ImageView notifIV;
+
+    @FXML
+    private Button notifBTN;
+    @FXML
+    private ImageView notifBox;
     /**
      * Initializes the controller class.
      */
@@ -329,6 +353,13 @@ public class UserDashboardController implements Initializable {
         tblFirstName.setCellValueFactory(new PropertyValueFactory<>("tblFirstName"));
         tblMiddleNameCol.setCellValueFactory(new PropertyValueFactory<>("tblMiddlename"));
         loadOfficerAccountData();
+        
+        numberCompletedTask();
+        checkAndUpdateNotificationVisibility();
+        notifBTN.setVisible(true);
+        notifBox.setVisible(false);
+        notifNumber.setVisible(false);
+        announceCount.setVisible(false);
     }
 
     private final boolean stop = false;
@@ -1364,7 +1395,6 @@ public class UserDashboardController implements Initializable {
 
         return toDoList;
     }
-
     public void todoCard() {
         try {
             toDoList.clear();
@@ -1389,18 +1419,16 @@ public class UserDashboardController implements Initializable {
                     FXMLLoader loader = new FXMLLoader();
                     loader.setLocation(getClass().getResource("/view/displayList.fxml"));
                     AnchorPane pane = loader.load();
-                    controller.DisplayListController cardController = loader.getController();
-                    // Set UserDashboardController reference in DisplayListController
-                    cardController.setUserDashboardController(UserDashboardController.this);
-                    cardController.setData(toDoList.get(q));
 
-                    // Set the studentID in DisplayListController
-                    cardController.setStudentID(user_StudentID); // Replace with the actual studentID
-                    // Disable the btnRemove button if the studentID data is not equal to the current studentID
+                    // Get the controller and set the studentID
+                    DisplayListController cardController = loader.getController();
+                    cardController.setData(toDoList.get(q));
+                    cardController.setStudentID(user_StudentID);
+                    cardController.setUserDashboardController(this);
                     if (user_StudentID != null && !user_StudentID.equals(toDoList.get(q).getUser_StudentID())) {
                         cardController.disableRemoveButton();
-                        cardController.disableRemoveButton1();
                     }
+
                     taskCard.add(pane, column++, row);
 
                     GridPane.setMargin(pane, new Insets(5));
@@ -1432,6 +1460,7 @@ public class UserDashboardController implements Initializable {
         todoCard();
         loadCourseData();
         loadOfficerAccountData();
+        numberCompletedTask();
     }
 
     public void user_Password(String password) {
@@ -1446,6 +1475,7 @@ public class UserDashboardController implements Initializable {
         todoCard();
         loadOfficerAccountData();
         loadCourseData();
+        checkAndUpdateNotificationVisibility();
     }
 
     public void user_SectionID(String sectionID) {
@@ -1455,6 +1485,7 @@ public class UserDashboardController implements Initializable {
         todoCard();
         loadOfficerAccountData();
         loadCourseData();
+        checkAndUpdateNotificationVisibility();
     }
 
     public void user_Surname(String surname) {
@@ -1739,7 +1770,7 @@ public class UserDashboardController implements Initializable {
         // Add logic to retrieve feedback data from the database
         // Replace the placeholders with your actual column names
         try {
-            prepare = connect.prepareStatement("SELECT Title, Deadline FROM mod_todo_pending where CourseID = ? and SectionID = ? and AudienceID in ( ?, ?, ?) order by PostDate DESC, PriorityID ASC");
+            prepare = connect.prepareStatement("SELECT Title, Deadline, PriorityID FROM mod_todo_pending where CourseID = ? and SectionID = ? and AudienceID in ( ?, ?, ?) order by PostDate DESC, PriorityID ASC");
             prepare.setString(1, user_CourseID);
             prepare.setString(2, user_SectionID);
             prepare.setString(3, "Everyone");
@@ -1752,6 +1783,7 @@ public class UserDashboardController implements Initializable {
                 todolistTaskHub todoListData = new todolistTaskHub();
                 todoListData.setTitle(result.getString("Title"));
                 todoListData.setDeadline(result.getString("Deadline"));
+                todoListData.setPriority(result.getString("PriorityID"));
                 todolistdatas.add(todoListData);
             }
 
@@ -1882,5 +1914,163 @@ public class UserDashboardController implements Initializable {
     private void Refreshtodolist(ActionEvent event) throws SQLException {
         getToDoListData();
         todoCard();
+    }
+    
+    
+    public void numberCompletedTask() {
+        connect = database.getConnection();
+        String sql = "SELECT COUNT(*) AS numberOfCompletedTask FROM mod_todo_completed WHERE StudentID = ?";
+
+        try {
+            prepare = connect.prepareStatement(sql);
+            prepare.setString(1, user_StudentID);
+            ResultSet resultSet = prepare.executeQuery();
+
+            if (resultSet.next()) {
+                int numberOfCompletedTasks = resultSet.getInt("numberOfCompletedTask");
+                int countText = numberOfCompletedTasks;
+                lblCompletedTask.setText(String.valueOf(countText));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showErrorAlert("Error", "Failed to retrieve the completed tasks count from the database.");
+        } finally {
+            // Close resources in a finally block
+            try {
+                if (prepare != null) {
+                    prepare.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    public void checkAndUpdateNotificationVisibility() {
+        String todoCountQuery = "SELECT COUNT(*) AS rowCount FROM mod_todo_pending "
+                + "WHERE audienceID = 'homeroom' AND courseID = ? AND sectionID = ? AND LastUpdateTime IS NOT NULL";
+
+        String announceCountQuery = "SELECT COUNT(*) AS rowCount FROM mod_announce "
+                + "WHERE audienceID = 'homeroom' AND courseID = ? AND sectionID = ? AND LastUpdateTime IS NOT NULL";
+
+        try (Connection connection = database.getConnection(); PreparedStatement todoPreparedStatement = connection.prepareStatement(todoCountQuery); PreparedStatement announcePreparedStatement = connection.prepareStatement(announceCountQuery)) {
+
+            // Set parameters for todoCountQuery
+            todoPreparedStatement.setString(1, user_CourseID);
+            todoPreparedStatement.setString(2, user_SectionID);
+
+            // Set parameters for announceCountQuery
+            announcePreparedStatement.setString(1, user_CourseID);
+            announcePreparedStatement.setString(2, user_SectionID);
+
+            // Execute queries to get row counts
+            int todoRowCount;
+            int announceRowCount;
+
+            try (ResultSet todoResultSet = todoPreparedStatement.executeQuery()) {
+                todoRowCount = todoResultSet.next() ? todoResultSet.getInt("rowCount") : 0;
+            }
+
+            try (ResultSet announceResultSet = announcePreparedStatement.executeQuery()) {
+                announceRowCount = announceResultSet.next() ? announceResultSet.getInt("rowCount") : 0;
+            }
+
+            // Check if either table has non-null values
+            if (todoRowCount > 0 || announceRowCount > 0) {
+                notifIV.setVisible(true);
+            } else {
+                notifIV.setVisible(false);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception according to your needs
+        }
+    }
+
+    @FXML
+    private void handleNotifButtonClick(ActionEvent event) {
+        if (user_CourseID != null && user_SectionID != null) {
+            String courseId = user_CourseID;
+            String sectionId = user_SectionID;
+
+            // Step 1: Count rows where LastUpdateTime is not NULL for mod_todo_pending
+            String todoCountQuery = "SELECT COUNT(*) AS rowCount FROM mod_todo_pending "
+                    + "WHERE audienceID = 'homeroom' AND courseID = ? AND sectionID = ? AND LastUpdateTime IS NOT NULL";
+
+            // Step 1: Count rows where LastUpdateTime is not NULL for mod_announce
+            String announceCountQuery = "SELECT COUNT(*) AS rowCount FROM mod_announce "
+                    + "WHERE audienceID = 'homeroom' AND courseID = ? AND sectionID = ? AND LastUpdateTime IS NOT NULL";
+
+            try (Connection connection = database.getConnection(); PreparedStatement todoCountStatement = connection.prepareStatement(todoCountQuery); PreparedStatement announceCountStatement = connection.prepareStatement(announceCountQuery)) {
+
+                // Set parameters for todoCountQuery
+                todoCountStatement.setString(1, courseId);
+                todoCountStatement.setString(2, sectionId);
+
+                // Set parameters for announceCountQuery
+                announceCountStatement.setString(1, courseId);
+                announceCountStatement.setString(2, sectionId);
+
+                // Execute queries to get row counts
+                int todoRowCount;
+                int announceRowCount;
+
+                try (ResultSet todoResultSet = todoCountStatement.executeQuery(); ResultSet announceResultSet = announceCountStatement.executeQuery()) {
+
+                    todoRowCount = todoResultSet.next() ? todoResultSet.getInt("rowCount") : 0;
+                    announceRowCount = announceResultSet.next() ? announceResultSet.getInt("rowCount") : 0;
+                }
+
+                // Assuming notifNumber is a Label object for mod_todo_pending
+                notifNumber.setText(String.valueOf(todoRowCount));
+
+                // Assuming announceCount is a Label object for mod_announce
+                announceCount.setText(String.valueOf(announceRowCount));
+
+                // Step 2: Update LastUpdateTime to NULL for mod_todo_pending
+                String updateTodoQuery = "UPDATE mod_todo_pending "
+                        + "SET LastUpdateTime = NULL "
+                        + "WHERE audienceID = 'homeroom' AND courseID = ? AND sectionID = ? AND LastUpdateTime IS NOT NULL";
+
+                // Step 2: Update LastUpdateTime to NULL for mod_announce
+                String updateAnnounceQuery = "UPDATE mod_announce "
+                        + "SET LastUpdateTime = NULL "
+                        + "WHERE audienceID = 'homeroom' AND courseID = ? AND sectionID = ? AND LastUpdateTime IS NOT NULL";
+
+                updateLastUpdateTime(courseId, sectionId, updateTodoQuery);
+                updateLastUpdateTime(courseId, sectionId, updateAnnounceQuery);
+
+                // Assuming notifBox is a container for notifNumber and announceCount
+                notifBox.setVisible(true);
+                notifNumber.setVisible(true);
+                announceCount.setVisible(true);
+
+                // Schedule a task to hide notifBox, notifNumber, and announceCount after 3 seconds
+                ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+                executorService.schedule(() -> {
+                    Platform.runLater(() -> {
+                        notifBTN.setVisible(false);
+                        notifBox.setVisible(false);
+                        notifNumber.setVisible(false);
+                        announceCount.setVisible(false);
+                    });
+                }, 3, TimeUnit.SECONDS);
+            } catch (SQLException e) {
+                e.printStackTrace(); // Handle the exception according to your needs
+            }
+        }
+    }
+
+    private void updateLastUpdateTime(String courseId, String sectionId, String updateQuery) throws SQLException {
+        try (Connection connection = database.getConnection(); PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
+            updateStatement.setString(1, courseId);
+            updateStatement.setString(2, sectionId);
+
+            // Execute the update query
+            int rowsUpdated = updateStatement.executeUpdate();
+
+            System.out.println(rowsUpdated + " rows updated.");
+        }
     }
 }

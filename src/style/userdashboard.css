@@ -341,4 +341,44 @@
 .scrllPane .scroll-bar:vertical .thumb{
     -fx-background-color: #121212; /* Set the fill color */
 }
+.btnsv2 {
+    -fx-background-color: transparent;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-border-color: transparent;
+    -fx-border-width: 1px;
+    -fx-text-fill: gray;
+}
+
+.btnsv2:hover {
+    -fx-border-color: #575957;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.btnsv2:pressed {
+    -fx-border-color: #575957;
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+}
+
+.btns {
+    -fx-background-color: #848884;
+    -fx-background-radius: 10px;
+    -fx-text-fill: #404040;
+}
+
+.btns:hover {
+    -fx-background-color: #575957;
+    -fx-text-fill: #a3a2a2;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.btns:pressed {
+    -fx-background-color: #575957;
+    -fx-text-fill: #a3a2a2;
+    -fx-scale-x: 1;
+    -fx-scale-y: 1;
+}
 

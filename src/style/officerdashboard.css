@@ -109,52 +109,66 @@
     -fx-scale-y: 1;
 }
 
-.table-view {
-    -fx-background-color: transparent;
-    -fx-border-color: gray;
+.employeetable {
+    -fx-background-color: black;
+    -fx-background-radius: 10px;
+    -fx-border-color: rgba(255, 255, 255, 0.18);
     -fx-border-width: 1px;
     -fx-border-radius: 10px;
-    -fx-background-radius: 10px;
+    -fx-background-insets: 3px;
+    -fx-border-insets: 3px;
+}
+
+.table-cell {
+    -fx-alignment: center;
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-font-size: 12px; /* Font size 12px */
 }
 
 .table-row-cell {
     -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-padding: 5px;
+    -fx-border-width: 0;
+    -fx-font-size: 13px; /* Font size 13px */
 }
 
-.table-row-cell:hover {
-    -fx-background-color: transparent;
-}
-
-.table-row-cell:filled:hover {
-    -fx-background-color: #1f1f1f; /* Change this to your desired hover background color */
+.table-view .table-row-cell:hover {
+    -fx-background-color: #2B2B2B; 
 }
 
 .table-row-cell:selected {
-    -fx-background-color: #333; /* Change this to your desired selection background color */
+    -fx-background-color: #4D4F53; /* Grey on selection */
 }
 
-.table-row-cell:filled:selected {
-    -fx-background-color: #555; /* Change this to your desired filled selection background color */
+.table-view .scroll-bar:horizontal {
+    -fx-background-color: #808080; /* Greyish color for the horizontal scrollbar */
+    -fx-background-radius: 5px; /* Radius of 5px */
 }
 
-.table-cell {
-    -fx-text-fill: silver;
-    -fx-background-color: transparent;
-    -fx-alignment: center;
-}
-
-.table-column {
-    -fx-alignment: center;
-    -fx-background-color: transparent;
+.table-view .scroll-bar:vertical {
+    -fx-background-color: #808080; /* Greyish color for the vertical scrollbar */
+    -fx-background-radius: 5px; /* Radius of 5px */
 }
 
 .table-view .column-header {
-    -fx-background-color: #848884; /* Change this to your desired column header background color */
-    -fx-text-fill: silver;
-    -fx-border-color: gray;
-    -fx-border-width: 1px;
-    -fx-border-radius: 10px;
-    -fx-background-radius: 10px;
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-size: 13px; /* Font size 13px */
+}
+
+.table-view .column-header-background {
+    -fx-background-color: linear-gradient(to bottom, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
+}
+
+.table-view .column-header:first-child .label {
+    -fx-text-fill: #3d94f6;
 }
 
 .textArea {

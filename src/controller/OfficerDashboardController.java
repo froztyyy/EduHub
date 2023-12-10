@@ -289,6 +289,26 @@ public class OfficerDashboardController implements Initializable {
     private Button refreshannounce1;
     @FXML
     private Button btnCreateTask11;
+    @FXML
+    private TextField txtSearchCompleted;
+    @FXML
+    private Label lblNumberTotalStudents;
+    @FXML
+    private TableView<CompletedStudentData> tblCompletedData;
+    @FXML
+    private TableColumn<CompletedStudentData, String> tblStudentIDCompleted;
+    @FXML
+    private TableColumn<CompletedStudentData, String> tblSurnameCompleted;
+    @FXML
+    private TableColumn<CompletedStudentData, String> tblTaskTitle;
+    @FXML
+    private Button btnListToDo;
+    @FXML
+    private Button btnCompletedStudent;
+    @FXML
+    private Pane toDoListPane;
+    @FXML
+    private Pane completedStudentPane;
 
     /**
      * Initializes the controller class.
@@ -419,6 +439,15 @@ public class OfficerDashboardController implements Initializable {
 
         tblStudentData.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         archiveStudentAccTbl.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
+        toDoListPane.setVisible(true);
+        completedStudentPane.setVisible(false);
+
+        loadCompletedData();
+        tblStudentIDCompleted.setCellValueFactory(new PropertyValueFactory<>("StudentID"));
+        tblSurnameCompleted.setCellValueFactory(new PropertyValueFactory<>("Surname"));
+        tblTaskTitle.setCellValueFactory(new PropertyValueFactory<>("Title"));
+
     }
 
     private boolean isNodeInsideSidePanel(Node node) {
@@ -1543,6 +1572,7 @@ public class OfficerDashboardController implements Initializable {
         homeDisplayListCard();
         fetchCourseToComboBox(cbCourse);
         loadStudentAccountData();
+        loadCompletedData();
     }
 
     public void user_SectionID(String sectionID) {
@@ -1551,6 +1581,7 @@ public class OfficerDashboardController implements Initializable {
         homeDisplayListCard();
         fetchSectionToComboBox(cbSectionYear);
         loadStudentAccountData();
+        loadCompletedData();
     }
 
     public void user_Surname(String surname) {
@@ -1697,13 +1728,11 @@ public class OfficerDashboardController implements Initializable {
                 String surname = result.getString("Surname");
                 String postDate = result.getString("postDate");
                 String studentID = result.getString("StudentID");
-                
 
-                AnnouncementData announcementData = new AnnouncementData(title, audience, priority, courseID, sectionID, body, postDate, studentID, surname,announcementID);
+                AnnouncementData announcementData = new AnnouncementData(title, audience, priority, courseID, sectionID, body, postDate, studentID, surname, announcementID);
                 announcementData.setAnnouncementID(announcementID); // Set AnnouncementID
                 Announcement.add(announcementData);
-                
-                
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -1713,7 +1742,6 @@ public class OfficerDashboardController implements Initializable {
 
         return Announcement;
     }
-
 
     private int currentDisplayIndex = 0;
 
@@ -1963,7 +1991,6 @@ public class OfficerDashboardController implements Initializable {
             e.printStackTrace();
         }
     }
-
     private Button lastClickedButtonStudentAcc = ListStudentAccountButton;
 
     private void setButtonStudentAcc(Button button, boolean isSelected) {
@@ -2448,6 +2475,163 @@ public class OfficerDashboardController implements Initializable {
         datePickerTask.setValue(deadline);
 
         // You can continue to set other fields accordingly...
+    }
+
+    private void setButtonColorToDo(Button button, boolean isSelected) {
+        if (isSelected) {
+            button.getStyleClass().add("selected-button");
+        } else {
+            button.getStyleClass().remove("selected-button");
+        }
+    }
+
+    private Button lastClickedButtonToDo = btnListToDo;
+
+    @FXML
+    public void SwitchFormToDo(ActionEvent event) {
+
+        Button clickedButton = (Button) event.getSource();
+
+        if (clickedButton == lastClickedButtonToDo) {
+            // Ignore the click if the same button was clicked twice in a row
+            return;
+        }
+
+        if (clickedButton == btnListToDo) {
+            // ... (rest of the code remains the same)
+        }
+
+        try {
+            // Update the last clicked button
+            lastClickedButtonToDo = clickedButton;
+
+            if (clickedButton == btnListToDo) {
+                setButtonColorToDo(btnListToDo, true);
+                setButtonColorToDo(btnCompletedStudent, false);
+
+                toDoListPane.setVisible(true);
+                completedStudentPane.setVisible(false);
+
+            } else if (clickedButton == btnCompletedStudent) {
+                setButtonColorToDo(btnListToDo, false);
+                setButtonColorToDo(btnCompletedStudent, true);
+
+                toDoListPane.setVisible(false);
+                completedStudentPane.setVisible(true);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private ObservableList<CompletedStudentData> completedStudentData;
+
+    private void loadCompletedData() {
+        completedStudentData = FXCollections.observableArrayList();
+        connect = database.getConnection();
+
+        try {
+            // Assume your database connection is already established
+            prepare = connect.prepareStatement("SELECT StudentID, Surname, Title FROM mod_todo_completed WHERE SectionID = ? and CourseID = ?");
+            prepare.setString(1, user_SectionID);
+            prepare.setString(2, user_CourseID);
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                CompletedStudentData completedStudentDatas = new CompletedStudentData();
+                completedStudentDatas.setStudentID(result.getString("StudentID"));
+                completedStudentDatas.setSurname(result.getString("Surname"));
+                completedStudentDatas.setTitle(result.getString("Title"));
+
+                completedStudentData.add(completedStudentDatas);
+            }
+            tblCompletedData.setItems(completedStudentData);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close the result set, statement, and connection in a finally block
+            try {
+                if (result != null) {
+                    result.close();
+                }
+                if (prepare != null) {
+                    prepare.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    @FXML
+    private void searchCompletedStudent(ActionEvent event) {
+        String searchText = txtSearchCompleted.getText();
+
+        if (searchText.isEmpty()) {
+            loadCompletedData();
+            updateSearchCount("");
+            return;
+        }
+
+        ObservableList<CompletedStudentData> completedStudentData = FXCollections.observableArrayList();
+
+        try {
+            prepare = connect.prepareStatement("SELECT StudentID, Surname, Title FROM mod_todo_completed WHERE SectionID = ? and CourseID = ? AND Title LIKE ?");
+
+            prepare.setString(1, user_SectionID);
+            prepare.setString(2, user_CourseID);
+            prepare.setString(3, "%" + searchText + "%");
+
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                CompletedStudentData completedStudentDatas = new CompletedStudentData();
+                completedStudentDatas.setStudentID(result.getString("StudentID"));
+                completedStudentDatas.setSurname(result.getString("Surname"));
+                completedStudentDatas.setTitle(result.getString("Title"));
+
+                completedStudentData.add(completedStudentDatas);
+            }
+            tblCompletedData.setItems(completedStudentData);
+            updateSearchCount(searchText);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close resources in a finally block
+            try {
+                if (result != null) {
+                    result.close();
+                }
+                if (prepare != null) {
+                    prepare.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        // Add listener to detect when search text is cleared
+        txtSearchCompleted.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.isEmpty()) {
+                loadCompletedData();
+                updateSearchCount("");
+            }
+        });
+    }
+
+    private void updateSearchCount(String searchText) {
+        if (searchText.isEmpty()) {
+            int itemCount = tblCompletedData.getItems().size();
+            String countText = itemCount + " student(s)";
+            lblNumberTotalStudents.setText("");
+        } else {
+            int itemCount = tblCompletedData.getItems().size();
+            String countText = itemCount + " student(s)";
+            lblNumberTotalStudents.setText(countText); // Clear the count when there's a search term
+        }
     }
 
 }

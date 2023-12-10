@@ -10,8 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -63,36 +61,39 @@ public class DisplayListController implements Initializable {
     private Button btnRemove1;
     @FXML
     private Label txtIDtodo;
-    private String studentID;
 
     /**
      * Initializes the controller class.
      */
-    private OfficerDashboardController officerDashboardController;
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        cbComplete.setOnAction(event -> handleCheckBoxClick());
+    }
+
+    private ToDoListData todoData;
+
+    private Connection connect;
+    private PreparedStatement prepare;
+    private ResultSet result;
+
+    public void setData(ToDoListData todoData) throws SQLException {
+        this.todoData = todoData;
+
+        lblTitle.setText(todoData.getTitle());
+        lblDueDate.setText(todoData.getDeadline());
+        txtDetailsDisplay.setText(todoData.getBody());
+        txtSurname.setText(todoData.getUser_Surname());
+        txtAudience.setText(todoData.getAudience());
+        txtPriority.setText(todoData.getPriority());
+    }
+    
+     private OfficerDashboardController officerDashboardController;
 
     public void setOfficerDashboardController(OfficerDashboardController officerDashboardController) {
         this.officerDashboardController = officerDashboardController;
     }
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        cbComplete.setOnAction(event -> handleCheckBoxClick());// Add an event handler for the toDoDisplayCard
-
-        // Disable the btnRemove button if the studentID data is not equal to the current studentID
-    }
-
-    public void setStudentID(String studentID) {
-        this.studentID = studentID;
-        // Use the studentID as needed in this controller
-        System.out.println("Student ID set in DisplayListController: " + this.studentID);
-    }
-    private UserDashboardController userDashboardController;
-
-    public void setUserDashboardController(UserDashboardController userDashboardController) {
-        this.userDashboardController = userDashboardController;
-    }
-
-    @FXML
+    
+     @FXML
     private void handleToDoDisplayCardClick(ActionEvent event) {
         // Handle the click event here
         System.out.println("toDoDisplayCard clicked!");
@@ -142,24 +143,6 @@ public class DisplayListController implements Initializable {
     public void disableRemoveButton1() {
         btnRemove1.setDisable(true);
     }
-    private ToDoListData todoData;
-
-    private Connection connect;
-    private PreparedStatement prepare;
-    private ResultSet result;
-
-    public void setData(ToDoListData todoData) throws SQLException {
-        this.todoData = todoData;
-
-        txtIDtodo.setText(String.valueOf(todoData.getTodoId()));
-        lblTitle.setText(todoData.getTitle());
-        lblDueDate.setText(todoData.getDeadline());
-        txtDetailsDisplay.setText(todoData.getBody());
-        txtSurname.setText(todoData.getUser_Surname());
-        txtAudience.setText(todoData.getAudience());
-        txtPriority.setText(todoData.getPriority());
-
-    }
 
     private void adjustLayout(GridPane gridPane) {
         // Iterate through the children of the grid pane and update their row and column indices
@@ -205,8 +188,6 @@ public class DisplayListController implements Initializable {
             // Adjust the layout of the remaining cards
             adjustLayout(parentGridPane);
             saveToArchive();
-            System.out.println("Current studentID: " + studentID);
-            System.out.println("todoData user studentID: " + todoData.getUser_StudentID());
 
         }
     }
@@ -252,11 +233,32 @@ public class DisplayListController implements Initializable {
         }
     }
 
+    private String studentID;
+
+    public void setStudentID(String studentID) {
+        this.studentID = studentID;
+    }
+    
+    private UserDashboardController userDashboardController;
+
+    // Other fields and methods
+
+    public void setUserDashboardController(UserDashboardController userDashboardController) {
+        this.userDashboardController = userDashboardController;
+    }
+  
     private void handleCheckBoxClick() {
         // Check if the CheckBox is selected
         if (cbComplete.isSelected()) {
             // Enable the visibility of the Pane
             paneGrey.setVisible(true);
+
+            insertIntoCompletedTable();
+           
+            deleteFromPendingTable();
+            if (userDashboardController != null) {
+            userDashboardController. numberCompletedTask();
+            }
 
         } else {
             // Disable the visibility of the Pane
@@ -266,9 +268,61 @@ public class DisplayListController implements Initializable {
         }
     }
 
-    // wala n to
-    @FXML
-    private void handleToDoDisplayCardClick(MouseEvent event) {
+    private void insertIntoCompletedTable() {
+        connect = database.getConnection();
+        String sql = "INSERT INTO mod_todo_completed (Title,Note,Deadline, AudienceID, PriorityID, StudentID, Surname, CourseID, SectionID, PostDate)" + "Values( ?,?,?,?,?,?,?,?, ?, ?) ";
+
+        try {
+            prepare = connect.prepareStatement(sql);
+            prepare.setString(1, todoData.getTitle());
+            prepare.setString(2, todoData.getBody());
+            prepare.setString(3, todoData.getDeadline());
+            prepare.setString(4, todoData.getAudience());
+            prepare.setString(5, todoData.getPriority());
+
+            // Use the studentID from DisplayListController
+            prepare.setString(6, studentID);
+
+            prepare.setString(7, todoData.getUser_Surname());
+            prepare.setString(8, todoData.getUser_CourseID());
+            prepare.setString(9, todoData.getUser_SectionID());
+            prepare.setString(10, todoData.getPostDate());
+
+            System.out.println("SQL Query: " + sql); // Print the SQL query for debugging
+
+            // Print values before executing the query
+            System.out.println("TodoData Title: " + todoData.getTitle());
+            System.out.println("TodoData Body: " + todoData.getBody());
+            System.out.println("TodoData Deadline: " + todoData.getDeadline());
+            System.out.println("TodoData Audience: " + todoData.getAudience());
+            System.out.println("TodoData Priority: " + todoData.getPriority());
+            System.out.println("StudentID: " + studentID);
+            System.out.println("TodoData Surname: " + todoData.getUser_Surname());
+            System.out.println("TodoData CourseID: " + todoData.getUser_CourseID());
+            System.out.println("TodoData SectionID: " + todoData.getUser_SectionID());
+            System.out.println("TodoData PostDate: " + todoData.getPostDate());
+
+            prepare.executeUpdate();
+
+            System.out.println("Query executed successfully.");
+
+            paneGrey.setVisible(true);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error executing query. StudentID: " + studentID);
+        }
+    }
+
+    private void deleteFromPendingTable() {
+        connect = database.getConnection();
+        String sql = "Delete from mod_todo_pending where title = ?";
+        try {
+            prepare = connect.prepareStatement(sql);
+            prepare.setString(1, todoData.getTitle());
+            prepare.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }
