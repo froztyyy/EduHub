@@ -250,7 +250,7 @@ public class UserDashboardController implements Initializable {
     @FXML
     private Button refreshannounce1;
     @FXML
-    private TableColumn<?, ?> tblPriority;
+    private TableColumn<todolistTaskHub, String> tblPriority;
     @FXML
     private Label lblCompletedTask;
 
@@ -270,6 +270,7 @@ public class UserDashboardController implements Initializable {
     private Button notifBTN;
     @FXML
     private ImageView notifBox;
+
     /**
      * Initializes the controller class.
      */
@@ -347,13 +348,16 @@ public class UserDashboardController implements Initializable {
 
         // Initialize columns
         tblTaskCol.setCellValueFactory(new PropertyValueFactory<>("Title"));
+
+        tblPriority.setCellValueFactory(new PropertyValueFactory<>("priority"));
+
         tblDeadlineCol.setCellValueFactory(new PropertyValueFactory<>("Deadline"));
 
         tblLastnameCol.setCellValueFactory(new PropertyValueFactory<>("tblSurname"));
         tblFirstName.setCellValueFactory(new PropertyValueFactory<>("tblFirstName"));
         tblMiddleNameCol.setCellValueFactory(new PropertyValueFactory<>("tblMiddlename"));
         loadOfficerAccountData();
-        
+
         numberCompletedTask();
         checkAndUpdateNotificationVisibility();
         notifBTN.setVisible(true);
@@ -1395,6 +1399,7 @@ public class UserDashboardController implements Initializable {
 
         return toDoList;
     }
+
     public void todoCard() {
         try {
             toDoList.clear();
@@ -1427,6 +1432,7 @@ public class UserDashboardController implements Initializable {
                     cardController.setUserDashboardController(this);
                     if (user_StudentID != null && !user_StudentID.equals(toDoList.get(q).getUser_StudentID())) {
                         cardController.disableRemoveButton();
+                        cardController.disableRemoveButton1();
                     }
 
                     taskCard.add(pane, column++, row);
@@ -1657,7 +1663,6 @@ public class UserDashboardController implements Initializable {
         cbPriority.setValue(null);
     }
 
-   
     private ObservableList<AnnouncementData> Announcement = FXCollections.observableArrayList();
 
     public ObservableList<AnnouncementData> getAnnouncementData() throws SQLException {
@@ -1915,8 +1920,7 @@ public class UserDashboardController implements Initializable {
         getToDoListData();
         todoCard();
     }
-    
-    
+
     public void numberCompletedTask() {
         connect = database.getConnection();
         String sql = "SELECT COUNT(*) AS numberOfCompletedTask FROM mod_todo_completed WHERE StudentID = ?";

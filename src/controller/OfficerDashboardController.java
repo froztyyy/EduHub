@@ -11,23 +11,18 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 import java.util.ResourceBundle;
-import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
@@ -1856,6 +1851,13 @@ public class OfficerDashboardController implements Initializable {
             showSuccessAlert();
             homeDisplayListCard();
 
+            // Clear text fields
+            txtTitleTask.clear();
+            txtBodyTask.clear();
+            datePickerTask.setValue(null);
+            cbAudienceToDo.setValue(null);
+            cbPriorityToDo.setValue(null);
+
         } catch (SQLException e) {
             // Handle any SQL errors
             e.printStackTrace();
@@ -1895,7 +1897,7 @@ public class OfficerDashboardController implements Initializable {
 
     public ObservableList<ToDoListData> getToDoListData() throws SQLException {
 
-        String sql = "SELECT Title, Note, Deadline, AudienceID, PriorityID, StudentID, Surname, CourseID, SectionID, postDate FROM mod_todo_pending WHERE CourseID = ? AND SectionID = ? AND AudienceID IN (?, ?, ? ,?) ORDER BY PostDate DESC, PriorityID ASC";
+        String sql = "SELECT ToDoID, Title, Note, Deadline, AudienceID, PriorityID, StudentID, Surname, CourseID, SectionID, postDate FROM mod_todo_pending WHERE CourseID = ? AND SectionID = ? AND AudienceID IN (?, ?, ? ,?) AND AudienceID != 'Only Me' ORDER BY PostDate DESC, PriorityID ASC";
         ObservableList<ToDoListData> toDoList = FXCollections.observableArrayList();
         connect = database.getConnection();
 
@@ -1910,6 +1912,8 @@ public class OfficerDashboardController implements Initializable {
             result = prepare.executeQuery();
 
             while (result.next()) {
+                int todoId = result.getInt("ToDoID");
+
                 String title = result.getString("Title");
                 String note = result.getString("Note");
                 String deadline = result.getString("Deadline");
@@ -1921,7 +1925,8 @@ public class OfficerDashboardController implements Initializable {
                 String studentID = result.getString("StudentID");
                 String postDate = result.getString("PostDate");
 
-                ToDoListData todoListData = new ToDoListData(title, note, deadline, audience, priority, courseID, sectionID, surname, studentID, postDate);
+                ToDoListData todoListData = new ToDoListData(todoId, title, note, deadline, audience, priority, courseID, sectionID, surname, studentID, postDate);
+                todoListData.setTodoId(todoId); // Set AnnouncementID
 
                 toDoList.add(todoListData);
             }
@@ -2418,7 +2423,8 @@ public class OfficerDashboardController implements Initializable {
         int selectedID = Integer.parseInt(txtIDtod.getText());
         String updatedTitle = txtTitleTask.getText();
         String updatedBody = txtBodyTask.getText();
-        String updatedAudience = cbAudience.getValue();
+        String updatedAudience = cbAudienceToDo.getValue();
+        
         String updatedPriority = cbPriorityToDo.getValue();
         LocalDate updatedDeadline = datePickerTask.getValue();
 
@@ -2443,6 +2449,8 @@ public class OfficerDashboardController implements Initializable {
 
             // Execute the update query
             prepare.executeUpdate();
+            
+            
 
             // Show a success alert
             showSuccessAlert();
@@ -2579,11 +2587,12 @@ public class OfficerDashboardController implements Initializable {
         ObservableList<CompletedStudentData> completedStudentData = FXCollections.observableArrayList();
 
         try {
-            prepare = connect.prepareStatement("SELECT StudentID, Surname, Title FROM mod_todo_completed WHERE SectionID = ? and CourseID = ? AND Title LIKE ?");
+            prepare = connect.prepareStatement("SELECT StudentID, Surname, Title FROM mod_todo_completed WHERE SectionID = ? and CourseID = ? AND (Title LIKE ? OR StudentID LIKE ?)");
 
             prepare.setString(1, user_SectionID);
             prepare.setString(2, user_CourseID);
             prepare.setString(3, "%" + searchText + "%");
+            prepare.setString(4, "%" + searchText + "%");
 
             result = prepare.executeQuery();
 
@@ -2625,12 +2634,12 @@ public class OfficerDashboardController implements Initializable {
     private void updateSearchCount(String searchText) {
         if (searchText.isEmpty()) {
             int itemCount = tblCompletedData.getItems().size();
-            String countText = itemCount + " student(s)";
+            int countText = itemCount;
             lblNumberTotalStudents.setText("");
         } else {
             int itemCount = tblCompletedData.getItems().size();
-            String countText = itemCount + " student(s)";
-            lblNumberTotalStudents.setText(countText); // Clear the count when there's a search term
+            int countText = itemCount;
+            lblNumberTotalStudents.setText(String.valueOf(countText)); // Clear the count when there's a search term
         }
     }
 

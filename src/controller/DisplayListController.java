@@ -77,14 +77,24 @@ public class DisplayListController implements Initializable {
     private ResultSet result;
 
     public void setData(ToDoListData todoData) throws SQLException {
+        
         this.todoData = todoData;
-
+        txtIDtodo.setText(String.valueOf(todoData.getTodoId()));
         lblTitle.setText(todoData.getTitle());
         lblDueDate.setText(todoData.getDeadline());
         txtDetailsDisplay.setText(todoData.getBody());
         txtSurname.setText(todoData.getUser_Surname());
         txtAudience.setText(todoData.getAudience());
         txtPriority.setText(todoData.getPriority());
+    }
+    
+        
+    private UserDashboardController userDashboardController;
+
+    // Other fields and methods
+
+    public void setUserDashboardController(UserDashboardController userDashboardController) {
+        this.userDashboardController = userDashboardController;
     }
     
      private OfficerDashboardController officerDashboardController;
@@ -238,14 +248,7 @@ public class DisplayListController implements Initializable {
     public void setStudentID(String studentID) {
         this.studentID = studentID;
     }
-    
-    private UserDashboardController userDashboardController;
 
-    // Other fields and methods
-
-    public void setUserDashboardController(UserDashboardController userDashboardController) {
-        this.userDashboardController = userDashboardController;
-    }
   
     private void handleCheckBoxClick() {
         // Check if the CheckBox is selected
@@ -307,6 +310,8 @@ public class DisplayListController implements Initializable {
             System.out.println("Query executed successfully.");
 
             paneGrey.setVisible(true);
+            cbComplete.setDisable(true);
+            
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Error executing query. StudentID: " + studentID);

@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -28,7 +36,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserDashboardController">
+<Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserDashboardController">
    <children>
       <Pane prefHeight="43.0" prefWidth="1332.0" style="-fx-background-color: black;">
          <children>
@@ -179,7 +187,7 @@
                   </HBox>
                </children>
             </VBox>
-            <Pane fx:id="homeWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" stylesheets="@../style/userdashboard.css" visible="false">
+            <Pane fx:id="homeWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" stylesheets="@../style/userdashboard.css">
                <children>
                   <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="698.0" prefWidth="1332.0" style="-fx-background-color: black;">
                      <children>
@@ -289,7 +297,7 @@
                                                 <Pane HBox.hgrow="ALWAYS" />
                                                 <Pane>
                                                    <children>
-                                                      <TextField prefHeight="45.0" prefWidth="237.0" promptText="Search Announcement" styleClass="announcementSearch" stylesheets="@../style/userdashboard.css">
+                                                      <TextField prefHeight="45.0" prefWidth="237.0" promptText="Search Announcement" styleClass="announcementSearch" stylesheets="@../style/userdashboard.css" visible="false">
                                                          <padding>
                                                             <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
                                                          </padding>
@@ -529,7 +537,7 @@
                      </font>
                   </Button>
                </children></Pane>
-            <Pane fx:id="todoWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" stylesheets="@../style/userdashboard.css">
+            <Pane fx:id="todoWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" stylesheets="@../style/userdashboard.css" visible="false">
                <children>
                   <Pane layoutX="15.0" layoutY="15.0">
                      <children>
