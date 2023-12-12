@@ -49,6 +49,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -281,6 +282,10 @@ public class OfficerDashboardController implements Initializable {
     @FXML
     private TableColumn<CompletedStudentData, String> tblTaskTitle;
     @FXML
+    private TableColumn<CompletedStudentData, String> tblTaskBody;
+    @FXML
+    private TableColumn<CompletedStudentData, String> tblTaskDeadline;
+    @FXML
     private Button btnListToDo;
     @FXML
     private Button btnCompletedStudent;
@@ -299,17 +304,46 @@ public class OfficerDashboardController implements Initializable {
     @FXML
     private Button eventEdit;
     @FXML
-    private Button eventRemove;
-    @FXML
     private Button eventClear;
-    @FXML
     private TableView<eventData> tblEventList;
     @FXML
-    private TableColumn<eventData, String> tblEventListTitleCol;
+    private Button eventDel;
     @FXML
-    private TableColumn<eventData, String> tblEventListDescCol;
+    private TextField eventLocation;
     @FXML
-    private TableColumn<eventData, String> tblEventListDateCol;
+    private TableColumn<?, ?> eventATitle;
+    @FXML
+    private TableColumn<?, ?> eventADesc;
+    @FXML
+    private TableColumn<?, ?> eventALoc;
+    @FXML
+    private TableColumn<?, ?> eventADate;
+    @FXML
+    private TableColumn<?, ?> eventAStat;
+    @FXML
+    private Tab eventPTitle;
+    @FXML
+    private TableColumn<?, ?> eventPDesc;
+    @FXML
+    private TableColumn<?, ?> eventPLoc;
+    @FXML
+    private TableColumn<?, ?> eventPDate;
+    @FXML
+    private TableColumn<?, ?> eventPStat;
+    @FXML
+    private TableColumn<?, ?> eventOTitle;
+    @FXML
+    private TableColumn<?, ?> eventODesc;
+    @FXML
+    private TableColumn<?, ?> eventOLoc;
+    @FXML
+    private TableColumn<?, ?> eventODate;
+    @FXML
+    private TableColumn<?, ?> eventOStat;
+    @FXML
+    private TableColumn<?, ?> eventETitle;
+    @FXML
+    private TableColumn<?, ?> eventEDesc;
 
     /**
      * Initializes the controller class.
@@ -443,9 +477,11 @@ public class OfficerDashboardController implements Initializable {
         completedStudentPane.setVisible(false);
 
         loadCompletedData();
-        tblStudentIDCompleted.setCellValueFactory(new PropertyValueFactory<>("StudentID"));
-        tblSurnameCompleted.setCellValueFactory(new PropertyValueFactory<>("Surname"));
-        tblTaskTitle.setCellValueFactory(new PropertyValueFactory<>("Title"));
+        tblStudentIDCompleted.setCellValueFactory(new PropertyValueFactory<>("studentID"));
+        tblSurnameCompleted.setCellValueFactory(new PropertyValueFactory<>("surname"));
+        tblTaskTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
+        tblTaskBody.setCellValueFactory(new PropertyValueFactory<>("note"));
+        tblTaskDeadline.setCellValueFactory(new PropertyValueFactory<>("deadline"));
 
         // Set up columns for TableView
         TableColumn<eventData, String> titleColumn = new TableColumn<>("Event");
@@ -892,7 +928,6 @@ public class OfficerDashboardController implements Initializable {
         }
     }
 
-    @FXML
     private void handleTableClick(MouseEvent event) {
         if (event.getClickCount() == 1) { // Single-click
             // Get the selected item from the TableView
@@ -2448,7 +2483,7 @@ public class OfficerDashboardController implements Initializable {
 
         try {
             // Assume your database connection is already established
-            prepare = connect.prepareStatement("SELECT StudentID, Surname, Title FROM mod_todo_completed WHERE SectionID = ? and CourseID = ?");
+            prepare = connect.prepareStatement("SELECT StudentID, Surname, Title, Note, Deadline FROM mod_todo_completed WHERE SectionID = ? and CourseID = ?");
             prepare.setString(1, user_SectionID);
             prepare.setString(2, user_CourseID);
             result = prepare.executeQuery();
@@ -2458,9 +2493,14 @@ public class OfficerDashboardController implements Initializable {
                 completedStudentDatas.setStudentID(result.getString("StudentID"));
                 completedStudentDatas.setSurname(result.getString("Surname"));
                 completedStudentDatas.setTitle(result.getString("Title"));
+                completedStudentDatas.setNote(result.getString("Note"));
+                completedStudentDatas.setDeadline(result.getString("Deadline"));
 
                 completedStudentData.add(completedStudentDatas);
             }
+
+            System.out.println("Number of records retrieved: " + completedStudentData.size()); // Debugging print statement
+
             tblCompletedData.setItems(completedStudentData);
 
         } catch (SQLException e) {
@@ -2470,9 +2510,11 @@ public class OfficerDashboardController implements Initializable {
             try {
                 if (result != null) {
                     result.close();
+                    System.out.println("Result set closed."); // Debugging print statement
                 }
                 if (prepare != null) {
                     prepare.close();
+                    System.out.println("Statement closed."); // Debugging print statement
                 }
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -2501,15 +2543,17 @@ public class OfficerDashboardController implements Initializable {
             prepare.setString(4, "%" + searchText + "%");
 
             result = prepare.executeQuery();
-
             while (result.next()) {
                 CompletedStudentData completedStudentDatas = new CompletedStudentData();
                 completedStudentDatas.setStudentID(result.getString("StudentID"));
                 completedStudentDatas.setSurname(result.getString("Surname"));
                 completedStudentDatas.setTitle(result.getString("Title"));
+                completedStudentDatas.setNote(result.getString("Note"));
+                completedStudentDatas.setDeadline(result.getString("Deadline"));
 
                 completedStudentData.add(completedStudentDatas);
             }
+
             tblCompletedData.setItems(completedStudentData);
             updateSearchCount(searchText);
         } catch (SQLException e) {

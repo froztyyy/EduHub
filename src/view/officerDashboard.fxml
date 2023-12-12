@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -17,6 +9,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
@@ -28,7 +22,6 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -38,7 +31,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.OfficerDashboardController">
+<Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.OfficerDashboardController">
     <children>
         <Pane prefHeight="43.0" prefWidth="1332.0" style="-fx-background-color: black;">
             <children>
@@ -411,7 +404,7 @@
                         </HBox>
                     </children>
                 </Pane>
-                <Pane fx:id="toDoWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" stylesheets="@../style/officerdashboard.css" visible="false">
+                <Pane fx:id="toDoWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" stylesheets="@../style/officerdashboard.css">
                     <children>
                         <HBox alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="1332.0" spacing="15.0">
                             <children>
@@ -436,7 +429,7 @@
                                 <Insets bottom="15.0" left="15.0" right="50.0" top="15.0" />
                             </padding>
                         </HBox>
-                        <Pane fx:id="toDoListPane" layoutY="57.0" prefHeight="640.0" prefWidth="1332.0">
+                        <Pane fx:id="toDoListPane" layoutY="57.0" prefHeight="640.0" prefWidth="1332.0" visible="false">
                             <children>
                                 <HBox prefHeight="648.0" prefWidth="1332.0" spacing="15.0">
                                     <children>
@@ -533,7 +526,7 @@
                                 </HBox>
                             </children>
                         </Pane>
-                        <Pane fx:id="completedStudentPane" layoutY="59.0" prefHeight="640.0" prefWidth="1332.0" visible="false">
+                        <Pane fx:id="completedStudentPane" layoutY="59.0" prefHeight="640.0" prefWidth="1332.0">
                             <children>
                                 <HBox alignment="CENTER" layoutX="59.0" layoutY="14.0" spacing="15.0">
                                     <children>
@@ -565,6 +558,8 @@
                                                 <TableColumn fx:id="tblStudentIDCompleted" prefWidth="75.0" text="StudentID" />
                                                 <TableColumn fx:id="tblSurnameCompleted" prefWidth="75.0" text="Surname" />
                                                 <TableColumn fx:id="tblTaskTitle" prefWidth="75.0" text="Task Title" />
+                                    <TableColumn fx:id="tblTaskBody" prefWidth="75.0" text="Body" />
+                                    <TableColumn fx:id="tblTaskDeadline" prefWidth="75.0" text="Deadline" />
                                             </columns>
                                             <columnResizePolicy>
                                                 <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -580,7 +575,7 @@
                         </Pane>
                     </children>
                 </Pane>
-                <Pane fx:id="calendarWindow" layoutY="96.0" prefHeight="697.0" prefWidth="1332.0">
+                <Pane fx:id="calendarWindow" layoutY="96.0" prefHeight="697.0" prefWidth="1332.0" visible="false">
                     <children>
                         <Pane layoutX="38.0" layoutY="28.0" prefHeight="618.0" prefWidth="330.0">
                             <children>
@@ -659,7 +654,7 @@
                                      <content>
                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                              <children>
-                                                 <TableView prefHeight="527.0" prefWidth="897.0" style="-fx-background-radius: 20px;">
+                                                 <TableView layoutX="6.0" layoutY="-1.0" prefHeight="527.0" prefWidth="897.0" style="-fx-background-radius: 20px;">
                                                      <columns>
                                                          <TableColumn fx:id="eventATitle" prefWidth="183.0" text="Title" />
                                                          <TableColumn fx:id="eventADesc" prefWidth="324.0" text="Description" />

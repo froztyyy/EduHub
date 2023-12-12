@@ -89,7 +89,7 @@
                                     </Label>
                                     <Pane HBox.hgrow="ALWAYS">
                                        <children>
-                                          <Label fx:id="txtIDtodo" layoutX="52.0" layoutY="-8.0" text="Label" textFill="WHITE" />
+                                          <Label fx:id="txtIDtodo" layoutX="52.0" layoutY="-8.0" text="Label" textFill="#ffffff00" />
                                        </children></Pane>
                                     <Label fx:id="lblDueDate" text="yyyy/MM/DD" textFill="WHITE">
                                        <font>

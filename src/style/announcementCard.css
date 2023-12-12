@@ -25,11 +25,6 @@
     -fx-background-color: #0A0A0A;
 }
 
-.secondary-bg {
-    -fx-background-color: #121212;
-    -fx-background-radius: 10px;
-}
-
 .btns {
     -fx-background-color: #848884;
     -fx-background-radius: 10px;
@@ -197,11 +192,6 @@
 #cardVBox {
     -fx-border-radius: 5px;
     -fx-border-width: 5px;
-}
-
-.secondary-bg {
-    -fx-background-color: #121212;
-    -fx-background-radius: 10px;
 }
 
 #cardVBox {

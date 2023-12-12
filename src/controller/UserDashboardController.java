@@ -54,6 +54,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -183,23 +184,14 @@ public class UserDashboardController implements Initializable {
     private Label yearSmall;
     @FXML
     private Label monthSmall;
-    @FXML
-    private Label monthBig;
-    @FXML
-    private Label yearBig;
-    @FXML
     private Label monthNote;
-    @FXML
     private Label yearNote;
-    @FXML
     private Text infoNote;
 
     @FXML
     private Label lblStudentID;
     @FXML
     private Label greetingLabel;
-    @FXML
-    private Button PostButton;
     @FXML
     private Label greetingLabelTime;
     @FXML
@@ -208,11 +200,8 @@ public class UserDashboardController implements Initializable {
     private Label lblSection;
     @FXML
     private GridPane announcementCardDash;
-    @FXML
     private ComboBox<String> cbPriority;
-    @FXML
     private TextField txtTitle;
-    @FXML
     private TextArea txtBody;
     @FXML
     private Button refreshannounce;
@@ -269,6 +258,68 @@ public class UserDashboardController implements Initializable {
     private Button notifBTN;
     @FXML
     private ImageView notifBox;
+    @FXML
+    private Label eventLocation;
+    @FXML
+    private Label eventDate;
+    @FXML
+    private Text eventDesc;
+    @FXML
+    private Label eventTitle;
+    @FXML
+    private TableColumn<?, ?> eventATitle;
+    @FXML
+    private TableColumn<?, ?> eventADesc;
+    @FXML
+    private TableColumn<?, ?> eventALoc;
+    @FXML
+    private TableColumn<?, ?> eventADate;
+    @FXML
+    private TableColumn<?, ?> eventAStat;
+    @FXML
+    private Tab eventPTitle;
+    @FXML
+    private TableColumn<?, ?> eventPDesc;
+    @FXML
+    private TableColumn<?, ?> eventPLoc;
+    @FXML
+    private TableColumn<?, ?> eventPDate;
+    @FXML
+    private TableColumn<?, ?> eventPStat;
+    @FXML
+    private TableColumn<?, ?> eventOTitle;
+    @FXML
+    private TableColumn<?, ?> eventODesc;
+    @FXML
+    private TableColumn<?, ?> eventOLoc;
+    @FXML
+    private TableColumn<?, ?> eventODate;
+    @FXML
+    private TableColumn<?, ?> eventOStat;
+    @FXML
+    private TableColumn<?, ?> eventETitle;
+    @FXML
+    private TableColumn<?, ?> eventEDesc;
+    @FXML
+    private Button btnCompletedTask;
+    @FXML
+    private TableView<CompletedStudentData> tblCompletedData;
+    @FXML
+    private TableColumn<CompletedStudentData, String> tblStudentIDCompleted;
+    @FXML
+    private TableColumn<CompletedStudentData, String> tblSurnameCompleted;
+    @FXML
+    private TableColumn<CompletedStudentData, String> tblTaskTitle;
+     @FXML
+    private TableColumn<CompletedStudentData, String> tblTaskBody;
+    @FXML
+    private TableColumn<CompletedStudentData, String> tblTaskDeadline;
+    @FXML
+    private Button btnBackTask;
+    @FXML
+    private Pane taskPane;
+    @FXML
+    private Pane completedPane;
 
     /**
      * Initializes the controller class.
@@ -362,6 +413,15 @@ public class UserDashboardController implements Initializable {
         notifBox.setVisible(false);
         notifNumber.setVisible(false);
         announceCount.setVisible(false);
+        
+        loadCompletedDataStudent();
+        tblStudentIDCompleted.setCellValueFactory(new PropertyValueFactory<>("StudentID"));
+        tblSurnameCompleted.setCellValueFactory(new PropertyValueFactory<>("Surname"));
+        tblTaskTitle.setCellValueFactory(new PropertyValueFactory<>("Title"));
+        tblTaskBody.setCellValueFactory(new PropertyValueFactory<>("Note"));
+        tblTaskDeadline.setCellValueFactory(new PropertyValueFactory<>("Deadline"));
+        taskPane.setVisible(true);
+                completedPane.setVisible(false);
     }
 
     private final boolean stop = false;
@@ -975,7 +1035,6 @@ public class UserDashboardController implements Initializable {
         lblDateDashboard.setText(formattedDate);
     }
 
-    @FXML
     private void editCalendarNote(ActionEvent event) {
         try {
             // Load the FXML file
@@ -1370,6 +1429,7 @@ public class UserDashboardController implements Initializable {
         loadCourseData();
         loadOfficerAccountData();
         numberCompletedTask();
+        loadCompletedDataStudent();
     }
 
     public void user_Password(String password) {
@@ -1385,6 +1445,7 @@ public class UserDashboardController implements Initializable {
         loadOfficerAccountData();
         loadCourseData();
         checkAndUpdateNotificationVisibility();
+       loadCompletedDataStudent();
     }
 
     public void user_SectionID(String sectionID) {
@@ -1395,6 +1456,7 @@ public class UserDashboardController implements Initializable {
         loadOfficerAccountData();
         loadCourseData();
         checkAndUpdateNotificationVisibility();
+        loadCompletedDataStudent();
     }
 
     public void user_Surname(String surname) {
@@ -1462,7 +1524,6 @@ public class UserDashboardController implements Initializable {
     }
 
     // Announcement Posting (Disabled)
-    @FXML
     private void handlePostAnnouncement(ActionEvent event) {
 
         // Check if Title and Note are not empty, and PriorityID is selected
@@ -1685,7 +1746,7 @@ public class UserDashboardController implements Initializable {
         // Add logic to retrieve feedback data from the database
         // Replace the placeholders with your actual column names
         try {
-            prepare = connect.prepareStatement("SELECT Title, Deadline, PriorityID FROM mod_todo_pending where CourseID = ? and SectionID = ? and AudienceID in ( ?, ?, ?) order by `PriorityID` ASC, `Deadline` DESC");
+            prepare = connect.prepareStatement("SELECT Title, Deadline, PriorityID FROM mod_todo_pending where CourseID = ? and SectionID = ? and AudienceID in ( ?, ?, ?) order by PriorityID ASC, Deadline DESC");
             prepare.setString(1, user_CourseID);
             prepare.setString(2, user_SectionID);
             prepare.setString(3, "Everyone");
@@ -1996,7 +2057,7 @@ public class UserDashboardController implements Initializable {
         }
     }
 
-    private void updateLastUpdateTime(String courseId, String sectionId, String updateQuery) throws SQLException {
+    private void updateLastUpdateTime(String courseId, String sectionId, String updateQuery ) throws SQLException {
         try (Connection connection = database.getConnection(); PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
             updateStatement.setString(1, courseId);
             updateStatement.setString(2, sectionId);
@@ -2005,6 +2066,98 @@ public class UserDashboardController implements Initializable {
             int rowsUpdated = updateStatement.executeUpdate();
 
             System.out.println(rowsUpdated + " rows updated.");
+        }
+    }
+    
+      private void setButtonColorToDo(Button button, boolean isSelected) {
+        if (isSelected) {
+            button.getStyleClass().add("selected-button");
+        } else {
+            button.getStyleClass().remove("selected-button");
+        }
+    }
+
+    private Button lastClickedButtonToDo = btnCompletedTask;
+
+    @FXML
+    public void SwitchFormToDo(ActionEvent event) {
+
+        Button clickedButton = (Button) event.getSource();
+
+        if (clickedButton == lastClickedButtonToDo) {
+            // Ignore the click if the same button was clicked twice in a row
+            return;
+        }
+
+        if (clickedButton == btnCompletedTask) {
+            // ... (rest of the code remains the same)
+        }
+
+        try {
+            // Update the last clicked button
+            lastClickedButtonToDo = clickedButton;
+
+            if (clickedButton == btnBackTask) {
+                setButtonColorToDo(btnBackTask, true);
+                setButtonColorToDo(btnCompletedTask, false);
+
+                taskPane.setVisible(true);
+                completedPane.setVisible(false);
+
+            } else if (clickedButton == btnCompletedTask) {
+                setButtonColorToDo(btnBackTask, false);
+                setButtonColorToDo(btnCompletedTask, true);
+
+                taskPane.setVisible(false);
+                completedPane.setVisible(true);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private ObservableList<CompletedStudentData> completedStudentData;
+
+    private void loadCompletedDataStudent() {
+        completedStudentData = FXCollections.observableArrayList();
+        connect = database.getConnection();
+
+        try {
+            // Assume your database connection is already established
+            prepare = connect.prepareStatement("SELECT StudentID, Surname, Title, Note, Deadline FROM mod_todo_completed WHERE  SectionID = ? and CourseID = ? and StudentID = ?");
+            prepare.setString(1, user_SectionID);
+            prepare.setString(2, user_CourseID);
+            prepare.setString(3, user_StudentID);
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                CompletedStudentData completedStudentDatas = new CompletedStudentData();
+                completedStudentDatas.setStudentID(result.getString("StudentID"));
+                completedStudentDatas.setSurname(result.getString("Surname"));
+                completedStudentDatas.setTitle(result.getString("Title"));
+                completedStudentDatas.setNote(result.getString("Note"));
+                completedStudentDatas.setDeadline(result.getString("Deadline"));
+
+                completedStudentData.add(completedStudentDatas);
+            }
+            tblCompletedData.setItems(completedStudentData);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close the result set, statement, and connection in a finally block
+            try {
+                if (result != null) {
+                    result.close();
+                }
+                if (prepare != null) {
+                    prepare.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 }

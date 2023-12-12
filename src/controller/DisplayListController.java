@@ -77,7 +77,7 @@ public class DisplayListController implements Initializable {
     private ResultSet result;
 
     public void setData(ToDoListData todoData) throws SQLException {
-        
+
         this.todoData = todoData;
         txtIDtodo.setText(String.valueOf(todoData.getTodoId()));
         lblTitle.setText(todoData.getTitle());
@@ -87,23 +87,21 @@ public class DisplayListController implements Initializable {
         txtAudience.setText(todoData.getAudience());
         txtPriority.setText(todoData.getPriority());
     }
-    
-        
+
     private UserDashboardController userDashboardController;
 
     // Other fields and methods
-
     public void setUserDashboardController(UserDashboardController userDashboardController) {
         this.userDashboardController = userDashboardController;
     }
-    
-     private OfficerDashboardController officerDashboardController;
+
+    private OfficerDashboardController officerDashboardController;
 
     public void setOfficerDashboardController(OfficerDashboardController officerDashboardController) {
         this.officerDashboardController = officerDashboardController;
     }
-    
-     @FXML
+
+    @FXML
     private void handleToDoDisplayCardClick(ActionEvent event) {
         // Handle the click event here
         System.out.println("toDoDisplayCard clicked!");
@@ -153,7 +151,7 @@ public class DisplayListController implements Initializable {
     public void disableRemoveButton1() {
         btnRemove1.setDisable(true);
     }
-
+    
     private void adjustLayout(GridPane gridPane) {
         // Iterate through the children of the grid pane and update their row and column indices
         int maxColumns = 2;
@@ -225,6 +223,7 @@ public class DisplayListController implements Initializable {
             preparedStatement.executeUpdate();
         }
     }
+    
 
     private void insertIntoArchiveTable(Connection conn) throws SQLException {
         String insertQuery = "INSERT INTO mod_todo_archive (Title, Note, AudienceID, PriorityID, StudentID, Surname, CourseID, SectionID, PostDate) "
@@ -249,7 +248,6 @@ public class DisplayListController implements Initializable {
         this.studentID = studentID;
     }
 
-  
     private void handleCheckBoxClick() {
         // Check if the CheckBox is selected
         if (cbComplete.isSelected()) {
@@ -257,16 +255,25 @@ public class DisplayListController implements Initializable {
             paneGrey.setVisible(true);
 
             insertIntoCompletedTable();
-           
+
             deleteFromPendingTable();
+
+            btnRemove.setDisable(true);
+            btnRemove1.setDisable(true);
+
             if (userDashboardController != null) {
-            userDashboardController. numberCompletedTask();
-            }
+                userDashboardController.numberCompletedTask();
+            };
 
         } else {
             // Disable the visibility of the Pane
             paneGrey.setVisible(false);
+            deleteFromCompletedTable();
+            btnRemove.setDisable(false);
 
+            if (userDashboardController != null) {
+                userDashboardController.numberCompletedTask();
+            };
             // You can add additional logic here if needed when the CheckBox is deselected
         }
     }
@@ -310,8 +317,7 @@ public class DisplayListController implements Initializable {
             System.out.println("Query executed successfully.");
 
             paneGrey.setVisible(true);
-            cbComplete.setDisable(true);
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Error executing query. StudentID: " + studentID);
@@ -320,13 +326,64 @@ public class DisplayListController implements Initializable {
 
     private void deleteFromPendingTable() {
         connect = database.getConnection();
-        String sql = "Delete from mod_todo_pending where title = ?";
+        String sql = "Delete from mod_todo_pending where TodoID = ?";
         try {
             prepare = connect.prepareStatement(sql);
-            prepare.setString(1, todoData.getTitle());
+            prepare.setInt(1, todoData.getTodoId());
             prepare.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void deleteFromCompletedTable() {
+        connect = database.getConnection();
+        String sql = "DELETE FROM mod_todo_completed WHERE title = ? and StudentID = ?";
+
+        try {
+            prepare = connect.prepareStatement(sql);
+            prepare.setString(1, todoData.getTitle());
+            prepare.setString(2, studentID);
+
+            System.out.println("SQL Query: " + sql); // Print the SQL query for debugging
+
+            // Print value before executing the query
+            System.out.println("Title to delete: " + todoData.getTitle());
+
+            // Confirmation Dialog
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirm Deletion");
+            alert.setHeaderText("Are you sure you want to delete?");
+            alert.setContentText("Title: " + todoData.getTitle());
+
+            // Show the confirmation dialog and wait for user response
+            ButtonType result = alert.showAndWait().orElse(ButtonType.CANCEL);
+
+            if (result == ButtonType.OK) {
+                int rowsAffected = prepare.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    System.out.println("Deletion successful. Rows affected: " + rowsAffected);
+                } else {
+                    System.out.println("No rows were deleted. Title: " + todoData.getTitle());
+                }
+
+                // Additional actions or UI updates can be added here as needed
+            } else {
+                System.out.println("Deletion canceled by user.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error executing delete query. Title: " + todoData.getTitle());
+        } finally {
+            try {
+                if (prepare != null) {
+                    prepare.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
