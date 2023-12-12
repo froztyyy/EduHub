@@ -178,8 +178,6 @@ public class UserDashboardController implements Initializable {
     @FXML
     private Button removeAlarm;
     @FXML
-    private FlowPane calendarBig;
-    @FXML
     private FlowPane calendarSmall;
     @FXML
     private Label yearSmall;
@@ -316,7 +314,6 @@ public class UserDashboardController implements Initializable {
         dateFocus = ZonedDateTime.now();
         today = ZonedDateTime.now();
         drawCalendar();
-        drawCalendarForBigCalendar();
 
         sidePanel.setVisible(true);
         homeWindow.setVisible(true);
@@ -656,133 +653,15 @@ public class UserDashboardController implements Initializable {
     @FXML
     void backOneMonth(ActionEvent event) {
         dateFocus = dateFocus.minusMonths(1);
-        calendarBig.getChildren().clear();
         calendarSmall.getChildren().clear();
         drawCalendar();
-        drawCalendarForBigCalendar();
     }
 
     @FXML
     void forwardOneMonth(ActionEvent event) {
         dateFocus = dateFocus.plusMonths(1);
-        calendarBig.getChildren().clear();
         calendarSmall.getChildren().clear();
         drawCalendar();
-        drawCalendarForBigCalendar();
-    }
-
-    private void drawCalendarForBigCalendar() {
-        yearBig.setText(String.valueOf(dateFocus.getYear()));
-        monthBig.setText(String.valueOf(dateFocus.getMonth()));
-
-        double calendarWidth = calendarBig.getPrefWidth();
-        double calendarHeight = calendarBig.getPrefHeight();
-        double strokeWidth = 1;
-        double spacingH = calendarBig.getHgap();
-        double spacingV = calendarBig.getVgap();
-
-        // List of activities for a given month
-        Map<Integer, List<CalendarActivity>> calendarActivityMap = getCalendarActivitiesMonth(dateFocus);
-
-        int monthMaxDate = dateFocus.getMonth().maxLength();
-        // Check for leap year
-        if (dateFocus.getYear() % 4 != 0 && monthMaxDate == 29) {
-            monthMaxDate = 28;
-        }
-        int dateOffset = ZonedDateTime.of(dateFocus.getYear(), dateFocus.getMonthValue(), 1, 0, 0, 0, 0, dateFocus.getZone())
-                .getDayOfWeek().getValue();
-
-        for (int i = 0; i < 6; i++) {
-            for (int j = 0; j < 7; j++) {
-                StackPane stackPane = new StackPane();
-
-                Rectangle rectangle = new Rectangle();
-                rectangle.setFill(Color.TRANSPARENT);
-                double rectangleWidth = (calendarWidth / 7) - strokeWidth - spacingH;
-                rectangle.setWidth(rectangleWidth);
-                double rectangleHeight = (calendarHeight / 6) - strokeWidth - spacingV;
-                rectangle.setHeight(rectangleHeight);
-                stackPane.getChildren().add(rectangle);
-
-                int calculatedDate = (j + 1) + (7 * i);
-                if (calculatedDate > dateOffset) {
-                    int currentDate = calculatedDate - dateOffset;
-                    if (currentDate <= monthMaxDate) {
-                        Text date = new Text(String.valueOf(currentDate));
-                        double textTranslationY = -(rectangleHeight / 2) * 0.75;
-                        date.setTranslateY(textTranslationY);
-                        date.setFill(Color.WHITE); // Set the font color to white
-                        stackPane.getChildren().add(date);
-
-                        List<CalendarActivity> calendarActivities = calendarActivityMap.get(currentDate);
-                        if (calendarActivities != null) {
-                            createCalendarActivity(calendarActivities, rectangleHeight, rectangleWidth, stackPane);
-                            // If there are notes, fill the rectangle with red color
-                            rectangle.setFill(Color.rgb(77, 79, 83, 0.5));
-
-                            // Optionally, you can add other visual cues for having notes, such as a border or different text color.
-                            date.setFill(Color.WHITE); // Set the text color to black for visibility, adjust as needed.
-                        }
-
-                        stackPane.setOnMouseClicked(mouseEvent -> {
-                            //   Parent root = FXMLLoader.load(getClass().getResource("/view/calendarInfo.fxml"));
-//
-//                                // You can get the controller and pass any data if needed
-//                                // YourControllerClass controller = loader.getController();
-//                                // controller.setData(...); // Pass data if needed
-//                                // Create a new stage
-//                                Stage newStage = new Stage();
-//                                newStage.setWidth(349);
-//                                newStage.setHeight(348);
-//
-//                                Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
-//                                double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;
-//                                double centerY = screenBounds.getMinY() + screenBounds.getHeight() / 2.0;
-//                                newStage.setX(centerX - 174.5);
-//                                newStage.setY(centerY - 174);
-//                                Scene scene = new Scene(root, 349, 348);
-//                                newStage.initStyle(StageStyle.TRANSPARENT);
-//                                newStage.initOwner(((Node) mouseEvent.getSource()).getScene().getWindow());
-//                                newStage.setScene(scene);
-//
-//                                root.setOnMousePressed((mousePressEvent) -> {
-//                                    x = mousePressEvent.getSceneX();
-//                                    y = mousePressEvent.getSceneY();
-//                                });
-//
-//                                root.setOnMouseDragged((mouseDragEvent) -> {
-//                                    newStage.setX(mouseDragEvent.getScreenX() - x);
-//                                    newStage.setY(mouseDragEvent.getScreenY() - y);
-//
-//                                    newStage.setOpacity(.8);
-//                                });
-//
-//                                root.setOnMouseReleased((mouseReleaseEvent) -> {
-//                                    newStage.setOpacity(1);
-//                                });
-//
-//                                // Set the new scene and title
-//                                newStage.setTitle("New Window");
-//
-//                                // Show the new stage
-//                                newStage.show();
-                            int noteYear = 1898;
-                            String noteMonth = "January";
-                            String noteMessage = "Lorem ipsum dolor sit amet";
-                            // Set values to the labels and text fields
-                            yearNote.setText(String.valueOf(noteYear));
-                            monthNote.setText(noteMonth);
-                            infoNote.setText(noteMessage);
-                        });
-                    }
-                    if (today.getYear() == dateFocus.getYear() && today.getMonth() == dateFocus.getMonth()
-                            && today.getDayOfMonth() == currentDate) {
-                        rectangle.setStroke(Color.BLUE);
-                    }
-                }
-                calendarBig.getChildren().add(stackPane);
-            }
-        }
     }
 
     private void drawCalendar() {

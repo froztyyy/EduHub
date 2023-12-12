@@ -1458,6 +1458,14 @@ public class AdminDashboardController implements Initializable {
             String updatedCourse = cbCourse.getValue(); // Replace with your actual combo box
             String updatedYearSection = cbSectionYear.getValue(); // Replace with your actual combo box
 
+            // Check if any required field is empty
+            if (txtPassword.getText().isEmpty() || txtSurname.getText().isEmpty()
+                    || txtFirstname.getText().isEmpty() || cbCourse.getValue() == null
+                    || cbSectionYear.getValue() == null) {
+                showAlert("Please fill in all required fields");
+                return;
+            }
+
             // Update in the database
             updateOfficerInDatabase(selectedOfficer, updatedPassword, updatedSurname, updatedFirstName,
                     updatedMiddlename, updatedSuffix, updatedCourse, updatedYearSection);
@@ -1599,7 +1607,6 @@ public class AdminDashboardController implements Initializable {
     private String user_Middle;
     private String user_Surname;
     private String user_Suffix;
-
 
     public void user_Password(String password) {
         this.user_Password = password;
@@ -1814,11 +1821,8 @@ public class AdminDashboardController implements Initializable {
             e.printStackTrace();
         }
     }
-    
-    // Trash Bin - Announcement
-    
-    
 
+    // Trash Bin - Announcement
     //////////////////////////////////////////////
     // COURSE SECTION
     @FXML

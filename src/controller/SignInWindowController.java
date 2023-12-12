@@ -121,12 +121,12 @@ public class SignInWindowController implements Initializable {
     @FXML
     private void getBack(ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/view/signInWindow.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/view/getStartedWIndow.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
             ((Node) (event.getSource())).getScene().getWindow().hide();
-            stage.setWidth(785);
-            stage.setHeight(514);
+            stage.setWidth(600);
+            stage.setHeight(400);
 
             Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
             double centerX = screenBounds.getMinX() + screenBounds.getWidth() / 2.0;

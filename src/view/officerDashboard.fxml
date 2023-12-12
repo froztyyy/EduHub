@@ -39,1221 +39,1263 @@
 <?import javafx.scene.text.Text?>
 
 <Pane fx:id="userDashboradWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="835.0" prefWidth="1332.0" style="-fx-background-color: #0A0A0A;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.OfficerDashboardController">
-   <children>
-      <Pane prefHeight="43.0" prefWidth="1332.0" style="-fx-background-color: black;">
-         <children>
-            <HBox prefHeight="50.0" prefWidth="1332.0" style="-fx-background-color: black;">
-               <children>
-                  <HBox alignment="CENTER" prefHeight="43.0" prefWidth="100.0">
-                     <children>
-                        <Label text="EduHub." textFill="#8f8f8f85">
-                           <font>
-                              <Font name="Arial Black" size="14.5" />
-                           </font>
-                        </Label>
-                     </children>
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </HBox>
-                  <Pane prefHeight="41.0" prefWidth="1031.0" HBox.hgrow="ALWAYS" />
-                  <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="95.0">
-                     <children>
-                        <Button mnemonicParsing="false" onAction="#minimizeButton" prefHeight="42.0" prefWidth="59.0" styleClass="minimizeMaximizeButton" stylesheets="@../style/userdashboard.css">
-                           <graphic>
-                              <ImageView fitHeight="17.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" style="-fx-background-color: transparent;">
-                                 <image>
-                                    <Image url="@../media/icons/icons8-minimize-24.png" />
-                                 </image>
-                                 <effect>
-                                    <ColorAdjust hue="0.05" />
-                                 </effect>
-                              </ImageView>
-                           </graphic>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Button>
-                        <Button mnemonicParsing="false" onAction="#closeButton" prefHeight="42.0" prefWidth="65.0" styleClass="exitButton" stylesheets="@../style/userdashboard.css">
-                           <graphic>
-                              <ImageView fitHeight="17.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../media/icons/icons8-close-30.png" />
-                                 </image>
-                                 <effect>
-                                    <ColorAdjust hue="0.05" />
-                                 </effect>
-                              </ImageView>
-                           </graphic>
-                           <padding>
-                              <Insets left="10.0" right="10.0" />
-                           </padding>
-                        </Button>
-                     </children>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                  </HBox>
-               </children>
-            </HBox>
-         </children>
-      </Pane>
-      <Pane fx:id="blurringEffect" layoutY="43.0" prefHeight="793.0" prefWidth="1332.0">
-         <children>
-            <VBox alignment="CENTER" prefHeight="95.0" prefWidth="1332.0" style="-fx-border-color: transparent transparent white transparent; -fx-background-color: #010409; -fx-border-width: 0.3px;">
-               <children>
-                  <HBox prefHeight="81.0" prefWidth="1241.0">
-                     <children>
-                        <HBox fx:id="sidePanelTitleColor" alignment="CENTER" prefHeight="58.0" prefWidth="206.0" spacing="8.0">
-                           <children>
-                              <Button mnemonicParsing="false" onAction="#slidePanelButton" styleClass="sidePanelButton" stylesheets="@../style/userdashboard.css">
-                                 <graphic>
-                                    <ImageView fitHeight="47.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../media/icons/icons8-menu-squared-50%20(2).png" />
-                                       </image>
-                                       <effect>
-                                          <ColorAdjust brightness="-0.43" contrast="0.05" hue="-0.02" saturation="-0.38" />
-                                       </effect>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                              <ImageView fitHeight="62.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../media/logo/3dgifmaker77747.gif" />
-                                 </image>
-                                 <effect>
-                                    <ColorAdjust saturation="-0.58" />
-                                 </effect>
-                              </ImageView>
-                              <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="EDUHUB.OFFICER">
-                                 <font>
-                                    <Font name="Arial Bold" size="17.0" />
-                                 </font>
-                              </Text>
-                           </children>
-                           <padding>
-                              <Insets left="20.0" right="20.0" />
-                           </padding>
+    <children>
+        <Pane prefHeight="43.0" prefWidth="1332.0" style="-fx-background-color: black;">
+            <children>
+                <HBox prefHeight="50.0" prefWidth="1332.0" style="-fx-background-color: black;">
+                    <children>
+                        <HBox alignment="CENTER" prefHeight="43.0" prefWidth="100.0">
+                            <children>
+                                <Label text="EduHub." textFill="#8f8f8f85">
+                                    <font>
+                                        <Font name="Arial Black" size="14.5" />
+                                    </font>
+                                </Label>
+                            </children>
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
                         </HBox>
-                        <Pane prefHeight="81.0" prefWidth="597.0" HBox.hgrow="ALWAYS" />
-                        <HBox alignment="CENTER_RIGHT" prefHeight="81.0" prefWidth="557.0" spacing="10.0">
-                           <children>
-                              <Line endX="-99.99995422363281" endY="31.172897338867188" startX="-100.0" stroke="WHITE" strokeWidth="0.4">
-                                 <HBox.margin>
-                                    <Insets right="10.0" />
-                                 </HBox.margin>
-                              </Line>
-                              <Pane>
-                                 <children>
-                                    <Label fx:id="lblTimeDashboard" layoutX="10.0" layoutY="33.0" text="5: 30 PM" textFill="WHITE">
-                                       <font>
-                                          <Font name="Arial" size="13.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </Pane>
-                              <Pane layoutX="329.0" layoutY="10.0">
-                                 <children>
-                                    <Label fx:id="lblDateDashboard" layoutX="10.0" layoutY="33.0" text="11/20/2023" textFill="WHITE">
-                                       <font>
-                                          <Font name="Arial" size="13.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </Pane>
-                              <Button mnemonicParsing="false" onAction="#logout" prefHeight="43.0" prefWidth="71.0" styleClass="logOutButton" stylesheets="@../style/userdashboard.css">
-                                 <graphic>
-                                    <ImageView fitHeight="25.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../media/icons/icons8-log-out-32.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Button>
-                           </children>
-                           <HBox.margin>
-                              <Insets right="10.0" />
-                           </HBox.margin>
+                        <Pane prefHeight="41.0" prefWidth="1031.0" HBox.hgrow="ALWAYS" />
+                        <HBox alignment="CENTER_RIGHT" prefHeight="50.0" prefWidth="95.0">
+                            <children>
+                                <Button mnemonicParsing="false" onAction="#minimizeButton" prefHeight="42.0" prefWidth="59.0" styleClass="minimizeMaximizeButton" stylesheets="@../style/userdashboard.css">
+                                    <graphic>
+                                        <ImageView fitHeight="17.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" style="-fx-background-color: transparent;">
+                                            <image>
+                                                <Image url="@../media/icons/icons8-minimize-24.png" />
+                                            </image>
+                                            <effect>
+                                                <ColorAdjust hue="0.05" />
+                                            </effect>
+                                        </ImageView>
+                                    </graphic>
+                                    <HBox.margin>
+                                        <Insets />
+                                    </HBox.margin>
+                                </Button>
+                                <Button mnemonicParsing="false" onAction="#closeButton" prefHeight="42.0" prefWidth="65.0" styleClass="exitButton" stylesheets="@../style/userdashboard.css">
+                                    <graphic>
+                                        <ImageView fitHeight="17.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../media/icons/icons8-close-30.png" />
+                                            </image>
+                                            <effect>
+                                                <ColorAdjust hue="0.05" />
+                                            </effect>
+                                        </ImageView>
+                                    </graphic>
+                                    <padding>
+                                        <Insets left="10.0" right="10.0" />
+                                    </padding>
+                                </Button>
+                            </children>
+                            <HBox.margin>
+                                <Insets />
+                            </HBox.margin>
                         </HBox>
-                     </children>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </HBox>
-               </children>
-            </VBox>
-            <Pane fx:id="homeWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" visible="false">
-               <children>
-                  <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="698.0" prefWidth="1332.0">
-                     <children>
-                        <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="698.0" prefWidth="1332.0">
-                           <children>
-                              <VBox prefHeight="698.0" prefWidth="331.0" style="-fx-background-color: #000000;" HBox.hgrow="ALWAYS">
-                                 <children>
-                                    <Pane prefHeight="697.0" prefWidth="337.0" style="-fx-background-color: #0D1117; -fx-border-color: transparent white transparent transparent; -fx-border-width: 0.2;">
-                                       <children>
-                                          <Pane layoutX="34.0" layoutY="128.0" prefHeight="497.0" prefWidth="269.0" style="-fx-background-color: white; -fx-background-radius: 30px;">
-                                             <children>
-                                                <ListView layoutX="10.0" layoutY="14.0" prefHeight="469.0" prefWidth="249.0" />
-                                             </children>
-                                          </Pane>
-                                          <Button layoutX="153.0" layoutY="612.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="128.0" style="-fx-background-color: #2D53EF; -fx-background-radius: 15px;" text="View Now!" textFill="WHITE">
-                                             <font>
-                                                <Font name="Arial Bold" size="14.0" />
-                                             </font>
-                                          </Button>
-                                          <ImageView fitHeight="21.0" fitWidth="20.0" layoutX="153.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../media/icons/star.png" />
-                                             </image>
-                                          </ImageView>
-                                          <Label layoutX="106.0" layoutY="30.0" text="TaskHub" textFill="#2d53ef">
-                                             <font>
-                                                <Font name="Arial Bold" size="27.0" />
-                                             </font>
-                                          </Label>
-                                          <Label layoutX="108.0" layoutY="65.0" text="Ongoing Objectives" textFill="WHITE">
-                                             <font>
-                                                <Font name="Arial" size="13.0" />
-                                             </font>
-                                          </Label>
-                                          <ImageView fitHeight="622.0" fitWidth="328.0" layoutX="-112.0" layoutY="323.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../media/icons/Screenshot_2023-11-19_154810-removebg-preview.png" />
-                                             </image>
-                                             <effect>
-                                                <Reflection fraction="0.16" topOpacity="0.37" />
-                                             </effect>
-                                          </ImageView>
-                                       </children>
-                                    </Pane>
-                                 </children>
-                                 <effect>
-                                    <Blend />
-                                 </effect>
-                              </VBox>
-                              <Pane prefHeight="698.0" prefWidth="20.0" HBox.hgrow="NEVER" />
-                              <Pane prefHeight="698.0" prefWidth="536.0">
-                                 <children>
-                                    <Text fill="WHITE" layoutX="14.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to EduHub!">
-                                       <font>
-                                          <Font name="Arial Black" size="22.0" />
-                                       </font>
-                                    </Text>
-                                    <AnchorPane layoutX="14.0" layoutY="99.0" prefHeight="227.0" prefWidth="493.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-radius: 20px;" styleClass="containerglass" stylesheets="@../../../../../../Downloads/Seenema/CInemaManagementSystem/src/cinemamanagementsystem/CInemaManagementSystem/designdashboard.css">
-                                       <children>
-                                          <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
-                                             <font>
-                                                <Font name="System Bold" size="18.0" />
-                                             </font>
-                                          </Label>
-                                          <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
-                                       </children>
-                                    </AnchorPane>
-                                    <AnchorPane layoutX="17.0" layoutY="401.0" prefHeight="258.0" prefWidth="237.0" style="-fx-background-color: #161B22; -fx-border-color: white; -fx-border-radius: 12px; -fx-border-width: 0.2;" styleClass="containerglass" stylesheets="@../../../../../../Downloads/Seenema/CInemaManagementSystem/src/cinemamanagementsystem/CInemaManagementSystem/designdashboard.css">
-                                       <children>
-                                          <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
-                                             <font>
-                                                <Font name="System Bold" size="18.0" />
-                                             </font>
-                                          </Label>
-                                          <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
-                                       </children>
-                                    </AnchorPane>
-                                    <AnchorPane layoutX="275.0" layoutY="401.0" prefHeight="258.0" prefWidth="237.0" style="-fx-background-color: #161B22; -fx-border-color: white; -fx-border-radius: 12px; -fx-border-width: 0.2;" styleClass="containerglass" stylesheets="@../../../../../../Downloads/Seenema/CInemaManagementSystem/src/cinemamanagementsystem/CInemaManagementSystem/designdashboard.css">
-                                       <children>
-                                          <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
-                                             <font>
-                                                <Font name="System Bold" size="18.0" />
-                                             </font>
-                                          </Label>
-                                          <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
-                                       </children>
-                                    </AnchorPane>
-                                    <ImageView fitHeight="43.0" fitWidth="53.0" layoutX="275.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../media/icons/Screenshot%202023-11-19%20161348.png" />
-                                       </image>
-                                    </ImageView>
-                                    <Label layoutX="403.0" layoutY="49.0" styleClass="sendFeedback" stylesheets="@../style/userdashboard.css" text="Send Us FeedBack" textFill="#2d53ef">
-                                       <font>
-                                          <Font name="Arial" size="12.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </Pane>
-                              <Pane prefHeight="698.0" prefWidth="16.0" HBox.hgrow="NEVER" />
-                              <Pane prefHeight="698.0" prefWidth="440.0">
-                                 <children>
-                                    <AnchorPane fx:id="imageGradientWelcome" layoutX="-5.0" layoutY="49.0" prefHeight="244.0" prefWidth="418.0">
-                                       <children>
-                                          <HBox alignment="CENTER_LEFT" layoutX="21.0" layoutY="14.0" prefHeight="47.0" prefWidth="383.0">
-                                             <children>
-                                                <ImageView fitHeight="49.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../media/3d/Atom_Bucky_1_0002.png" />
-                                                   </image>
+                    </children>
+                </HBox>
+            </children>
+        </Pane>
+        <Pane fx:id="blurringEffect" layoutY="43.0" prefHeight="793.0" prefWidth="1332.0">
+            <children>
+                <VBox alignment="CENTER" prefHeight="95.0" prefWidth="1332.0" style="-fx-border-color: transparent transparent white transparent; -fx-background-color: #010409; -fx-border-width: 0.3px;">
+                    <children>
+                        <HBox prefHeight="81.0" prefWidth="1241.0">
+                            <children>
+                                <HBox fx:id="sidePanelTitleColor" alignment="CENTER" prefHeight="58.0" prefWidth="206.0" spacing="8.0">
+                                    <children>
+                                        <Button mnemonicParsing="false" onAction="#slidePanelButton" styleClass="sidePanelButton" stylesheets="@../style/userdashboard.css">
+                                            <graphic>
+                                                <ImageView fitHeight="47.0" fitWidth="42.0" pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../media/icons/icons8-menu-squared-50%20(2).png" />
+                                                    </image>
+                                                    <effect>
+                                                        <ColorAdjust brightness="-0.43" contrast="0.05" hue="-0.02" saturation="-0.38" />
+                                                    </effect>
                                                 </ImageView>
-                                                <Label fx:id="fontsizeGrow" prefHeight="27.0" prefWidth="133.0" styleClass="myText" stylesheets="@../style/userdashboard.css" text="EDHUB.COM" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Arial Black" size="18.0" />
-                                                   </font>
+                                            </graphic>
+                                        </Button>
+                                        <ImageView fitHeight="62.0" fitWidth="62.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../media/logo/3dgifmaker77747.gif" />
+                                            </image>
+                                            <effect>
+                                                <ColorAdjust saturation="-0.58" />
+                                            </effect>
+                                        </ImageView>
+                                        <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="EDUHUB.OFFICER">
+                                            <font>
+                                                <Font name="Arial Bold" size="17.0" />
+                                            </font>
+                                        </Text>
+                                    </children>
+                                    <padding>
+                                        <Insets left="20.0" right="20.0" />
+                                    </padding>
+                                </HBox>
+                                <Pane prefHeight="81.0" prefWidth="597.0" HBox.hgrow="ALWAYS" />
+                                <HBox alignment="CENTER_RIGHT" prefHeight="81.0" prefWidth="557.0" spacing="10.0">
+                                    <children>
+                                        <Line endX="-99.99995422363281" endY="31.172897338867188" startX="-100.0" stroke="WHITE" strokeWidth="0.4">
+                                            <HBox.margin>
+                                                <Insets right="10.0" />
+                                            </HBox.margin>
+                                        </Line>
+                                        <Pane>
+                                            <children>
+                                                <Label fx:id="lblTimeDashboard" layoutX="10.0" layoutY="33.0" text="5: 30 PM" textFill="WHITE">
+                                                    <font>
+                                                        <Font name="Arial" size="13.0" />
+                                                    </font>
                                                 </Label>
-                                             </children>
-                                          </HBox>
-                                          <Label layoutX="33.0" layoutY="87.0" prefHeight="17.0" prefWidth="156.0" text="Discover, Learn, Grow" textFill="WHITE">
-                                             <font>
-                                                <Font name="Arial Bold" size="14.0" />
-                                             </font>
-                                          </Label>
-                                          <Text fill="WHITE" layoutX="33.0" layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Redefining learning with cool features, launching soon on our website. Get ready for a seamless blend of style and substance!&quot;" wrappingWidth="338.11328125">
-                                             <font>
-                                                <Font name="Arial" size="12.0" />
-                                             </font>
-                                          </Text>
-                                          <Pane layoutX="33.0" layoutY="182.0" prefHeight="37.0" prefWidth="353.0" style="-fx-background-color: #30363D; -fx-border-radius: 10px; -fx-border-color: #8B949D; -fx-border-width: 0.5; -fx-background-radius: 10px;">
-                                             <children>
-                                                <Label layoutX="118.0" layoutY="7.0" prefHeight="23.0" prefWidth="106.0" text="COMING SOON" textFill="#c9d1d4">
-                                                   <font>
-                                                      <Font name="Arial Bold" size="14.0" />
-                                                   </font>
+                                            </children>
+                                        </Pane>
+                                        <Pane layoutX="329.0" layoutY="10.0">
+                                            <children>
+                                                <Label fx:id="lblDateDashboard" layoutX="10.0" layoutY="33.0" text="11/20/2023" textFill="WHITE">
+                                                    <font>
+                                                        <Font name="Arial" size="13.0" />
+                                                    </font>
                                                 </Label>
-                                             </children>
-                                          </Pane>
-                                       </children>
-                                    </AnchorPane>
-                                    <AnchorPane layoutX="-6.0" layoutY="320.0" prefHeight="344.0" prefWidth="418.0" style="-fx-background-radius: 12px; -fx-border-color: white; -fx-border-radius: 12px; -fx-border-width: 0.2; -fx-background-color: #0D1117;">
-                                       <children>
-                                          <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
-                                             <font>
-                                                <Font name="System Bold" size="18.0" />
-                                             </font>
-                                          </Label>
-                                          <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
-                                       </children>
-                                    </AnchorPane>
-                                 </children>
-                              </Pane>
-                           </children>
+                                            </children>
+                                        </Pane>
+                                        <Button mnemonicParsing="false" onAction="#logout" prefHeight="43.0" prefWidth="71.0" styleClass="logOutButton" stylesheets="@../style/userdashboard.css">
+                                            <graphic>
+                                                <ImageView fitHeight="25.0" fitWidth="33.0" pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../media/icons/icons8-log-out-32.png" />
+                                                    </image>
+                                                </ImageView>
+                                            </graphic>
+                                        </Button>
+                                    </children>
+                                    <HBox.margin>
+                                        <Insets right="10.0" />
+                                    </HBox.margin>
+                                </HBox>
+                            </children>
+                            <VBox.margin>
+                                <Insets />
+                            </VBox.margin>
                         </HBox>
-                     </children>
-                  </AnchorPane>
-               </children>
-            </Pane>
-            <Pane fx:id="announcementWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" stylesheets="@../style/officerdashboard.css" visible="false">
-               <children>
-                  <HBox alignment="CENTER" prefHeight="698.0" prefWidth="1332.0" spacing="25.0">
-                     <children>
-                        <Pane prefHeight="648.0" prefWidth="550.0">
-                           <children>
-                              <VBox alignment="CENTER_LEFT" layoutX="14.0" layoutY="6.0" prefHeight="648.0" prefWidth="500.0" spacing="20.0">
-                                 <children>
-                                    <Label text="Create Announcement" textFill="WHITE">
-                                       <font>
-                                          <Font name="Arial" size="20.0" />
-                                       </font>
-                                    </Label>
-                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
-                                       <children>
-                                          <TextField fx:id="txtTitle" prefHeight="45.0" prefWidth="200.0" promptText="Title" styleClass="txtField">
-                                             <font>
-                                                <Font name="Arial" size="15.0" />
-                                             </font>
-                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                             </padding>
-                                          </TextField>
-                                          <ComboBox fx:id="cbAudience" prefHeight="47.0" prefWidth="115.0" styleClass="combobox" />
-                                          <ComboBox fx:id="cbPriorityLevel" prefHeight="45.0" prefWidth="115.0" styleClass="combobox" />
-                                       </children>
-                                    </HBox>
-                                    <TextArea fx:id="txtArea" promptText="Details" styleClass="textArea" wrapText="true">
-                                       <font>
-                                          <Font name="Arial" size="20.0" />
-                                       </font>
-                                       <padding>
-                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                       </padding>
-                                    </TextArea>
-                                    <Button fx:id="btnSubmit" mnemonicParsing="false" onAction="#handlePostAnnouncement" prefHeight="40.0" prefWidth="150.0" styleClass="btns" text="Post">
-                                       <padding>
-                                          <Insets bottom="5.0" left="25.0" right="25.0" top="5.0" />
-                                       </padding>
-                                       <font>
-                                          <Font name="Arial" size="15.0" />
-                                       </font>
-                                    </Button>
-                                 </children>
-                              </VBox>
-                           </children>
-                        </Pane>
-                        <Pane>
-                           <children>
-                              <ScrollPane hbarPolicy="NEVER" prefHeight="650.0" prefWidth="560.0" styleClass="scrllPane">
-                                 <content>
-                                    <GridPane fx:id="announcementCard">
-                                       <columnConstraints>
-                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                       </columnConstraints>
-                                       <rowConstraints>
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                       </rowConstraints>
-                                    </GridPane>
-                                 </content>
-                              </ScrollPane>
-                           </children>
-                        </Pane>
-                     </children>
-                     <padding>
-                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
-                     </padding>
-                  </HBox>
-               </children></Pane>
-            <Pane fx:id="toDoWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" stylesheets="@../style/officerdashboard.css">
-               <children>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="1332.0" spacing="15.0">
-                     <children>
-                        <Button fx:id="btnListToDo" mnemonicParsing="false" onAction="#SwitchFormToDo" styleClass="btns" text="Task List">
-                           <padding>
-                              <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
-                           </padding>
-                           <font>
-                              <Font name="Arial" size="14.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="btnCompletedStudent" mnemonicParsing="false" onAction="#SwitchFormToDo" styleClass="btnsv2" text="Completed Students">
-                           <font>
-                              <Font name="Arial" size="14.0" />
-                           </font>
-                           <padding>
-                              <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
-                           </padding>
-                        </Button>
-                     </children>
-                     <padding>
-                        <Insets bottom="15.0" left="15.0" right="50.0" top="15.0" />
-                     </padding>
-                  </HBox>
-                  <Pane fx:id="toDoListPane" layoutY="57.0" prefHeight="640.0" prefWidth="1332.0">
-                     <children>
-                        <HBox prefHeight="648.0" prefWidth="1332.0" spacing="15.0">
-                           <children>
-                              <Pane prefHeight="697.0" prefWidth="500.0">
-                                 <children>
-                                    <VBox prefHeight="697.0" prefWidth="500.0" spacing="15.0">
-                                       <children>
-                                          <HBox spacing="110.0">
-                                             <children>
-                                                <Label text="Task Manager" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Arial Bold" size="20.0" />
-                                                   </font>
+                    </children>
+                </VBox>
+                <Pane fx:id="homeWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" visible="false">
+                    <children>
+                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="698.0" prefWidth="1332.0">
+                            <children>
+                                <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="698.0" prefWidth="1332.0">
+                                    <children>
+                                        <VBox prefHeight="698.0" prefWidth="331.0" style="-fx-background-color: #000000;" HBox.hgrow="ALWAYS">
+                                            <children>
+                                                <Pane prefHeight="697.0" prefWidth="337.0" style="-fx-background-color: #0D1117; -fx-border-color: transparent white transparent transparent; -fx-border-width: 0.2;">
+                                                    <children>
+                                                        <Pane layoutX="34.0" layoutY="128.0" prefHeight="497.0" prefWidth="269.0" style="-fx-background-color: white; -fx-background-radius: 30px;">
+                                                            <children>
+                                                                <ListView layoutX="10.0" layoutY="14.0" prefHeight="469.0" prefWidth="249.0" />
+                                                            </children>
+                                                        </Pane>
+                                                        <Button layoutX="153.0" layoutY="612.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="128.0" style="-fx-background-color: #2D53EF; -fx-background-radius: 15px;" text="View Now!" textFill="WHITE">
+                                                            <font>
+                                                                <Font name="Arial Bold" size="14.0" />
+                                                            </font>
+                                                        </Button>
+                                                        <ImageView fitHeight="21.0" fitWidth="20.0" layoutX="153.0" layoutY="84.0" pickOnBounds="true" preserveRatio="true">
+                                                            <image>
+                                                                <Image url="@../media/icons/star.png" />
+                                                            </image>
+                                                        </ImageView>
+                                                        <Label layoutX="106.0" layoutY="30.0" text="TaskHub" textFill="#2d53ef">
+                                                            <font>
+                                                                <Font name="Arial Bold" size="27.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <Label layoutX="108.0" layoutY="65.0" text="Ongoing Objectives" textFill="WHITE">
+                                                            <font>
+                                                                <Font name="Arial" size="13.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <ImageView fitHeight="622.0" fitWidth="328.0" layoutX="-112.0" layoutY="323.0" pickOnBounds="true" preserveRatio="true">
+                                                            <image>
+                                                                <Image url="@../media/icons/Screenshot_2023-11-19_154810-removebg-preview.png" />
+                                                            </image>
+                                                            <effect>
+                                                                <Reflection fraction="0.16" topOpacity="0.37" />
+                                                            </effect>
+                                                        </ImageView>
+                                                    </children>
+                                                </Pane>
+                                            </children>
+                                            <effect>
+                                                <Blend />
+                                            </effect>
+                                        </VBox>
+                                        <Pane prefHeight="698.0" prefWidth="20.0" HBox.hgrow="NEVER" />
+                                        <Pane prefHeight="698.0" prefWidth="536.0">
+                                            <children>
+                                                <Text fill="WHITE" layoutX="14.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to EduHub!">
+                                                    <font>
+                                                        <Font name="Arial Black" size="22.0" />
+                                                    </font>
+                                                </Text>
+                                                <AnchorPane layoutX="14.0" layoutY="99.0" prefHeight="227.0" prefWidth="493.0" style="-fx-background-color: transparent; -fx-border-color: white; -fx-border-radius: 20px;" styleClass="containerglass" stylesheets="@../../../../../../Downloads/Seenema/CInemaManagementSystem/src/cinemamanagementsystem/CInemaManagementSystem/designdashboard.css">
+                                                    <children>
+                                                        <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
+                                                            <font>
+                                                                <Font name="System Bold" size="18.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
+                                                    </children>
+                                                </AnchorPane>
+                                                <AnchorPane layoutX="17.0" layoutY="401.0" prefHeight="258.0" prefWidth="237.0" style="-fx-background-color: #161B22; -fx-border-color: white; -fx-border-radius: 12px; -fx-border-width: 0.2;" styleClass="containerglass" stylesheets="@../../../../../../Downloads/Seenema/CInemaManagementSystem/src/cinemamanagementsystem/CInemaManagementSystem/designdashboard.css">
+                                                    <children>
+                                                        <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
+                                                            <font>
+                                                                <Font name="System Bold" size="18.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
+                                                    </children>
+                                                </AnchorPane>
+                                                <AnchorPane layoutX="275.0" layoutY="401.0" prefHeight="258.0" prefWidth="237.0" style="-fx-background-color: #161B22; -fx-border-color: white; -fx-border-radius: 12px; -fx-border-width: 0.2;" styleClass="containerglass" stylesheets="@../../../../../../Downloads/Seenema/CInemaManagementSystem/src/cinemamanagementsystem/CInemaManagementSystem/designdashboard.css">
+                                                    <children>
+                                                        <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
+                                                            <font>
+                                                                <Font name="System Bold" size="18.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
+                                                    </children>
+                                                </AnchorPane>
+                                                <ImageView fitHeight="43.0" fitWidth="53.0" layoutX="275.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
+                                                    <image>
+                                                        <Image url="@../media/icons/Screenshot%202023-11-19%20161348.png" />
+                                                    </image>
+                                                </ImageView>
+                                                <Label layoutX="403.0" layoutY="49.0" styleClass="sendFeedback" stylesheets="@../style/userdashboard.css" text="Send Us FeedBack" textFill="#2d53ef">
+                                                    <font>
+                                                        <Font name="Arial" size="12.0" />
+                                                    </font>
                                                 </Label>
-                                                <Label fx:id="txtIDtod" prefHeight="17.0" prefWidth="44.0" text="Label" textFill="#ffffff00" />
-                                                <Button fx:id="refreshannounce1" mnemonicParsing="false" onAction="#Refreshtodolist" style="-fx-background-color: transparent;" styleClass="btns">
-                                                   <graphic>
-                                                      <ImageView fitHeight="25.0" fitWidth="163.0" pickOnBounds="true" preserveRatio="true">
-                                                         <image>
-                                                            <Image url="@../media/icons/icons8-refresh-26.png" />
-                                                         </image>
-                                                      </ImageView>
-                                                   </graphic>
+                                            </children>
+                                        </Pane>
+                                        <Pane prefHeight="698.0" prefWidth="16.0" HBox.hgrow="NEVER" />
+                                        <Pane prefHeight="698.0" prefWidth="440.0">
+                                            <children>
+                                                <AnchorPane fx:id="imageGradientWelcome" layoutX="-5.0" layoutY="49.0" prefHeight="244.0" prefWidth="418.0">
+                                                    <children>
+                                                        <HBox alignment="CENTER_LEFT" layoutX="21.0" layoutY="14.0" prefHeight="47.0" prefWidth="383.0">
+                                                            <children>
+                                                                <ImageView fitHeight="49.0" fitWidth="47.0" pickOnBounds="true" preserveRatio="true">
+                                                                    <image>
+                                                                        <Image url="@../media/3d/Atom_Bucky_1_0002.png" />
+                                                                    </image>
+                                                                </ImageView>
+                                                                <Label fx:id="fontsizeGrow" prefHeight="27.0" prefWidth="133.0" styleClass="myText" stylesheets="@../style/userdashboard.css" text="EDHUB.COM" textFill="WHITE">
+                                                                    <font>
+                                                                        <Font name="Arial Black" size="18.0" />
+                                                                    </font>
+                                                                </Label>
+                                                            </children>
+                                                        </HBox>
+                                                        <Label layoutX="33.0" layoutY="87.0" prefHeight="17.0" prefWidth="156.0" text="Discover, Learn, Grow" textFill="WHITE">
+                                                            <font>
+                                                                <Font name="Arial Bold" size="14.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <Text fill="WHITE" layoutX="33.0" layoutY="133.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Redefining learning with cool features, launching soon on our website. Get ready for a seamless blend of style and substance!&quot;" wrappingWidth="338.11328125">
+                                                            <font>
+                                                                <Font name="Arial" size="12.0" />
+                                                            </font>
+                                                        </Text>
+                                                        <Pane layoutX="33.0" layoutY="182.0" prefHeight="37.0" prefWidth="353.0" style="-fx-background-color: #30363D; -fx-border-radius: 10px; -fx-border-color: #8B949D; -fx-border-width: 0.5; -fx-background-radius: 10px;">
+                                                            <children>
+                                                                <Label layoutX="118.0" layoutY="7.0" prefHeight="23.0" prefWidth="106.0" text="COMING SOON" textFill="#c9d1d4">
+                                                                    <font>
+                                                                        <Font name="Arial Bold" size="14.0" />
+                                                                    </font>
+                                                                </Label>
+                                                            </children>
+                                                        </Pane>
+                                                    </children>
+                                                </AnchorPane>
+                                                <AnchorPane layoutX="-6.0" layoutY="320.0" prefHeight="344.0" prefWidth="418.0" style="-fx-background-radius: 12px; -fx-border-color: white; -fx-border-radius: 12px; -fx-border-width: 0.2; -fx-background-color: #0D1117;">
+                                                    <children>
+                                                        <Label layoutX="27.0" layoutY="14.0" prefHeight="21.0" prefWidth="90.0" text="Analytics">
+                                                            <font>
+                                                                <Font name="System Bold" size="18.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <Label layoutX="27.0" layoutY="33.0" text="Total Movies" textFill="#656262" AnchorPane.topAnchor="37.0" />
+                                                    </children>
+                                                </AnchorPane>
+                                            </children>
+                                        </Pane>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </AnchorPane>
+                    </children>
+                </Pane>
+                <Pane fx:id="announcementWindow" layoutY="95.0" prefHeight="697.0" prefWidth="1332.0" stylesheets="@../style/officerdashboard.css" visible="false">
+                    <children>
+                        <HBox alignment="CENTER" prefHeight="698.0" prefWidth="1332.0" spacing="25.0">
+                            <children>
+                                <Pane prefHeight="648.0" prefWidth="550.0">
+                                    <children>
+                                        <VBox alignment="CENTER_LEFT" layoutX="14.0" layoutY="6.0" prefHeight="648.0" prefWidth="500.0" spacing="20.0">
+                                            <children>
+                                                <Label text="Create Announcement" textFill="WHITE">
+                                                    <font>
+                                                        <Font name="Arial" size="20.0" />
+                                                    </font>
+                                                </Label>
+                                                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                                    <children>
+                                                        <TextField fx:id="txtTitle" prefHeight="45.0" prefWidth="200.0" promptText="Title" styleClass="txtField">
+                                                            <font>
+                                                                <Font name="Arial" size="15.0" />
+                                                            </font>
+                                                            <padding>
+                                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                            </padding>
+                                                        </TextField>
+                                                        <ComboBox fx:id="cbAudience" prefHeight="47.0" prefWidth="115.0" styleClass="combobox" />
+                                                        <ComboBox fx:id="cbPriorityLevel" prefHeight="45.0" prefWidth="115.0" styleClass="combobox" />
+                                                    </children>
+                                                </HBox>
+                                                <TextArea fx:id="txtArea" promptText="Details" styleClass="textArea" wrapText="true">
+                                                    <font>
+                                                        <Font name="Arial" size="20.0" />
+                                                    </font>
+                                                    <padding>
+                                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                                    </padding>
+                                                </TextArea>
+                                                <Button fx:id="btnSubmit" mnemonicParsing="false" onAction="#handlePostAnnouncement" prefHeight="40.0" prefWidth="150.0" styleClass="btns" text="Post">
+                                                    <padding>
+                                                        <Insets bottom="5.0" left="25.0" right="25.0" top="5.0" />
+                                                    </padding>
+                                                    <font>
+                                                        <Font name="Arial" size="15.0" />
+                                                    </font>
                                                 </Button>
-                                             </children>
-                                          </HBox>
-                                          <HBox alignment="CENTER_LEFT" spacing="15.0">
-                                             <children>
-                                                <TextField fx:id="txtTitleTask" prefHeight="45.0" promptText="Title" styleClass="txtField">
-                                                   <font>
-                                                      <Font name="Arial" size="15.0" />
-                                                   </font>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </Pane>
+                                <Pane>
+                                    <children>
+                                        <ScrollPane hbarPolicy="NEVER" prefHeight="650.0" prefWidth="560.0" styleClass="scrllPane">
+                                            <content>
+                                                <GridPane fx:id="announcementCard">
+                                                    <columnConstraints>
+                                                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    </columnConstraints>
+                                                    <rowConstraints>
+                                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    </rowConstraints>
+                                                </GridPane>
+                                            </content>
+                                        </ScrollPane>
+                                    </children>
+                                </Pane>
+                            </children>
+                            <padding>
+                                <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                            </padding>
+                        </HBox>
+                    </children>
+                </Pane>
+                <Pane fx:id="toDoWindow" layoutY="95.0" prefHeight="698.0" prefWidth="1332.0" stylesheets="@../style/officerdashboard.css" visible="false">
+                    <children>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="1332.0" spacing="15.0">
+                            <children>
+                                <Button fx:id="btnListToDo" mnemonicParsing="false" onAction="#SwitchFormToDo" styleClass="btns" text="Task List">
+                                    <padding>
+                                        <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                                    </padding>
+                                    <font>
+                                        <Font name="Arial" size="14.0" />
+                                    </font>
+                                </Button>
+                                <Button fx:id="btnCompletedStudent" mnemonicParsing="false" onAction="#SwitchFormToDo" styleClass="btnsv2" text="Completed Students">
+                                    <font>
+                                        <Font name="Arial" size="14.0" />
+                                    </font>
+                                    <padding>
+                                        <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                                    </padding>
+                                </Button>
+                            </children>
+                            <padding>
+                                <Insets bottom="15.0" left="15.0" right="50.0" top="15.0" />
+                            </padding>
+                        </HBox>
+                        <Pane fx:id="toDoListPane" layoutY="57.0" prefHeight="640.0" prefWidth="1332.0">
+                            <children>
+                                <HBox prefHeight="648.0" prefWidth="1332.0" spacing="15.0">
+                                    <children>
+                                        <Pane prefHeight="697.0" prefWidth="500.0">
+                                            <children>
+                                                <VBox prefHeight="697.0" prefWidth="500.0" spacing="15.0">
+                                                    <children>
+                                                        <HBox spacing="110.0">
+                                                            <children>
+                                                                <Label text="Task Manager" textFill="WHITE">
+                                                                    <font>
+                                                                        <Font name="Arial Bold" size="20.0" />
+                                                                    </font>
+                                                                </Label>
+                                                                <Label fx:id="txtIDtod" prefHeight="17.0" prefWidth="44.0" text="Label" textFill="#ffffff00" />
+                                                                <Button fx:id="refreshannounce1" mnemonicParsing="false" onAction="#Refreshtodolist" style="-fx-background-color: transparent;" styleClass="btns">
+                                                                    <graphic>
+                                                                        <ImageView fitHeight="25.0" fitWidth="163.0" pickOnBounds="true" preserveRatio="true">
+                                                                            <image>
+                                                                                <Image url="@../media/icons/icons8-refresh-26.png" />
+                                                                            </image>
+                                                                        </ImageView>
+                                                                    </graphic>
+                                                                </Button>
+                                                            </children>
+                                                        </HBox>
+                                                        <HBox alignment="CENTER_LEFT" spacing="15.0">
+                                                            <children>
+                                                                <TextField fx:id="txtTitleTask" prefHeight="45.0" promptText="Title" styleClass="txtField">
+                                                                    <font>
+                                                                        <Font name="Arial" size="15.0" />
+                                                                    </font>
+                                                                </TextField>
+                                                                <ComboBox fx:id="cbAudienceToDo" prefHeight="47.0" prefWidth="150.0" styleClass="combobox" />
+                                                                <ComboBox fx:id="cbPriorityToDo" prefHeight="47.0" prefWidth="150.0" styleClass="combobox" />
+                                                            </children>
+                                                        </HBox>
+                                                        <TextArea fx:id="txtBodyTask" prefHeight="350.0" prefWidth="450.0" promptText="Task here" styleClass="textArea" wrapText="true">
+                                                            <font>
+                                                                <Font name="Arial" size="15.0" />
+                                                            </font>
+                                                            <padding>
+                                                                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                                            </padding>
+                                                        </TextArea>
+                                                        <DatePicker fx:id="datePickerTask" prefHeight="40.0" prefWidth="200.0" styleClass="datePicker" />
+                                                        <HBox spacing="15.0">
+                                                            <children>
+                                                                <Button fx:id="btnCreateTask" mnemonicParsing="false" onAction="#handleButtonCreateTask" styleClass="btns" text="Create Task">
+                                                                    <padding>
+                                                                        <Insets bottom="8.0" left="25.0" right="25.0" top="8.0" />
+                                                                    </padding>
+                                                                    <font>
+                                                                        <Font size="15.0" />
+                                                                    </font>
+                                                                </Button>
+                                                                <Button fx:id="btnCreateTask11" mnemonicParsing="false" onAction="#handleUpdateButtonClick" styleClass="btns" text="Update">
+                                                                    <padding>
+                                                                        <Insets bottom="8.0" left="25.0" right="25.0" top="8.0" />
+                                                                    </padding>
+                                                                    <font>
+                                                                        <Font size="15.0" />
+                                                                    </font>
+                                                                </Button>
+                                                            </children>
+                                                        </HBox>
+                                                    </children>
+                                                    <padding>
+                                                        <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                                                    </padding>
+                                                </VBox>
+                                            </children>
+                                        </Pane>
+                                        <Pane prefHeight="599.0" prefWidth="794.0">
+                                            <children>
+                                                <ScrollPane prefHeight="618.0" prefWidth="795.0" styleClass="scrllPane">
+                                                    <content>
+                                                        <GridPane fx:id="taskCard" prefWidth="265.0">
+                                                            <columnConstraints>
+                                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                            </columnConstraints>
+                                                            <rowConstraints>
+                                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                            </rowConstraints>
+                                                        </GridPane>
+                                                    </content>
+                                                </ScrollPane>
+                                            </children>
+                                        </Pane>
+                                    </children>
+                                    <padding>
+                                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                    </padding>
+                                </HBox>
+                            </children>
+                        </Pane>
+                        <Pane fx:id="completedStudentPane" layoutY="59.0" prefHeight="640.0" prefWidth="1332.0" visible="false">
+                            <children>
+                                <HBox alignment="CENTER" layoutX="59.0" layoutY="14.0" spacing="15.0">
+                                    <children>
+                                        <VBox alignment="CENTER" spacing="25.0">
+                                            <children>
+                                                <TextField fx:id="txtSearchCompleted" onAction="#searchCompletedStudent" prefHeight="40.0" prefWidth="200.0" promptText="Search" styleClass="txtField">
+                                                    <font>
+                                                        <Font name="Arial" size="14.0" />
+                                                    </font>
                                                 </TextField>
-                                                <ComboBox fx:id="cbAudienceToDo" prefHeight="47.0" prefWidth="150.0" styleClass="combobox" />
-                                                <ComboBox fx:id="cbPriorityToDo" prefHeight="47.0" prefWidth="150.0" styleClass="combobox" />
-                                             </children>
-                                          </HBox>
-                                          <TextArea fx:id="txtBodyTask" prefHeight="350.0" prefWidth="450.0" promptText="Task here" styleClass="textArea" wrapText="true">
-                                             <font>
-                                                <Font name="Arial" size="15.0" />
-                                             </font>
-                                             <padding>
-                                                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                             </padding>
-                                          </TextArea>
-                                          <DatePicker fx:id="datePickerTask" prefHeight="40.0" prefWidth="200.0" styleClass="datePicker" />
-                                          <HBox spacing="15.0">
-                                             <children>
-                                                <Button fx:id="btnCreateTask" mnemonicParsing="false" onAction="#handleButtonCreateTask" styleClass="btns" text="Create Task">
-                                                   <padding>
-                                                      <Insets bottom="8.0" left="25.0" right="25.0" top="8.0" />
-                                                   </padding>
-                                                   <font>
-                                                      <Font size="15.0" />
-                                                   </font>
-                                                </Button>
-                                                <Button fx:id="btnCreateTask11" mnemonicParsing="false" onAction="#handleUpdateButtonClick" styleClass="btns" text="Update">
-                                                   <padding>
-                                                      <Insets bottom="8.0" left="25.0" right="25.0" top="8.0" />
-                                                   </padding>
-                                                   <font>
-                                                      <Font size="15.0" />
-                                                   </font>
-                                                </Button>
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
-                                       </padding>
-                                    </VBox>
-                                 </children>
-                              </Pane>
-                              <Pane prefHeight="599.0" prefWidth="794.0">
-                                 <children>
-                                    <ScrollPane prefHeight="618.0" prefWidth="795.0" styleClass="scrllPane">
-                                       <content>
-                                          <GridPane fx:id="taskCard" prefWidth="265.0">
-                                            <columnConstraints>
-                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                            </columnConstraints>
-                                            <rowConstraints>
-                                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                            </rowConstraints>
-                                          </GridPane>
-                                       </content>
-                                    </ScrollPane>
-                                 </children>
-                              </Pane>
-                           </children>
-                           <padding>
-                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                           </padding>
-                        </HBox>
-                     </children>
-                  </Pane>
-                  <Pane fx:id="completedStudentPane" layoutY="59.0" prefHeight="640.0" prefWidth="1332.0" visible="false">
-                     <children>
-                        <HBox alignment="CENTER" layoutX="59.0" layoutY="14.0" spacing="15.0">
-                           <children>
-                              <VBox alignment="CENTER" spacing="25.0">
-                                 <children>
-                                    <TextField fx:id="txtSearchCompleted" onAction="#searchCompletedStudent" prefHeight="40.0" prefWidth="200.0" promptText="Search" styleClass="txtField">
-                                       <font>
-                                          <Font name="Arial" size="14.0" />
-                                       </font>
-                                    </TextField>
-                                    <HBox alignment="CENTER" spacing="15.0">
-                                       <children>
-                                          <Label text="Completed Students:" textFill="WHITE">
-                                             <font>
-                                                <Font name="Arial Italic" size="14.0" />
-                                             </font>
-                                          </Label>
-                                          <Label fx:id="lblNumberTotalStudents" layoutX="10.0" layoutY="10.0" textFill="WHITE">
-                                             <font>
-                                                <Font name="Arial Bold" size="14.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                              <TableView fx:id="tblCompletedData" prefHeight="614.0" prefWidth="1000.0">
-                                 <columns>
-                                    <TableColumn fx:id="tblStudentIDCompleted" prefWidth="75.0" text="StudentID" />
-                                    <TableColumn fx:id="tblSurnameCompleted" prefWidth="75.0" text="Surname" />
-                                    <TableColumn fx:id="tblTaskTitle" prefWidth="75.0" text="Task Title" />
-                                 </columns>
-                                 <columnResizePolicy>
-                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                 </columnResizePolicy>
-                                 <styleClass>
-                                    <String fx:value="table-cell" />
-                                    <String fx:value="employeetable" />
-                                 </styleClass>
-                              </TableView>
-                           </children>
-                        </HBox>
-                     </children>
-                  </Pane>
-               </children>
-            </Pane>
-            <Pane fx:id="calendarWindow" layoutY="96.0" prefHeight="697.0" prefWidth="1332.0" visible="false">
-               <children>
-                  <Pane layoutX="401.0" layoutY="41.0" prefHeight="601.0" prefWidth="861.0" style="-fx-border-color: white; -fx-background-color: black; -fx-border-radius: 20px; -fx-border-width: 0.3;">
-                     <children>
-                        <FlowPane fx:id="calendarBig" hgap="10.0" layoutX="20.0" layoutY="151.0" prefHeight="430.0" prefWidth="831.0" vgap="5.0" />
-                        <HBox alignment="CENTER_LEFT" layoutX="15.0" layoutY="99.0" prefHeight="44.0" prefWidth="831.0" spacing="110.0">
-                           <children>
-                              <Text fill="#fffefe" strokeType="OUTSIDE" strokeWidth="0.0" text="Sun" textAlignment="CENTER" />
-                              <Text fill="WHITE" layoutX="213.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mon" textAlignment="CENTER" />
-                              <Text fill="WHITE" layoutX="222.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tue" textAlignment="CENTER" />
-                              <Text fill="WHITE" layoutX="232.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wed" textAlignment="CENTER" />
-                              <Text fill="WHITE" layoutX="241.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thu" textAlignment="CENTER" />
-                              <Text fill="#e4e4e4" layoutX="251.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fri" textAlignment="CENTER" />
-                              <Text fill="WHITE" layoutX="266.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sat" textAlignment="CENTER" />
-                           </children>
-                           <padding>
-                              <Insets left="10.0" right="9.0" />
-                           </padding>
-                        </HBox>
-                        <Label fx:id="monthBig" alignment="CENTER" layoutX="5.0" layoutY="32.0" prefHeight="56.0" prefWidth="861.0" text="February" textFill="WHITE">
+                                                <HBox alignment="CENTER" spacing="15.0">
+                                                    <children>
+                                                        <Label text="Completed Students:" textFill="WHITE">
+                                                            <font>
+                                                                <Font name="Arial Italic" size="14.0" />
+                                                            </font>
+                                                        </Label>
+                                                        <Label fx:id="lblNumberTotalStudents" layoutX="10.0" layoutY="10.0" textFill="WHITE">
+                                                            <font>
+                                                                <Font name="Arial Bold" size="14.0" />
+                                                            </font>
+                                                        </Label>
+                                                    </children>
+                                                </HBox>
+                                            </children>
+                                        </VBox>
+                                        <TableView fx:id="tblCompletedData" prefHeight="614.0" prefWidth="1000.0">
+                                            <columns>
+                                                <TableColumn fx:id="tblStudentIDCompleted" prefWidth="75.0" text="StudentID" />
+                                                <TableColumn fx:id="tblSurnameCompleted" prefWidth="75.0" text="Surname" />
+                                                <TableColumn fx:id="tblTaskTitle" prefWidth="75.0" text="Task Title" />
+                                            </columns>
+                                            <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                            </columnResizePolicy>
+                                            <styleClass>
+                                                <String fx:value="table-cell" />
+                                                <String fx:value="employeetable" />
+                                            </styleClass>
+                                        </TableView>
+                                    </children>
+                                </HBox>
+                            </children>
+                        </Pane>
+                    </children>
+                </Pane>
+                <Pane fx:id="calendarWindow" layoutY="96.0" prefHeight="697.0" prefWidth="1332.0">
+                    <children>
+                        <Pane layoutX="38.0" layoutY="28.0" prefHeight="618.0" prefWidth="330.0">
+                            <children>
+                                <Label layoutX="14.0" layoutY="4.0" prefHeight="36.0" prefWidth="90.0" text="Event" textFill="WHITE">
+                                    <font>
+                                        <Font name="Arial Bold" size="31.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="104.0" layoutY="4.0" text="Management" textFill="#2b4fe4">
+                                    <font>
+                                        <Font name="Arial Bold" size="31.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="eventTitle" layoutX="4.0" layoutY="76.0" prefHeight="25.0" prefWidth="330.0" promptText="Enter an event title...." />
+                                <Label layoutX="4.0" layoutY="50.0" prefHeight="17.0" prefWidth="71.0" text="Event Title" textFill="WHITE">
+                                    <font>
+                                        <Font name="Arial" size="14.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="eventDesc" alignment="TOP_LEFT" layoutX="4.0" layoutY="146.0" prefHeight="75.0" prefWidth="330.0" promptText="Enter an event description..." />
+                                <Label layoutX="4.0" layoutY="122.0" prefHeight="17.0" prefWidth="115.0" text="Event Description" textFill="WHITE">
+                                    <font>
+                                        <Font name="Arial" size="14.0" />
+                                    </font>
+                                </Label>
+                                <Label alignment="CENTER" layoutX="189.0" layoutY="351.0" prefHeight="17.0" prefWidth="115.0" text="Event Date" textFill="WHITE">
+                                    <font>
+                                        <Font name="Arial" size="14.0" />
+                                    </font>
+                                </Label>
+                                <DatePicker fx:id="eventDate" layoutX="160.0" layoutY="378.0" promptText="Select a date...." />
+                                <Button fx:id="eventAdd" layoutX="40.0" layoutY="476.0" mnemonicParsing="false" onAction="#addEvent" prefHeight="33.0" prefWidth="106.0" style="-fx-background-color: #2D53EF; -fx-background-radius: 15px;" text="Add" textFill="WHITE">
+                                    <font>
+                                        <Font name="Arial Bold" size="14.0" />
+                                    </font>
+                                </Button>
+                                <Button fx:id="eventDel" layoutX="194.0" layoutY="537.0" mnemonicParsing="false" onAction="#eventDelete" prefHeight="33.0" prefWidth="106.0" style="-fx-background-color: #2D53EF; -fx-background-radius: 15px;" text="Remove" textFill="WHITE">
+                                    <font>
+                                        <Font name="Arial Bold" size="14.0" />
+                                    </font>
+                                </Button>
+                                <Button fx:id="eventEdit" layoutX="40.0" layoutY="537.0" mnemonicParsing="false" onAction="#editEvent" prefHeight="33.0" prefWidth="106.0" style="-fx-background-color: #2D53EF; -fx-background-radius: 15px;" text="Update" textFill="WHITE">
+                                    <font>
+                                        <Font name="Arial Bold" size="14.0" />
+                                    </font>
+                                </Button>
+                                <ImageView fitHeight="95.0" fitWidth="77.0" layoutX="267.0" layoutY="-26.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../media/3d/Block_8x1x1_0000.png" />
+                                    </image>
+                                </ImageView>
+                        <Button fx:id="eventClear" layoutX="194.0" layoutY="476.0" mnemonicParsing="false" onAction="#eventClear" prefHeight="33.0" prefWidth="106.0" style="-fx-background-color: #2D53EF; -fx-background-radius: 15px;" text="Clear" textFill="WHITE">
                            <font>
-                              <Font name="Arial Bold" size="28.0" />
+                              <Font name="Arial Bold" size="14.0" />
                            </font>
-                        </Label>
-                        <Label fx:id="yearBig" layoutX="419.0" layoutY="23.0" prefHeight="17.0" prefWidth="35.0" text="2022" textFill="WHITE">
+                        </Button>
+                        <Label layoutX="4.0" layoutY="258.0" prefHeight="17.0" prefWidth="107.0" text="Event Location" textFill="WHITE">
                            <font>
                               <Font name="Arial" size="14.0" />
                            </font>
                         </Label>
-                     </children>
-                  </Pane>
-                  <Pane layoutX="33.0" layoutY="41.0" prefHeight="308.0" prefWidth="338.0" style="-fx-background-color: black; -fx-border-radius: 20px; -fx-border-color: white; -fx-border-width: 0.3; -fx-background-radius: 20px;">
-                     <children>
-                        <FlowPane fx:id="calendarSmall" hgap="10.0" layoutX="31.0" layoutY="120.0" prefHeight="166.0" prefWidth="276.0" vgap="5.0" />
-                        <HBox alignment="CENTER_LEFT" layoutX="31.0" layoutY="66.0" prefHeight="54.0" prefWidth="276.0" spacing="20.0">
-                           <children>
-                              <Text fill="#fffefe" strokeType="OUTSIDE" strokeWidth="0.0" text="Sun" textAlignment="CENTER" />
-                              <Text fill="WHITE" layoutX="213.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mon" textAlignment="CENTER" />
-                              <Text fill="WHITE" layoutX="222.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tue" textAlignment="CENTER" />
-                              <Text fill="WHITE" layoutX="232.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wed" textAlignment="CENTER" />
-                              <Text fill="WHITE" layoutX="241.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Thu" textAlignment="CENTER" />
-                              <Text fill="#e4e4e4" layoutX="251.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fri" textAlignment="CENTER" />
-                              <Text fill="WHITE" layoutX="266.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sat" textAlignment="CENTER" />
-                           </children>
-                           <padding>
-                              <Insets right="9.0" />
-                           </padding>
-                        </HBox>
-                        <Button layoutX="236.0" layoutY="39.0" mnemonicParsing="false" onAction="#backOneMonth" style="-fx-background-color: transparent;" text="&lt;" textFill="WHITE">
+                        <TextField fx:id="eventLocation" layoutX="4.0" layoutY="284.0" prefHeight="25.0" prefWidth="330.0" promptText="Enter event location...." />
+                        <Label alignment="CENTER" layoutX="22.0" layoutY="351.0" prefHeight="17.0" prefWidth="107.0" text="Status" textAlignment="CENTER" textFill="WHITE">
                            <font>
-                              <Font name="Arial Bold" size="15.0" />
-                           </font>
-                        </Button>
-                        <Label fx:id="monthSmall" layoutX="31.0" layoutY="25.0" prefHeight="56.0" prefWidth="131.0" text="February" textFill="WHITE">
-                           <font>
-                              <Font name="Arial Bold" size="21.0" />
+                              <Font name="Arial" size="14.0" />
                            </font>
                         </Label>
-                        <Label fx:id="yearSmall" layoutX="31.0" layoutY="17.0" prefHeight="17.0" prefWidth="94.0" text="2022" textFill="WHITE">
+                        <ComboBox layoutX="1.0" layoutY="378.0" prefWidth="150.0" promptText="Please select..." />
+                            </children>
+                        </Pane>
+                        <Pane layoutX="393.0" layoutY="40.0" prefHeight="607.0" prefWidth="914.0" style="-fx-background-color: transparent; -fx-background-radius: 20px; -fx-border-width: .75; -fx-border-color: white; -fx-border-radius: 20px;">
+                     <children>
+                         <TabPane layoutX="8.0" layoutY="44.0" prefHeight="554.0" prefWidth="895.0" style="-fx-background-radius: 20px; -fx-background-color: black;" tabClosingPolicy="UNAVAILABLE">
+                             <tabs>
+                                 <Tab text="All Events">
+                                     <content>
+                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                 <TableView prefHeight="527.0" prefWidth="897.0" style="-fx-background-radius: 20px;">
+                                                     <columns>
+                                                         <TableColumn fx:id="eventATitle" prefWidth="183.0" text="Title" />
+                                                         <TableColumn fx:id="eventADesc" prefWidth="324.0" text="Description" />
+                                                         <TableColumn fx:id="eventALoc" prefWidth="167.0" text="Location" />
+                                                         <TableColumn fx:id="eventADate" prefWidth="152.0" text="Date" />
+                                                         <TableColumn fx:id="eventAStat" prefWidth="70.0" text="Status" />
+                                                     </columns>
+                                                     <columnResizePolicy>
+                                                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                     </columnResizePolicy>
+                                                 </TableView>
+                                             </children>
+                                         </AnchorPane>
+                                     </content>
+                                 </Tab>
+                                 <Tab fx:id="eventPTitle" text="Planned">
+                                     <content>
+                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                 <TableView prefHeight="527.0" prefWidth="897.0" style="-fx-background-radius: 20px;">
+                                                     <columnResizePolicy>
+                                                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                     </columnResizePolicy>
+                                                     <columns>
+                                                         <TableColumn prefWidth="183.0" text="Title" />
+                                                         <TableColumn fx:id="eventPDesc" prefWidth="324.0" text="Description" />
+                                                         <TableColumn fx:id="eventPLoc" prefWidth="167.0" text="Location" />
+                                                         <TableColumn fx:id="eventPDate" prefWidth="152.0" text="Date" />
+                                                         <TableColumn fx:id="eventPStat" prefWidth="70.0" text="Status" />
+                                                     </columns>
+                                                 </TableView>
+                                             </children>
+                                         </AnchorPane>
+                                     </content>
+                                 </Tab>
+                                 <Tab text="Ongoing">
+                                     <content>
+                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                 <TableView prefHeight="527.0" prefWidth="897.0" style="-fx-background-radius: 20px;">
+                                                     <columnResizePolicy>
+                                                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                     </columnResizePolicy>
+                                                     <columns>
+                                                         <TableColumn fx:id="eventOTitle" prefWidth="183.0" text="Title" />
+                                                         <TableColumn fx:id="eventODesc" prefWidth="324.0" text="Description" />
+                                                         <TableColumn fx:id="eventOLoc" prefWidth="167.0" text="Location" />
+                                                         <TableColumn fx:id="eventODate" prefWidth="152.0" text="Date" />
+                                                         <TableColumn fx:id="eventOStat" prefWidth="70.0" text="Status" />
+                                                     </columns>
+                                                 </TableView>
+                                             </children>
+                                         </AnchorPane>
+                                     </content>
+                                 </Tab>
+                                 <Tab text="Ended">
+                                     <content>
+                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                 <TableView prefHeight="527.0" prefWidth="897.0" style="-fx-background-radius: 20px;">
+                                                     <columnResizePolicy>
+                                                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                                     </columnResizePolicy>
+                                                     <columns>
+                                                         <TableColumn fx:id="eventETitle" prefWidth="183.0" text="Title" />
+                                                         <TableColumn fx:id="eventEDesc" prefWidth="324.0" text="Description" />
+                                                         <TableColumn prefWidth="167.0" text="Location" />
+                                                         <TableColumn prefWidth="152.0" text="Date" />
+                                                         <TableColumn prefWidth="70.0" text="Status" />
+                                                     </columns>
+                                                 </TableView>
+                                             </children>
+                                         </AnchorPane>
+                                     </content>
+                                 </Tab>
+                             </tabs>
+                         </TabPane>
+                        <Label layoutX="404.0" layoutY="10.0" text="Event Hub" textFill="#e1e1e1">
                            <font>
-                              <Font name="Arial" size="12.0" />
+                              <Font name="System Bold" size="21.0" />
                            </font>
                         </Label>
-                        <Button layoutX="284.0" layoutY="39.0" mnemonicParsing="false" onAction="#forwardOneMonth" style="-fx-background-color: transparent;" text="&gt;" textFill="WHITE">
-                           <font>
-                              <Font name="Arial Bold" size="15.0" />
-                           </font>
-                        </Button>
-                        <Line endX="-100.0" endY="27.0" layoutX="375.0" layoutY="39.0" startX="-100.0" stroke="WHITE" strokeWidth="0.5" />
                      </children>
                   </Pane>
-                  <Pane layoutX="33.0" layoutY="366.0" prefHeight="281.0" prefWidth="338.0" style="-fx-background-color: white; -fx-border-radius: 20px; -fx-border-color: black; -fx-background-radius: 20px;">
-                     <children>
-                        <ImageView fitHeight="114.0" fitWidth="132.0" layoutX="192.0" layoutY="146.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../media/icons/%5Bremoval.ai%5D_ae618e66-3ff5-427f-a25c-9281c54588d5-screenshot-2023-11-21-140519.png" />
-                           </image>
+                    </children>
+                </Pane>
+                <Pane fx:id="studentManagementWIndow" layoutY="95.0" visible="false">
+                    <children>
+                        <Pane fx:id="listStudentAccountWindow" prefHeight="697.0" prefWidth="1332.0">
+                            <children>
+                                <Label layoutX="36.0" layoutY="33.0" text="Student Account" textFill="WHITE">
+                                    <font>
+                                        <Font name="Arial Bold" size="23.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="37.0" layoutY="168.0" text="Student ID" textFill="#d7d7d7">
+                                    <font>
+                                        <Font name="Arial" size="13.0" />
+                                    </font>
+                                </Label>
+                                <Label layoutX="118.0" layoutY="170.0" text="(Username)" textFill="#909090">
+                                    <font>
+                                        <Font name="Arial" size="13.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="txtStudentID" layoutX="37.0" layoutY="198.0" prefHeight="29.0" prefWidth="160.0" styleClass="txtField" stylesheets="@../style/admindashboard.css" />
+                                <Label layoutX="212.0" layoutY="168.0" text="Password" textFill="#d7d7d7">
+                                    <font>
+                                        <Font name="Arial" size="13.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="txtPassword" layoutX="212.0" layoutY="198.0" prefHeight="29.0" prefWidth="149.0" styleClass="txtField" stylesheets="@../style/admindashboard.css" />
+                                <Label layoutX="387.0" layoutY="168.0" text="Role ID" textFill="#d7d7d7">
+                                    <font>
+                                        <Font name="Arial" size="13.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="txtRoleID" alignment="CENTER" editable="false" layoutX="387.0" layoutY="198.0" prefHeight="29.0" prefWidth="47.0" styleClass="txtField" stylesheets="@../style/admindashboard.css" text="3">
+                                    <font>
+                                        <Font name="Arial" size="12.0" />
+                                    </font>
+                                </TextField>
+                                <Label layoutX="37.0" layoutY="263.0" text="Surname" textFill="#d7d7d7">
+                                    <font>
+                                        <Font name="Arial" size="13.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="txtSurname" layoutX="38.0" layoutY="286.0" prefHeight="27.0" prefWidth="156.0" styleClass="txtField" stylesheets="@../style/admindashboard.css" />
+                                <Label layoutX="210.0" layoutY="263.0" text="First Name" textFill="#d7d7d7">
+                                    <font>
+                                        <Font name="Arial" size="13.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="txtFirstname" layoutX="212.0" layoutY="286.0" prefHeight="27.0" prefWidth="149.0" styleClass="txtField" stylesheets="@../style/admindashboard.css" />
+                                <Label layoutX="37.0" layoutY="358.0" text="Middle Name" textFill="#d7d7d7">
+                                    <font>
+                                        <Font name="Arial" size="13.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="txtMiddlename" layoutX="38.0" layoutY="378.0" prefHeight="29.0" prefWidth="160.0" styleClass="txtField" stylesheets="@../style/admindashboard.css">
+                                    <font>
+                                        <Font name="Arial" size="15.0" />
+                                    </font>
+                                </TextField>
+                                <Label layoutX="212.0" layoutY="358.0" text="Suffix" textFill="#d7d7d7">
+                                    <font>
+                                        <Font name="Arial" size="13.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="txtSuffix" layoutX="213.0" layoutY="378.0" prefHeight="29.0" prefWidth="149.0" styleClass="txtField" stylesheets="@../style/admindashboard.css">
+                                    <font>
+                                        <Font name="Arial" size="15.0" />
+                                    </font>
+                                </TextField>
+                                <Label layoutX="37.0" layoutY="441.0" text="Course" textFill="#d6d6d600">
+                                    <font>
+                                        <Font name="Arial" size="13.0" />
+                                    </font>
+                                </Label>
+                                <ComboBox fx:id="cbCourse" layoutX="37.0" layoutY="467.0" prefWidth="150.0" styleClass="combobox" stylesheets="@../style/admindashboard.css" visible="false" />
+                                <Label layoutX="212.0" layoutY="441.0" text="Year &amp; Section" textFill="#d6d6d600">
+                                    <font>
+                                        <Font name="Arial" size="13.0" />
+                                    </font>
+                                </Label>
+                                <ComboBox fx:id="cbSectionYear" layoutX="212.0" layoutY="467.0" prefWidth="150.0" styleClass="combobox" stylesheets="@../style/admindashboard.css" visible="false" />
+                                <Button fx:id="btnCreateAccount" layoutX="37.0" layoutY="533.0" mnemonicParsing="false" onAction="#handleCreateAccount" prefHeight="36.0" prefWidth="169.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;" styleClass="btns" text="Create Account" textFill="WHITE">
+                                    <padding>
+                                        <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                                    </padding>
+                                    <font>
+                                        <Font name="Arial Bold" size="14.0" />
+                                    </font>
+                                </Button>
+                                <Button fx:id="btnUpdate" layoutX="38.0" layoutY="594.0" mnemonicParsing="false" onAction="#btnUpdate" prefHeight="36.0" prefWidth="114.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;" styleClass="btnsv2" text="Update" textFill="WHITE">
+                                    <padding>
+                                        <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                                    </padding>
+                                    <font>
+                                        <Font name="Arial Bold" size="14.0" />
+                                    </font>
+                                </Button>
+                                <Button fx:id="btnDelete" layoutX="168.0" layoutY="594.0" mnemonicParsing="false" onAction="#btnDelete" prefHeight="36.0" prefWidth="105.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;" styleClass="btnsv2" text="Delete" textFill="WHITE">
+                                    <padding>
+                                        <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                                    </padding>
+                                    <font>
+                                        <Font name="Arial Bold" size="14.0" />
+                                    </font>
+                                </Button>
+                                <Button fx:id="btnClear" layoutX="287.0" layoutY="594.0" mnemonicParsing="false" onAction="#btnClear" prefHeight="36.0" prefWidth="106.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;" styleClass="btnsv2" text="Clear" textFill="WHITE">
+                                    <padding>
+                                        <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
+                                    </padding>
+                                    <font>
+                                        <Font name="Arial Bold" size="14.0" />
+                                    </font>
+                                </Button>
+                                <Pane layoutX="463.0" layoutY="67.0" prefHeight="589.0" prefWidth="831.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 15px;">
+                                    <children>
+                                        <TableView fx:id="tblStudentData" editable="true" fixedCellSize="0.0" layoutX="11.0" prefHeight="589.0" prefWidth="821.0" stylesheets="@../style/adminDesigns.css">
+                                            <columns>
+                                                <TableColumn fx:id="tblStudentID" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="87.0" text="Student ID" />
+                                                <TableColumn fx:id="tblPassword" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="103.0" text="Password" />
+                                                <TableColumn fx:id="tblRoleID" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="55.0" text="Role ID" />
+                                                <TableColumn fx:id="tblSurname" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="113.0" text="Surname" />
+                                                <TableColumn fx:id="tblFirstName" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="131.0" text="First Name" />
+                                                <TableColumn fx:id="tblMiddlename" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="93.0" text="Middle Name" />
+                                                <TableColumn fx:id="tblSuffix" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="42.0" text="Suffix" />
+                                                <TableColumn fx:id="tblCourse" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="54.0" text="Course" />
+                                                <TableColumn fx:id="tblYearSection" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="131.0" text="Year &amp; Section" />
+                                            </columns>
+                                            <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                            </columnResizePolicy>
+                                            <styleClass>
+                                                <String fx:value="employeetable" />
+                                                <String fx:value="table-cell" />
+                                                <String fx:value="table-row-cell" />
+                                            </styleClass>
+                                        </TableView>
+                                    </children>
+                                </Pane>
+                                <Label layoutX="51.0" layoutY="67.0" text="Management" textFill="#2b4fe4">
+                                    <font>
+                                        <Font name="Arial Bold" size="23.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="searchStudent" layoutX="250.0" layoutY="76.0" onAction="#searchStudent" prefHeight="37.0" prefWidth="180.0" promptText="Type to Search" styleClass="txtFieldTranparent" stylesheets="@../style/adminlogin.css">
+                                    <font>
+                                        <Font name="Arial" size="12.0" />
+                                    </font>
+                                    <padding>
+                                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                    </padding>
+                                </TextField>
+                                <Button fx:id="trashStudentAccountButton" layoutX="1158.0" layoutY="22.0" mnemonicParsing="false" onAction="#SwitchFormStudentAccount" prefHeight="20.0" prefWidth="136.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" text="Trash Bin" textFill="WHITE">
+                                    <font>
+                                        <Font name="Arial Bold" size="16.0" />
+                                    </font>
+                                    <graphic>
+                                        <ImageView fitHeight="33.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../media/icons/icons8-full-trash-24.png" />
+                                            </image>
+                                            <effect>
+                                                <ColorAdjust brightness="0.32" />
+                                            </effect>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                                <Button layoutX="1012.0" layoutY="25.0" mnemonicParsing="false" onAction="#PrintMasterList" prefHeight="31.0" prefWidth="132.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;" text="Print Masterlist" textAlignment="CENTER" textFill="WHITE">
+                                    <padding>
+                                        <Insets bottom="8.0" left="20.0" right="20.0" top="8.0" />
+                                    </padding>
+                                    <font>
+                                        <Font name="Arial Bold" size="12.0" />
+                                    </font>
+                                </Button>
+                                <Button layoutX="463.0" layoutY="25.0" mnemonicParsing="false" onAction="#showSideCardDetailsOfficer" prefHeight="32.0" prefWidth="158.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" text="See Card Details" textFill="WHITE">
+                                    <font>
+                                        <Font name="Arial" size="13.0" />
+                                    </font>
+                                </Button>
+                                <Button layoutX="637.0" layoutY="24.0" mnemonicParsing="false" onAction="#refreshStudentTable" prefHeight="32.0" prefWidth="44.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" textFill="WHITE">
+                                    <font>
+                                        <Font name="Arial" size="12.0" />
+                                    </font>
+                                    <graphic>
+                                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../media/icons/icons8-refresh-26.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                                <CheckBox fx:id="selectAllStudentTable" layoutX="905.0" layoutY="31.0" mnemonicParsing="false" onAction="#selectAllStudentTable" prefHeight="21.0" prefWidth="95.0" text="Select All" textFill="WHITE">
+                                    <font>
+                                        <Font name="Arial" size="13.0" />
+                                    </font>
+                                </CheckBox>
+                            </children>
+                        </Pane>
+                        <Pane fx:id="trashSrudentAccountWindow1" layoutX="4.0" layoutY="3.0" prefHeight="704.0" prefWidth="1332.0" visible="false">
+                            <children>
+                                <Button fx:id="ListStudentAccountButton" layoutX="38.0" layoutY="27.0" mnemonicParsing="false" onAction="#SwitchFormStudentAccount" prefHeight="39.0" prefWidth="55.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" textFill="WHITE">
+                                    <font>
+                                        <Font name="Arial Bold" size="12.0" />
+                                    </font>
+                                    <graphic>
+                                        <ImageView fitHeight="100.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../media/icons/icons8-back-50%20(1).png" />
+                                            </image>
+                                            <effect>
+                                                <ColorAdjust brightness="1.0" contrast="-0.02" />
+                                            </effect>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                                <Text fill="WHITE" layoutX="155.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Student Account">
+                                    <font>
+                                        <Font name="Arial Bold" size="26.0" />
+                                    </font>
+                                </Text>
+                                <Text fill="#2b4fe4" layoutX="374.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List">
+                                    <font>
+                                        <Font name="Arial Bold" size="26.0" />
+                                    </font>
+                                </Text>
+                                <Pane layoutX="70.0" layoutY="91.0" prefHeight="566.0" prefWidth="1220.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 15px;">
+                                    <children>
+                                        <TableView fx:id="archiveStudentAccTbl" editable="true" fixedCellSize="0.0" layoutX="8.0" layoutY="9.0" prefHeight="543.0" prefWidth="1207.0" stylesheets="@../style/adminDesigns.css">
+                                            <columns>
+                                                <TableColumn fx:id="archiveStudID" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="108.0" text="Student ID" />
+                                                <TableColumn fx:id="archivePassword" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="39.0" text="Password" />
+                                                <TableColumn fx:id="archiveRoleID" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="40.0" text="Role ID" />
+                                                <TableColumn fx:id="archiveSurname" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="66.0" text="Surname" />
+                                                <TableColumn fx:id="archiveFirstname" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="91.0" text="First Name" />
+                                                <TableColumn fx:id="archiveMiddleName" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="89.0" text="Middle Name" />
+                                                <TableColumn fx:id="archiveSuffix" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="40.0" text="Suffix" />
+                                                <TableColumn fx:id="archiveCourseStudent" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="57.0" text="Course" />
+                                                <TableColumn fx:id="archiveYearSectionStudent" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="57.0" text="Year &amp; Section" />
+                                            </columns>
+                                            <styleClass>
+                                                <String fx:value="employeetable" />
+                                                <String fx:value="table-cell" />
+                                                <String fx:value="table-row-cell" />
+                                            </styleClass>
+                                            <columnResizePolicy>
+                                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                            </columnResizePolicy>
+                                        </TableView>
+                                    </children>
+                                </Pane>
+                                <Button layoutX="1166.0" layoutY="40.0" mnemonicParsing="false" onAction="#restoreStudentAccount" prefHeight="23.0" prefWidth="30.0" style="-fx-background-color: transparent;">
+                                    <graphic>
+                                        <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../media/icons/icons8-restore-26.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                                <Label fx:id="numberItemsStudentTrash" layoutX="1096.0" layoutY="46.0" text="4 items" textFill="#9e9e9e">
+                                    <font>
+                                        <Font name="Arial" size="18.0" />
+                                    </font>
+                                </Label>
+                                <Button layoutX="1200.0" layoutY="37.0" mnemonicParsing="false" onAction="#deleteStudentAccountArchive" prefHeight="23.0" prefWidth="30.0" style="-fx-background-color: transparent;">
+                                    <graphic>
+                                        <ImageView fitHeight="28.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../media/icons/icons8-full-trash-24.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                                <Button layoutX="1021.0" layoutY="39.0" mnemonicParsing="false" onAction="#refreshStudentTableArchive" prefHeight="32.0" prefWidth="44.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" textFill="WHITE">
+                                    <font>
+                                        <Font name="Arial" size="12.0" />
+                                    </font>
+                                    <graphic>
+                                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                            <image>
+                                                <Image url="@../media/icons/icons8-refresh-26.png" />
+                                            </image>
+                                        </ImageView>
+                                    </graphic>
+                                </Button>
+                                <CheckBox fx:id="selectAllStudentTableArchive" layoutX="898.0" layoutY="46.0" mnemonicParsing="false" onAction="#selectAllStudentTableArchive" prefHeight="21.0" prefWidth="95.0" text="Select All" textFill="WHITE">
+                                    <font>
+                                        <Font name="Arial" size="13.0" />
+                                    </font>
+                                </CheckBox>
+                            </children>
+                        </Pane>
+                    </children>
+                </Pane>
+            </children>
+        </Pane>
+        <Pane fx:id="sidePanel" layoutY="49.0" prefHeight="793.0" prefWidth="357.0" style="-fx-background-color: #161B22;" visible="false">
+            <children>
+                <ImageView fitHeight="58.0" fitWidth="44.0" layoutX="22.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../media/icons/Screenshot%202023-11-17%20205052.png" />
+                    </image>
+                </ImageView>
+                <Button layoutX="289.0" layoutY="24.0" mnemonicParsing="false" onAction="#closeSideNavigation" prefHeight="43.0" prefWidth="44.0" styleClass="closeSidePanel" stylesheets="@../style/userdashboard.css">
+                    <graphic>
+                        <ImageView fitHeight="17.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../media/icons/icons8-close-30.png" />
+                            </image>
+                            <effect>
+                                <ColorAdjust hue="0.05" />
+                            </effect>
                         </ImageView>
-                        <Label fx:id="monthNote" layoutX="27.0" layoutY="30.0" text="February">
-                           <font>
-                              <Font name="Arial Bold" size="15.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="yearNote" layoutX="27.0" layoutY="47.0" text="2023">
-                           <font>
-                              <Font name="Arial" size="15.0" />
-                           </font>
-                        </Label>
-                        <Text fx:id="infoNote" layoutX="26.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed faucibus ante vel tincidunt efficitur. Nulla facilisi. Fusce at mauris eu tellus fermentum bibendum vel eu risus. Curabitur a justo a elit accumsan varius vel et arcu. " wrappingWidth="286.0">
-                           <font>
-                              <Font name="Arial" size="17.0" />
-                           </font>
+                    </graphic>
+                    <padding>
+                        <Insets left="10.0" right="10.0" />
+                    </padding>
+                </Button>
+                <Pane fx:id="homeButton" layoutX="37.0" layoutY="440.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css" visible="false">
+                    <children>
+                        <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../media/icons/icons8-home-48.png" />
+                            </image>
+                        </ImageView>
+                        <Text fill="#d7d7d7" layoutX="57.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
+                            <font>
+                                <Font name="Arial Bold" size="19.0" />
+                            </font>
                         </Text>
-                     </children>
-                  </Pane>
-                  <ImageView fitHeight="269.0" fitWidth="224.0" layoutX="1130.0" layoutY="380.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../media/icons/%5Bremoval.ai%5D_14cd69a8-ed59-499b-b70c-0df3b34d9e0d-screenshot-2023-11-21-141144.png" />
-                     </image>
-                     <effect>
-                        <Reflection />
-                     </effect>
-                  </ImageView>
-                  <ImageView fitHeight="95.0" fitWidth="77.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../media/3d/Block_8x1x1_0000.png" />
-                     </image>
-                  </ImageView>
-                  <Button layoutX="669.0" layoutY="618.0" mnemonicParsing="false" onAction="#editCalendarNote" prefHeight="33.0" prefWidth="106.0" style="-fx-background-color: #2D53EF; -fx-background-radius: 15px;" text="Edit" textFill="WHITE">
-                     <font>
-                        <Font name="Arial Bold" size="14.0" />
-                     </font>
-                  </Button>
-                  <Button layoutX="794.0" layoutY="618.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="106.0" style="-fx-background-color: #2D53EF; -fx-background-radius: 15px;" text="Remove" textFill="WHITE">
-                     <font>
-                        <Font name="Arial Bold" size="14.0" />
-                     </font>
-                  </Button>
-                  <Button layoutX="914.0" layoutY="618.0" mnemonicParsing="false" prefHeight="33.0" prefWidth="106.0" style="-fx-background-color: #2D53EF; -fx-background-radius: 15px;" text="Add" textFill="WHITE">
-                     <font>
-                        <Font name="Arial Bold" size="14.0" />
-                     </font>
-                  </Button>
-               </children>
-            </Pane>
-            <Pane fx:id="studentManagementWIndow" layoutY="95.0" visible="false">
-               <children>
-                  <Pane fx:id="listStudentAccountWindow" prefHeight="697.0" prefWidth="1332.0">
-                     <children>
-                        <Label layoutX="36.0" layoutY="33.0" text="Student Account" textFill="WHITE">
-                           <font>
-                              <Font name="Arial Bold" size="23.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="37.0" layoutY="168.0" text="Student ID" textFill="#d7d7d7">
-                           <font>
-                              <Font name="Arial" size="13.0" />
-                           </font>
-                        </Label>
-                        <Label layoutX="118.0" layoutY="170.0" text="(Username)" textFill="#909090">
-                           <font>
-                              <Font name="Arial" size="13.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="txtStudentID" layoutX="37.0" layoutY="198.0" prefHeight="29.0" prefWidth="160.0" styleClass="txtField" stylesheets="@../style/admindashboard.css" />
-                        <Label layoutX="212.0" layoutY="168.0" text="Password" textFill="#d7d7d7">
-                           <font>
-                              <Font name="Arial" size="13.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="txtPassword" layoutX="212.0" layoutY="198.0" prefHeight="29.0" prefWidth="149.0" styleClass="txtField" stylesheets="@../style/admindashboard.css" />
-                        <Label layoutX="387.0" layoutY="168.0" text="Role ID" textFill="#d7d7d7">
-                           <font>
-                              <Font name="Arial" size="13.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="txtRoleID" alignment="CENTER" editable="false" layoutX="387.0" layoutY="198.0" prefHeight="29.0" prefWidth="47.0" styleClass="txtField" stylesheets="@../style/admindashboard.css" text="3">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                        </TextField>
-                        <Label layoutX="37.0" layoutY="263.0" text="Surname" textFill="#d7d7d7">
-                           <font>
-                              <Font name="Arial" size="13.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="txtSurname" layoutX="38.0" layoutY="286.0" prefHeight="27.0" prefWidth="156.0" styleClass="txtField" stylesheets="@../style/admindashboard.css" />
-                        <Label layoutX="210.0" layoutY="263.0" text="First Name" textFill="#d7d7d7">
-                           <font>
-                              <Font name="Arial" size="13.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="txtFirstname" layoutX="212.0" layoutY="286.0" prefHeight="27.0" prefWidth="149.0" styleClass="txtField" stylesheets="@../style/admindashboard.css" />
-                        <Label layoutX="37.0" layoutY="358.0" text="Middle Name" textFill="#d7d7d7">
-                           <font>
-                              <Font name="Arial" size="13.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="txtMiddlename" layoutX="38.0" layoutY="378.0" prefHeight="29.0" prefWidth="160.0" styleClass="txtField" stylesheets="@../style/admindashboard.css">
-                           <font>
-                              <Font name="Arial" size="15.0" />
-                           </font>
-                        </TextField>
-                        <Label layoutX="212.0" layoutY="358.0" text="Suffix" textFill="#d7d7d7">
-                           <font>
-                              <Font name="Arial" size="13.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="txtSuffix" layoutX="213.0" layoutY="378.0" prefHeight="29.0" prefWidth="149.0" styleClass="txtField" stylesheets="@../style/admindashboard.css">
-                           <font>
-                              <Font name="Arial" size="15.0" />
-                           </font>
-                        </TextField>
-                        <Label layoutX="37.0" layoutY="441.0" text="Course" textFill="#d6d6d600">
-                           <font>
-                              <Font name="Arial" size="13.0" />
-                           </font>
-                        </Label>
-                        <ComboBox fx:id="cbCourse" layoutX="37.0" layoutY="467.0" prefWidth="150.0" styleClass="combobox" stylesheets="@../style/admindashboard.css" visible="false" />
-                        <Label layoutX="212.0" layoutY="441.0" text="Year &amp; Section" textFill="#d6d6d600">
-                           <font>
-                              <Font name="Arial" size="13.0" />
-                           </font>
-                        </Label>
-                        <ComboBox fx:id="cbSectionYear" layoutX="212.0" layoutY="467.0" prefWidth="150.0" styleClass="combobox" stylesheets="@../style/admindashboard.css" visible="false" />
-                        <Button fx:id="btnCreateAccount" layoutX="37.0" layoutY="533.0" mnemonicParsing="false" onAction="#handleCreateAccount" prefHeight="36.0" prefWidth="169.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;" styleClass="btns" text="Create Account" textFill="WHITE">
-                           <padding>
-                              <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
-                           </padding>
-                           <font>
-                              <Font name="Arial Bold" size="14.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="btnUpdate" layoutX="38.0" layoutY="594.0" mnemonicParsing="false" onAction="#btnUpdate" prefHeight="36.0" prefWidth="114.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;" styleClass="btnsv2" text="Update" textFill="WHITE">
-                           <padding>
-                              <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
-                           </padding>
-                           <font>
-                              <Font name="Arial Bold" size="14.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="btnDelete" layoutX="168.0" layoutY="594.0" mnemonicParsing="false" onAction="#btnDelete" prefHeight="36.0" prefWidth="105.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;" styleClass="btnsv2" text="Delete" textFill="WHITE">
-                           <padding>
-                              <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
-                           </padding>
-                           <font>
-                              <Font name="Arial Bold" size="14.0" />
-                           </font>
-                        </Button>
-                        <Button fx:id="btnClear" layoutX="287.0" layoutY="594.0" mnemonicParsing="false" onAction="#btnClear" prefHeight="36.0" prefWidth="106.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;" styleClass="btnsv2" text="Clear" textFill="WHITE">
-                           <padding>
-                              <Insets bottom="10.0" left="25.0" right="25.0" top="10.0" />
-                           </padding>
-                           <font>
-                              <Font name="Arial Bold" size="14.0" />
-                           </font>
-                        </Button>
-                        <Pane layoutX="463.0" layoutY="67.0" prefHeight="589.0" prefWidth="831.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 15px;">
-                           <children>
-                              <TableView fx:id="tblStudentData" editable="true" fixedCellSize="0.0" layoutX="11.0" prefHeight="589.0" prefWidth="821.0" stylesheets="@../style/adminDesigns.css">
-                                 <columns>
-                                    <TableColumn fx:id="tblStudentID" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="87.0" text="Student ID" />
-                                    <TableColumn fx:id="tblPassword" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="103.0" text="Password" />
-                                    <TableColumn fx:id="tblRoleID" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="55.0" text="Role ID" />
-                                    <TableColumn fx:id="tblSurname" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="113.0" text="Surname" />
-                                    <TableColumn fx:id="tblFirstName" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="131.0" text="First Name" />
-                                    <TableColumn fx:id="tblMiddlename" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="93.0" text="Middle Name" />
-                                    <TableColumn fx:id="tblSuffix" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="42.0" text="Suffix" />
-                                    <TableColumn fx:id="tblCourse" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="54.0" text="Course" />
-                                    <TableColumn fx:id="tblYearSection" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="131.0" text="Year &amp; Section" />
-                                 </columns>
-                                 <columnResizePolicy>
-                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                 </columnResizePolicy>
-                                 <styleClass>
-                                    <String fx:value="employeetable" />
-                                    <String fx:value="table-cell" />
-                                    <String fx:value="table-row-cell" />
-                                 </styleClass>
-                              </TableView>
-                           </children>
-                        </Pane>
-                        <Label layoutX="51.0" layoutY="67.0" text="Management" textFill="#2b4fe4">
-                           <font>
-                              <Font name="Arial Bold" size="23.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="searchStudent" layoutX="250.0" layoutY="76.0" onAction="#searchStudent" prefHeight="37.0" prefWidth="180.0" promptText="Type to Search" styleClass="txtFieldTranparent" stylesheets="@../style/adminlogin.css">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </TextField>
-                        <Button fx:id="trashStudentAccountButton" layoutX="1158.0" layoutY="22.0" mnemonicParsing="false" onAction="#SwitchFormStudentAccount" prefHeight="20.0" prefWidth="136.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" text="Trash Bin" textFill="WHITE">
-                           <font>
-                              <Font name="Arial Bold" size="16.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fitHeight="33.0" fitWidth="26.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../media/icons/icons8-full-trash-24.png" />
-                                 </image>
-                                 <effect>
-                                    <ColorAdjust brightness="0.32" />
-                                 </effect>
-                              </ImageView>
-                           </graphic>
-                        </Button>
-                        <Button layoutX="1012.0" layoutY="25.0" mnemonicParsing="false" onAction="#PrintMasterList" prefHeight="31.0" prefWidth="132.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;" text="Print Masterlist" textAlignment="CENTER" textFill="WHITE">
-                           <padding>
-                              <Insets bottom="8.0" left="20.0" right="20.0" top="8.0" />
-                           </padding>
-                           <font>
-                              <Font name="Arial Bold" size="12.0" />
-                           </font>
-                        </Button>
-                        <Button layoutX="463.0" layoutY="25.0" mnemonicParsing="false" onAction="#showSideCardDetailsOfficer" prefHeight="32.0" prefWidth="158.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" text="See Card Details" textFill="WHITE">
-                           <font>
-                              <Font name="Arial" size="13.0" />
-                           </font>
-                        </Button>
-                        <Button layoutX="637.0" layoutY="24.0" mnemonicParsing="false" onAction="#refreshStudentTable" prefHeight="32.0" prefWidth="44.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" textFill="WHITE">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../media/icons/icons8-refresh-26.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
-                        <CheckBox fx:id="selectAllStudentTable" layoutX="905.0" layoutY="31.0" mnemonicParsing="false" onAction="#selectAllStudentTable" prefHeight="21.0" prefWidth="95.0" text="Select All" textFill="WHITE">
-                           <font>
-                              <Font name="Arial" size="13.0" />
-                           </font>
-                        </CheckBox>
-                     </children>
-                  </Pane>
-                  <Pane fx:id="trashSrudentAccountWindow1" layoutX="4.0" layoutY="3.0" prefHeight="704.0" prefWidth="1332.0" visible="false">
-                     <children>
-                        <Button fx:id="ListStudentAccountButton" layoutX="38.0" layoutY="27.0" mnemonicParsing="false" onAction="#SwitchFormStudentAccount" prefHeight="39.0" prefWidth="55.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" textFill="WHITE">
-                           <font>
-                              <Font name="Arial Bold" size="12.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fitHeight="100.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../media/icons/icons8-back-50%20(1).png" />
-                                 </image>
-                                 <effect>
-                                    <ColorAdjust brightness="1.0" contrast="-0.02" />
-                                 </effect>
-                              </ImageView>
-                           </graphic>
-                        </Button>
-                        <Text fill="WHITE" layoutX="155.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Student Account">
-                           <font>
-                              <Font name="Arial Bold" size="26.0" />
-                           </font>
+                    </children>
+                    <opaqueInsets>
+                        <Insets top="10.0" />
+                    </opaqueInsets>
+                </Pane>
+                <Pane fx:id="calendarButton" layoutX="22.0" layoutY="247.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
+                    <children>
+                        <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../media/icons/icons8-home-48.png" />
+                            </image>
+                        </ImageView>
+                        <Text fill="#d7d7d7" layoutX="57.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Events">
+                            <font>
+                                <Font name="Arial" size="19.0" />
+                            </font>
                         </Text>
-                        <Text fill="#2b4fe4" layoutX="374.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="List">
-                           <font>
-                              <Font name="Arial Bold" size="26.0" />
-                           </font>
+                    </children>
+                    <opaqueInsets>
+                        <Insets top="10.0" />
+                    </opaqueInsets>
+                </Pane>
+                <Pane fx:id="studentManagementButton" layoutX="22.0" layoutY="161.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
+                    <children>
+                        <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../media/icons/icons8-home-48.png" />
+                            </image>
+                        </ImageView>
+                        <Text fill="#d7d7d7" layoutX="57.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Student Management">
+                            <font>
+                                <Font name="Arial" size="19.0" />
+                            </font>
                         </Text>
-                        <Pane layoutX="70.0" layoutY="91.0" prefHeight="566.0" prefWidth="1220.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 15px;">
-                           <children>
-                              <TableView fx:id="archiveStudentAccTbl" editable="true" fixedCellSize="0.0" layoutX="8.0" layoutY="9.0" prefHeight="543.0" prefWidth="1207.0" stylesheets="@../style/adminDesigns.css">
-                                 <columns>
-                                    <TableColumn fx:id="archiveStudID" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="108.0" text="Student ID" />
-                                    <TableColumn fx:id="archivePassword" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="39.0" text="Password" />
-                                    <TableColumn fx:id="archiveRoleID" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="40.0" text="Role ID" />
-                                    <TableColumn fx:id="archiveSurname" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="66.0" text="Surname" />
-                                    <TableColumn fx:id="archiveFirstname" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="91.0" text="First Name" />
-                                    <TableColumn fx:id="archiveMiddleName" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="89.0" text="Middle Name" />
-                                    <TableColumn fx:id="archiveSuffix" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="40.0" text="Suffix" />
-                                    <TableColumn fx:id="archiveCourseStudent" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="57.0" text="Course" />
-                                    <TableColumn fx:id="archiveYearSectionStudent" maxWidth="1.7976931348623157E308" minWidth="-1.0" prefWidth="57.0" text="Year &amp; Section" />
-                                 </columns>
-                                 <styleClass>
-                                    <String fx:value="employeetable" />
-                                    <String fx:value="table-cell" />
-                                    <String fx:value="table-row-cell" />
-                                 </styleClass>
-                                 <columnResizePolicy>
-                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                                 </columnResizePolicy>
-                              </TableView>
-                           </children>
-                        </Pane>
-                        <Button layoutX="1166.0" layoutY="40.0" mnemonicParsing="false" onAction="#restoreStudentAccount" prefHeight="23.0" prefWidth="30.0" style="-fx-background-color: transparent;">
-                           <graphic>
-                              <ImageView fitHeight="27.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../media/icons/icons8-restore-26.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
-                        <Label fx:id="numberItemsStudentTrash" layoutX="1096.0" layoutY="46.0" text="4 items" textFill="#9e9e9e">
-                           <font>
-                              <Font name="Arial" size="18.0" />
-                           </font>
+                    </children>
+                    <opaqueInsets>
+                        <Insets top="10.0" />
+                    </opaqueInsets>
+                </Pane>
+                <Pane fx:id="toDoButton" layoutX="22.0" layoutY="204.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
+                    <children>
+                        <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../media/icons/icons8-home-48.png" />
+                            </image>
+                        </ImageView>
+                        <Text fill="#d7d7d7" layoutX="57.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Task Manager">
+                            <font>
+                                <Font name="Arial" size="19.0" />
+                            </font>
+                        </Text>
+                    </children>
+                    <opaqueInsets>
+                        <Insets top="10.0" />
+                    </opaqueInsets>
+                </Pane>
+                <Pane fx:id="announcementButton" layoutX="22.0" layoutY="118.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
+                    <children>
+                        <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../media/icons/icons8-home-48.png" />
+                            </image>
+                        </ImageView>
+                        <Text fill="#d7d7d7" layoutX="57.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Announcement">
+                            <font>
+                                <Font name="Arial" size="19.0" />
+                            </font>
+                        </Text>
+                    </children>
+                    <opaqueInsets>
+                        <Insets top="10.0" />
+                    </opaqueInsets>
+                </Pane>
+                <Label layoutX="30.0" layoutY="715.0" prefHeight="14.0" prefWidth="89.0" text="© BSCS2022" textFill="#8f8f8f85">
+                    <font>
+                        <Font name="Arial Black" size="11.0" />
+                    </font>
+                </Label>
+                <Text fill="#217eff" layoutX="30.0" layoutY="767.0" strokeType="OUTSIDE" strokeWidth="0.0" text="About">
+                    <font>
+                        <Font size="13.0" />
+                    </font>
+                </Text>
+                <Text fill="#217eff" layoutX="80.0" layoutY="767.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Terms and Privacy">
+                    <font>
+                        <Font size="13.0" />
+                    </font>
+                </Text>
+                <Text fill="#217eff" layoutX="202.0" layoutY="767.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FeedBack">
+                    <font>
+                        <Font size="13.0" />
+                    </font>
+                </Text>
+            </children>
+        </Pane>
+        <Pane fx:id="sideCard" layoutX="853.0" layoutY="138.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="697.0" prefWidth="489.0" style="-fx-background-color: #090909;" visible="false">
+            <children>
+                <Button layoutX="409.0" layoutY="32.0" mnemonicParsing="false" onAction="#closeSideCardOfficer" style="-fx-background-color: transparent;">
+                    <graphic>
+                        <ImageView fitHeight="33.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../media/icons/icons8-close-30.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Pane fx:id="eduhubAccount1" layoutX="125.0" layoutY="140.0" prefHeight="345.0" prefWidth="261.0" style="-fx-background-color: white;">
+                    <children>
+                        <Text fill="#8d8d8d" layoutX="28.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Student ID">
+                            <font>
+                                <Font name="Arial Bold" size="11.0" />
+                            </font>
+                        </Text>
+                        <Text fill="#8d8d8d" layoutX="137.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password:">
+                            <font>
+                                <Font name="Arial Bold" size="11.0" />
+                            </font>
+                        </Text>
+                        <Text fill="#8d8d8d" layoutX="95.0" layoutY="324.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Role ID:">
+                            <font>
+                                <Font name="Arial Bold" size="11.0" />
+                            </font>
+                        </Text>
+                        <Text fill="#8d8d8d" layoutX="30.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Surname:">
+                            <font>
+                                <Font name="Arial Bold" size="11.0" />
+                            </font>
+                        </Text>
+                        <Text fill="#8d8d8d" layoutX="30.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name:">
+                            <font>
+                                <Font name="Arial Bold" size="11.0" />
+                            </font>
+                        </Text>
+                        <Text fill="#8d8d8d" layoutX="30.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Middle Name:">
+                            <font>
+                                <Font name="Arial Bold" size="11.0" />
+                            </font>
+                        </Text>
+                        <Text fill="#8d8d8d" layoutX="135.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Suffix:" wrappingWidth="34.21923828125">
+                            <font>
+                                <Font name="Arial Bold" size="11.0" />
+                            </font>
+                        </Text>
+                        <Text fill="#8d8d8d" layoutX="31.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Course:">
+                            <font>
+                                <Font name="Arial Bold" size="11.0" />
+                            </font>
+                        </Text>
+                        <Text fill="#8d8d8d" layoutX="134.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Year &amp; Section:">
+                            <font>
+                                <Font name="Arial Bold" size="11.0" />
+                            </font>
+                        </Text>
+                        <Text fx:id="lblStudentID1" layoutX="28.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1000345" wrappingWidth="101.35546875">
+                            <font>
+                                <Font name="Arial Bold" size="16.0" />
+                            </font>
+                        </Text>
+                        <Text fx:id="lblPassword1" layoutX="137.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="admin123" wrappingWidth="113.90380859374994">
+                            <font>
+                                <Font name="Arial Bold" size="16.0" />
+                            </font>
+                        </Text>
+                        <Label layoutX="72.0" layoutY="14.0" text="EduHub.">
+                            <font>
+                                <Font name="Arial Black" size="25.0" />
+                            </font>
                         </Label>
-                        <Button layoutX="1200.0" layoutY="37.0" mnemonicParsing="false" onAction="#deleteStudentAccountArchive" prefHeight="23.0" prefWidth="30.0" style="-fx-background-color: transparent;">
-                           <graphic>
-                              <ImageView fitHeight="28.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../media/icons/icons8-full-trash-24.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
-                        <Button layoutX="1021.0" layoutY="39.0" mnemonicParsing="false" onAction="#refreshStudentTableArchive" prefHeight="32.0" prefWidth="44.0" style="-fx-background-color: #1C1C1C; -fx-background-radius: 10px;" textFill="WHITE">
-                           <font>
-                              <Font name="Arial" size="12.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../media/icons/icons8-refresh-26.png" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Button>
-                        <CheckBox fx:id="selectAllStudentTableArchive" layoutX="898.0" layoutY="46.0" mnemonicParsing="false" onAction="#selectAllStudentTableArchive" prefHeight="21.0" prefWidth="95.0" text="Select All" textFill="WHITE">
-                           <font>
-                              <Font name="Arial" size="13.0" />
-                           </font>
-                        </CheckBox>
-                     </children>
-                  </Pane>
-               </children>
-            </Pane>
-         </children>
-      </Pane>
-      <Pane fx:id="sidePanel" layoutY="49.0" prefHeight="793.0" prefWidth="357.0" style="-fx-background-color: #161B22;" visible="false">
-         <children>
-            <ImageView fitHeight="58.0" fitWidth="44.0" layoutX="22.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../media/icons/Screenshot%202023-11-17%20205052.png" />
-               </image>
-            </ImageView>
-            <Button layoutX="289.0" layoutY="24.0" mnemonicParsing="false" onAction="#closeSideNavigation" prefHeight="43.0" prefWidth="44.0" styleClass="closeSidePanel" stylesheets="@../style/userdashboard.css">
-               <graphic>
-                  <ImageView fitHeight="17.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../media/icons/icons8-close-30.png" />
-                     </image>
-                     <effect>
-                        <ColorAdjust hue="0.05" />
-                     </effect>
-                  </ImageView>
-               </graphic>
-               <padding>
-                  <Insets left="10.0" right="10.0" />
-               </padding>
-            </Button>
-            <Pane fx:id="homeButton" layoutX="37.0" layoutY="440.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css" visible="false">
-               <children>
-                  <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../media/icons/icons8-home-48.png" />
-                     </image>
-                  </ImageView>
-                  <Text fill="#d7d7d7" layoutX="57.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
-                     <font>
-                        <Font name="Arial Bold" size="19.0" />
-                     </font>
-                  </Text>
-               </children>
-               <opaqueInsets>
-                  <Insets top="10.0" />
-               </opaqueInsets>
-            </Pane>
-            <Pane fx:id="calendarButton" layoutX="22.0" layoutY="247.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css" visible="false">
-               <children>
-                  <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../media/icons/icons8-home-48.png" />
-                     </image>
-                  </ImageView>
-                  <Text fill="#d7d7d7" layoutX="57.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Calendar">
-                     <font>
-                        <Font name="Arial" size="19.0" />
-                     </font>
-                  </Text>
-               </children>
-               <opaqueInsets>
-                  <Insets top="10.0" />
-               </opaqueInsets>
-            </Pane>
-            <Pane fx:id="studentManagementButton" layoutX="22.0" layoutY="161.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
-               <children>
-                  <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../media/icons/icons8-home-48.png" />
-                     </image>
-                  </ImageView>
-                  <Text fill="#d7d7d7" layoutX="57.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Student Management">
-                     <font>
-                        <Font name="Arial" size="19.0" />
-                     </font>
-                  </Text>
-               </children>
-               <opaqueInsets>
-                  <Insets top="10.0" />
-               </opaqueInsets>
-            </Pane>
-            <Pane fx:id="toDoButton" layoutX="22.0" layoutY="204.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
-               <children>
-                  <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../media/icons/icons8-home-48.png" />
-                     </image>
-                  </ImageView>
-                  <Text fill="#d7d7d7" layoutX="57.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Task Manager">
-                     <font>
-                        <Font name="Arial" size="19.0" />
-                     </font>
-                  </Text>
-               </children>
-               <opaqueInsets>
-                  <Insets top="10.0" />
-               </opaqueInsets>
-            </Pane>
-            <Pane fx:id="announcementButton" layoutX="22.0" layoutY="118.0" onMouseClicked="#SwitchForm" prefHeight="43.0" prefWidth="306.0" styleClass="navigationButton" stylesheets="@../style/userdashboard.css">
-               <children>
-                  <ImageView fitHeight="32.0" fitWidth="27.0" layoutX="19.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../media/icons/icons8-home-48.png" />
-                     </image>
-                  </ImageView>
-                  <Text fill="#d7d7d7" layoutX="57.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Announcement">
-                     <font>
-                        <Font name="Arial" size="19.0" />
-                     </font>
-                  </Text>
-               </children>
-               <opaqueInsets>
-                  <Insets top="10.0" />
-               </opaqueInsets>
-            </Pane>
-            <Label layoutX="30.0" layoutY="715.0" prefHeight="14.0" prefWidth="89.0" text="© BSCS2022" textFill="#8f8f8f85">
-               <font>
-                  <Font name="Arial Black" size="11.0" />
-               </font>
-            </Label>
-            <Text fill="#217eff" layoutX="30.0" layoutY="767.0" strokeType="OUTSIDE" strokeWidth="0.0" text="About">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Text>
-            <Text fill="#217eff" layoutX="80.0" layoutY="767.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Terms and Privacy">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Text>
-            <Text fill="#217eff" layoutX="202.0" layoutY="767.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FeedBack">
-               <font>
-                  <Font size="13.0" />
-               </font>
-            </Text>
-         </children>
-      </Pane>
-      <Pane fx:id="sideCard" layoutX="853.0" layoutY="138.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="697.0" prefWidth="489.0" style="-fx-background-color: #090909;" visible="false">
-         <children>
-            <Button layoutX="409.0" layoutY="32.0" mnemonicParsing="false" onAction="#closeSideCardOfficer" style="-fx-background-color: transparent;">
-               <graphic>
-                  <ImageView fitHeight="33.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../media/icons/icons8-close-30.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
-            <Pane fx:id="eduhubAccount1" layoutX="125.0" layoutY="140.0" prefHeight="345.0" prefWidth="261.0" style="-fx-background-color: white;">
-               <children>
-                  <Text fill="#8d8d8d" layoutX="28.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Student ID">
-                     <font>
-                        <Font name="Arial Bold" size="11.0" />
-                     </font>
-                  </Text>
-                  <Text fill="#8d8d8d" layoutX="137.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password:">
-                     <font>
-                        <Font name="Arial Bold" size="11.0" />
-                     </font>
-                  </Text>
-                  <Text fill="#8d8d8d" layoutX="95.0" layoutY="324.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Role ID:">
-                     <font>
-                        <Font name="Arial Bold" size="11.0" />
-                     </font>
-                  </Text>
-                  <Text fill="#8d8d8d" layoutX="30.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Surname:">
-                     <font>
-                        <Font name="Arial Bold" size="11.0" />
-                     </font>
-                  </Text>
-                  <Text fill="#8d8d8d" layoutX="30.0" layoutY="173.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name:">
-                     <font>
-                        <Font name="Arial Bold" size="11.0" />
-                     </font>
-                  </Text>
-                  <Text fill="#8d8d8d" layoutX="30.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Middle Name:">
-                     <font>
-                        <Font name="Arial Bold" size="11.0" />
-                     </font>
-                  </Text>
-                  <Text fill="#8d8d8d" layoutX="135.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Suffix:" wrappingWidth="34.21923828125">
-                     <font>
-                        <Font name="Arial Bold" size="11.0" />
-                     </font>
-                  </Text>
-                  <Text fill="#8d8d8d" layoutX="31.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Course:">
-                     <font>
-                        <Font name="Arial Bold" size="11.0" />
-                     </font>
-                  </Text>
-                  <Text fill="#8d8d8d" layoutX="134.0" layoutY="265.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Year &amp; Section:">
-                     <font>
-                        <Font name="Arial Bold" size="11.0" />
-                     </font>
-                  </Text>
-                  <Text fx:id="lblStudentID1" layoutX="28.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1000345" wrappingWidth="101.35546875">
-                     <font>
-                        <Font name="Arial Bold" size="16.0" />
-                     </font>
-                  </Text>
-                  <Text fx:id="lblPassword1" layoutX="137.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="admin123" wrappingWidth="113.90380859374994">
-                     <font>
-                        <Font name="Arial Bold" size="16.0" />
-                     </font>
-                  </Text>
-                  <Label layoutX="72.0" layoutY="14.0" text="EduHub.">
-                     <font>
-                        <Font name="Arial Black" size="25.0" />
-                     </font>
-                  </Label>
-                  <Line endX="124.0" layoutX="124.0" layoutY="52.0" startX="-113.0" />
-                  <Line endX="124.0" layoutX="125.0" layoutY="302.0" startX="-113.0" />
-                  <Text fx:id="lblSurname1" layoutX="31.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Uy" wrappingWidth="206.0">
-                     <font>
-                        <Font name="Arial Bold" size="16.0" />
-                     </font>
-                  </Text>
-                  <Text fx:id="lblFirstName1" layoutX="30.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gwyneth" wrappingWidth="206.0">
-                     <font>
-                        <Font name="Arial Bold" size="16.0" />
-                     </font>
-                  </Text>
-                  <Text fx:id="lblMiddleName1" layoutX="30.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fidel" wrappingWidth="95.0">
-                     <font>
-                        <Font name="Arial Bold" size="16.0" />
-                     </font>
-                  </Text>
-                  <Text layoutX="127.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0">
-                     <font>
-                        <Font name="Arial Bold" size="16.0" />
-                     </font>
-                  </Text>
-                  <Text fx:id="lblCourse1" layoutX="30.0" layoutY="283.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BSCS" wrappingWidth="95.0">
-                     <font>
-                        <Font name="Arial Bold" size="16.0" />
-                     </font>
-                  </Text>
-                  <Text fx:id="lblYearSection1" layoutX="135.0" layoutY="284.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2A" wrappingWidth="89.99999999999994">
-                     <font>
-                        <Font name="Arial Bold" size="16.0" />
-                     </font>
-                  </Text>
-                  <Text fx:id="lblRoleID1" layoutX="147.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3">
-                     <font>
-                        <Font name="Arial Bold" size="16.0" />
-                     </font>
-                  </Text>
-                  <Text fx:id="lblSuffix1" layoutX="135.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="101.37890625">
-                     <font>
-                        <Font name="Arial Bold" size="16.0" />
-                     </font>
-                  </Text>
-               </children>
-            </Pane>
-            <Button layoutX="190.0" layoutY="516.0" mnemonicParsing="false" onAction="#PrintDataOfficer" prefHeight="31.0" prefWidth="132.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;" text="Print Officer" textAlignment="CENTER" textFill="WHITE">
-               <padding>
-                  <Insets bottom="8.0" left="20.0" right="20.0" top="8.0" />
-               </padding>
-               <font>
-                  <Font name="Arial Bold" size="12.0" />
-               </font>
-            </Button>
-         </children>
-      </Pane>
-   </children>
+                        <Line endX="124.0" layoutX="124.0" layoutY="52.0" startX="-113.0" />
+                        <Line endX="124.0" layoutX="125.0" layoutY="302.0" startX="-113.0" />
+                        <Text fx:id="lblSurname1" layoutX="31.0" layoutY="147.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Uy" wrappingWidth="206.0">
+                            <font>
+                                <Font name="Arial Bold" size="16.0" />
+                            </font>
+                        </Text>
+                        <Text fx:id="lblFirstName1" layoutX="30.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Gwyneth" wrappingWidth="206.0">
+                            <font>
+                                <Font name="Arial Bold" size="16.0" />
+                            </font>
+                        </Text>
+                        <Text fx:id="lblMiddleName1" layoutX="30.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fidel" wrappingWidth="95.0">
+                            <font>
+                                <Font name="Arial Bold" size="16.0" />
+                            </font>
+                        </Text>
+                        <Text layoutX="127.0" layoutY="203.0" strokeType="OUTSIDE" strokeWidth="0.0">
+                            <font>
+                                <Font name="Arial Bold" size="16.0" />
+                            </font>
+                        </Text>
+                        <Text fx:id="lblCourse1" layoutX="30.0" layoutY="283.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BSCS" wrappingWidth="95.0">
+                            <font>
+                                <Font name="Arial Bold" size="16.0" />
+                            </font>
+                        </Text>
+                        <Text fx:id="lblYearSection1" layoutX="135.0" layoutY="284.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2A" wrappingWidth="89.99999999999994">
+                            <font>
+                                <Font name="Arial Bold" size="16.0" />
+                            </font>
+                        </Text>
+                        <Text fx:id="lblRoleID1" layoutX="147.0" layoutY="326.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3">
+                            <font>
+                                <Font name="Arial Bold" size="16.0" />
+                            </font>
+                        </Text>
+                        <Text fx:id="lblSuffix1" layoutX="135.0" layoutY="236.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="101.37890625">
+                            <font>
+                                <Font name="Arial Bold" size="16.0" />
+                            </font>
+                        </Text>
+                    </children>
+                </Pane>
+                <Button layoutX="190.0" layoutY="516.0" mnemonicParsing="false" onAction="#PrintDataOfficer" prefHeight="31.0" prefWidth="132.0" style="-fx-background-color: #2B4FE4; -fx-background-radius: 20px;" text="Print Officer" textAlignment="CENTER" textFill="WHITE">
+                    <padding>
+                        <Insets bottom="8.0" left="20.0" right="20.0" top="8.0" />
+                    </padding>
+                    <font>
+                        <Font name="Arial Bold" size="12.0" />
+                    </font>
+                </Button>
+            </children>
+        </Pane>
+    </children>
 </Pane>
