@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<StackPane fx:id="notificationPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: transparent; -fx-border-radius: 10px;" stylesheets="@../style/alarmnotification.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AlarmNotificationController">
+   <children>
+      <AnchorPane fx:id="URGENTPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="211.0" prefWidth="600.0" style="-fx-background-color: gray;">
+          <stylesheets>
+              <URL value="@/style/alarmnotification.css" />
+          </stylesheets>
+         <children>
+            <BorderPane layoutX="57.0" layoutY="-18.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-width: 5px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <bottom>
+                  <AnchorPane prefHeight="57.0" prefWidth="590.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Button fx:id="Snoozebutton" layoutX="79.0" layoutY="16.0" mnemonicParsing="false" onAction="#Snoozebtn" prefHeight="25.0" prefWidth="136.0" text="SNOOZE" />
+                        <Button fx:id="handleCloseButton" layoutX="399.0" layoutY="16.0" mnemonicParsing="false" onAction="#handleCloseBtn" prefHeight="25.0" prefWidth="111.0" text="GOT IT" />
+                     </children>
+                  </AnchorPane>
+               </bottom>
+               <center>
+                  <AnchorPane BorderPane.alignment="CENTER">
+                     <children>
+                        <BorderPane layoutX="95.0" layoutY="49.0" prefHeight="53.0" prefWidth="438.0" style="-fx-border-radius: 10px;">
+                           <center>
+                              <Label fx:id="notificationLabel" prefHeight="32.0" prefWidth="438.0" styleClass="Main-bg" text="Label" BorderPane.alignment="CENTER" />
+                           </center>
+                        </BorderPane>
+                        <ImageView fitHeight="34.0" fitWidth="46.0" layoutX="14.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../Downloads/Icons/Icons/Hollow/Urgent.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="65.0" layoutY="19.0" prefHeight="27.0" prefWidth="101.0" text="URGENT">
+                           <font>
+                              <Font name="Baskerville Old Face" size="22.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+               </center>
+            </BorderPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="HIGHPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="211.0" prefWidth="600.0" style="-fx-background-color: gray;">
+         <stylesheets>
+            <URL value="@/style/alarmnotification.css" />
+         </stylesheets>
+         <children>
+            <BorderPane layoutX="57.0" layoutY="-18.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-width: 5px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <bottom>
+                  <AnchorPane prefHeight="57.0" prefWidth="590.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Button fx:id="Snoozebutton" layoutX="79.0" layoutY="16.0" mnemonicParsing="false" onAction="#Snoozebtn" prefHeight="25.0" prefWidth="136.0" text="SNOOZE" />
+                        <Button fx:id="handleCloseButton" layoutX="399.0" layoutY="16.0" mnemonicParsing="false" onAction="#handleCloseBtn" prefHeight="25.0" prefWidth="111.0" text="GOT IT" />
+                     </children>
+                  </AnchorPane>
+               </bottom>
+               <center>
+                  <AnchorPane BorderPane.alignment="CENTER">
+                     <children>
+                        <BorderPane layoutX="95.0" layoutY="49.0" prefHeight="53.0" prefWidth="438.0" style="-fx-border-radius: 10px;">
+                           <top>
+                              <Label fx:id="notificationLabel" prefHeight="32.0" prefWidth="438.0" styleClass="Main-bg" text="Label" BorderPane.alignment="CENTER" />
+                           </top>
+                        </BorderPane>
+                        <ImageView fitHeight="34.0" fitWidth="46.0" layoutX="14.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../Downloads/Icons/Icons/Hollow/High.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="65.0" layoutY="19.0" prefHeight="27.0" prefWidth="101.0" text="HIGH!">
+                           <font>
+                              <Font name="Baskerville Old Face" size="22.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+               </center>
+            </BorderPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="LOWPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="211.0" prefWidth="600.0" style="-fx-background-color: gray;">
+         <stylesheets>
+            <URL value="@/style/alarmnotification.css" />
+         </stylesheets>
+         <children>
+            <BorderPane layoutX="57.0" layoutY="-18.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-width: 5px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <bottom>
+                  <AnchorPane prefHeight="57.0" prefWidth="590.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Button fx:id="Snoozebutton" layoutX="79.0" layoutY="16.0" mnemonicParsing="false" onAction="#Snoozebtn" prefHeight="25.0" prefWidth="136.0" text="SNOOZE" />
+                        <Button fx:id="handleCloseButton" layoutX="399.0" layoutY="16.0" mnemonicParsing="false" onAction="#handleCloseBtn" prefHeight="25.0" prefWidth="111.0" text="GOT IT" />
+                     </children>
+                  </AnchorPane>
+               </bottom>
+               <center>
+                  <AnchorPane BorderPane.alignment="CENTER">
+                     <children>
+                        <BorderPane layoutX="95.0" layoutY="49.0" prefHeight="53.0" prefWidth="438.0" style="-fx-border-radius: 10px;">
+                           <top>
+                              <Label fx:id="notificationLabel" prefHeight="32.0" prefWidth="438.0" styleClass="Main-bg" text="Label" BorderPane.alignment="CENTER" />
+                           </top>
+                        </BorderPane>
+                        <ImageView fitHeight="34.0" fitWidth="46.0" layoutX="14.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../../../Downloads/Icons/Icons/Hollow/Low.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="65.0" layoutY="19.0" prefHeight="27.0" prefWidth="101.0" text="LOW">
+                           <font>
+                              <Font name="Baskerville Old Face" size="22.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+               </center>
+            </BorderPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="AlarmPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="211.0" prefWidth="600.0" style="-fx-background-color: gray;">
+         <stylesheets>
+            <URL value="@/style/alarmnotification.css" />
+         </stylesheets>
+         <children>
+            <BorderPane layoutX="57.0" layoutY="-18.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: black; -fx-border-width: 5px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <bottom>
+                  <AnchorPane prefHeight="57.0" prefWidth="590.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Button fx:id="Snoozebutton" layoutX="79.0" layoutY="16.0" mnemonicParsing="false" onAction="#Snoozebtn" prefHeight="25.0" prefWidth="136.0" text="SNOOZE" />
+                        <Button fx:id="dismiss" layoutX="399.0" layoutY="16.0" mnemonicParsing="false" onAction="#DISMISS" prefHeight="25.0" prefWidth="111.0" text="DISMISS" />
+                     </children>
+                  </AnchorPane>
+               </bottom>
+               <center>
+                  <AnchorPane BorderPane.alignment="CENTER">
+                     <children>
+                        <BorderPane layoutX="95.0" layoutY="49.0" prefHeight="53.0" prefWidth="438.0" style="-fx-border-radius: 10px;">
+                           <top>
+                              <Label fx:id="AlarmLabel" prefHeight="32.0" prefWidth="438.0" styleClass="Main-bg" text="Label" BorderPane.alignment="CENTER" />
+                           </top>
+                        </BorderPane>
+                        <Label layoutX="65.0" layoutY="19.0" prefHeight="27.0" prefWidth="239.0" text="ALARM!   WAKE UP!">
+                           <font>
+                              <Font name="Baskerville Old Face" size="22.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </AnchorPane>
+               </center>
+            </BorderPane>
+         </children>
+      </AnchorPane>
+   </children>
+</StackPane>
