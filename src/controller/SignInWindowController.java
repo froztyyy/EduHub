@@ -22,6 +22,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -29,6 +30,8 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 /**
  * FXML Controller class
@@ -68,21 +71,20 @@ public class SignInWindowController implements Initializable {
         // Play the animation
         scaleTransition.play();
 
+        // Add event handler for "Tab" key press
+        si_userID.setOnKeyPressed(this::handleTabKeyPress);
+       
     }
 
-//    @FXML
-//    private void closeButton(ActionEvent event) {
-//        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-//        alert.setTitle("Confirm Close");
-//        alert.setHeaderText("Do you wish to exit the program");
-//
-//        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//
-//        if (alert.showAndWait().get() == ButtonType.OK) {
-//            System.out.println("You successfully logged out");
-//            stage.close();
-//        }
-//    }
+    // Event handler for "Tab" key press
+    @FXML
+    private void handleTabKeyPress(KeyEvent event) {
+        if (event.getCode() == KeyCode.TAB) {
+            si_password.requestFocus();
+            event.consume();
+        }
+    }
+
     @FXML
     private void closeButton(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -175,6 +177,12 @@ public class SignInWindowController implements Initializable {
                 alert.setTitle("Error Message");
                 alert.setContentText("Please fill all blank fields");
                 alert.showAndWait();
+
+                if (si_userID.getText().isEmpty()) {
+                    si_userID.requestFocus();
+                } else {
+                    si_password.requestFocus();
+                }
 
             } else {
                 if (result.next()) {
@@ -322,7 +330,7 @@ public class SignInWindowController implements Initializable {
 
                         // Get the controller of the loaded FXML file
                         AdminDashboardController adminDashboardController = loader.getController();
-                        
+
                         adminDashboardController.user_StudentID(result.getString("studentID"));
                         adminDashboardController.user_Password(result.getString("Password"));
                         adminDashboardController.user_CourseID(result.getString("CourseID"));
@@ -385,6 +393,7 @@ public class SignInWindowController implements Initializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
     }
 
 }
