@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -498,24 +499,47 @@ public class OfficerDashboardController implements Initializable {
     @FXML
     private void closeButton(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Logout");
-        alert.setHeaderText("You are about to logout");
-        alert.setContentText("Do you want to save before exiting?");
+        alert.setTitle("Confirm Close");
+        alert.setHeaderText("Do you wish to exit the program?");
+
+        // Load custom icon
+        Image icon = new Image("file:/C:/Users/Ryzen/Documents/Summer Programming/Finals/IM/EduHub/src/media/icons/custom/Hollow/Unknown.png");
+
+        // Set custom icon size
+        double iconSize = 35.0; // Change this value to the desired size
+        ImageView imageView = new ImageView(icon);
+        imageView.setFitWidth(iconSize);
+        imageView.setFitHeight(iconSize);
+
+        // Set custom icon as the graphic for the alert
+        alert.setGraphic(imageView);
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-        if (alert.showAndWait().get() == ButtonType.OK) {
+        if (alert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
             System.out.println("You successfully logged out");
-            stage.close();
+
+            Platform.exit();
         }
     }
 
     @FXML
     private void logout(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Logout");
-        alert.setHeaderText("You are about to logout");
-        alert.setContentText("Do you want to save before loging out?");
+        alert.setTitle("Confirm Logout");
+        alert.setHeaderText("Do you wish to logout?");
+
+        // Load custom icon
+        Image icon = new Image("file:/C:/Users/Ryzen/Documents/Summer Programming/Finals/IM/EduHub/src/media/icons/custom/Hollow/Unknown.png");
+
+        // Set custom icon size
+        double iconSize = 35.0; // Change this value to the desired size
+        ImageView imageView = new ImageView(icon);
+        imageView.setFitWidth(iconSize);
+        imageView.setFitHeight(iconSize);
+
+        // Set custom icon as the graphic for the alert
+        alert.setGraphic(imageView);
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
@@ -1698,18 +1722,16 @@ public class OfficerDashboardController implements Initializable {
 
     public ObservableList<AnnouncementData> getAnnouncementData() throws SQLException {
 
-        String sql = "SELECT AnnouncementID,Title, Body, AudienceID, PriorityID, StudentID, Surname, CourseID, SectionID, postDate FROM mod_announce WHERE CourseID = ? AND SectionID = ? AND AudienceID IN (?, ?, ? ,?) ORDER BY AnnouncementID DESC, PostDate DESC";
+        String sql = "SELECT AnnouncementID, Title, Body, AudienceID, PriorityID, StudentID, Surname, CourseID, SectionID, postDate FROM mod_announce WHERE (AudienceID = 'Everyone') OR (AudienceID IN (?, ?) AND CourseID = ? AND SectionID = ?) ORDER BY PriorityID ASC, PostDate DESC";
         ObservableList<AnnouncementData> Announcement = FXCollections.observableArrayList();
         connect = database.getConnection();
 
         try {
             prepare = connect.prepareStatement(sql);
-            prepare.setString(1, user_CourseID);
-            prepare.setString(2, user_SectionID);
-            prepare.setString(3, "Everyone");  // Replace with the actual value or variable
-            prepare.setString(4, "Homeroom");  // Replace with the actual value or variable
-            prepare.setString(5, "Officer");
-            prepare.setString(6, "Only Me");
+            prepare.setString(1, "Homeroom");
+            prepare.setString(2, "Officers");
+            prepare.setString(3, user_CourseID);
+            prepare.setString(4, user_SectionID);
             result = prepare.executeQuery();
 
             while (result.next()) {
@@ -1734,6 +1756,11 @@ public class OfficerDashboardController implements Initializable {
         } finally {
             // Close resources (result, prepare, connect) if needed
         }
+        
+                // Sort the Announcement list based on the AudienceID
+        Announcement.sort(Comparator.comparing(AnnouncementData::getAudience)
+                .thenComparing(AnnouncementData::getPriority)
+                .thenComparing(AnnouncementData::getPostDate, Comparator.reverseOrder()));
 
         return Announcement;
     }
@@ -1826,6 +1853,44 @@ public class OfficerDashboardController implements Initializable {
 
         String sql = "INSERT INTO mod_todo_pending (StudentID, Title, Note, Deadline, AudienceID, PriorityID, Surname, CourseID, SectionID) VALUES (?, ?, ?, ?, ? , ? ,? ,?, ?)";
 
+        if (txtTitleTask.getText().isEmpty() || txtBodyTask.getText().isEmpty()
+                || datePickerTask.getValue() == null || cbAudienceToDo.getValue() == null
+                || cbPriorityToDo.getValue() == null) {
+            showErrorAlert("Please fill in all the required fields.");
+            return;
+        }
+
+        LocalDate selectedDate = datePickerTask.getValue();
+        if (selectedDate != null && selectedDate.isBefore(LocalDate.now())) {
+            showErrorAlert("Please select a future date for the deadline.");
+            return;
+        }
+
+        if (txtTitleTask.getText().isEmpty()) {
+            showErrorAlert("Empty Title", "Title field cannot be empty.");
+            return; // Stop further execution
+        }
+
+        if (txtBodyTask.getText().isEmpty()) {
+            showErrorAlert("Empty Body", "Body field cannot be empty.");
+            return; // Stop further execution
+        }
+
+        if (datePickerTask.getValue() == null) {
+            showErrorAlert("Empty Date", "Please select a deadline date.");
+            return; // Stop further execution
+        }
+
+        if (cbAudienceToDo.getValue() == null) {
+            showErrorAlert("Audience Error", "Please select an audience.");
+            return; // Stop further execution
+        }
+
+        if (cbPriorityToDo.getValue() == null) {
+            showErrorAlert("Priority Error", "Please select a priority.");
+            return; // Stop further execution
+        }
+
         try {
             System.out.println("Current studentID: " + user_StudentID);
 
@@ -1897,7 +1962,7 @@ public class OfficerDashboardController implements Initializable {
 
     public ObservableList<ToDoListData> getToDoListData() throws SQLException {
 
-        String sql = "SELECT ToDoID, Title, Note, Deadline, AudienceID, PriorityID, StudentID, Surname, CourseID, SectionID, postDate FROM mod_todo_pending WHERE CourseID = ? AND SectionID = ? AND AudienceID IN (?, ?, ? ,?) AND AudienceID != 'Only Me' ORDER BY PostDate DESC, PriorityID ASC";
+        String sql = "SELECT ToDoID, Title, Note, Deadline, AudienceID, PriorityID, StudentID, Surname, CourseID, SectionID, postDate FROM mod_todo_pending WHERE CourseID = ? AND SectionID = ? AND AudienceID IN (?, ?, ? ,?) AND AudienceID != 'Only Me' ORDER BY PriorityID ASC, PostDate DESC";
         ObservableList<ToDoListData> toDoList = FXCollections.observableArrayList();
         connect = database.getConnection();
 
@@ -2424,7 +2489,7 @@ public class OfficerDashboardController implements Initializable {
         String updatedTitle = txtTitleTask.getText();
         String updatedBody = txtBodyTask.getText();
         String updatedAudience = cbAudienceToDo.getValue();
-        
+
         String updatedPriority = cbPriorityToDo.getValue();
         LocalDate updatedDeadline = datePickerTask.getValue();
 
@@ -2449,8 +2514,6 @@ public class OfficerDashboardController implements Initializable {
 
             // Execute the update query
             prepare.executeUpdate();
-            
-            
 
             // Show a success alert
             showSuccessAlert();

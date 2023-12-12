@@ -157,3 +157,75 @@
     -fx-background-color: #121212; /* Set the fill color */
 }
 
+
+.cardVBox {
+    -fx-border-width: 5px;
+    -fx-border-radius: 5px;
+    -fx-border-style: dashed;
+}
+
+.cardVBox:hover {
+    /* Add hover styles if needed */
+}
+
+.cardVBox:pressed {
+    /* Add pressed styles if needed */
+}
+
+.cardVBox .textArea {
+    /* Add styles for textArea if needed */
+}
+
+.secondary-bg {
+    -fx-background-color: #121212;
+    -fx-background-radius: 10px;
+    -fx-border-color: transparent; /* Set default border color */
+}
+
+.secondary-bg.urgent {
+    -fx-border-color: #df5b4e;
+}
+
+.secondary-bg.high {
+    -fx-border-color: #fff799;
+}
+
+.secondary-bg.low {
+    -fx-border-color: #a3d39c;
+}
+
+#cardVBox {
+    -fx-border-radius: 5px;
+    -fx-border-width: 5px;
+}
+
+.secondary-bg {
+    -fx-background-color: #121212;
+    -fx-background-radius: 10px;
+}
+
+#cardVBox {
+    -fx-border-width: 5px;
+}
+
+.urgent {
+    -fx-border-color: #df5b4e;
+    -fx-border-radius: 5px;
+    -fx-border-style: dashed;
+}
+
+.high {
+    -fx-border-color: #fff799;
+    -fx-border-radius: 5px;
+    -fx-border-style: dotted;
+}
+
+.low {
+    -fx-border-color: #a3d39c;
+    -fx-border-radius: 5px;
+    -fx-border-style: solid; /* You can adjust this to another style if needed */
+}
+
+.everyone {
+    -fx-background-color: #007a79;
+}

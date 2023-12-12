@@ -19,6 +19,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -408,24 +409,47 @@ public class UserDashboardController implements Initializable {
     @FXML
     private void closeButton(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Logout");
-        alert.setHeaderText("You are about to logout");
-        alert.setContentText("Do you want to save before exiting?");
+        alert.setTitle("Confirm Close");
+        alert.setHeaderText("Do you wish to exit the program?");
+
+        // Load custom icon
+        Image icon = new Image("file:/C:/Users/Ryzen/Documents/Summer Programming/Finals/IM/EduHub/src/media/icons/custom/Hollow/Unknown.png");
+
+        // Set custom icon size
+        double iconSize = 35.0; // Change this value to the desired size
+        ImageView imageView = new ImageView(icon);
+        imageView.setFitWidth(iconSize);
+        imageView.setFitHeight(iconSize);
+
+        // Set custom icon as the graphic for the alert
+        alert.setGraphic(imageView);
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-        if (alert.showAndWait().get() == ButtonType.OK) {
+        if (alert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
             System.out.println("You successfully logged out");
-            stage.close();
+
+            Platform.exit();
         }
     }
 
     @FXML
     private void logout(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Logout");
-        alert.setHeaderText("You are about to logout");
-        alert.setContentText("Do you want to save before loging out?");
+        alert.setTitle("Confirm Logout");
+        alert.setHeaderText("Do you wish to logout?");
+
+        // Load custom icon
+        Image icon = new Image("file:/C:/Users/Ryzen/Documents/Summer Programming/Finals/IM/EduHub/src/media/icons/custom/Hollow/Unknown.png");
+
+        // Set custom icon size
+        double iconSize = 35.0; // Change this value to the desired size
+        ImageView imageView = new ImageView(icon);
+        imageView.setFitWidth(iconSize);
+        imageView.setFitHeight(iconSize);
+
+        // Set custom icon as the graphic for the alert
+        alert.setGraphic(imageView);
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
@@ -1361,7 +1385,7 @@ public class UserDashboardController implements Initializable {
 
     public ObservableList<ToDoListData> getToDoListData() throws SQLException {
 
-        String sql = "SELECT ToDoID, Title, Note, Deadline, AudienceID, PriorityID, StudentID, Surname, CourseID, SectionID, postDate FROM mod_todo_pending WHERE CourseID = ? AND SectionID = ? AND AudienceID IN (?, ?, ?) ORDER BY PostDate DESC, PriorityID ASC";
+        String sql = "SELECT ToDoID, Title, Note, Deadline, AudienceID, PriorityID, StudentID, Surname, CourseID, SectionID, postDate FROM mod_todo_pending WHERE CourseID = ? AND SectionID = ? AND AudienceID IN (?, ?, ?) ORDER BY `PriorityID` ASC, `PostDate` DESC";
         ObservableList<ToDoListData> toDoList = FXCollections.observableArrayList();
         connect = database.getConnection();
 
@@ -1558,6 +1582,7 @@ public class UserDashboardController implements Initializable {
         }
     }
 
+    // Announcement Posting (Disabled)
     @FXML
     private void handlePostAnnouncement(ActionEvent event) {
 
@@ -1667,7 +1692,7 @@ public class UserDashboardController implements Initializable {
 
     public ObservableList<AnnouncementData> getAnnouncementData() throws SQLException {
 
-        String sql = "Select AnnouncementID,Title, Body,AudienceID,PriorityID,StudentID,Surname, CourseID, SectionID, postDate FROM mod_announce where CourseID = ? and SectionID = ? and AudienceID in (?,?,?) ORDER BY PostDate DESC";
+        String sql = "SELECT AnnouncementID, Title, Body, AudienceID, PriorityID, StudentID, Surname, CourseID, SectionID, postDate FROM mod_announce WHERE (CourseID = ? AND SectionID = ? AND AudienceID IN (?, ?, ?)) OR AudienceID = ? ORDER BY PriorityID ASC, PostDate DESC";
         ObservableList<AnnouncementData> Announcement = FXCollections.observableArrayList();
         connect = database.getConnection();
 
@@ -1678,6 +1703,7 @@ public class UserDashboardController implements Initializable {
             prepare.setString(3, "Everyone");
             prepare.setString(4, "Homeroom");
             prepare.setString(5, "Only Me");
+            prepare.setString(6, "Everyone");
             result = prepare.executeQuery();
 
             while (result.next()) {
@@ -1701,6 +1727,11 @@ public class UserDashboardController implements Initializable {
         } finally {
             // Close resources (result, prepare, connect) if needed
         }
+
+        // Sort the Announcement list based on the AudienceID
+        Announcement.sort(Comparator.comparing(AnnouncementData::getAudience)
+                .thenComparing(AnnouncementData::getPriority)
+                .thenComparing(AnnouncementData::getPostDate, Comparator.reverseOrder()));
 
         return Announcement;
     }
@@ -1775,7 +1806,7 @@ public class UserDashboardController implements Initializable {
         // Add logic to retrieve feedback data from the database
         // Replace the placeholders with your actual column names
         try {
-            prepare = connect.prepareStatement("SELECT Title, Deadline, PriorityID FROM mod_todo_pending where CourseID = ? and SectionID = ? and AudienceID in ( ?, ?, ?) order by PostDate DESC, PriorityID ASC");
+            prepare = connect.prepareStatement("SELECT Title, Deadline, PriorityID FROM mod_todo_pending where CourseID = ? and SectionID = ? and AudienceID in ( ?, ?, ?) order by `PriorityID` ASC, `Deadline` DESC");
             prepare.setString(1, user_CourseID);
             prepare.setString(2, user_SectionID);
             prepare.setString(3, "Everyone");
@@ -1876,6 +1907,26 @@ public class UserDashboardController implements Initializable {
         // Check if all required fields are filled
         if (updatedTitle.isEmpty() || updatedBody.isEmpty() || updatedPriority == null || updatedDeadline == null) {
             showErrorAlert("Error", "Please fill in all fields before updating.");
+            return;
+        }
+
+        if (updatedTitle.isEmpty()) {
+            showErrorAlert("Error", "Title field cannot be empty.");
+            return;
+        }
+
+        if (updatedBody.isEmpty()) {
+            showErrorAlert("Error", "Body field cannot be empty.");
+            return;
+        }
+
+        if (updatedPriority == null) {
+            showErrorAlert("Error", "Please select a priority.");
+            return;
+        }
+
+        if (updatedDeadline == null) {
+            showErrorAlert("Error", "Please select a deadline date.");
             return;
         }
 

@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ResourceBundle;
 import javafx.animation.ScaleTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,6 +23,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Screen;
@@ -68,18 +70,43 @@ public class SignInWindowController implements Initializable {
 
     }
 
+//    @FXML
+//    private void closeButton(ActionEvent event) {
+//        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+//        alert.setTitle("Confirm Close");
+//        alert.setHeaderText("Do you wish to exit the program");
+//
+//        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//
+//        if (alert.showAndWait().get() == ButtonType.OK) {
+//            System.out.println("You successfully logged out");
+//            stage.close();
+//        }
+//    }
     @FXML
     private void closeButton(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Logout");
-        alert.setHeaderText("You are about to logout");
-        alert.setContentText("Do you want to save before exiting?");
+        alert.setTitle("Confirm Close");
+        alert.setHeaderText("Do you wish to exit the program?");
+
+        // Load custom icon
+        Image icon = new Image("/media/icons/custom/Hollow/Unknown.png");
+
+        // Set custom icon size
+        double iconSize = 35.0; // Change this value to the desired size
+        ImageView imageView = new ImageView(icon);
+        imageView.setFitWidth(iconSize);
+        imageView.setFitHeight(iconSize);
+
+        // Set custom icon as the graphic for the alert
+        alert.setGraphic(imageView);
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-        if (alert.showAndWait().get() == ButtonType.OK) {
+        if (alert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
             System.out.println("You successfully logged out");
-            stage.close();
+
+            Platform.exit();
         }
     }
 
@@ -132,9 +159,9 @@ public class SignInWindowController implements Initializable {
 
     @FXML
     private void signInButton(ActionEvent event) {
-        
+
         connect = database.getConnection();
-        
+
         try {
             prepare = connect.prepareStatement("SELECT * FROM account_student WHERE StudentID = ? and Password = ?");
             prepare.setString(1, si_userID.getText());
@@ -156,7 +183,7 @@ public class SignInWindowController implements Initializable {
 
                     if (roleID == 3) { // Student
                         alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Information Message");
+                        alert.setTitle("Welcome!");
                         alert.setHeaderText(null);
                         alert.setContentText("Successfully Login as Student!");
                         alert.showAndWait();
@@ -216,7 +243,7 @@ public class SignInWindowController implements Initializable {
 
                     } else if (roleID == 2) { // Officer
                         alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Information Message");
+                        alert.setTitle("Welcome!");
                         alert.setHeaderText(null);
                         alert.setContentText("Successfully Login as Officer!");
                         alert.showAndWait();
@@ -225,7 +252,7 @@ public class SignInWindowController implements Initializable {
                         String studentID = result.getString("studentID");
                         String courseID = result.getString("courseID");
                         String sectionID = result.getString("sectionID");
-                        System.out.println("Retrieved: " + Surname+ studentID + courseID + sectionID);
+                        System.out.println("Retrieved: " + Surname + studentID + courseID + sectionID);
 
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/officerDashboard.fxml"));
                         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -276,13 +303,35 @@ public class SignInWindowController implements Initializable {
 
                     } else if (roleID == 1) { // Admin
                         alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Information Message");
+                        alert.setTitle("Welcome!");
                         alert.setHeaderText(null);
                         alert.setContentText("Successfully Login as Admin!");
                         alert.showAndWait();
 
-                        Parent root = FXMLLoader.load(getClass().getResource("/view/adminDashboard.fxml"));
+                        String studentID = result.getString("studentID");
+                        String password = result.getString("Password");
+                        String courseID = result.getString("CourseID");
+                        String sectionID = result.getString("SectionID");
+                        String firstname = result.getString("Firstname");
+                        String middlename = result.getString("Middlename");
+                        String surname = result.getString("Surname");
+
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/adminDashboard.fxml"));
                         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                        Parent root = loader.load();
+
+                        // Get the controller of the loaded FXML file
+                        AdminDashboardController adminDashboardController = loader.getController();
+                        
+                        adminDashboardController.user_StudentID(result.getString("studentID"));
+                        adminDashboardController.user_Password(result.getString("Password"));
+                        adminDashboardController.user_CourseID(result.getString("CourseID"));
+                        adminDashboardController.user_SectionID(result.getString("SectionID"));
+                        adminDashboardController.user_RoleID(result.getInt("RoleID"));
+                        adminDashboardController.user_Firstname(result.getString("Firstname"));
+                        adminDashboardController.user_Middlename(result.getString("Middlename"));
+                        adminDashboardController.user_Surname(result.getString("Surname"));
+                        adminDashboardController.user_Suffix(result.getString("Suffix"));
 
                         ((Node) (event.getSource())).getScene().getWindow().hide();
                         stage.setWidth(1332);

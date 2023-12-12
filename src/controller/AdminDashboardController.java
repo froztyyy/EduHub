@@ -58,6 +58,7 @@ import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Insets;
 import javafx.print.PageLayout;
 import javafx.print.PageOrientation;
 import javafx.print.Paper;
@@ -68,10 +69,14 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -411,6 +416,36 @@ public class AdminDashboardController implements Initializable {
     private Label numberItemsFeedbackTrash;
     @FXML
     private PieChart PiechartStudentNumber;
+    @FXML
+    private Pane announcementWindow;
+    @FXML
+    private HBox hbox;
+    @FXML
+    private Pane pane1;
+    @FXML
+    private VBox vbox;
+    @FXML
+    private Label titleLabel;
+    @FXML
+    private HBox hbox2;
+    @FXML
+    private TextField txtTitle;
+    @FXML
+    private ComboBox<String> cbAudience;
+    @FXML
+    private ComboBox<String> cbPriorityLevel;
+    @FXML
+    private TextArea txtArea;
+    @FXML
+    private Button btnSubmit;
+    @FXML
+    private Pane pane2;
+    @FXML
+    private ScrollPane scrollPane;
+    @FXML
+    private GridPane announcementCard;
+    @FXML
+    private Pane announcementButton;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -452,6 +487,7 @@ public class AdminDashboardController implements Initializable {
 
         sidePanel.setVisible(true);
         dashBoardWindow.setVisible(true);
+        announcementWindow.setVisible(false);
         courseYearWindow.setVisible(false);
         sectionStudWindow.setVisible(false);
         officerWindow.setVisible(false);
@@ -610,6 +646,9 @@ public class AdminDashboardController implements Initializable {
         sideCard.setVisible(true);
         // Add a listener to PieChart to wait for it to be fully initialized
         Platform.runLater(this::populatePieChart);
+
+        fetchPriorityLevelToComboBox(cbPriorityLevel);
+
     }
 
     private boolean isNodeInsideSidePanel(Node node) {
@@ -664,24 +703,47 @@ public class AdminDashboardController implements Initializable {
     @FXML
     private void closeButton(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Logout");
-        alert.setHeaderText("You are about to logout");
-        alert.setContentText("Do you want to save before exiting?");
+        alert.setTitle("Confirm Close");
+        alert.setHeaderText("Do you wish to exit the program?");
+
+        // Load custom icon
+        Image icon = new Image("file:/C:/Users/Ryzen/Documents/Summer Programming/Finals/IM/EduHub/src/media/icons/custom/Hollow/Unknown.png");
+
+        // Set custom icon size
+        double iconSize = 35.0; // Change this value to the desired size
+        ImageView imageView = new ImageView(icon);
+        imageView.setFitWidth(iconSize);
+        imageView.setFitHeight(iconSize);
+
+        // Set custom icon as the graphic for the alert
+        alert.setGraphic(imageView);
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-        if (alert.showAndWait().get() == ButtonType.OK) {
+        if (alert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
             System.out.println("You successfully logged out");
-            stage.close();
+
+            Platform.exit();
         }
     }
 
     @FXML
     private void logout(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Logout");
-        alert.setHeaderText("You are about to logout");
-        alert.setContentText("Do you want to save before loging out?");
+        alert.setTitle("Confirm Logout");
+        alert.setHeaderText("Do you wish to logout?");
+
+        // Load custom icon
+        Image icon = new Image("file:/C:/Users/Ryzen/Documents/Summer Programming/Finals/IM/EduHub/src/media/icons/custom/Hollow/Unknown.png");
+
+        // Set custom icon size
+        double iconSize = 35.0; // Change this value to the desired size
+        ImageView imageView = new ImageView(icon);
+        imageView.setFitWidth(iconSize);
+        imageView.setFitHeight(iconSize);
+
+        // Set custom icon as the graphic for the alert
+        alert.setGraphic(imageView);
 
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
@@ -797,6 +859,7 @@ public class AdminDashboardController implements Initializable {
             lastClickedButton = clickedButton;
             if (clickedButton == dashBoardButton) {
                 setButtonColor(dashBoardButton, true);
+                setButtonColor(announcementButton, false);
                 setButtonColor(courseYearButton, false);
                 setButtonColor(sectionButton, false);
                 setButtonColor(officerButton, false);
@@ -804,14 +867,32 @@ public class AdminDashboardController implements Initializable {
                 setButtonColor(trashButton, false);
 
                 dashBoardWindow.setVisible(true);
+                announcementWindow.setVisible(false);
                 courseYearWindow.setVisible(false);
                 sectionStudWindow.setVisible(false);
                 officerWindow.setVisible(false);
                 feedbackWindow.setVisible(false);
                 trashWindow.setVisible(false);
 
+            } else if (clickedButton == announcementButton) {
+                setButtonColor(dashBoardButton, false);
+                setButtonColor(announcementButton, true);
+                setButtonColor(courseYearButton, false);
+                setButtonColor(sectionButton, false);
+                setButtonColor(officerButton, false);
+                setButtonColor(feedbackButton, false);
+                setButtonColor(trashButton, false);
+
+                dashBoardWindow.setVisible(false);
+                announcementWindow.setVisible(true);
+                courseYearWindow.setVisible(false);
+                sectionStudWindow.setVisible(false);
+                officerWindow.setVisible(false);
+                feedbackWindow.setVisible(false);
+                trashWindow.setVisible(false);
             } else if (clickedButton == courseYearButton) {
                 setButtonColor(dashBoardButton, false);
+                setButtonColor(announcementButton, false);
                 setButtonColor(courseYearButton, true);
                 setButtonColor(sectionButton, false);
                 setButtonColor(officerButton, false);
@@ -819,6 +900,7 @@ public class AdminDashboardController implements Initializable {
                 setButtonColor(trashButton, false);
 
                 dashBoardWindow.setVisible(false);
+                announcementWindow.setVisible(false);
                 courseYearWindow.setVisible(true);
                 sectionStudWindow.setVisible(false);
                 officerWindow.setVisible(false);
@@ -827,6 +909,7 @@ public class AdminDashboardController implements Initializable {
 
             } else if (clickedButton == sectionButton) {
                 setButtonColor(dashBoardButton, false);
+                setButtonColor(announcementButton, false);
                 setButtonColor(courseYearButton, false);
                 setButtonColor(sectionButton, true);
                 setButtonColor(officerButton, false);
@@ -834,6 +917,7 @@ public class AdminDashboardController implements Initializable {
                 setButtonColor(trashButton, false);
 
                 dashBoardWindow.setVisible(false);
+                announcementWindow.setVisible(false);
                 courseYearWindow.setVisible(false);
                 sectionStudWindow.setVisible(true);
                 officerWindow.setVisible(false);
@@ -842,6 +926,7 @@ public class AdminDashboardController implements Initializable {
 
             } else if (clickedButton == officerButton) {
                 setButtonColor(dashBoardButton, false);
+                setButtonColor(announcementButton, false);
                 setButtonColor(courseYearButton, false);
                 setButtonColor(sectionButton, false);
                 setButtonColor(officerButton, true);
@@ -849,6 +934,7 @@ public class AdminDashboardController implements Initializable {
                 setButtonColor(trashButton, false);
 
                 dashBoardWindow.setVisible(false);
+                announcementWindow.setVisible(false);
                 courseYearWindow.setVisible(false);
                 sectionStudWindow.setVisible(false);
                 officerWindow.setVisible(true);
@@ -857,6 +943,7 @@ public class AdminDashboardController implements Initializable {
 
             } else if (clickedButton == feedbackButton) {
                 setButtonColor(dashBoardButton, false);
+                setButtonColor(announcementButton, false);
                 setButtonColor(courseYearButton, false);
                 setButtonColor(sectionButton, false);
                 setButtonColor(officerButton, false);
@@ -864,13 +951,16 @@ public class AdminDashboardController implements Initializable {
                 setButtonColor(trashButton, false);
 
                 dashBoardWindow.setVisible(false);
+                announcementWindow.setVisible(false);
                 courseYearWindow.setVisible(false);
                 sectionStudWindow.setVisible(false);
                 officerWindow.setVisible(false);
                 feedbackWindow.setVisible(true);
                 trashWindow.setVisible(false);
+
             } else if (clickedButton == trashButton) {
                 setButtonColor(dashBoardButton, false);
+                setButtonColor(announcementButton, false);
                 setButtonColor(courseYearButton, false);
                 setButtonColor(sectionButton, false);
                 setButtonColor(officerButton, false);
@@ -878,6 +968,7 @@ public class AdminDashboardController implements Initializable {
                 setButtonColor(trashButton, true);
 
                 dashBoardWindow.setVisible(false);
+                announcementWindow.setVisible(false);
                 courseYearWindow.setVisible(false);
                 sectionStudWindow.setVisible(false);
                 officerWindow.setVisible(false);
@@ -1498,6 +1589,236 @@ public class AdminDashboardController implements Initializable {
         });
     }
 
+    // Announcement Function:
+    private String user_StudentID;
+    private String user_Password;
+    private String user_CourseID;
+    private String user_SectionID;
+    private int user_RoleID;
+    private String user_First;
+    private String user_Middle;
+    private String user_Surname;
+    private String user_Suffix;
+
+
+    public void user_Password(String password) {
+        this.user_Password = password;
+    }
+
+    public void user_RoleID(int roleID) {
+        this.user_RoleID = roleID;
+    }
+
+    public void user_Firstname(String firstname) {
+        this.user_First = firstname;
+    }
+
+    public void user_Middlename(String middlename) {
+        this.user_Middle = middlename;
+    }
+
+    public void user_Suffix(String suffix) {
+        this.user_Suffix = suffix;
+    }
+
+    public void user_StudentID(String studentID) {
+        this.user_StudentID = studentID;
+        DisplayAnnouncement();
+        fetchSectionToComboBox(cbSectionYear);
+        fetchCourseToComboBox(cbCourse);
+    }
+
+    public void user_CourseID(String courseID) {
+        this.user_CourseID = courseID;
+        DisplayAnnouncement();
+        fetchCourseToComboBox(cbCourse);
+        loadStudentAccountData();
+    }
+
+    public void user_SectionID(String sectionID) {
+        this.user_SectionID = sectionID;
+        DisplayAnnouncement();
+        fetchSectionToComboBox(cbSectionYear);
+        loadStudentAccountData();
+    }
+
+    public void user_Surname(String Surname) {
+        this.user_Surname = Surname;
+        DisplayAnnouncement();
+    }
+
+    private void fetchPriorityLevelToComboBox(ComboBox<String> comboBox) {
+        connect = database.getConnection();
+        try {
+            prepare = connect.prepareStatement("SELECT PriorityName FROM filter_priority");
+            result = prepare.executeQuery();
+
+            List<String> items = new ArrayList<>();
+            while (result.next()) {
+                String itemName = result.getString("PriorityName");
+                items.add(itemName);
+            }
+
+            comboBox.getItems().addAll(items);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error fetching course data: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handlePostAnnouncement(ActionEvent event) {
+
+        if (txtTitle.getText().isEmpty() && txtArea.getText().isEmpty() && cbPriorityLevel.getValue() == null) {
+            // Show an alert indicating that Title, Note, and Priority are required
+            showErrorAlert("Please enter Title, Note, and select Priority");
+            return; // Stop further execution
+        }
+
+        // Check which fields are missing
+        if (txtTitle.getText().isEmpty()) {
+            showErrorAlert("Please enter Title");
+            return;
+        }
+
+        if (cbPriorityLevel.getValue() == null) {
+            showErrorAlert("Please select Priority");
+            return;
+        }
+
+        if (txtArea.getText().isEmpty()) {
+            showErrorAlert("Please enter Note");
+            return;
+        }
+
+        String sql = "INSERT INTO mod_announce (Title, Body,AudienceID,PriorityID,StudentID,Surname, CourseID, SectionID) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        connect = database.getConnection();
+
+        try {
+
+            prepare = connect.prepareStatement(sql);
+
+            // Set parameters for the prepared statement
+            prepare.setString(1, txtTitle.getText());
+            prepare.setString(2, txtArea.getText());
+            prepare.setString(3, "Everyone");
+            prepare.setString(4, cbPriorityLevel.getValue());
+            prepare.setString(5, user_StudentID);
+            prepare.setString(6, user_Surname);
+            prepare.setString(7, user_CourseID); // Assuming you're using the value from the ComboBox
+            prepare.setString(8, user_SectionID); // Assuming you're using the value from the ComboBox
+
+            // Execute the SQL query
+            prepare.executeUpdate();
+
+            // Show success alert
+            showSuccessAlert("Announcement created successfully!");
+
+            // Load and refresh the TableView
+            DisplayAnnouncement();
+            clearFieldPost();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Post announced");
+        }
+    }
+
+    private void clearFieldPost() {
+        txtTitle.clear();
+        txtArea.clear();
+        cbAudience.setValue(null);
+        cbPriorityLevel.setValue(null);
+    }
+
+    private ObservableList<AnnouncementData> Announcement = FXCollections.observableArrayList();
+
+    public ObservableList<AnnouncementData> getAnnouncementData() throws SQLException {
+
+        String sql = "SELECT AnnouncementID,Title, Body, AudienceID, PriorityID, StudentID, Surname, CourseID, SectionID, postDate FROM mod_announce WHERE AudienceID = ? ORDER BY PriorityID ASC, PostDate DESC";
+        ObservableList<AnnouncementData> Announcement = FXCollections.observableArrayList();
+        connect = database.getConnection();
+
+        try {
+            prepare = connect.prepareStatement(sql);
+            prepare.setString(1, "Everyone");  // Replace with the actual value or variable
+            result = prepare.executeQuery();
+
+            while (result.next()) {
+                Integer announcementID = result.getInt("AnnouncementID");
+                String title = result.getString("Title");
+                String body = result.getString("Body");
+                String audience = result.getString("AudienceID");
+                String priority = result.getString("PriorityID");
+                String courseID = result.getString("CourseID");
+                String sectionID = result.getString("SectionID");
+                String surname = result.getString("Surname");
+                String postDate = result.getString("postDate");
+                String studentID = result.getString("StudentID");
+
+                AnnouncementData announcementData = new AnnouncementData(title, audience, priority, courseID, sectionID, body, postDate, studentID, surname, announcementID);
+                announcementData.setAnnouncementID(announcementID); // Set AnnouncementID
+                Announcement.add(announcementData);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Close resources (result, prepare, connect) if needed
+        }
+
+        return Announcement;
+    }
+
+    private int currentDisplayIndex = 0;
+
+    public void DisplayAnnouncement() {
+        try {
+            Announcement.clear();
+            Announcement.addAll(getAnnouncementData());
+
+            int maxColumns = 1;
+            int row = 0;
+            int column = 0;
+
+            announcementCard.getChildren().clear();
+            announcementCard.getRowConstraints().clear();
+            announcementCard.getColumnConstraints().clear();
+
+            for (int q = 0; q < Announcement.size(); q++) {
+                try {
+                    if (column >= maxColumns) {
+                        // Move to the next row when the maximum number of columns is reached
+                        column = 0;
+                        row++;
+                    }
+
+                    FXMLLoader loader = new FXMLLoader();
+                    loader.setLocation(getClass().getResource("/view/announcementCard.fxml"));
+                    AnchorPane pane = loader.load();
+                    AnnouncementCardController cardController = loader.getController();
+                    cardController.setData(Announcement.get(q));
+
+                    announcementCard.add(pane, column++, row);
+
+                    GridPane.setMargin(pane, new Insets(5));
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            currentDisplayIndex = 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    // Trash Bin - Announcement
+    
+    
+
     //////////////////////////////////////////////
     // COURSE SECTION
     @FXML
@@ -2081,12 +2402,11 @@ public class AdminDashboardController implements Initializable {
 
         ButtonType buttonTypePNG = new ButtonType("PNG");
 
-
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent()) {
             if (result.get() == buttonTypePNG) {
                 saveAsPNG();
-            } 
+            }
         }
     }
 
