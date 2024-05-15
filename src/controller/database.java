@@ -18,7 +18,7 @@ public class database {
         Connection conn;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://26.85.20.84:3306/eh_final", "zen", "garden");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/eduhub", "root", "");
             return conn;
         } catch (Exception e) {
 

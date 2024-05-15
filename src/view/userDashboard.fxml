@@ -110,13 +110,10 @@
                                                 </ImageView>
                                             </graphic>
                                         </Button>
-                                        <ImageView fitHeight="70.0" fitWidth="56.0" pickOnBounds="true" preserveRatio="true">
+                                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                                             <image>
-                                                <Image url="@../media/logo/3dgifmaker77747.gif" />
+                                                <Image url="@../media/EduHub_Logo_v2.png" />
                                             </image>
-                                            <effect>
-                                                <ColorAdjust saturation="-1.0" />
-                                            </effect>
                                         </ImageView>
                                         <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="EDUHUB.STUDENT">
                                             <font>

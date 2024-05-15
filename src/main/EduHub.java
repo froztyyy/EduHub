@@ -80,7 +80,7 @@ public class EduHub extends Application {
     private void loadMainApp(Stage primaryStage) {
         try {
 
-            InputStream iconStream = getClass().getResourceAsStream("/media.logo/EduHub_Logo_v2.png");
+            InputStream iconStream = getClass().getResourceAsStream("/media/EduHub_Logo_v2.png");
             if (iconStream != null) {
                 Image icon = new Image(iconStream);
                 primaryStage.getIcons().add(icon); // Set the icon for the stage 
